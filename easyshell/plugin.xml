@@ -2,7 +2,7 @@
 <plugin
    id="com.tetrade.eclipse.plugins.easyshell"
    name="Easy Shell Plugin"
-   version="1.1.0"
+   version="1.2.0"
    provider-name="Marcel Schoen"
    class="com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin">
 

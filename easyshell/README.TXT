@@ -1,11 +1,28 @@
-Easy Explorer 1.0.0 plugin for Eclipse Win-32 platform
---------------------------------------------------------------
+Easy Shell 1.2.0 plugin for Eclipse
+-----------------------------------
 
-Easy Explorer plugin permit you to browse Eclipse resources with Windows Explorer.
-Use popup menu on resources/package explorer.
+This plugin allows to open a shell window from the popup menu in 
+the navigation tree (package explorer in Java view). The current
+directory of the opened shell is the directory which was selected
+with the popup menu.
 
-This plugin work ONLY on win32 platform.
+The plugin is platform-independent in principal. It just launches
+a (configurable) system command to open the shell. The following
+platform / shell combinations are supported as selections
+available from the drop-down-list in the preferences page:
 
-Thanx.
+Windows
+- DOS-Shell
+- Cygwin-Shell (Check path of Cygwin executable!)
 
+Linux
+- KDE Konsole
+
+But you can configure any shell you like as long as you can figure
+out how to run a command to open the shell with a given working
+directory. The following two substitution variables are available
+for building the exec command:
+
+{0} = The drive letter (only Windows, not used on other platforms)
+{1} = The selected directory path
 

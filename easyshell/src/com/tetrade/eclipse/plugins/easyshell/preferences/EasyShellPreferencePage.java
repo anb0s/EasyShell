@@ -32,7 +32,7 @@ public class EasyShellPreferencePage
 
     private static String[] defaultCmds = {
     		"cmd.exe /C start cmd.exe /K \"{0}: && cd {1} \"",
-    		"cmd.exe /C start /D{1} cmd.exe /K \"D:/Develop/cygwin/bin/bash.exe --login -i\"",
+    		"cmd.exe /C start /D{1} cmd.exe /K \"c:/Program Files/cygwin/bin/bash.exe --login -i\"",
 			"konsole --noclose --workdir {1}",
 			"xterm"};
     private static String[] cmdLabels = {
