@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="com.tetrade.eclipse.plugins.easyshell"
+   name="Easy Shell Plugin"
+   version="1.1.0"
+   provider-name="Marcel Schoen"
+   class="com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin">
+
+   <runtime>
+      <library name="easyshell.jar"/>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jdt.core"/>
+   </requires>
+
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.runtime.IAdaptable"
+            id="com.tetrade.eclipse.plugins.easyshell.EasyShell">
+         <action
+               label="Easy Shell..."
+               icon="icon/easyshell.gif"
+               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
+               menubarPath="additions"
+               enablesFor="1"
+               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Easy Shell"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage">
+      </page>
+   </extension>
+
+</plugin>

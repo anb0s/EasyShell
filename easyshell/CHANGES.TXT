@@ -1,0 +1,8 @@
+Easy Explorer 1.0.0 plugin for Eclipse Win-32 platform
+--------------------------------------------------------------
+
+1.0.1 : Add a preference page to setup your prefered explorer application:
+	Format is "[PATH_TO_YOUR_APP] {0}"
+	{0} represant the path to open.
+
+1.0.0 : Initial release
