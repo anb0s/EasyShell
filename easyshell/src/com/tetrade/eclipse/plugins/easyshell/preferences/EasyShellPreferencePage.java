@@ -32,14 +32,16 @@ public class EasyShellPreferencePage
 
     private static String[] defaultCmds = {
     		"cmd.exe /C start cmd.exe /K \"{0}: && cd {1} \"",
+    		"cmd.exe /C start /D{1} cmd.exe /K \"D:/Develop/cygwin/bin/bash.exe --login -i\"",
 			"konsole --noclose --workdir {1}",
 			"xterm"};
     private static String[] cmdLabels = {
-    		"Windows DOS-Shell", "KDE Konsole", "Xterm"
+    		"Windows DOS-Shell", "Windows Cygwin (Bash)", "KDE Konsole", "Xterm"
     };
     private static int cmdWinDOS = 0;
     private static int cmdKonsole = 1;
-    private static int cmdXterm = 2;
+    private static int cmdWinCyg = 2;
+    private static int cmdXterm = 3;
     
     private Combo targetCombo = null;
     private StringFieldEditor editor = null;
