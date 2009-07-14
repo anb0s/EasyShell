@@ -46,7 +46,7 @@ public class EasyShellPreferencePage
 		"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K \"bash.exe -c ./{3}\"",
 		"konsole --noclose --workdir \"{1}\" -e \"./{3}\"",
 		"gnome-terminal --working-directory=\"{1}\" --command=\"./{3}\"",
-		"cd '{1}' && xterm -e './{3}'"};
+		"cd \"{1}\" && xterm -e \"./{3}\""};
     private static String[] defaultCmdsExplore = {
 		"explorer.exe /select,\"{2}\"",
 		"explorer.exe /select,\"{2}\"",
