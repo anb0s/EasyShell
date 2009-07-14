@@ -24,7 +24,9 @@ public class EasyShellPlugin extends AbstractUIPlugin {
 	private static EasyShellPlugin plugin;
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
-	
+	// debug output
+	private boolean debug = false;
+
 	/**
 	 * The constructor.
 	 */
@@ -71,13 +73,13 @@ public class EasyShellPlugin extends AbstractUIPlugin {
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;
 	}
-	
+
 	static public void log(Object msg) {
 		ILog log = EasyShellPlugin.getDefault().getLog();
 		Status status = new Status(IStatus.ERROR, EasyShellPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg + "\n", null);
 		log.log(status);
 	}
-	
+
 	static public void log(Throwable ex) {
 		ILog log = EasyShellPlugin.getDefault().getLog();
 		StringWriter stringWriter = new StringWriter();
@@ -94,12 +96,23 @@ public class EasyShellPlugin extends AbstractUIPlugin {
         store = pref.getPreferenceStore();
         super.initializeDefaultPreferences(store);
     }
-    
+
     /**
      * Return the target program setted in EasyExplorePreferencePage.
      * @return String
      */
-    public String getTarget() {
-        return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET);
+    public String getTarget(int num) {
+    	if (num == 0) {
+    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET);
+    	} else if (num == 1) {
+    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_RUN);
+    	} else if (num == 2) {
+    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_EXPLORE);
+    	}
+        return null;
+    }
+
+    public boolean isDebug() {
+    	return debug;
     }
 }

@@ -1,6 +1,7 @@
 package com.tetrade.eclipse.plugins.easyshell.actions;
 
 import java.io.File;
+import java.net.URI;
 import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IFile;
@@ -15,18 +16,23 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
-
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin;
 
 public class EasyShellAction implements IObjectActionDelegate {
 
-	private Object selected = null;
-	//	private Class selectedClass=null;
+	private boolean debug = false;
+
+	private File[] resource = null;
+	private String projectName = null;
+	private IStructuredSelection currentSelection;
+
 	/**
 	 * Constructor for EasyExploreAction.
 	 */
 	public EasyShellAction() {
 		super();
+		debug = EasyShellPlugin.getDefault().isDebug();
 	}
 
 	/**
@@ -39,105 +45,173 @@ public class EasyShellAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		if (selected == null) {
+
+		if (!isEnabled()) {
 			MessageDialog.openInformation(
 				new Shell(),
 				"Easy Shell",
-				"Unable to open shell");
-			EasyShellPlugin.log("Unable to open shell");
+				"Wrong Selection");
+			EasyShellPlugin.log("Wrong Selection");
 			return;
 		}
 
-		String drive = null;
-		String path = null;
-
-	    if (selected instanceof IFile) {
-			path = ((IFile) selected).getParent().getLocation().toOSString();
-	    } else if (selected instanceof IResource) {
-			path = ((IResource) selected).getLocation().toOSString();
+		String ActionIDStr = action.getId();
+		if (debug) System.out.println("Action ID: [[" + ActionIDStr + "]]");
+		String[] EasyShellActionStr = { "com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionOpen",
+										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionRun",
+										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionExplore"
+		};
+		int ActionIDNum = -1;
+		for (int i=0;i<EasyShellActionStr.length;i++)
+		{
+			if (ActionIDStr.equals(EasyShellActionStr[i]))
+			{
+				ActionIDNum = i;
+				break;
+			}
 		}
 
-		if (path != null) {
+		if (ActionIDNum == -1) {
+			MessageDialog.openInformation(
+				new Shell(),
+				"Easy Shell",
+				"Wrong Action ID");
+			EasyShellPlugin.log("Wrong Action ID");
+			return;
+		}
 
-			//            System.out.println("path: [[" + path + "]]");
-			// Try to extract drive on Win32
-			if (path.indexOf(":") != -1) {
-				drive = path.substring(0, path.indexOf(":"));
+		for (int i=0;i<resource.length;i++) {
+
+			if (resource[i] == null)
+				continue;
+
+			String drive = null;
+			String full_path = null;
+			String parent_path = null;
+			String file_name = null;
+
+			full_path = resource[i].toString();
+			if (resource[i].isDirectory()) {
+				parent_path = resource.toString();
+				file_name = "dir"; // dummy cmd
+			}else
+			{
+				parent_path = resource[i].getParent();
+				file_name = resource[i].getName();
 			}
 
-			try {
-				String target = EasyShellPlugin.getDefault().getTarget();
+			if (full_path != null) {
 
-				String[] args = null;
-				if (target.indexOf("{0}") != -1
-					&& target.indexOf("{1}") != -1
-					&& drive != null) {
-					args = new String[2];
-					args[0] = drive;
-					args[1] = path;
-				} else if (target.indexOf("{0}") != -1) {
-					args = new String[1];
-					args[0] = drive;
-				} else if (target.indexOf("{1}") != -1) {
-					args = new String[2];
-					args[0] = "";
-					args[1] = path;
+				if (debug) {
+					System.out.println("full_path  : [[" + full_path + "]]");
+					System.out.println("parent_path: [[" + parent_path + "]]");
+				}
+				// Try to extract drive on Win32
+				if (full_path.indexOf(":") != -1) {
+					drive = full_path.substring(0, full_path.indexOf(":"));
 				}
 
-				String cmd = MessageFormat.format(target, args);
-//				System.out.println("cmd: [[" + cmd + "]]");
+				try {
+					String target = EasyShellPlugin.getDefault().getTarget(ActionIDNum);
+					String[] args = new String[5];
 
-				Runtime.getRuntime().exec(cmd);
-			} catch (Exception e) {
-				EasyShellPlugin.log(e);
+					args[0] = drive;
+					args[1] = parent_path;
+					args[2] = full_path;
+					args[3] = file_name;
+					args[4] = projectName == null ? "EasyShell" : projectName;
+
+					String cmd = MessageFormat.format(target, (Object[])args);
+					if (debug) System.out.println("cmd: [[" + cmd + "]]");
+
+					Runtime.getRuntime().exec(cmd);
+				} catch (Exception e) {
+					EasyShellPlugin.log(e);
+				}
+
+			} else {
+
+				MessageDialog.openInformation(
+					new Shell(),
+					"Easy Shell",
+					"Unable to open shell");
+				EasyShellPlugin.log("Unable to open shell");
+				return;
+
 			}
-
-		} else {
-
-			MessageDialog.openInformation(
-				new Shell(),
-				"Easy Shell",
-				"Unable to open shell");
-			EasyShellPlugin.log("Unable to open shell");
-			return;
-
 		}
-
 	}
 
 	/**
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
-		IAdaptable adaptable = null;
-		this.selected = null;
-		if (selection instanceof IStructuredSelection) {
-			adaptable =
-				(IAdaptable) ((IStructuredSelection) selection)
-					.getFirstElement();
-			//			this.selectedClass = adaptable.getClass();
-			if (adaptable instanceof IResource) {
-				this.selected = (IResource) adaptable;
-			} else if (
-				adaptable instanceof PackageFragment
-					&& ((PackageFragment) adaptable).getPackageFragmentRoot()
-						instanceof JarPackageFragmentRoot) {
-				this.selected =
-					getJarFile(
-						((PackageFragment) adaptable).getPackageFragmentRoot());
-			} else if (adaptable instanceof JarPackageFragmentRoot) {
-				this.selected = getJarFile(adaptable);
-			} else {
-				this.selected =
-					(IResource) adaptable.getAdapter(IResource.class);
+	    currentSelection = selection instanceof IStructuredSelection ? (IStructuredSelection)selection : null;
+	}
+
+	protected boolean isEnabled()
+	{
+		boolean enabled = false;
+		if (currentSelection != null)
+		{
+			Object[] selectedObjects = currentSelection.toArray();
+			if (selectedObjects.length >= 1)
+			{
+				resource = new File[selectedObjects.length];
+				for (int i=0;i<selectedObjects.length;i++) {
+					resource[i] = getResource(selectedObjects[i]);
+					if (resource != null)
+						enabled=true;
+				}
 			}
 		}
+		return enabled;
+	}
+
+	protected File getResource(Object object) {
+		projectName = null;
+		if (object instanceof IFile) {
+			projectName = ((IFile) object).getProject().getName();
+			return ((IFile) object).getLocation().toFile();
+		}
+		if (object instanceof File) {
+			return (File) object;
+		}
+		if (object instanceof IAdaptable) {
+			IAdaptable adaptable = (IAdaptable) object;
+			IFile ifile = (IFile) adaptable.getAdapter(IFile.class);
+			if (ifile != null) {
+				projectName = ifile.getProject().getName();
+				return ifile.getLocation().toFile();
+			}
+			IResource ires = (IResource) adaptable.getAdapter(IResource.class);
+			if (ires != null) {
+				projectName = ires.getProject().getName();
+				return ires.getLocation().toFile();
+			}
+			if (adaptable instanceof PackageFragment
+					&& ((PackageFragment) adaptable).getPackageFragmentRoot() instanceof JarPackageFragmentRoot) {
+				return getJarFile(((PackageFragment) adaptable)
+						.getPackageFragmentRoot());
+			} else if (adaptable instanceof JarPackageFragmentRoot) {
+				return getJarFile(adaptable);
+			} else if (adaptable instanceof FileStoreEditorInput) {
+				URI fileuri = ((FileStoreEditorInput) adaptable).getURI();
+				return new File(fileuri.getPath());
+			}
+
+			File file = (File) adaptable.getAdapter(File.class);
+			if (file != null) {
+				return file;
+			}
+		}
+		return null;
 	}
 
 	protected File getJarFile(IAdaptable adaptable) {
 		JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
-		File selected = (File) jpfr.getPath().makeAbsolute().toFile();
-		if (!((File) selected).exists()) {
+		File resource = (File) jpfr.getPath().makeAbsolute().toFile();
+		if (!((File) resource).exists()) {
 			File projectFile =
 				new File(
 					jpfr
@@ -145,9 +219,9 @@ public class EasyShellAction implements IObjectActionDelegate {
 						.getProject()
 						.getLocation()
 						.toOSString());
-			selected = new File(projectFile.getParent() + selected.toString());
+			resource = new File(projectFile.getParent() + resource.toString());
 		}
-		return selected;
+		return resource;
 	}
 
 }

@@ -2,8 +2,8 @@
 <plugin
    id="com.tetrade.eclipse.plugins.easyshell"
    name="Easy Shell Plugin"
-   version="1.2.0"
-   provider-name="Marcel Schoen"
+   version="1.3.0"
+   provider-name="Marcel Schoen, Andre Bossert"
    class="com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin">
 
    <runtime>
@@ -15,20 +15,43 @@
       <import plugin="org.eclipse.jdt.core"/>
    </requires>
 
-
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             objectClass="org.eclipse.core.runtime.IAdaptable"
             id="com.tetrade.eclipse.plugins.easyshell.EasyShell">
          <action
-               label="Easy Shell..."
+               label="Open..."
                icon="icon/easyshell.gif"
                class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
-               menubarPath="additions"
-               enablesFor="1"
-               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction">
+               menubarPath="com.tetrade.eclipse.plugins.easyshell.menu/easyshell.separator1"
+               enablesFor="+"
+               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionOpen">
          </action>
+         <action
+               label="Run..."
+               icon="icon/run_exc.gif"
+               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
+               menubarPath="com.tetrade.eclipse.plugins.easyshell.menu/easyshell.separator1"
+               enablesFor="+"
+               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionRun">
+         </action>
+         <action
+               label="Explore..."
+               icon="icon/fldr_obj.gif"
+               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
+               menubarPath="com.tetrade.eclipse.plugins.easyshell.menu/easyshell.separator1"
+               enablesFor="+"
+               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionExplore">
+         </action>
+         <menu
+               id="com.tetrade.eclipse.plugins.easyshell.menu"
+               label="Easy Shell"
+               path="additions">
+            <separator
+                  name="easyshell.separator1">
+            </separator>
+         </menu>
       </objectContribution>
    </extension>
    <extension

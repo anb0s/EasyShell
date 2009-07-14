@@ -1,8 +1,42 @@
-Easy Explorer 1.0.0 plugin for Eclipse Win-32 platform
---------------------------------------------------------------
+Easy Shell Plugin Change History
+--------------------------------
 
-1.0.1 : Add a preference page to setup your prefered explorer application:
-	Format is "[PATH_TO_YOUR_APP] {0}"
-	{0} represant the path to open.
 
-1.0.0 : Initial release
+1.3.0
+-----
++ created new "Easy Shell" menu with sub menus
++ added new Actions "Run.." (BUG 2817545) and "Explore.."
++ added new parameters:
+  + Argument {2} is the full path
+  + Argument {3} is the file name
+  + Argument {4} is the project name (BUG 1017063)
+! fixed problem with external files (BUG 2813165)
++ added support for multiple selections
++ added / changed configurations:
+  ! Windows Cygwin (Bash) / Explorer
+  ! Windows DOS-Shell / Explorer
+  + KDE Konsole / Konqueror
+  + Gnome Konsole / Nautilus (not tested!)
+  + CDE Xterm / Dtfile (not tested!)
+Tested with Windows, Cygwin and Linux KDE.
+
+
+1.2.0
+-----
+- Completed first homepage release.
+- Added default command for Cygwin Bash (Windows).
+- Added drop-down selection list for defaults in
+  preferences page.
+- Completed README.
+
+
+1.0.1
+-----
+- Add a preference page to setup your prefered application:
+  Format is "[PATH_TO_YOUR_APP] {0}"
+  {0} represant the path to open.
+
+
+1.0.0
+-----
+- Initial release

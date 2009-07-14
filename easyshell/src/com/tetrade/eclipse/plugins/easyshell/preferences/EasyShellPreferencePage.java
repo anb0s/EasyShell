@@ -27,31 +27,54 @@ public class EasyShellPreferencePage
     extends PreferencePage
     implements IWorkbenchPreferencePage {
 
+	private boolean debug = false;
+
     public static final String P_TARGET = "targetPreference";
+    public static final String P_TARGET_RUN = "targetRunPreference";
+    public static final String P_TARGET_EXPLORE = "targetExplorePreference";
     public static final String P_LIST = "listPreference";
 
-    private static String[] defaultCmds = {
-    		"cmd.exe /C start cmd.exe /K \"{0}: && cd {1} \"",
-    		"cmd.exe /C start /D{1} cmd.exe /K \"c:/Program Files/cygwin/bin/bash.exe --login -i\"",
-			"konsole --noclose --workdir {1}",
-			"xterm"};
+    private static String[] defaultCmdsOpen = {
+    	"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K",
+    	"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K \"bash.exe\"",
+    	//"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K \"set HOME={1} && bash.exe --login -i\"",
+		"konsole --noclose --workdir '{1}'",
+		"konsole --noclose --workdir '{1}'",
+		"cd '{1}' && xterm"};
+    private static String[] defaultCmdsRun = {
+		"cmd.exe /C start \"{4}\" /D\"{1}\" \"{3}\"",
+		"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K \"bash.exe -c ./{3}\"",
+		"konsole --noclose --workdir '{1}' -e './{3}'",
+		"konsole --noclose --workdir '{1}' -e './{3}'",
+		"cd '{1}' && xterm -e './{3}'"};
+    private static String[] defaultCmdsExplore = {
+		"explorer.exe /select,\"{2}\"",
+		"explorer.exe /select,\"{2}\"",
+		"konqueror file:'{1}'",
+		"nautilus '{1}'",
+		//"gnome-open '{1}'"
+    	"cd '{1}' && dtfile"};
     private static String[] cmdLabels = {
-    		"Windows DOS-Shell", "Windows Cygwin (Bash)", "KDE Konsole", "Xterm"
+    		"Windows DOS-Shell / Explorer", "Windows Cygwin (Bash) / Explorer", "KDE Konsole / Konqueror", "Gnome Konsole / Nautilus", "CDE Xterm / Dtfile"
     };
     private static int cmdWinDOS = 0;
-    private static int cmdKonsole = 1;
-    private static int cmdWinCyg = 2;
-    private static int cmdXterm = 3;
-    
-    private Combo targetCombo = null;
-    private StringFieldEditor editor = null;
+    private static int cmdWinCyg = 1;
+    private static int cmdKonsoleKDE = 2;
+    private static int cmdKonsoleGnome = 3;
+    private static int cmdXterm = 4;
 
-	// for unixes    
+    private Combo targetCombo = null;
+    private StringFieldEditor targetOpenEditor = null;
+    private StringFieldEditor targetRunEditor = null;
+    private StringFieldEditor targetExploreEditor = null;
+
+	// for unixes
     private static final int DESKTOP_CDE = 0;
 	private static final int DESKTOP_KDE = 1;
 	private static final int DESKTOP_GNOME = 2;
 
     public EasyShellPreferencePage() {
+    	debug = EasyShellPlugin.getDefault().isDebug();
         setPreferenceStore(EasyShellPlugin.getDefault().getPreferenceStore());
         setDescription("Set up a shell command window.");
         initializeDefaults();
@@ -63,12 +86,10 @@ public class EasyShellPreferencePage
     private void initializeDefaults() {
         IPreferenceStore store = getPreferenceStore();
 
-        // {0} is the (windows) drive letter, {1} is the directory
-
-        String target = null;
+        int cmdNum = -1;
         String osname = System.getProperty("os.name", "").toLowerCase();
         if (osname.indexOf("windows") != -1) {
-            target = defaultCmds[cmdWinDOS];
+        	cmdNum = cmdWinDOS;
         } else if (
             osname.indexOf("unix") != -1
                 || osname.indexOf("irix") != -1
@@ -79,17 +100,18 @@ public class EasyShellPreferencePage
                 || osname.indexOf("linux") != -1) {
             int desktop = detectDesktop();
             if(desktop == DESKTOP_KDE) {
-				target = defaultCmds[cmdKonsole];
+            	cmdNum = cmdKonsoleKDE;
             } else if(desktop == DESKTOP_GNOME) {
-				target = defaultCmds[cmdKonsole];
+            	cmdNum = cmdKonsoleGnome;
 			} else if(desktop == DESKTOP_CDE) {
-				target = defaultCmds[cmdXterm];
+				cmdNum = cmdXterm;
             }
         }
-        store.setDefault(P_TARGET, target);
-        
+        store.setDefault(P_TARGET, defaultCmdsOpen[cmdNum]);
+        store.setDefault(P_TARGET_RUN, defaultCmdsRun[cmdNum]);
+        store.setDefault(P_TARGET_EXPLORE, defaultCmdsExplore[cmdNum]);
     }
-	
+
     /**
      * Creates the field editors. Field editors are abstractions of
      * the common GUI blocks needed to manipulate various types
@@ -104,7 +126,7 @@ public class EasyShellPreferencePage
 		GridLayout mainLayout = new GridLayout(1, false);
 		mainColumn.setFont(parent.getFont());
 		mainColumn.setLayout(mainLayout);
-		
+
 		Composite targetColumn = new Composite(mainColumn, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginWidth = 0;
@@ -115,7 +137,7 @@ public class EasyShellPreferencePage
         Label label = new Label(targetColumn, 0);
         label.setText("Presets");
 
-        targetCombo = new Combo(targetColumn, SWT.READ_ONLY);
+        targetCombo = new Combo(targetColumn, SWT.READ_ONLY | SWT.DROP_DOWN);
         for(int i = 0; i < cmdLabels.length; i++) {
         	targetCombo.add(cmdLabels[i]);
         }
@@ -123,42 +145,79 @@ public class EasyShellPreferencePage
             public void widgetSelected(SelectionEvent e) {
                 refreshTarget();
             }
-        });        
+        });
         targetCombo.select(store.getInt(P_LIST));
-        
-        editor = new StringFieldEditor(
+
+        targetOpenEditor = new StringFieldEditor(
                 P_TARGET,
-                "&Shell command:",
+                "&Shell Open command:",
                 targetColumn);
-        System.out.println("Value: " + store.getString(P_TARGET));
-        System.out.println("Default: " + store.getDefaultString(P_TARGET));
-        editor.setStringValue(store.getString(P_TARGET));
-        
+        if (debug) System.out.println("Value: " + store.getString(P_TARGET));
+        if (debug) System.out.println("Default: " + store.getDefaultString(P_TARGET));
+        targetOpenEditor.setStringValue(store.getString(P_TARGET));
+
+        targetRunEditor = new StringFieldEditor(
+                P_TARGET_RUN,
+                "&Shell Run command:",
+                targetColumn);
+        if (debug) System.out.println("Value: " + store.getString(P_TARGET_RUN));
+        if (debug) System.out.println("Default: " + store.getDefaultString(P_TARGET_RUN));
+        targetRunEditor.setStringValue(store.getString(P_TARGET_RUN));
+
+        targetExploreEditor = new StringFieldEditor(
+                P_TARGET_EXPLORE,
+                "&Explore command:",
+                targetColumn);
+        if (debug) System.out.println("Value: " + store.getString(P_TARGET_EXPLORE));
+        if (debug) System.out.println("Default: " + store.getDefaultString(P_TARGET_EXPLORE));
+        targetExploreEditor.setStringValue(store.getString(P_TARGET_EXPLORE));
+
         label = new Label(mainColumn, 0);
         label.setText("Argument {0} is the drive letter on Win32.");
         label = new Label(mainColumn, 0);
-        label.setText("Argument {1} is the path.");
-        
+        label.setText("Argument {1} is the parent path.");
+        label = new Label(mainColumn, 0);
+        label.setText("Argument {2} is the full path.");
+        label = new Label(mainColumn, 0);
+        label.setText("Argument {3} is the file name.");
+        label = new Label(mainColumn, 0);
+        label.setText("Argument {4} is the project name.");
+
         return mainColumn;
 	}
-	
+
     /**
-     * Refreshes teh category.
+     * Refreshes the category.
      */
     private void refreshTarget() {
         int index = targetCombo.getSelectionIndex();
-        String text = defaultCmds[index];
-        System.out.println("Set text to " + text);
-        editor.setStringValue(text);
+        String textOpen = defaultCmdsOpen[index];
+        String textRun = defaultCmdsRun[index];
+        String textExplore = defaultCmdsExplore[index];
+        if (debug) System.out.println("Set open text to " + textOpen);
+        targetOpenEditor.setStringValue(textOpen);
+        if (debug) System.out.println("Set run text to " + textRun);
+        targetRunEditor.setStringValue(textRun);
+        if (debug) System.out.println("Set run text to " + textExplore);
+        targetExploreEditor.setStringValue(textExplore);
         IPreferenceStore store = getPreferenceStore();
-        store.setValue(P_TARGET, text);
+        store.setValue(P_TARGET, textOpen);
+        store.setValue(P_TARGET_RUN, textRun);
+        store.setValue(P_TARGET_EXPLORE, textExplore);
     }
-    
+
     public boolean performOk() {
         IPreferenceStore store = getPreferenceStore();
-        store.setValue(P_TARGET, editor.getStringValue());
+        store.setValue(P_TARGET, targetOpenEditor.getStringValue());
+        store.setValue(P_TARGET_RUN, targetRunEditor.getStringValue());
+        store.setValue(P_TARGET_EXPLORE, targetExploreEditor.getStringValue());
         store.setValue(P_LIST, targetCombo.getSelectionIndex());
     	return true;
+    }
+
+    public void performDefaults() {
+    	initializeDefaults();
+    	refreshTarget();
     }
 
     public void init(IWorkbench workbench) {
@@ -166,7 +225,7 @@ public class EasyShellPreferencePage
 
 	/**
 	 * Detects which desktop is used on a unix / linux system.
-	 * 
+	 *
 	 * @return The type of desktop.
 	 */
 	private int detectDesktop() {
@@ -175,7 +234,7 @@ public class EasyShellPreferencePage
 			String[] cmd = new String[1];
 			cmd[0] = "env";
 			Process proc = Runtime.getRuntime().exec(cmd);
-        	
+
 			BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 			String line = null;
 			while((line = in.readLine()) != null && resultCode == -1) {
@@ -189,14 +248,14 @@ public class EasyShellPreferencePage
 			// If there is any error output, print it to
 			// stdout for debugging purposes
 			while((line = err.readLine()) != null) {
-				System.out.println("err>> " + line);
+				if (debug) System.out.println("err>> " + line);
 			}
 
 			int result = proc.waitFor();
 			if(result != 0) {
 				// If there is any error code, print it to
 				// stdout for debugging purposes
-				System.out.println("ENV return code: " + result);
+				if (debug) System.out.println("ENV return code: " + result);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
