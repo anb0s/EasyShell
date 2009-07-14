@@ -38,24 +38,24 @@ public class EasyShellPreferencePage
     	"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K",
     	"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K \"bash.exe\"",
     	//"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K \"set HOME={1} && bash.exe --login -i\"",
-		"konsole --noclose --workdir '{1}'",
-		"konsole --noclose --workdir '{1}'",
-		"cd '{1}' && xterm"};
+		"konsole --noclose --workdir \"{1}\"",
+		"gnome-terminal --working-directory=\"{1}\"",
+		"cd \"{1}\" && xterm"};
     private static String[] defaultCmdsRun = {
 		"cmd.exe /C start \"{4}\" /D\"{1}\" \"{3}\"",
 		"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K \"bash.exe -c ./{3}\"",
-		"konsole --noclose --workdir '{1}' -e './{3}'",
-		"konsole --noclose --workdir '{1}' -e './{3}'",
+		"konsole --noclose --workdir \"{1}\" -e \"./{3}\"",
+		"gnome-terminal --working-directory=\"{1}\" --command=\"./{3}\"",
 		"cd '{1}' && xterm -e './{3}'"};
     private static String[] defaultCmdsExplore = {
 		"explorer.exe /select,\"{2}\"",
 		"explorer.exe /select,\"{2}\"",
-		"konqueror file:'{1}'",
-		"nautilus '{1}'",
-		//"gnome-open '{1}'"
-    	"cd '{1}' && dtfile"};
+		"konqueror file:\"{1}\"",
+		"nautilus \"{1}\"",
+		//"gnome-open \"{1}\""
+    	"cd \"{1}\" && dtfile"};
     private static String[] cmdLabels = {
-    		"Windows DOS-Shell / Explorer", "Windows Cygwin (Bash) / Explorer", "KDE Konsole / Konqueror", "Gnome Konsole / Nautilus", "CDE Xterm / Dtfile"
+    		"Windows DOS-Shell / Explorer", "Windows Cygwin (Bash) / Explorer", "KDE Konsole / Konqueror", "Gnome Terminal / Nautilus", "CDE Xterm / Dtfile"
     };
     private static int cmdWinDOS = 0;
     private static int cmdWinCyg = 1;

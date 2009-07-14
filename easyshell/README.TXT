@@ -17,7 +17,7 @@ Windows
 
 Linux (and other)
 - KDE Konsole / Konqueror
-- Gnome Konsole / Nautilus (not tested!)
+- Gnome Terminal / Nautilus (not tested!)
 - CDE Xterm / Dtfile (not tested!)
 
 But you can configure any shell you like as long as you can figure

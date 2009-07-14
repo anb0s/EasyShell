@@ -16,7 +16,7 @@ Easy Shell Plugin Change History
   ! Windows Cygwin (Bash) / Explorer
   ! Windows DOS-Shell / Explorer
   + KDE Konsole / Konqueror
-  + Gnome Konsole / Nautilus (not tested!)
+  + Gnome Terminal / Nautilus (BUG 1678502, not tested!)
   + CDE Xterm / Dtfile (not tested!)
 Tested with Windows, Cygwin and Linux KDE.
 
