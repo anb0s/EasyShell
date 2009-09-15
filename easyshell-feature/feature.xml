@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.tetrade.eclipse.plugins.easyshell.feature"
+      label="Easy Shell Feature"
+      version="1.3.0"
+      provider-name="Marcel Schoen, Andre Bossert">
+
+   <description url="http://pluginbox.sourceforge.net/plugins.html">
+      Adds an option to the popup-menu in the navigator (or package browser) view which opens a shell window. The current (or working) directory of that shell is the directory that was selected in the navigator. Custom shell command configurable in preferences page.
+   </description>
+
+   <license url="http://pluginbox.sourceforge.net/lgpl.html">
+      
+   </license>
+
+   <url>
+      <update label="PluginBox" url="http://pluginbox.sourceforge.net"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jdt.core"/>
+   </requires>
+
+   <plugin
+         id="com.tetrade.eclipse.plugins.easyshell"
+         download-size="0"
+         install-size="0"
+         version="1.3.0"
+         unpack="false"/>
+
+</feature>
