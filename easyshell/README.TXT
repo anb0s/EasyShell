@@ -2,9 +2,10 @@ Easy Shell 1.3.0 plugin for Eclipse
 -----------------------------------
 
 This plugin allows to open a shell window or file manager from the
-popup menu in the navigation tree (package explorer in Java view).
+popup menu in the navigation tree or editor view.
 The current directory of the opened shell is the directory which
 was selected with the popup menu.
+Additionally it is possible to run selected file in the shell.
 
 The plugin is platform-independent in principal. It just launches
 a (configurable) system command to open the shell. The following
