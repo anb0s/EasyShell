@@ -14,7 +14,7 @@
    </license>
 
    <url>
-      <update label="PluginBox" url="http://pluginbox.sourceforge.net"/>
+      <update label="PluginBox Update Site" url="http://pluginbox.sourceforge.net"/>
    </url>
 
    <requires>
