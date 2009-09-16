@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository class='org.eclipse.equinox.internal.p2.artifact.repository.simple.SimpleArtifactRepository' version='1.0.0'?>
+<repository name='file:/D:/Programme/Dev/eclipse/eclipse/ws/easyshell-updatesite/ - artifacts' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
+  <properties size='2'>
+    <property name='p2.compressed' value='false'/>
+    <property name='p2.timestamp' value='1253122997109'/>
+  </properties>
+  <mappings size='3'>
+    <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
+    <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
+  </mappings>
+  <artifacts size='4'>
+    <artifact classifier='osgi.bundle' id='com.tetrade.eclipse.plugins.easyshell' version='1.3.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='14163'/>
+        <property name='download.size' value='14163'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='com.tetrade.eclipse.plugins.easyshell.feature' version='1.3.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='929'/>
+        <property name='download.size' value='929'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='com.tetrade.eclipse.plugins.easyshell.feature' version='1.3.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='923'/>
+        <property name='download.size' value='923'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='com.tetrade.eclipse.plugins.easyshell' version='1.3.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='14164'/>
+        <property name='download.size' value='14164'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+  </artifacts>
+</repository>

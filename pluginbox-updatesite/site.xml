@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://pluginbox.sourceforge.net">
+      The Pluginbox is a container for several Eclipse plugins.
+   </description>
+   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.3.0.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.3.0">
+      <category name="PluginBox"/>
+   </feature>
+   <category-def name="PluginBox" label="PluginBox">
+      <description>
+         The Pluginbox is a container for several Eclipse plugins.
+      </description>
+   </category-def>
+</site>
