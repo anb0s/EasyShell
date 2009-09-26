@@ -1,4 +1,4 @@
-Easy Shell 1.3.0 plugin for Eclipse
+Easy Shell 1.3.1 plugin for Eclipse
 -----------------------------------
 
 This plugin allows to open a shell window or file manager from the
@@ -12,13 +12,14 @@ a (configurable) system command to open the shell. The following
 platform / shell combinations are supported as selections
 available from the drop-down-list in the preferences page:
 
-Windows
+Windows:
 - DOS-Shell / Explorer
-- Cygwin-Shell / Explorer (Check path of Cygwin executable!)
+- PowerShell / Explorer (check path of PowerShell executable!)
+- Cygwin (Bash) / Explorer (check path of Cygwin-bash executable!)
 
-Linux (and other)
+Linux (and other):
 - KDE Konsole / Konqueror
-- Gnome Terminal / Nautilus (not tested!)
+- Gnome Terminal / Nautilus
 - CDE Xterm / Dtfile (not tested!)
 
 But you can configure any shell you like as long as you can figure
@@ -30,4 +31,4 @@ for building the exec command:
 {1} = The selected directory path
 {2} = The selected file or directory path
 {3} = The selected file name
-{4} = The project name of selected directory or path (if file is external it's "Easy Shell")
+{4} = The project name of selected directory or path (for external files it's "Easy Shell")

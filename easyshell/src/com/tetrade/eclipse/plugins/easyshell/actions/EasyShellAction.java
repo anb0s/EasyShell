@@ -92,7 +92,7 @@ public class EasyShellAction implements IObjectActionDelegate {
 
 			full_path = resource[i].toString();
 			if (resource[i].isDirectory()) {
-				parent_path = resource.toString();
+				parent_path = resource[i].getPath();
 				file_name = "dir"; // dummy cmd
 			}else
 			{
@@ -105,6 +105,7 @@ public class EasyShellAction implements IObjectActionDelegate {
 				if (debug) {
 					System.out.println("full_path  : [[" + full_path + "]]");
 					System.out.println("parent_path: [[" + parent_path + "]]");
+					System.out.println("file_name  : [[" + file_name + "]]");
 				}
 				// Try to extract drive on Win32
 				if (full_path.indexOf(":") != -1) {
