@@ -1,15 +1,120 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<?metadataRepository class='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'?>
-<repository name='file:/D:/Programme/Dev/eclipse/eclipse/ws/easyshell-updatesite/ - metadata' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
+<?metadataRepository version='1.1.0'?>
+<repository name='${p2.metadata.repo.name}' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1253122997109'/>
+    <property name='p2.timestamp' value='1253959522796'/>
   </properties>
   <references size='2'>
-    <repository url='http://pluginbox.sourceforge.net' type='1' options='0'/>
-    <repository url='http://pluginbox.sourceforge.net' type='0' options='0'/>
+    <repository uri='http://pluginbox.sourceforge.net' url='http://pluginbox.sourceforge.net' type='0' options='0'/>
+    <repository uri='http://pluginbox.sourceforge.net' url='http://pluginbox.sourceforge.net' type='1' options='0'/>
   </references>
-  <units size='9'>
+  <units size='25'>
+    <unit id='PluginBox' version='0.0.0.20090926114410'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' version='1.3.0' singleton='false'>
+      <update id='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[0.0.0,1.3.0)' severity='0'/>
+      <properties size='5'>
+        <property name='org.eclipse.equinox.p2.name' value='Easy Shell Feature'/>
+        <property name='org.eclipse.equinox.p2.description' value='Adds an option to the popup-menu in the navigator (or package browser) view which opens a shell window. The current (or working) directory of that shell is the directory that was selected in the navigator. Custom shell command configurable in preferences page.'/>
+        <property name='org.eclipse.equinox.p2.description.url' value='http://pluginbox.sourceforge.net/plugins.html'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Marcel Schoen, Andre Bossert'/>
+        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' version='1.3.0'/>
+      </provides>
+      <requires size='5'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.resources' range='0.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jdt.core' range='0.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell' range='[1.3.0,1.3.0]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' range='[1.3.0,1.3.0]'>
+          <filter>
+            (org.eclipse.update.install.features=true)
+          </filter>
+        </required>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+      <licenses size='1'>
+        <license uri='http://pluginbox.sourceforge.net/lgpl.html' url='http://pluginbox.sourceforge.net/lgpl.html'>
+
+        </license>
+      </licenses>
+    </unit>
+    <unit id='PluginBox' version='0.0.0.20090926115736'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' version='1.3.0'>
+      <update id='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' range='[0.0.0,1.3.0)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Easy Shell Feature'/>
+        <property name='org.eclipse.equinox.p2.description' value='Adds an option to the popup-menu in the navigator (or package browser) view which opens a shell window. The current (or working) directory of that shell is the directory that was selected in the navigator. Custom shell command configurable in preferences page.'/>
+        <property name='org.eclipse.equinox.p2.description.url' value='http://pluginbox.sourceforge.net/plugins.html'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Marcel Schoen, Andre Bossert'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' version='1.3.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
+        <provided namespace='org.eclipse.update.feature' name='com.tetrade.eclipse.plugins.easyshell.feature' version='1.3.0'/>
+      </provides>
+      <filter>
+        (org.eclipse.update.install.features=true)
+      </filter>
+      <artifacts size='1'>
+        <artifact classifier='org.eclipse.update.feature' id='com.tetrade.eclipse.plugins.easyshell.feature' version='1.3.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='zipped'>
+            true
+          </instruction>
+        </instructions>
+      </touchpointData>
+      <licenses size='1'>
+        <license uri='http://pluginbox.sourceforge.net/lgpl.html' url='http://pluginbox.sourceforge.net/lgpl.html'>
+
+        </license>
+      </licenses>
+    </unit>
+    <unit id='PluginBox' version='0.0.0.20090926115326'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
     <unit id='tooling.source.default' version='1.0.0' singleton='false'>
       <hostRequirements size='1'>
         <required namespace='org.eclipse.equinox.p2.eclipse.type' name='source' range='0.0.0' optional='true' multiple='true' greedy='false'/>
@@ -36,17 +141,45 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='PluginBox' version='0.0.0'>
+    <unit id='PluginBox' version='0.0.0.20090926114554'>
       <properties size='3'>
         <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
-        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins to come.'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
         <property name='org.eclipse.equinox.p2.type.category' value='true'/>
       </properties>
       <provides size='1'>
         <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
       </provides>
       <requires size='1'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.0,1.3.0]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='PluginBox' version='0.0.0.20090926120239'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='PluginBox' version='0.0.0.20090926115621'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
       </requires>
       <touchpoint id='null' version='0.0.0'/>
     </unit>
@@ -85,118 +218,47 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='tooling.osgi.bundle.default' version='1.0.0' singleton='false'>
-      <hostRequirements size='1'>
-        <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='0.0.0' multiple='true' greedy='false'/>
-      </hostRequirements>
-      <properties size='1'>
-        <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
-      </properties>
-      <provides size='2'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='tooling.osgi.bundle.default' version='1.0.0'/>
-        <provided namespace='org.eclipse.equinox.p2.flavor' name='tooling' version='1.0.0'/>
-      </provides>
-      <requires size='1'>
-        <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='0.0.0' multiple='true' greedy='false'/>
-      </requires>
-      <touchpoint id='null' version='0.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='4'>
-          <instruction key='install'>
-            installBundle(bundle:${artifact})
-          </instruction>
-          <instruction key='uninstall'>
-            uninstallBundle(bundle:${artifact})
-          </instruction>
-          <instruction key='unconfigure'>
-
-          </instruction>
-          <instruction key='configure'>
-            setStartLevel(startLevel:4);
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
-    <unit id='tooling.org.eclipse.update.feature.default' version='1.0.0' singleton='false'>
-      <hostRequirements size='1'>
-        <required namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' range='0.0.0' optional='true' multiple='true' greedy='false'/>
-      </hostRequirements>
-      <properties size='1'>
-        <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
-      </properties>
-      <provides size='2'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='tooling.org.eclipse.update.feature.default' version='1.0.0'/>
-        <provided namespace='org.eclipse.equinox.p2.flavor' name='tooling' version='1.0.0'/>
-      </provides>
-      <requires size='1'>
-        <required namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' range='0.0.0' optional='true' multiple='true' greedy='false'/>
-      </requires>
-      <filter>
-        (org.eclipse.update.install.features=true)
-      </filter>
-      <touchpoint id='null' version='0.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='2'>
-          <instruction key='install'>
-            installFeature(feature:${artifact},featureId:default,featureVersion:default)
-          </instruction>
-          <instruction key='uninstall'>
-            uninstallFeature(feature:${artifact},featureId:default,featureVersion:default)
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
-    <unit id='config.a.jre' version='1.6.0' singleton='false'>
-      <hostRequirements size='1'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='a.jre' range='1.6.0'/>
-      </hostRequirements>
-      <properties size='1'>
-        <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
+    <unit id='PluginBox' version='0.0.0.20090926095632'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
       </properties>
       <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='config.a.jre' version='1.6.0'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
       </provides>
       <requires size='1'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='a.jre' range='1.6.0'/>
-      </requires>
-      <touchpoint id='org.eclipse.equinox.p2.native' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='install'>
-
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
-    <unit id='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' version='1.3.0' singleton='false'>
-      <update id='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[0.0.0,1.3.0)' severity='0'/>
-      <properties size='5'>
-        <property name='org.eclipse.equinox.p2.name' value='Easy Shell Feature'/>
-        <property name='org.eclipse.equinox.p2.description' value='Adds an option to the popup-menu in the navigator (or package browser) view which opens a shell window. The current (or working) directory of that shell is the directory that was selected in the navigator. Custom shell command configurable in preferences page.'/>
-        <property name='org.eclipse.equinox.p2.description.url' value='http://pluginbox.sourceforge.net/plugins.html'/>
-        <property name='org.eclipse.equinox.p2.provider' value='Marcel Schoen, Andre Bossert'/>
-        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
-      </properties>
-      <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' version='1.3.0'/>
-      </provides>
-      <requires size='5'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.resources' range='0.0.0'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui' range='0.0.0'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jdt.core' range='0.0.0'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell' range='[1.3.0,1.3.0]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' range='[1.3.0,1.3.0]'>
-          <filter>
-            (org.eclipse.update.install.features=true)
-          </filter>
-        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
       </requires>
       <touchpoint id='null' version='0.0.0'/>
-      <licenses size='1'>
-        <license url='http://pluginbox.sourceforge.net/lgpl.html'>
-
-        </license>
-      </licenses>
+    </unit>
+    <unit id='PluginBox' version='0.0.0.20090926115643'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='PluginBox' version='0.0.0.20090926095420'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.0,1.3.0]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
     </unit>
     <unit id='a.jre' version='1.6.0' singleton='false'>
       <provides size='117'>
@@ -320,8 +382,212 @@
       </provides>
       <touchpoint id='org.eclipse.equinox.p2.native' version='1.0.0'/>
     </unit>
-    <unit id='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' version='1.3.0'>
-      <update id='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' range='[0.0.0,1.3.0)' severity='0'/>
+    <unit id='PluginBox' version='0.0.0.20090926115818'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' version='1.3.1' singleton='false'>
+      <update id='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[0.0.0,1.3.1)' severity='0'/>
+      <properties size='5'>
+        <property name='org.eclipse.equinox.p2.name' value='Easy Shell Feature'/>
+        <property name='org.eclipse.equinox.p2.description' value='Adds an option to the popup-menu in the navigator (or package browser) view which opens a shell window. The current (or working) directory of that shell is the directory that was selected in the navigator. Custom shell command configurable in preferences page.'/>
+        <property name='org.eclipse.equinox.p2.description.url' value='http://pluginbox.sourceforge.net/plugins.html'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Marcel Schoen, Andre Bossert'/>
+        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' version='1.3.1'/>
+      </provides>
+      <requires size='5'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.resources' range='0.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jdt.core' range='0.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell' range='[1.3.1,1.3.1]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' range='[1.3.1,1.3.1]'>
+          <filter>
+            (org.eclipse.update.install.features=true)
+          </filter>
+        </required>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+      <licenses size='1'>
+        <license uri='http://pluginbox.sourceforge.net/lgpl.html' url='http://pluginbox.sourceforge.net/lgpl.html'>
+
+        </license>
+      </licenses>
+    </unit>
+    <unit id='tooling.org.eclipse.update.feature.default' version='1.0.0' singleton='false'>
+      <hostRequirements size='1'>
+        <required namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' range='0.0.0' optional='true' multiple='true' greedy='false'/>
+      </hostRequirements>
+      <properties size='1'>
+        <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
+      </properties>
+      <provides size='2'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='tooling.org.eclipse.update.feature.default' version='1.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.flavor' name='tooling' version='1.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' range='0.0.0' optional='true' multiple='true' greedy='false'/>
+      </requires>
+      <filter>
+        (org.eclipse.update.install.features=true)
+      </filter>
+      <touchpoint id='null' version='0.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='2'>
+          <instruction key='install'>
+            installFeature(feature:${artifact},featureId:default,featureVersion:default)
+          </instruction>
+          <instruction key='uninstall'>
+            uninstallFeature(feature:${artifact},featureId:default,featureVersion:default)
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='com.tetrade.eclipse.plugins.easyshell' version='1.3.1'>
+      <update id='com.tetrade.eclipse.plugins.easyshell' range='[0.0.0,1.3.1)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='Easy Shell Plugin'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Marcel Schoen, Andre Bossert'/>
+        <property name='org.eclipse.equinox.p2.bundle.localization' value='plugin'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell' version='1.3.1'/>
+        <provided namespace='osgi.bundle' name='com.tetrade.eclipse.plugins.easyshell' version='1.3.1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='10'>
+        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.ide' range='0.0.0' optional='true'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.views' range='0.0.0' optional='true'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.editors' range='0.0.0' optional='true'/>
+        <required namespace='osgi.bundle' name='org.eclipse.jface.text' range='0.0.0' optional='true'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.workbench.texteditor' range='0.0.0' optional='true'/>
+        <required namespace='osgi.bundle' name='org.eclipse.jdt.core' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime.compatibility' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='2.1.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='com.tetrade.eclipse.plugins.easyshell' version='1.3.1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Plugin-Class: com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin&#xA;Manifest-Version: 1.0&#xA;Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator&#xA;Bundle-ManifestVersion: 2&#xA;Bundle-Localization: plugin&#xA;Bundle-SymbolicName: com.tetrade.eclipse.plugins.easyshell; singleton:=true&#xA;Bundle-Vendor: Marcel Schoen, Andre Bossert&#xA;Bundle-Name: Easy Shell Plugin&#xA;Bundle-ClassPath: easyshell.jar&#xA;Bundle-Version: 1.3.1&#xA;Eclipse-LazyStart: true&#xA;Require-Bundle: org.eclipse.core.resources,&#xA; org.eclipse.ui,&#xA; org.eclipse.ui.ide;resolution:=optional,&#xA; org.eclipse.ui.views;resolution:=optional,&#xA; org.eclipse.ui.editors;resolution:=optional,&#xA; org.eclipse.jface.text;resolution:=optional,&#xA; org.eclipse.ui.workbench.texteditor;resolution:=optional,&#xA; org.eclipse.jdt.core,&#xA; org.eclipse.core.runtime.compatibility,&#xA; org.eclipse.core.runtime;bundle-version=&quot;2.1&quot;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='PluginBox' version='0.0.0.20090926114337'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='PluginBox' version='0.0.0.20090926100135'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='config.a.jre' version='1.6.0' singleton='false'>
+      <hostRequirements size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='a.jre' range='1.6.0'/>
+      </hostRequirements>
+      <properties size='1'>
+        <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='config.a.jre' version='1.6.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='a.jre' range='1.6.0'/>
+      </requires>
+      <touchpoint id='org.eclipse.equinox.p2.native' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='install'>
+
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='tooling.osgi.bundle.default' version='1.0.0' singleton='false'>
+      <hostRequirements size='1'>
+        <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='0.0.0' multiple='true' greedy='false'/>
+      </hostRequirements>
+      <properties size='1'>
+        <property name='org.eclipse.equinox.p2.type.fragment' value='true'/>
+      </properties>
+      <provides size='2'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='tooling.osgi.bundle.default' version='1.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.flavor' name='tooling' version='1.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' range='0.0.0' multiple='true' greedy='false'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='4'>
+          <instruction key='install'>
+            installBundle(bundle:${artifact})
+          </instruction>
+          <instruction key='uninstall'>
+            uninstallBundle(bundle:${artifact})
+          </instruction>
+          <instruction key='unconfigure'>
+
+          </instruction>
+          <instruction key='configure'>
+            setStartLevel(startLevel:4);
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='PluginBox' version='0.0.0.20090926120522'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.1,1.3.1]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' version='1.3.1'>
       <properties size='4'>
         <property name='org.eclipse.equinox.p2.name' value='Easy Shell Feature'/>
         <property name='org.eclipse.equinox.p2.description' value='Adds an option to the popup-menu in the navigator (or package browser) view which opens a shell window. The current (or working) directory of that shell is the directory that was selected in the navigator. Custom shell command configurable in preferences page.'/>
@@ -329,15 +595,15 @@
         <property name='org.eclipse.equinox.p2.provider' value='Marcel Schoen, Andre Bossert'/>
       </properties>
       <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' version='1.3.0'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.jar' version='1.3.1'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
-        <provided namespace='org.eclipse.update.feature' name='com.tetrade.eclipse.plugins.easyshell.feature' version='1.3.0'/>
+        <provided namespace='org.eclipse.update.feature' name='com.tetrade.eclipse.plugins.easyshell.feature' version='1.3.1'/>
       </provides>
       <filter>
         (org.eclipse.update.install.features=true)
       </filter>
       <artifacts size='1'>
-        <artifact classifier='org.eclipse.update.feature' id='com.tetrade.eclipse.plugins.easyshell.feature' version='1.3.0'/>
+        <artifact classifier='org.eclipse.update.feature' id='com.tetrade.eclipse.plugins.easyshell.feature' version='1.3.1'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
@@ -348,10 +614,24 @@
         </instructions>
       </touchpointData>
       <licenses size='1'>
-        <license url='http://pluginbox.sourceforge.net/lgpl.html'>
+        <license uri='http://pluginbox.sourceforge.net/lgpl.html' url='http://pluginbox.sourceforge.net/lgpl.html'>
 
         </license>
       </licenses>
+    </unit>
+    <unit id='PluginBox' version='0.0.0'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='PluginBox'/>
+        <property name='org.eclipse.equinox.p2.description' value='The Pluginbox is a container for several Eclipse plugins to come.'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='PluginBox' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.tetrade.eclipse.plugins.easyshell.feature.feature.group' range='[1.3.0,1.3.0]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
     </unit>
   </units>
 </repository>
