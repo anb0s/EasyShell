@@ -1,0 +1,171 @@
+### Eclipse Workspace Patch 1.0
+#P easyshell
+Index: src/com/tetrade/eclipse/plugins/easyshell/actions/EasyShellAction.java
+===================================================================
+RCS file: /cvsroot/pluginbox/easyshell/src/com/tetrade/eclipse/plugins/easyshell/actions/EasyShellAction.java,v
+retrieving revision 1.1
+diff -u -r1.1 EasyShellAction.java
+--- src/com/tetrade/eclipse/plugins/easyshell/actions/EasyShellAction.java	21 May 2004 12:48:32 -0000	1.1
++++ src/com/tetrade/eclipse/plugins/easyshell/actions/EasyShellAction.java	5 Jul 2009 13:31:27 -0000
+@@ -20,8 +20,12 @@
+ 
+ public class EasyShellAction implements IObjectActionDelegate {
+ 
+-	private Object selected = null;
+-	//	private Class selectedClass=null;
++	private File resource = null;
++
++	private IStructuredSelection currentSelection;
++
++	private boolean debug = false;
++
+ 	/**
+ 	 * Constructor for EasyExploreAction.
+ 	 */
+@@ -39,27 +43,25 @@
+ 	 * @see IActionDelegate#run(IAction)
+ 	 */
+ 	public void run(IAction action) {
+-		if (selected == null) {
++
++		//if (resource == null) {
++		if (!isEnabled()) {
+ 			MessageDialog.openInformation(
+ 				new Shell(),
+ 				"Easy Shell",
+-				"Unable to open shell");
+-			EasyShellPlugin.log("Unable to open shell");
++				"Wrong Selection");
++			EasyShellPlugin.log("Wrong Selection");
+ 			return;
+ 		}
+ 
+ 		String drive = null;
+ 		String path = null;
+ 
+-	    if (selected instanceof IFile) {
+-			path = ((IFile) selected).getParent().getLocation().toOSString();
+-	    } else if (selected instanceof IResource) {
+-			path = ((IResource) selected).getLocation().toOSString();
+-		}
++		path = resource.isDirectory() ? resource.toString() : resource.getParent();
+ 
+ 		if (path != null) {
+ 
+-			//            System.out.println("path: [[" + path + "]]");
++			if (debug) System.out.println("path: [[" + path + "]]");
+ 			// Try to extract drive on Win32
+ 			if (path.indexOf(":") != -1) {
+ 				drive = path.substring(0, path.indexOf(":"));
+@@ -84,8 +86,8 @@
+ 					args[1] = path;
+ 				}
+ 
+-				String cmd = MessageFormat.format(target, args);
+-//				System.out.println("cmd: [[" + cmd + "]]");
++				String cmd = MessageFormat.format(target, (Object[])args);
++				if (debug) System.out.println("cmd: [[" + cmd + "]]");
+ 
+ 				Runtime.getRuntime().exec(cmd);
+ 			} catch (Exception e) {
+@@ -109,35 +111,66 @@
+ 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
+ 	 */
+ 	public void selectionChanged(IAction action, ISelection selection) {
+-		IAdaptable adaptable = null;
+-		this.selected = null;
+-		if (selection instanceof IStructuredSelection) {
+-			adaptable =
+-				(IAdaptable) ((IStructuredSelection) selection)
+-					.getFirstElement();
+-			//			this.selectedClass = adaptable.getClass();
+-			if (adaptable instanceof IResource) {
+-				this.selected = (IResource) adaptable;
+-			} else if (
+-				adaptable instanceof PackageFragment
+-					&& ((PackageFragment) adaptable).getPackageFragmentRoot()
+-						instanceof JarPackageFragmentRoot) {
+-				this.selected =
+-					getJarFile(
+-						((PackageFragment) adaptable).getPackageFragmentRoot());
++	    currentSelection = selection instanceof IStructuredSelection ? (IStructuredSelection)selection : null;
++	}
++
++	protected boolean isEnabled()
++	{
++	  if (currentSelection != null)
++	  {
++	    Object[] selectedObjects = currentSelection.toArray();
++	    if (selectedObjects.length >= 1)
++	    {
++	    	resource = getResource(selectedObjects[0]);
++	    	return true;
++	    }
++	  }
++	  return false;
++	}
++
++	protected File getResource(Object object) {
++		if (object instanceof IFile) {
++			return ((IFile) object).getLocation().toFile();
++		}
++		if (object instanceof File) {
++			return (File) object;
++		}
++		if (object instanceof IAdaptable) {
++			IAdaptable adaptable = (IAdaptable) object;
++			IFile ifile = (IFile) adaptable.getAdapter(IFile.class);
++			if (ifile != null) {
++				return ifile.getLocation().toFile();
++			}
++			IResource ires = (IResource) adaptable.getAdapter(IResource.class);
++			if (ires != null) {
++				return ires.getLocation().toFile();
++				/*
++				if (ires.getType() == IResource.FILE) {
++					return ((IFile) ires).getLocation().toFile();
++				} else {
++					return ires.getLocation().toFile();
++				}
++				*/
++			}
++			if (adaptable instanceof PackageFragment
++					&& ((PackageFragment) adaptable).getPackageFragmentRoot() instanceof JarPackageFragmentRoot) {
++				return getJarFile(((PackageFragment) adaptable)
++						.getPackageFragmentRoot());
+ 			} else if (adaptable instanceof JarPackageFragmentRoot) {
+-				this.selected = getJarFile(adaptable);
+-			} else {
+-				this.selected =
+-					(IResource) adaptable.getAdapter(IResource.class);
++				return getJarFile(adaptable);
++			}
++			File file = (File) adaptable.getAdapter(File.class);
++			if (file != null) {
++				return file;
+ 			}
+ 		}
++		return null;
+ 	}
+ 
+ 	protected File getJarFile(IAdaptable adaptable) {
+ 		JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
+-		File selected = (File) jpfr.getPath().makeAbsolute().toFile();
+-		if (!((File) selected).exists()) {
++		File resource = (File) jpfr.getPath().makeAbsolute().toFile();
++		if (!((File) resource).exists()) {
+ 			File projectFile =
+ 				new File(
+ 					jpfr
+@@ -145,9 +178,9 @@
+ 						.getProject()
+ 						.getLocation()
+ 						.toOSString());
+-			selected = new File(projectFile.getParent() + selected.toString());
++			resource = new File(projectFile.getParent() + resource.toString());
+ 		}
+-		return selected;
++		return resource;
+ 	}
+ 
+ }
