@@ -32,8 +32,19 @@ public class EasyShellPreferencePage
     public static final String P_TARGET = "targetPreference";
     public static final String P_TARGET_RUN = "targetRunPreference";
     public static final String P_TARGET_EXPLORE = "targetExplorePreference";
+    public static final String P_TARGET_COPYPATH = "targetCopyPathPreference";
     public static final String P_LIST = "listPreference";
 
+    public static final int numConfigs = 6;
+    
+    private static String[] cmdLabels = {
+		"Windows DOS-Shell / Explorer",
+		"Windows PowerShell / Explorer",
+		"Windows Cygwin (Bash) / Explorer",
+		"KDE Konsole / Konqueror",
+		"Gnome Terminal / Nautilus",
+		"CDE Xterm / Dtfile"
+    };
     private static String[] defaultCmdsOpen = {
     	"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K",
     	"cmd.exe /C start \"{4}\" /D\"{1}\" powershell.exe",
@@ -56,9 +67,15 @@ public class EasyShellPreferencePage
 		"explorer.exe /select,\"{2}\"",
 		"konqueror file:{2}",
 		"nautilus {2}",
-    	"cd {1} && dtfile"};
-    private static String[] cmdLabels = {
-    		"Windows DOS-Shell / Explorer", "Windows PowerShell / Explorer", "Windows Cygwin (Bash) / Explorer", "KDE Konsole / Konqueror", "Gnome Terminal / Nautilus", "CDE Xterm / Dtfile"
+    	"cd {1} && dtfile"
+		};
+    private static String[] defaultCmdsCopyPath = {
+		"{2}{5}",
+		"{2}{5}",
+		"{2}{5}",
+		"{2}{5}",
+		"{2}{5}",
+		"{2}{5}",
     };
     private static int cmdWinDOS = 0;
     private static int cmdWinCyg = 1;
@@ -70,6 +87,7 @@ public class EasyShellPreferencePage
     private StringFieldEditor targetOpenEditor = null;
     private StringFieldEditor targetRunEditor = null;
     private StringFieldEditor targetExploreEditor = null;
+    private StringFieldEditor targetCopyPathEditor = null;
 
 	// for unixes
     private static final int DESKTOP_CDE = 0;
@@ -113,6 +131,7 @@ public class EasyShellPreferencePage
         store.setDefault(P_TARGET, defaultCmdsOpen[cmdNum]);
         store.setDefault(P_TARGET_RUN, defaultCmdsRun[cmdNum]);
         store.setDefault(P_TARGET_EXPLORE, defaultCmdsExplore[cmdNum]);
+        store.setDefault(P_TARGET_COPYPATH, defaultCmdsCopyPath[cmdNum]);
     }
 
     /**
@@ -175,6 +194,14 @@ public class EasyShellPreferencePage
         if (debug) System.out.println("Default: " + store.getDefaultString(P_TARGET_EXPLORE));
         targetExploreEditor.setStringValue(store.getString(P_TARGET_EXPLORE));
 
+        targetCopyPathEditor = new StringFieldEditor(
+                P_TARGET_COPYPATH,
+                "Copy Path string:",
+                targetColumn);
+        if (debug) System.out.println("Value: " + store.getString(P_TARGET_COPYPATH));
+        if (debug) System.out.println("Default: " + store.getDefaultString(P_TARGET_COPYPATH));
+        targetCopyPathEditor.setStringValue(store.getString(P_TARGET_COPYPATH));
+        
         label = new Label(mainColumn, 0);
         label.setText("Argument {0} is the drive letter on Win32.");
         label = new Label(mainColumn, 0);
@@ -185,6 +212,8 @@ public class EasyShellPreferencePage
         label.setText("Argument {3} is the file name.");
         label = new Label(mainColumn, 0);
         label.setText("Argument {4} is the project name.");
+        label = new Label(mainColumn, 0);
+        label.setText("Argument {5} is the line separator.");
 
         return mainColumn;
 	}
@@ -197,16 +226,20 @@ public class EasyShellPreferencePage
         String textOpen = defaultCmdsOpen[index];
         String textRun = defaultCmdsRun[index];
         String textExplore = defaultCmdsExplore[index];
+        String textCopyPath = defaultCmdsCopyPath[index];
         if (debug) System.out.println("Set open text to " + textOpen);
         targetOpenEditor.setStringValue(textOpen);
         if (debug) System.out.println("Set run text to " + textRun);
         targetRunEditor.setStringValue(textRun);
         if (debug) System.out.println("Set run text to " + textExplore);
         targetExploreEditor.setStringValue(textExplore);
+        if (debug) System.out.println("Set run text to " + textCopyPath);
+        targetCopyPathEditor.setStringValue(textCopyPath);
         IPreferenceStore store = getPreferenceStore();
         store.setValue(P_TARGET, textOpen);
         store.setValue(P_TARGET_RUN, textRun);
         store.setValue(P_TARGET_EXPLORE, textExplore);
+        store.setValue(P_TARGET_COPYPATH, textCopyPath);
     }
 
     public boolean performOk() {
@@ -214,6 +247,7 @@ public class EasyShellPreferencePage
         store.setValue(P_TARGET, targetOpenEditor.getStringValue());
         store.setValue(P_TARGET_RUN, targetRunEditor.getStringValue());
         store.setValue(P_TARGET_EXPLORE, targetExploreEditor.getStringValue());
+        store.setValue(P_TARGET_COPYPATH, targetCopyPathEditor.getStringValue());
         store.setValue(P_LIST, targetCombo.getSelectionIndex());
     	return true;
     }

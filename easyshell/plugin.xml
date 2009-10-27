@@ -2,7 +2,7 @@
 <plugin
    id="com.tetrade.eclipse.plugins.easyshell"
    name="Easy Shell Plugin"
-   version="1.3.1"
+   version="1.3.2"
    provider-name="Marcel Schoen, Andre Bossert"
    class="com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin">
 
@@ -52,6 +52,13 @@
                   name="easyshell.separator1">
             </separator>
          </menu>
+         <action
+               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
+               icon="icon/copy_edit.gif"
+               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionCopyPath"
+               label="Copy Path"
+               menubarPath="com.tetrade.eclipse.plugins.easyshell.menu/easyshell.separator1">
+         </action>
       </objectContribution>
    </extension>
    <extension

@@ -1,6 +1,21 @@
 Easy Shell Plugin Change History
 --------------------------------
 
+1.3.2
+-----
+
+
+
+1.3.1
+-----
++ Update site created (Feature Request 2846185)
+! fixed parameter {1} for Linux (BUG 1678502)
++ added / changed configurations:
+  + Windows PowerShell (Feature Request 2824391)
+  ! Gnome Terminal / Nautilus (BUG 1678502)
+  ! KDE Konsole / Konqueror
+  ! CDE Xterm / Dtfile
+
 
 1.3.0
 -----

@@ -108,6 +108,8 @@ public class EasyShellPlugin extends AbstractUIPlugin {
     		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_RUN);
     	} else if (num == 2) {
     		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_EXPLORE);
+    	} else if (num == 3) {
+    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_COPYPATH);
     	}
         return null;
     }

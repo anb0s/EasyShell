@@ -13,6 +13,10 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -59,7 +63,8 @@ public class EasyShellAction implements IObjectActionDelegate {
 		if (debug) System.out.println("Action ID: [[" + ActionIDStr + "]]");
 		String[] EasyShellActionStr = { "com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionOpen",
 										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionRun",
-										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionExplore"
+										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionExplore",
+										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionCopyPath"
 		};
 		int ActionIDNum = -1;
 		for (int i=0;i<EasyShellActionStr.length;i++)
@@ -78,6 +83,12 @@ public class EasyShellAction implements IObjectActionDelegate {
 				"Wrong Action ID");
 			EasyShellPlugin.log("Wrong Action ID");
 			return;
+		}
+
+		// String for all commands
+		String cmdAll = null;
+		if (ActionIDNum == 3) {
+			cmdAll = new String();
 		}
 
 		for (int i=0;i<resource.length;i++) {
@@ -114,18 +125,24 @@ public class EasyShellAction implements IObjectActionDelegate {
 
 				try {
 					String target = EasyShellPlugin.getDefault().getTarget(ActionIDNum);
-					String[] args = new String[5];
+					String[] args = new String[6];
 
 					args[0] = drive;
 					args[1] = parent_path;
 					args[2] = full_path;
 					args[3] = file_name;
 					args[4] = projectName == null ? "EasyShell" : projectName;
+					args[5] = System.getProperty("line.separator");
 
 					String cmd = MessageFormat.format(target, (Object[])args);
 					if (debug) System.out.println("cmd: [[" + cmd + "]]");
 
-					Runtime.getRuntime().exec(cmd);
+					if (ActionIDNum == 3) {
+						cmdAll += cmd;
+					} else {
+						Runtime.getRuntime().exec(cmd);
+					}
+
 				} catch (Exception e) {
 					EasyShellPlugin.log(e);
 				}
@@ -141,6 +158,16 @@ public class EasyShellAction implements IObjectActionDelegate {
 
 			}
 		}
+
+		if ((ActionIDNum == 3) && (cmdAll != null) && (cmdAll.length() != 0)) {
+			Clipboard clipboard = new Clipboard(Display.getCurrent());
+			TextTransfer textTransfer = TextTransfer.getInstance();
+			Transfer[] transfers = new Transfer[]{textTransfer};
+			Object[] data = new Object[]{cmdAll};
+			clipboard.setContents(data, transfers);
+			clipboard.dispose();
+		}
+		
 	}
 
 	/**
