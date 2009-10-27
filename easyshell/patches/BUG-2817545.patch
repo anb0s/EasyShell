@@ -1,0 +1,755 @@
+### Eclipse Workspace Patch 1.0
+#P easyshell
+Index: src/com/tetrade/eclipse/plugins/easyshell/actions/EasyShellAction.java
+===================================================================
+RCS file: /cvsroot/pluginbox/easyshell/src/com/tetrade/eclipse/plugins/easyshell/actions/EasyShellAction.java,v
+retrieving revision 1.1
+diff -u -r1.1 EasyShellAction.java
+--- src/com/tetrade/eclipse/plugins/easyshell/actions/EasyShellAction.java	21 May 2004 12:48:32 -0000	1.1
++++ src/com/tetrade/eclipse/plugins/easyshell/actions/EasyShellAction.java	6 Jul 2009 17:27:06 -0000
+@@ -20,8 +20,11 @@
+ 
+ public class EasyShellAction implements IObjectActionDelegate {
+ 
+-	private Object selected = null;
+-	//	private Class selectedClass=null;
++	private File resource = null;
++	private String projectName = null;
++	private IStructuredSelection currentSelection;
++	private boolean debug = false;
++
+ 	/**
+ 	 * Constructor for EasyExploreAction.
+ 	 */
+@@ -39,53 +42,72 @@
+ 	 * @see IActionDelegate#run(IAction)
+ 	 */
+ 	public void run(IAction action) {
+-		if (selected == null) {
++
++		if (!isEnabled()) {
+ 			MessageDialog.openInformation(
+ 				new Shell(),
+ 				"Easy Shell",
+-				"Unable to open shell");
+-			EasyShellPlugin.log("Unable to open shell");
++				"Wrong Selection");
++			EasyShellPlugin.log("Wrong Selection");
++			return;
++		}
++
++		String ActionIDStr = action.getId();
++		if (debug) System.out.println("Action ID: [[" + ActionIDStr + "]]");
++		String[] EasyShellActionStr = { "com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionOpen",
++										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionRun"
++		};
++		int ActionIDNum = -1;
++		for (int i=0;i<EasyShellActionStr.length;i++)
++		{
++			if (ActionIDStr.equals(EasyShellActionStr[i]))
++			{
++				ActionIDNum = i;
++				break;
++			}
++		}
++
++		if (ActionIDNum == -1) {
++			MessageDialog.openInformation(
++				new Shell(),
++				"Easy Shell",
++				"Wrong Action ID");
++			EasyShellPlugin.log("Wrong Action ID");
+ 			return;
+ 		}
+ 
+ 		String drive = null;
+ 		String path = null;
++		String file = null;
+ 
+-	    if (selected instanceof IFile) {
+-			path = ((IFile) selected).getParent().getLocation().toOSString();
+-	    } else if (selected instanceof IResource) {
+-			path = ((IResource) selected).getLocation().toOSString();
++		if (resource.isDirectory()) {
++			path = resource.toString();
++			file = "dir";
++		}else
++		{
++			path = resource.getParent();
++			file = resource.getName();
+ 		}
+ 
+ 		if (path != null) {
+ 
+-			//            System.out.println("path: [[" + path + "]]");
++			if (debug) System.out.println("path: [[" + path + "]]");
+ 			// Try to extract drive on Win32
+ 			if (path.indexOf(":") != -1) {
+ 				drive = path.substring(0, path.indexOf(":"));
+ 			}
+ 
+ 			try {
+-				String target = EasyShellPlugin.getDefault().getTarget();
++				String target = EasyShellPlugin.getDefault().getTarget(ActionIDNum);
++				String[] args = new String[4];
+ 
+-				String[] args = null;
+-				if (target.indexOf("{0}") != -1
+-					&& target.indexOf("{1}") != -1
+-					&& drive != null) {
+-					args = new String[2];
+-					args[0] = drive;
+-					args[1] = path;
+-				} else if (target.indexOf("{0}") != -1) {
+-					args = new String[1];
+-					args[0] = drive;
+-				} else if (target.indexOf("{1}") != -1) {
+-					args = new String[2];
+-					args[0] = "";
+-					args[1] = path;
+-				}
++				args[0] = drive;
++				args[1] = path;
++				args[2] = file;
++				args[3] = projectName == null ? "EasyShell" : projectName;
+ 
+-				String cmd = MessageFormat.format(target, args);
+-//				System.out.println("cmd: [[" + cmd + "]]");
++				String cmd = MessageFormat.format(target, (Object[])args);
++				if (debug) System.out.println("cmd: [[" + cmd + "]]");
+ 
+ 				Runtime.getRuntime().exec(cmd);
+ 			} catch (Exception e) {
+@@ -109,35 +131,63 @@
+ 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
+ 	 */
+ 	public void selectionChanged(IAction action, ISelection selection) {
+-		IAdaptable adaptable = null;
+-		this.selected = null;
+-		if (selection instanceof IStructuredSelection) {
+-			adaptable =
+-				(IAdaptable) ((IStructuredSelection) selection)
+-					.getFirstElement();
+-			//			this.selectedClass = adaptable.getClass();
+-			if (adaptable instanceof IResource) {
+-				this.selected = (IResource) adaptable;
+-			} else if (
+-				adaptable instanceof PackageFragment
+-					&& ((PackageFragment) adaptable).getPackageFragmentRoot()
+-						instanceof JarPackageFragmentRoot) {
+-				this.selected =
+-					getJarFile(
+-						((PackageFragment) adaptable).getPackageFragmentRoot());
++	    currentSelection = selection instanceof IStructuredSelection ? (IStructuredSelection)selection : null;
++	}
++
++	protected boolean isEnabled()
++	{
++	  if (currentSelection != null)
++	  {
++	    Object[] selectedObjects = currentSelection.toArray();
++	    if (selectedObjects.length >= 1)
++	    {
++	    	resource = getResource(selectedObjects[0]);
++	    	return true;
++	    }
++	  }
++	  return false;
++	}
++
++	protected File getResource(Object object) {
++		projectName = null;
++		if (object instanceof IFile) {
++			projectName = ((IFile) object).getProject().getName();
++			return ((IFile) object).getLocation().toFile();
++		}
++		if (object instanceof File) {
++			return (File) object;
++		}
++		if (object instanceof IAdaptable) {
++			IAdaptable adaptable = (IAdaptable) object;
++			IFile ifile = (IFile) adaptable.getAdapter(IFile.class);
++			if (ifile != null) {
++				projectName = ifile.getProject().getName();
++				return ifile.getLocation().toFile();
++			}
++			IResource ires = (IResource) adaptable.getAdapter(IResource.class);
++			if (ires != null) {
++				projectName = ires.getProject().getName();
++				return ires.getLocation().toFile();
++			}
++			if (adaptable instanceof PackageFragment
++					&& ((PackageFragment) adaptable).getPackageFragmentRoot() instanceof JarPackageFragmentRoot) {
++				return getJarFile(((PackageFragment) adaptable)
++						.getPackageFragmentRoot());
+ 			} else if (adaptable instanceof JarPackageFragmentRoot) {
+-				this.selected = getJarFile(adaptable);
+-			} else {
+-				this.selected =
+-					(IResource) adaptable.getAdapter(IResource.class);
++				return getJarFile(adaptable);
++			}
++			File file = (File) adaptable.getAdapter(File.class);
++			if (file != null) {
++				return file;
+ 			}
+ 		}
++		return null;
+ 	}
+ 
+ 	protected File getJarFile(IAdaptable adaptable) {
+ 		JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
+-		File selected = (File) jpfr.getPath().makeAbsolute().toFile();
+-		if (!((File) selected).exists()) {
++		File resource = (File) jpfr.getPath().makeAbsolute().toFile();
++		if (!((File) resource).exists()) {
+ 			File projectFile =
+ 				new File(
+ 					jpfr
+@@ -145,9 +195,9 @@
+ 						.getProject()
+ 						.getLocation()
+ 						.toOSString());
+-			selected = new File(projectFile.getParent() + selected.toString());
++			resource = new File(projectFile.getParent() + resource.toString());
+ 		}
+-		return selected;
++		return resource;
+ 	}
+ 
+ }
+Index: src/com/tetrade/eclipse/plugins/easyshell/preferences/EasyShellPreferencePage.java
+===================================================================
+RCS file: /cvsroot/pluginbox/easyshell/src/com/tetrade/eclipse/plugins/easyshell/preferences/EasyShellPreferencePage.java,v
+retrieving revision 1.4
+diff -u -r1.4 EasyShellPreferencePage.java
+--- src/com/tetrade/eclipse/plugins/easyshell/preferences/EasyShellPreferencePage.java	22 May 2004 02:04:18 -0000	1.4
++++ src/com/tetrade/eclipse/plugins/easyshell/preferences/EasyShellPreferencePage.java	6 Jul 2009 17:27:08 -0000
+@@ -28,13 +28,19 @@
+     implements IWorkbenchPreferencePage {
+ 
+     public static final String P_TARGET = "targetPreference";
++    public static final String P_TARGET_RUN = "targetRunPreference";
+     public static final String P_LIST = "listPreference";
+ 
+-    private static String[] defaultCmds = {
+-    		"cmd.exe /C start cmd.exe /K \"{0}: && cd {1} \"",
++    private static String[] defaultCmdsOpen = {
++    		"cmd.exe /C start \"{3}\" cmd.exe /K \"{0}: && cd {1}\"",
+     		"cmd.exe /C start /D{1} cmd.exe /K \"c:/Program Files/cygwin/bin/bash.exe --login -i\"",
+ 			"konsole --noclose --workdir {1}",
+ 			"xterm"};
++    private static String[] defaultCmdsRun = {
++		"cmd.exe /C start \"{3}\" /D{1} \"{2}\"",
++		"cmd.exe /C start /D{1} cmd.exe /K \"c:/Program Files/cygwin/bin/bash.exe --login -i\"",
++		"konsole --noclose --workdir {1}",
++		"xterm"};
+     private static String[] cmdLabels = {
+     		"Windows DOS-Shell", "Windows Cygwin (Bash)", "KDE Konsole", "Xterm"
+     };
+@@ -42,11 +48,12 @@
+     private static int cmdKonsole = 1;
+     private static int cmdWinCyg = 2;
+     private static int cmdXterm = 3;
+-    
++
+     private Combo targetCombo = null;
+-    private StringFieldEditor editor = null;
++    private StringFieldEditor targetOpenEditor = null;
++    private StringFieldEditor targetRunEditor = null;
+ 
+-	// for unixes    
++	// for unixes
+     private static final int DESKTOP_CDE = 0;
+ 	private static final int DESKTOP_KDE = 1;
+ 	private static final int DESKTOP_GNOME = 2;
+@@ -63,12 +70,10 @@
+     private void initializeDefaults() {
+         IPreferenceStore store = getPreferenceStore();
+ 
+-        // {0} is the (windows) drive letter, {1} is the directory
+-
+-        String target = null;
++        int cmdNum = -1;
+         String osname = System.getProperty("os.name", "").toLowerCase();
+         if (osname.indexOf("windows") != -1) {
+-            target = defaultCmds[cmdWinDOS];
++        	cmdNum = cmdWinDOS;
+         } else if (
+             osname.indexOf("unix") != -1
+                 || osname.indexOf("irix") != -1
+@@ -79,17 +84,17 @@
+                 || osname.indexOf("linux") != -1) {
+             int desktop = detectDesktop();
+             if(desktop == DESKTOP_KDE) {
+-				target = defaultCmds[cmdKonsole];
++            	cmdNum = cmdKonsole;
+             } else if(desktop == DESKTOP_GNOME) {
+-				target = defaultCmds[cmdKonsole];
++            	cmdNum = cmdKonsole;
+ 			} else if(desktop == DESKTOP_CDE) {
+-				target = defaultCmds[cmdXterm];
++				cmdNum = cmdXterm;
+             }
+         }
+-        store.setDefault(P_TARGET, target);
+-        
++        store.setDefault(P_TARGET, defaultCmdsOpen[cmdNum]);
++        store.setDefault(P_TARGET_RUN, defaultCmdsRun[cmdNum]);
+     }
+-	
++
+     /**
+      * Creates the field editors. Field editors are abstractions of
+      * the common GUI blocks needed to manipulate various types
+@@ -104,7 +109,7 @@
+ 		GridLayout mainLayout = new GridLayout(1, false);
+ 		mainColumn.setFont(parent.getFont());
+ 		mainColumn.setLayout(mainLayout);
+-		
++
+ 		Composite targetColumn = new Composite(mainColumn, SWT.NONE);
+ 		GridLayout layout = new GridLayout(2, false);
+ 		layout.marginWidth = 0;
+@@ -115,7 +120,7 @@
+         Label label = new Label(targetColumn, 0);
+         label.setText("Presets");
+ 
+-        targetCombo = new Combo(targetColumn, SWT.READ_ONLY);
++        targetCombo = new Combo(targetColumn, SWT.READ_ONLY | SWT.DROP_DOWN);
+         for(int i = 0; i < cmdLabels.length; i++) {
+         	targetCombo.add(cmdLabels[i]);
+         }
+@@ -123,50 +128,70 @@
+             public void widgetSelected(SelectionEvent e) {
+                 refreshTarget();
+             }
+-        });        
++        });
+         targetCombo.select(store.getInt(P_LIST));
+-        
+-        editor = new StringFieldEditor(
++
++        targetOpenEditor = new StringFieldEditor(
+                 P_TARGET,
+-                "&Shell command:",
++                "&Shell Open command:",
+                 targetColumn);
+         System.out.println("Value: " + store.getString(P_TARGET));
+         System.out.println("Default: " + store.getDefaultString(P_TARGET));
+-        editor.setStringValue(store.getString(P_TARGET));
+-        
++        targetOpenEditor.setStringValue(store.getString(P_TARGET));
++
++        targetRunEditor = new StringFieldEditor(
++                P_TARGET_RUN,
++                "&Shell Run command:",
++                targetColumn);
++        System.out.println("Value: " + store.getString(P_TARGET_RUN));
++        System.out.println("Default: " + store.getDefaultString(P_TARGET_RUN));
++        targetRunEditor.setStringValue(store.getString(P_TARGET_RUN));
++
+         label = new Label(mainColumn, 0);
+         label.setText("Argument {0} is the drive letter on Win32.");
+         label = new Label(mainColumn, 0);
+         label.setText("Argument {1} is the path.");
+-        
++        label = new Label(mainColumn, 0);
++        label.setText("Argument {2} is the file name.");
++
+         return mainColumn;
+ 	}
+-	
++
+     /**
+      * Refreshes teh category.
+      */
+     private void refreshTarget() {
+         int index = targetCombo.getSelectionIndex();
+-        String text = defaultCmds[index];
+-        System.out.println("Set text to " + text);
+-        editor.setStringValue(text);
++        String textOpen = defaultCmdsOpen[index];
++        String textRun = defaultCmdsRun[index];
++        System.out.println("Set open text to " + textOpen);
++        targetOpenEditor.setStringValue(textOpen);
++        System.out.println("Set run text to " + textRun);
++        targetRunEditor.setStringValue(textRun);
+         IPreferenceStore store = getPreferenceStore();
+-        store.setValue(P_TARGET, text);
++        store.setValue(P_TARGET, textOpen);
++        store.setValue(P_TARGET_RUN, textRun);
+     }
+-    
++
+     public boolean performOk() {
+         IPreferenceStore store = getPreferenceStore();
+-        store.setValue(P_TARGET, editor.getStringValue());
++        store.setValue(P_TARGET, targetOpenEditor.getStringValue());
++        store.setValue(P_TARGET_RUN, targetRunEditor.getStringValue());
+         store.setValue(P_LIST, targetCombo.getSelectionIndex());
+     	return true;
+     }
+ 
++    public void performDefaults() {
++    	initializeDefaults();
++    	refreshTarget();
++    }
++
+     public void init(IWorkbench workbench) {
+     }
+ 
+ 	/**
+ 	 * Detects which desktop is used on a unix / linux system.
+-	 * 
++	 *
+ 	 * @return The type of desktop.
+ 	 */
+ 	private int detectDesktop() {
+@@ -175,7 +200,7 @@
+ 			String[] cmd = new String[1];
+ 			cmd[0] = "env";
+ 			Process proc = Runtime.getRuntime().exec(cmd);
+-        	
++
+ 			BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+ 			String line = null;
+ 			while((line = in.readLine()) != null && resultCode == -1) {
+Index: plugin.xml
+===================================================================
+RCS file: /cvsroot/pluginbox/easyshell/plugin.xml,v
+retrieving revision 1.2
+diff -u -r1.2 plugin.xml
+--- plugin.xml	22 May 2004 02:04:18 -0000	1.2
++++ plugin.xml	6 Jul 2009 17:27:05 -0000
+@@ -1,43 +1,51 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<plugin
+-   id="com.tetrade.eclipse.plugins.easyshell"
+-   name="Easy Shell Plugin"
+-   version="1.2.0"
+-   provider-name="Marcel Schoen"
+-   class="com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin">
+-
+-   <runtime>
+-      <library name="easyshell.jar"/>
+-   </runtime>
+-   <requires>
+-      <import plugin="org.eclipse.core.resources"/>
+-      <import plugin="org.eclipse.ui"/>
+-      <import plugin="org.eclipse.jdt.core"/>
+-   </requires>
+-
+-
+-   <extension
+-         point="org.eclipse.ui.popupMenus">
+-      <objectContribution
+-            objectClass="org.eclipse.core.runtime.IAdaptable"
+-            id="com.tetrade.eclipse.plugins.easyshell.EasyShell">
+-         <action
+-               label="Easy Shell..."
+-               icon="icon/easyshell.gif"
+-               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
+-               menubarPath="additions"
+-               enablesFor="1"
+-               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction">
+-         </action>
+-      </objectContribution>
+-   </extension>
+-   <extension
+-         point="org.eclipse.ui.preferencePages">
+-      <page
+-            name="Easy Shell"
+-            class="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage"
+-            id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage">
+-      </page>
+-   </extension>
+-
+-</plugin>
++<?xml version="1.0" encoding="UTF-8"?>
++<plugin
++   id="com.tetrade.eclipse.plugins.easyshell"
++   name="Easy Shell Plugin"
++   version="1.2.1"
++   provider-name="Marcel Schoen"
++   class="com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin">
++
++   <runtime>
++      <library name="easyshell.jar"/>
++   </runtime>
++   <requires>
++      <import plugin="org.eclipse.core.resources"/>
++      <import plugin="org.eclipse.ui"/>
++      <import plugin="org.eclipse.jdt.core"/>
++   </requires>
++
++
++   <extension
++         point="org.eclipse.ui.popupMenus">
++      <objectContribution
++            objectClass="org.eclipse.core.runtime.IAdaptable"
++            id="com.tetrade.eclipse.plugins.easyshell.EasyShell">
++         <action
++               label="Easy Shell Open..."
++               icon="icon/easyshell.gif"
++               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
++               menubarPath="additions"
++               enablesFor="1"
++               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionOpen">
++         </action>
++         <action
++               label="Easy Shell Run..."
++               icon="icon/run_exc.gif"
++               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
++               menubarPath="additions"
++               enablesFor="1"
++               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionRun">
++         </action>
++      </objectContribution>
++   </extension>
++   <extension
++         point="org.eclipse.ui.preferencePages">
++      <page
++            name="Easy Shell"
++            class="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage"
++            id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage">
++      </page>
++   </extension>
++
++</plugin>
+Index: src/com/tetrade/eclipse/plugins/easyshell/EasyShellPlugin.java
+===================================================================
+RCS file: /cvsroot/pluginbox/easyshell/src/com/tetrade/eclipse/plugins/easyshell/EasyShellPlugin.java,v
+retrieving revision 1.1
+diff -u -r1.1 EasyShellPlugin.java
+--- src/com/tetrade/eclipse/plugins/easyshell/EasyShellPlugin.java	21 May 2004 12:48:48 -0000	1.1
++++ src/com/tetrade/eclipse/plugins/easyshell/EasyShellPlugin.java	6 Jul 2009 17:27:06 -0000
+@@ -1,105 +1,110 @@
+-package com.tetrade.eclipse.plugins.easyshell;
+-
+-import java.io.PrintWriter;
+-import java.io.StringWriter;
+-import java.util.MissingResourceException;
+-import java.util.ResourceBundle;
+-
+-import org.eclipse.core.resources.IWorkspace;
+-import org.eclipse.core.resources.ResourcesPlugin;
+-import org.eclipse.core.runtime.ILog;
+-import org.eclipse.core.runtime.IPluginDescriptor;
+-import org.eclipse.core.runtime.IStatus;
+-import org.eclipse.core.runtime.Status;
+-import org.eclipse.jface.preference.IPreferenceStore;
+-import org.eclipse.ui.plugin.AbstractUIPlugin;
+-
+-import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage;
+-
+-/**
+- * The main plugin class to be used in the desktop.
+- */
+-public class EasyShellPlugin extends AbstractUIPlugin {
+-	//The shared instance.
+-	private static EasyShellPlugin plugin;
+-	//Resource bundle.
+-	private ResourceBundle resourceBundle;
+-	
+-	/**
+-	 * The constructor.
+-	 */
+-	public EasyShellPlugin(IPluginDescriptor descriptor) {
+-		super(descriptor);
+-		plugin = this;
+-		try {
+-			resourceBundle= ResourceBundle.getBundle("org.easyexplore.EasyExplorePluginResources");
+-		} catch (MissingResourceException x) {
+-			resourceBundle = null;
+-		}
+-	}
+-
+-	/**
+-	 * Returns the shared instance.
+-	 */
+-	public static EasyShellPlugin getDefault() {
+-		return plugin;
+-	}
+-
+-	/**
+-	 * Returns the workspace instance.
+-	 */
+-	public static IWorkspace getWorkspace() {
+-		return ResourcesPlugin.getWorkspace();
+-	}
+-
+-	/**
+-	 * Returns the string from the plugin's resource bundle,
+-	 * or 'key' if not found.
+-	 */
+-	public static String getResourceString(String key) {
+-		ResourceBundle bundle= EasyShellPlugin.getDefault().getResourceBundle();
+-		try {
+-			return bundle.getString(key);
+-		} catch (MissingResourceException e) {
+-			return key;
+-		}
+-	}
+-
+-	/**
+-	 * Returns the plugin's resource bundle,
+-	 */
+-	public ResourceBundle getResourceBundle() {
+-		return resourceBundle;
+-	}
+-	
+-	static public void log(Object msg) {
+-		ILog log = EasyShellPlugin.getDefault().getLog();
+-		Status status = new Status(IStatus.ERROR, EasyShellPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg + "\n", null);
+-		log.log(status);
+-	}
+-	
+-	static public void log(Throwable ex) {
+-		ILog log = EasyShellPlugin.getDefault().getLog();
+-		StringWriter stringWriter = new StringWriter();
+-	    ex.printStackTrace(new PrintWriter(stringWriter));
+-		String msg = stringWriter.getBuffer().toString();
+-		Status status = new Status(IStatus.ERROR, EasyShellPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg, null);
+-		log.log(status);
+-	}
+-    /**
+-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeDefaultPreferences(org.eclipse.jface.preference.IPreferenceStore)
+-     */
+-    protected void initializeDefaultPreferences(IPreferenceStore store) {
+-        EasyShellPreferencePage pref = new EasyShellPreferencePage();
+-        store = pref.getPreferenceStore();
+-        super.initializeDefaultPreferences(store);
+-    }
+-    
+-    /**
+-     * Return the target program setted in EasyExplorePreferencePage.
+-     * @return String
+-     */
+-    public String getTarget() {
+-        return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET);
+-    }
+-}
++package com.tetrade.eclipse.plugins.easyshell;
++
++import java.io.PrintWriter;
++import java.io.StringWriter;
++import java.util.MissingResourceException;
++import java.util.ResourceBundle;
++
++import org.eclipse.core.resources.IWorkspace;
++import org.eclipse.core.resources.ResourcesPlugin;
++import org.eclipse.core.runtime.ILog;
++import org.eclipse.core.runtime.IPluginDescriptor;
++import org.eclipse.core.runtime.IStatus;
++import org.eclipse.core.runtime.Status;
++import org.eclipse.jface.preference.IPreferenceStore;
++import org.eclipse.ui.plugin.AbstractUIPlugin;
++
++import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage;
++
++/**
++ * The main plugin class to be used in the desktop.
++ */
++public class EasyShellPlugin extends AbstractUIPlugin {
++	//The shared instance.
++	private static EasyShellPlugin plugin;
++	//Resource bundle.
++	private ResourceBundle resourceBundle;
++
++	/**
++	 * The constructor.
++	 */
++	public EasyShellPlugin(IPluginDescriptor descriptor) {
++		super(descriptor);
++		plugin = this;
++		try {
++			resourceBundle= ResourceBundle.getBundle("org.easyexplore.EasyExplorePluginResources");
++		} catch (MissingResourceException x) {
++			resourceBundle = null;
++		}
++	}
++
++	/**
++	 * Returns the shared instance.
++	 */
++	public static EasyShellPlugin getDefault() {
++		return plugin;
++	}
++
++	/**
++	 * Returns the workspace instance.
++	 */
++	public static IWorkspace getWorkspace() {
++		return ResourcesPlugin.getWorkspace();
++	}
++
++	/**
++	 * Returns the string from the plugin's resource bundle,
++	 * or 'key' if not found.
++	 */
++	public static String getResourceString(String key) {
++		ResourceBundle bundle= EasyShellPlugin.getDefault().getResourceBundle();
++		try {
++			return bundle.getString(key);
++		} catch (MissingResourceException e) {
++			return key;
++		}
++	}
++
++	/**
++	 * Returns the plugin's resource bundle,
++	 */
++	public ResourceBundle getResourceBundle() {
++		return resourceBundle;
++	}
++
++	static public void log(Object msg) {
++		ILog log = EasyShellPlugin.getDefault().getLog();
++		Status status = new Status(IStatus.ERROR, EasyShellPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg + "\n", null);
++		log.log(status);
++	}
++
++	static public void log(Throwable ex) {
++		ILog log = EasyShellPlugin.getDefault().getLog();
++		StringWriter stringWriter = new StringWriter();
++	    ex.printStackTrace(new PrintWriter(stringWriter));
++		String msg = stringWriter.getBuffer().toString();
++		Status status = new Status(IStatus.ERROR, EasyShellPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg, null);
++		log.log(status);
++	}
++    /**
++     * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeDefaultPreferences(org.eclipse.jface.preference.IPreferenceStore)
++     */
++    protected void initializeDefaultPreferences(IPreferenceStore store) {
++        EasyShellPreferencePage pref = new EasyShellPreferencePage();
++        store = pref.getPreferenceStore();
++        super.initializeDefaultPreferences(store);
++    }
++
++    /**
++     * Return the target program setted in EasyExplorePreferencePage.
++     * @return String
++     */
++    public String getTarget(int num) {
++    	if (num == 0) {
++    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET);
++    	} else if (num == 1) {
++    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_RUN);
++    	}
++        return null;
++    }
++}
+Index: icon/run_exc.gif
+===================================================================
+RCS file: icon/run_exc.gif
+diff -N icon/run_exc.gif
+--- /dev/null	1 Jan 1970 00:00:00 -0000
++++ icon/run_exc.gif	1 Jan 1970 00:00:00 -0000
+@@ -0,0 +1,6 @@
++GIF89a  Õ   €A&€A&ˆAA‘W^šo:ˆO3ˆHf­w-ˆAH‘WHšW:‘HA‘Of­o:ˆA3w:AˆHH‘OOšWW¤^-€33ˆ:AšHHšO:ˆ:A‘AW¤WH€Hf¤fw­w­Ë­ºÒºÕàÕ^šWˆ·€o¤^€­oˆ·wšÁˆˆ·o‘·w‘·o¤Áˆ€Ì&Âéxÿÿÿÿÿÿ                                                   !ù  . ,       ˜@—pH,A‡B P8€Œ®ƒaµ2©Dœfñ?(­Z«T
++…J† éôi?Oð“á•ŒFm÷ê~?»!?yz?BŠn?,B •Œ?• BŸ—-Ÿ’Q—ª~ ŒtQ~C
++
++
++
++ËDHKNPÝEA ;
