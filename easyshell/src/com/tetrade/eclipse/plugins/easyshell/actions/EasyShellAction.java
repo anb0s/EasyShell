@@ -1,14 +1,7 @@
 package com.tetrade.eclipse.plugins.easyshell.actions;
 
-import java.io.File;
-import java.net.URI;
 import java.text.MessageFormat;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
-import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -20,15 +13,15 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.ide.FileStoreEditorInput;
 import com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin;
+import com.tetrade.eclipse.plugins.easyshell.Resource;
+import com.tetrade.eclipse.plugins.easyshell.ResourceUtils;
 
 public class EasyShellAction implements IObjectActionDelegate {
 
 	private boolean debug = false;
 
-	private File[] resource = null;
-	private String projectName = null;
+	private Resource[] resource = null;
 	private IStructuredSelection currentSelection;
 
 	/**
@@ -101,14 +94,14 @@ public class EasyShellAction implements IObjectActionDelegate {
 			String parent_path = null;
 			String file_name = null;
 
-			full_path = resource[i].toString();
-			if (resource[i].isDirectory()) {
-				parent_path = resource[i].getPath();
+			full_path = resource[i].getFile().toString();
+			if (resource[i].getFile().isDirectory()) {
+				parent_path = resource[i].getFile().getPath();
 				file_name = "dir"; // dummy cmd
 			}else
 			{
-				parent_path = resource[i].getParent();
-				file_name = resource[i].getName();
+				parent_path = resource[i].getFile().getParent();
+				file_name = resource[i].getFile().getName();
 			}
 
 			if (full_path != null) {
@@ -131,7 +124,9 @@ public class EasyShellAction implements IObjectActionDelegate {
 					args[1] = parent_path;
 					args[2] = full_path;
 					args[3] = file_name;
-					args[4] = projectName == null ? "EasyShell" : projectName;
+					args[4] = resource[i].getProjectName();
+					if (args[4] == null)
+						args[4] = "EasyShell";
 					args[5] = System.getProperty("line.separator");
 
 					String cmd = MessageFormat.format(target, (Object[])args);
@@ -177,7 +172,7 @@ public class EasyShellAction implements IObjectActionDelegate {
 	    currentSelection = selection instanceof IStructuredSelection ? (IStructuredSelection)selection : null;
 	}
 
-	protected boolean isEnabled()
+	public boolean isEnabled()
 	{
 		boolean enabled = false;
 		if (currentSelection != null)
@@ -185,71 +180,15 @@ public class EasyShellAction implements IObjectActionDelegate {
 			Object[] selectedObjects = currentSelection.toArray();
 			if (selectedObjects.length >= 1)
 			{
-				resource = new File[selectedObjects.length];
+				resource = new Resource[selectedObjects.length];
 				for (int i=0;i<selectedObjects.length;i++) {
-					resource[i] = getResource(selectedObjects[i]);
-					if (resource != null)
+					resource[i] = ResourceUtils.getResource(selectedObjects[i]);
+					if (resource[i] != null)
 						enabled=true;
 				}
 			}
 		}
 		return enabled;
-	}
-
-	protected File getResource(Object object) {
-		projectName = null;
-		if (object instanceof IFile) {
-			projectName = ((IFile) object).getProject().getName();
-			return ((IFile) object).getLocation().toFile();
-		}
-		if (object instanceof File) {
-			return (File) object;
-		}
-		if (object instanceof IAdaptable) {
-			IAdaptable adaptable = (IAdaptable) object;
-			IFile ifile = (IFile) adaptable.getAdapter(IFile.class);
-			if (ifile != null) {
-				projectName = ifile.getProject().getName();
-				return ifile.getLocation().toFile();
-			}
-			IResource ires = (IResource) adaptable.getAdapter(IResource.class);
-			if (ires != null) {
-				projectName = ires.getProject().getName();
-				return ires.getLocation().toFile();
-			}
-			if (adaptable instanceof PackageFragment
-					&& ((PackageFragment) adaptable).getPackageFragmentRoot() instanceof JarPackageFragmentRoot) {
-				return getJarFile(((PackageFragment) adaptable)
-						.getPackageFragmentRoot());
-			} else if (adaptable instanceof JarPackageFragmentRoot) {
-				return getJarFile(adaptable);
-			} else if (adaptable instanceof FileStoreEditorInput) {
-				URI fileuri = ((FileStoreEditorInput) adaptable).getURI();
-				return new File(fileuri.getPath());
-			}
-
-			File file = (File) adaptable.getAdapter(File.class);
-			if (file != null) {
-				return file;
-			}
-		}
-		return null;
-	}
-
-	protected File getJarFile(IAdaptable adaptable) {
-		JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
-		File resource = (File) jpfr.getPath().makeAbsolute().toFile();
-		if (!((File) resource).exists()) {
-			File projectFile =
-				new File(
-					jpfr
-						.getJavaProject()
-						.getProject()
-						.getLocation()
-						.toOSString());
-			resource = new File(projectFile.getParent() + resource.toString());
-		}
-		return resource;
 	}
 
 }

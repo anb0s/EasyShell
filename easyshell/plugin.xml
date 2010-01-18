@@ -2,7 +2,7 @@
 <plugin
    id="com.tetrade.eclipse.plugins.easyshell"
    name="Easy Shell Plugin"
-   version="1.3.2"
+   version="1.3.3"
    provider-name="Marcel Schoen, Andre Bossert"
    class="com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin">
 
@@ -12,55 +12,9 @@
    <requires>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.core.expressions"/>
    </requires>
 
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            objectClass="org.eclipse.core.runtime.IAdaptable"
-            id="com.tetrade.eclipse.plugins.easyshell.EasyShell">
-         <action
-               label="Open..."
-               icon="icon/easyshell.gif"
-               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
-               menubarPath="com.tetrade.eclipse.plugins.easyshell.menu/easyshell.separator1"
-               enablesFor="+"
-               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionOpen">
-         </action>
-         <action
-               label="Run..."
-               icon="icon/run_exc.gif"
-               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
-               menubarPath="com.tetrade.eclipse.plugins.easyshell.menu/easyshell.separator1"
-               enablesFor="+"
-               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionRun">
-         </action>
-         <action
-               label="Explore..."
-               icon="icon/fldr_obj.gif"
-               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
-               menubarPath="com.tetrade.eclipse.plugins.easyshell.menu/easyshell.separator1"
-               enablesFor="+"
-               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionExplore">
-         </action>
-         <menu
-               id="com.tetrade.eclipse.plugins.easyshell.menu"
-               label="Easy Shell"
-               path="additions">
-            <separator
-                  name="easyshell.separator1">
-            </separator>
-         </menu>
-         <action
-               class="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction"
-               icon="icon/copy_edit.gif"
-               id="com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionCopyPath"
-               label="Copy Path"
-               menubarPath="com.tetrade.eclipse.plugins.easyshell.menu/easyshell.separator1">
-         </action>
-      </objectContribution>
-   </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
@@ -68,6 +22,116 @@
             class="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage"
             id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage">
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="com.tetrade.eclipse.plugins.easyshell.command.category1"
+            name="Easy Shell">
+      </category>
+      <command
+            categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
+            id="com.tetrade.eclipse.plugins.easyshell.command.shellOpen"
+            name="Easy Shell Open">
+      </command>
+      <command
+            categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
+            id="com.tetrade.eclipse.plugins.easyshell.command.shellRun"
+            name="Easy Shell Run">
+      </command>
+      <command
+            categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
+            id="com.tetrade.eclipse.plugins.easyshell.command.shellExplore"
+            name="Easy Shell Explore">
+      </command>
+      <command
+            categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
+            id="com.tetrade.eclipse.plugins.easyshell.command.copyPath"
+            name="Easy Shell Copy Path">
+      </command>
+      <command
+            categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
+            id="com.tetrade.eclipse.plugins.easyshell.command.easyShell"
+            name="Easy Shell">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <menu
+               commandId="com.tetrade.eclipse.plugins.easyshell.command.easyShell"
+               id="com.tetrade.eclipse.plugins.easyshell.menu"
+               label="Easy Shell">
+            <command
+                  commandId="com.tetrade.eclipse.plugins.easyshell.command.shellOpen"
+                  icon="icon/easyshell.gif"
+                  label="Open..."
+                  style="push">
+            </command>
+            <command
+                  commandId="com.tetrade.eclipse.plugins.easyshell.command.shellRun"
+                  icon="icon/run_exc.gif"
+                  label="Run..."
+                  style="push">
+            </command>
+            <command
+                  commandId="com.tetrade.eclipse.plugins.easyshell.command.shellExplore"
+                  icon="icon/fldr_obj.gif"
+                  label="Explore..."
+                  style="push">
+            </command>
+            <command
+                  commandId="com.tetrade.eclipse.plugins.easyshell.command.copyPath"
+                  icon="icon/copy_edit.gif"
+                  label="Copy Path"
+                  style="push">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <test
+                        forcePluginActivation="true"
+                        property="com.tetrade.eclipse.plugins.easyshell.EditorPropertyTester.hasResourceSelection">
+                  </test>
+               </with>
+            </visibleWhen>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.tetrade.eclipse.plugins.easyshell.command.ShellOpen"
+            commandId="com.tetrade.eclipse.plugins.easyshell.command.shellOpen">
+      </handler>
+      <handler
+            class="com.tetrade.eclipse.plugins.easyshell.command.ShellRun"
+            commandId="com.tetrade.eclipse.plugins.easyshell.command.shellRun">
+      </handler>
+      <handler
+            class="com.tetrade.eclipse.plugins.easyshell.command.ShellExplore"
+            commandId="com.tetrade.eclipse.plugins.easyshell.command.shellExplore">
+      </handler>
+      <handler
+            class="com.tetrade.eclipse.plugins.easyshell.command.CopyPath"
+            commandId="com.tetrade.eclipse.plugins.easyshell.command.copyPath">
+      </handler>
+      <handler
+            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShell"
+            commandId="com.tetrade.eclipse.plugins.easyshell.command.easyShell">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.tetrade.eclipse.plugins.easyshell.EditorPropertyTester"
+            id="com.tetrade.eclipse.plugins.easyshell.EditorPropertyTester"
+            namespace="com.tetrade.eclipse.plugins.easyshell.EditorPropertyTester"
+            properties="hasResourceSelection"
+            type="org.eclipse.ui.IWorkbenchPart">
+      </propertyTester>
    </extension>
 
 </plugin>

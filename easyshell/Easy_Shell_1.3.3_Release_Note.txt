@@ -1,0 +1,15 @@
+-----------------------------
+Easy Shell 1.3.3 Release Note
+-----------------------------
+
+Changes:
+--------
++ Easy Shell commands added, it is possible to assign short keys for Easy Shell functions 
+! Easy Shell menu appears only for resources (files, editors)
+- JDT dependency removed, it works now without an installed JDT
+
+Tested with Windows XP SP3 (Cmd, PowerShell 1.0, Cygwin-bash) and Linux (KDE / Kubuntu 9.04, Gnome / Ubuntu 9.04)
+
+Installation:
+-------------
+Extract zip file to "eclipse\dropin" folder and restart.
