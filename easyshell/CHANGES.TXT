@@ -2,6 +2,13 @@ Easy Shell Plugin Change History
 --------------------------------
 
 
+1.3.3
+-----
++ Easy Shell commands added, it is possible to assign short keys for Easy Shell functions 
+! Easy Shell menu appears only for resources (files, editors)
+- JDT dependency removed, it works now without an installed JDT
+
+
 1.3.2
 -----
 + added "Copy Path" configuration

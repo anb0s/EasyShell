@@ -1,4 +1,4 @@
-Easy Shell 1.3.2 plugin for Eclipse
+Easy Shell 1.3.3 plugin for Eclipse
 -----------------------------------
 
 This plugin allows to open a shell window or file manager from the
