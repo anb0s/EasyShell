@@ -2,7 +2,7 @@
 <plugin
    id="com.tetrade.eclipse.plugins.easyshell"
    name="Easy Shell Plugin"
-   version="1.3.3"
+   version="1.3.4"
    provider-name="Marcel Schoen, Andre Bossert"
    class="com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin">
 
@@ -49,18 +49,12 @@
             id="com.tetrade.eclipse.plugins.easyshell.command.copyPath"
             name="Easy Shell Copy Path">
       </command>
-      <command
-            categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
-            id="com.tetrade.eclipse.plugins.easyshell.command.easyShell"
-            name="Easy Shell">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?before=additions">
          <menu
-               commandId="com.tetrade.eclipse.plugins.easyshell.command.easyShell"
                id="com.tetrade.eclipse.plugins.easyshell.menu"
                label="Easy Shell">
             <command
@@ -103,24 +97,20 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.tetrade.eclipse.plugins.easyshell.command.ShellOpen"
+            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShellCommand"
             commandId="com.tetrade.eclipse.plugins.easyshell.command.shellOpen">
       </handler>
       <handler
-            class="com.tetrade.eclipse.plugins.easyshell.command.ShellRun"
+            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShellCommand"
             commandId="com.tetrade.eclipse.plugins.easyshell.command.shellRun">
       </handler>
       <handler
-            class="com.tetrade.eclipse.plugins.easyshell.command.ShellExplore"
+            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShellCommand"
             commandId="com.tetrade.eclipse.plugins.easyshell.command.shellExplore">
       </handler>
       <handler
-            class="com.tetrade.eclipse.plugins.easyshell.command.CopyPath"
+            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShellCommand"
             commandId="com.tetrade.eclipse.plugins.easyshell.command.copyPath">
-      </handler>
-      <handler
-            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShell"
-            commandId="com.tetrade.eclipse.plugins.easyshell.command.easyShell">
       </handler>
    </extension>
    <extension

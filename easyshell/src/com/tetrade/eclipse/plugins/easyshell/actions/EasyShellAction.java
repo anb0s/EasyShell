@@ -31,6 +31,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.internal.ShowInMenu;
+
 import com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin;
 import com.tetrade.eclipse.plugins.easyshell.Resource;
 import com.tetrade.eclipse.plugins.easyshell.ResourceUtils;
@@ -72,10 +75,10 @@ public class EasyShellAction implements IObjectActionDelegate {
 
 		String ActionIDStr = action.getId();
 		if (debug) System.out.println("Action ID: [[" + ActionIDStr + "]]");
-		String[] EasyShellActionStr = { "com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionOpen",
-										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionRun",
-										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionExplore",
-										"com.tetrade.eclipse.plugins.easyshell.actions.EasyShellActionCopyPath"
+		String[] EasyShellActionStr = { "com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
+										"com.tetrade.eclipse.plugins.easyshell.command.shellRun",
+										"com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
+										"com.tetrade.eclipse.plugins.easyshell.command.copyPath"
 		};
 		int ActionIDNum = -1;
 		for (int i=0;i<EasyShellActionStr.length;i++)
@@ -95,7 +98,7 @@ public class EasyShellAction implements IObjectActionDelegate {
 			EasyShellPlugin.log("Wrong Action ID");
 			return;
 		}
-
+		
 		// String for all commands
 		String cmdAll = null;
 		if (ActionIDNum == 3) {
