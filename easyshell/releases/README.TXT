@@ -1,4 +1,4 @@
-Easy Shell 1.3.4 plugin for Eclipse
+Easy Shell 1.3.5 plugin for Eclipse
 -----------------------------------
 
 This plugin allows to open a shell window or file manager from the
@@ -18,10 +18,14 @@ Windows:
 - PowerShell / Explorer (check path of PowerShell executable!)
 - Cygwin (Bash) / Explorer (check path of Cygwin-bash executable!)
 
-Linux (and other):
+Unix / Linux:
 - KDE Konsole / Konqueror
 - Gnome Terminal / Nautilus
 - CDE Xterm / Dtfile (not tested!)
+- MAC OS X Terminal / Finder (not tested!)
+
+Other:
+- Default / Unknown (can be defined for all systems supported by Java)
 
 But you can configure any shell or command you like as long as you
 can figure out how to run a command to open the shell with given
@@ -34,3 +38,9 @@ for building the command:
 {3} = The selected file name
 {4} = The project name of selected directory or path (for external files it's "Easy Shell")
 {5} = The line separator
+
+Installation:
+-------------
+a) Extract zip file to "eclipse\dropin" folder and restart.
+OR
+b) Use update site: http://pluginbox.sourceforge.net
