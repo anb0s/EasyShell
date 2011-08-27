@@ -1,0 +1,81 @@
+Easy Shell Plugin Change History
+--------------------------------
+
+1.3.5
+-----
+! fixed issues:
+  ! ID: 3197997: Exception in Mac OS
+  ! ID: 3157616: Preference Page Error
+! reworked the logic of presets
+! fixed detection of Gnome desktop under Linux
++ added new "Unknown" preset for all systems supported by Java
++ added new preset for "Mac OS X, Terminal / Finder"
+
+
+1.3.4
+-----
+! Easy Shell commands reworked, it is possible to assign short keys for Easy Shell functions (Eclipse 3.6 too)
+
+
+1.3.3
+-----
++ Easy Shell commands added, it is possible to assign short keys for Easy Shell functions
+! Easy Shell menu appears only for resources (files, editors)
+- JDT dependency removed, it works now without an installed JDT
+
+
+1.3.2
+-----
++ added "Copy Path" configuration
++ added parameter {5} = The line separator
+
+
+1.3.1
+-----
++ Update site created (Feature Request 2846185)
+! fixed parameter {1} for Linux (BUG 1678502)
++ added / changed configurations:
+  + Windows PowerShell (Feature Request 2824391)
+  ! Gnome Terminal / Nautilus (BUG 1678502)
+  ! KDE Konsole / Konqueror
+  ! CDE Xterm / Dtfile
+
+
+1.3.0
+-----
++ created new "Easy Shell" menu with sub menus
++ added new Actions "Run.." (BUG 2817545) and "Explore.."
++ added new parameters:
+  + Argument {2} is the full path
+  + Argument {3} is the file name
+  + Argument {4} is the project name (BUG 1017063)
+! fixed problem with external files (BUG 2813165)
++ added support for multiple selections
++ added / changed configurations:
+  ! Windows Cygwin (Bash) / Explorer
+  ! Windows DOS-Shell / Explorer
+  + KDE Konsole / Konqueror
+  + Gnome Terminal / Nautilus (BUG 1678502, not tested!)
+  + CDE Xterm / Dtfile (not tested!)
+Tested with Windows, Cygwin and Linux KDE.
+
+
+1.2.0
+-----
+- Completed first homepage release.
+- Added default command for Cygwin Bash (Windows).
+- Added drop-down selection list for defaults in
+  preferences page.
+- Completed README.
+
+
+1.0.1
+-----
+- Add a preference page to setup your prefered application:
+  Format is "[PATH_TO_YOUR_APP] {0}"
+  {0} represant the path to open.
+
+
+1.0.0
+-----
+- Initial release
