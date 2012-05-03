@@ -62,10 +62,11 @@ public class EasyShellPreferencePage
         cmdWinDOS(1, "Windows DOS-Shell / Explorer", 		"cmd.exe /C start \"{4}\" /D\"{1}\" cmd.exe /K", 		"cmd.exe /C start \"{4}\" /D\"{1}\" \"{3}\"", 							"explorer.exe /select,\"{2}\"",	"{2}{5}"),
         cmdWinPower(2, "Windows PowerShell / Explorer", 	"cmd.exe /C start \"{4}\" /D\"{1}\" powershell.exe",	"cmd.exe /C start \"{4}\" /D\"{1}\" powershell.exe -command \"./{3}\"", "explorer.exe /select,\"{2}\"", "{2}{5}"),
         cmdWinCyg(3, "Windows Cygwin (Bash) / Explorer", 	"cmd.exe /C start \"{4}\" /D\"{1}\" bash.exe", 			"cmd.exe /C start \"{4}\" /D\"{1}\" bash.exe -c \"./{3}\"", 			"explorer.exe /select,\"{2}\"", "{2}{5}"),
-        cmdKonsoleKDE(4, "KDE Konsole / Konqueror", 		"konsole --noclose --workdir {1}", 						"konsole --noclose --workdir {1} -e ./{3}", 							"konqueror file:{2}", 			"{2}{5}"),
+        cmdKonsoleKDEKonqueror(4, "KDE Konsole / Konqueror", 		"konsole --noclose --workdir {1}", 						"konsole --noclose --workdir {1} -e ./{3}", 							"konqueror file:{2}", 			"{2}{5}"),
         cmdKonsoleGnome(5, "Gnome Terminal / Nautilus", 	"gnome-terminal --working-directory={1}", 				"gnome-terminal --working-directory={1} --command=./{3}", 				"nautilus {2}", 				"{2}{5}"),
         cmdXtermDtfile(6, "CDE Xterm / Dtfile", 			"cd {1} && xterm", 										"cd {1} && xterm -e ./{3}", 											"cd {1} && dtfile", 			"{2}{5}"),
-        cmdTerminalFinder(7, "MAC OS X Terminal / Finder",	"open -a Terminal {1}", 								"cd {1} && open {3}",													"open -a Finder {2}",			"{2}{5}");
+        cmdTerminalFinder(7, "MAC OS X Terminal / Finder",	"open -a Terminal {1}", 								"cd {1} && open {3}",													"open -a Finder {2}",			"{2}{5}"),
+        cmdKonsoleKDEDolphin(8, "KDE Konsole / Dolphin", 		"konsole --workdir {1}", 								"konsole --workdir {1} --noclose -e {2}", 								"dolphin --select {2}", 		"{2}{5}");
         // attributes
         private final int id;
         private final String label;
@@ -175,7 +176,7 @@ public class EasyShellPreferencePage
         {
             int desktop = detectDesktop();
             if(desktop == DESKTOP_KDE) {
-            	cmd = EasyShellCommand.cmdKonsoleKDE;
+            	cmd = EasyShellCommand.cmdKonsoleKDEDolphin;
             } else if(desktop == DESKTOP_GNOME) {
             	cmd = EasyShellCommand.cmdKonsoleGnome;
 			} else if(desktop == DESKTOP_CDE) {
