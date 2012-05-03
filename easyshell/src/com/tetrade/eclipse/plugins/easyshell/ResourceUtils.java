@@ -24,6 +24,7 @@ import java.io.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 //import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 //import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jface.viewers.ISelection;
@@ -98,7 +99,13 @@ public class ResourceUtils {
 			IResource ires = (IResource) adaptable.getAdapter(IResource.class);
 			if (ires != null) {
 				projectName = ires.getProject().getName();
-				return new Resource(ires.getLocation().toFile(),projectName);
+				// virtual (not present in file system) folder has no location
+				// there for cannot be handled with EasyShell
+				// see https://sourceforge.net/tracker/?func=detail&aid=3521852&group_id=99802&atid=630351
+				IPath path = ires.getLocation();
+				if (path != null) {
+					return new Resource(path.toFile(),projectName);
+				}
 			}
 			/*
 			if (adaptable instanceof PackageFragment
@@ -119,7 +126,7 @@ public class ResourceUtils {
 		}
 		return null;
 	}
-
+    
     /*
     static public File getJarFile(IAdaptable adaptable) {
 		JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
