@@ -1,4 +1,4 @@
-Easy Shell 1.3.5 plugin for Eclipse
+Easy Shell 1.3.6 plugin for Eclipse
 -----------------------------------
 
 This plugin allows to open a shell window or file manager from the
@@ -6,7 +6,10 @@ popup menu in the navigation tree or editor view. The current
 directory of the opened shell is the directory which was selected
 with the popup menu. Additionally it is possible to run selected
 file in the shell and copy file or directory path. Multiple
-selections are also supported.
+selections are also supported. 
+
+EasyShell does not support virtual folders, because they are not
+present in the file system!
 
 The plugin is platform-independent in principal. It just launches
 a (configurable) system command to open the shell. The following
@@ -19,7 +22,7 @@ Windows:
 - Cygwin (Bash) / Explorer (check path of Cygwin-bash executable!)
 
 Unix / Linux:
-- KDE Konsole / Konqueror
+- KDE Konsole / Konqueror and Dolphin
 - Gnome Terminal / Nautilus
 - CDE Xterm / Dtfile (not tested!)
 - MAC OS X Terminal / Finder (not tested!)

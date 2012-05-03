@@ -31,9 +31,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.ui.internal.ShowInMenu;
-
 import com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin;
 import com.tetrade.eclipse.plugins.easyshell.Resource;
 import com.tetrade.eclipse.plugins.easyshell.ResourceUtils;
