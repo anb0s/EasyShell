@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2010 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2013 by Marcel Schoen and Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,26 +26,26 @@ import com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction;
 
 public class EditorPropertyTester extends PropertyTester {
 
-	public EditorPropertyTester() {
-		super();
-	}
+    public EditorPropertyTester() {
+        super();
+    }
 
-	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+    public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         if("hasResourceSelection".equals(property) && receiver instanceof IWorkbenchPart){
             return hasResourceSelection((IWorkbenchPart)receiver) != null;
         }
-		return false;
-	}
+        return false;
+    }
 
     static public EasyShellAction hasResourceSelection(IWorkbenchPart part) {
-		ISelection selection = ResourceUtils.getResourceSelection(part);
-		if (selection != null) {
-			EasyShellAction action = new EasyShellAction();
-			action.selectionChanged(null, selection);
-			if (action.isEnabled())
-				return action;
-		}
-    	return null;
+        ISelection selection = ResourceUtils.getResourceSelection(part);
+        if (selection != null) {
+            EasyShellAction action = new EasyShellAction();
+            action.selectionChanged(null, selection);
+            if (action.isEnabled())
+                return action;
+        }
+        return null;
     }
 
 }

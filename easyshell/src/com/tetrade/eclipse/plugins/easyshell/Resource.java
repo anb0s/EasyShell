@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2010 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2013 by Marcel Schoen and Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,26 +21,26 @@ package com.tetrade.eclipse.plugins.easyshell;
 import java.io.File;
 
 public class Resource {
-	
-	private File file = null;
-	private String projectName = null;
 
-	public Resource(Resource myRes) {
-		file = myRes.getFile();
-		projectName = myRes.getProjectName();
-	}
+    private File file = null;
+    private String projectName = null;
 
-	public Resource(File myFile, String myProjectName) {
-		file = myFile;
-		projectName = myProjectName;
-	}
-	
-	public File getFile() {
-		return file;
-	}
+    public Resource(Resource myRes) {
+        file = myRes.getFile();
+        projectName = myRes.getProjectName();
+    }
 
-	public String getProjectName() {
-		return projectName;
-	}
+    public Resource(File myFile, String myProjectName) {
+        file = myFile;
+        projectName = myProjectName;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
 
 }

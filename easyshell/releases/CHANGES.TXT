@@ -1,6 +1,51 @@
 Easy Shell Plugin Change History
 --------------------------------
 
+1.4.1 (by anb0s at 2013-04-01)
+------------------------------
+! fixed issues:
+  ! Mac OS X defaults are wrong (Thanks to Mark Phippard)
+    https://sourceforge.net/p/pluginbox/bugs/9/
+  ! [1.4.0.1] bug: need to escape spaces when invoking nautilus
+    https://sourceforge.net/p/pluginbox/bugs/18/
+! ATTENTION: added new option "string tokenizer" and set it to Yes.
+  Your self defined presets with usage of quotes may not work anymore.
+  Please change this option to No or read how to fix:
+  ! used solution from Mark Phippard
+  ! the whole command line string will be splitted (tokenized) to single strings
+    before expansion of parameters {0} - {4} and passing to command line
+  ! with this solution there is no need to surround parameters {0} - {4} with
+    quotes when space character is possible between command line option and parameter,
+    e.g.: /D {1}
+  ! otherwise maybe quotes are still needed, e.g.: --working-directory="{1}"
+  ! PLEASE check your presets with debug output (error console)!
+! changed presets:
+  ! removed not needed quotes from all presets, because "string tokenizer" enabled
+  ! fixed Run command for "Windows Console / Explorer"
+  ! fixed Explore command for "Windows DOS-Shell / TotalCommander"
+
+1.4.0.1 (by anb0s at 2013-01-07)
+------------------------------
+! fixed issues:
+  ! istall issue with version 1.4.0
+  ! Mac OS X defaults are wrong
+    https://sourceforge.net/p/pluginbox/bugs/9/
+  ! EasyShell opening wrong folder in Linux
+    https://sourceforge.net/p/pluginbox/bugs/13/
+  ! Binary download does not include MANIFEST.MF
+    https://sourceforge.net/p/pluginbox/bugs/14/
++ changed menu position: "Easy Shell" menu appears near "Open With"
+  https://sourceforge.net/p/pluginbox/bugs/15/
++ added new preset "Windows Console / Explorer"
+  https://sourceforge.net/p/pluginbox/feature-requests/10/
++ added new preset "Windows DOS-Shell / TotalCommander"
+  https://sourceforge.net/p/pluginbox/feature-requests/11/
++ added new option "Add Quotes to {1}, {2}, {3}*" with values "No, Single, Double, Automatic"
+  default is "No", if changed to other values, parameters will be eclosed with quotes
+  ATTENTION: use it carefully and remove quotes from commands
++ added new option "Enable debug output" with values "No, Yes"
+  default is "No", if changed to "Yes", debug messages will be printed to console
+
 1.3.6
 -----
 ! fixed issues:

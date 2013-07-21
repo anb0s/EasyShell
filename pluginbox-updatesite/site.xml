@@ -24,6 +24,12 @@
    <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.3.6.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.3.6">
       <category name="PluginBox"/>
    </feature>
+   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.4.0.1.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.4.0.1">
+      <category name="PluginBox"/>
+   </feature>
+   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.4.1.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.4.1">
+      <category name="PluginBox"/>
+   </feature>
    <category-def name="PluginBox" label="PluginBox">
       <description>
          The Pluginbox is a container for several Eclipse plugins.

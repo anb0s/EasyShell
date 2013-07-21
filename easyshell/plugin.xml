@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin
-   id="com.tetrade.eclipse.plugins.easyshell"
-   name="Easy Shell Plugin"
-   version="1.3.6"
-   provider-name="Marcel Schoen, Andre Bossert"
-   class="com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin">
+<plugin>
 
-   <runtime>
-      <library name="easyshell.jar"/>
-   </runtime>
-   <requires>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.expressions"/>
-   </requires>
-
-   <extension
+     <extension
          point="org.eclipse.ui.preferencePages">
       <page
             name="Easy Shell"
@@ -53,7 +39,7 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+            locationURI="popup:org.eclipse.ui.popup.any?after=group.open">
          <menu
                id="com.tetrade.eclipse.plugins.easyshell.menu"
                label="Easy Shell">

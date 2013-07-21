@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2010 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2013 by Marcel Schoen and Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,110 +38,110 @@ import org.eclipse.ui.IWorkbenchPart;
 public class ResourceUtils {
 
     static public ISelection getResourceSelection(IWorkbenchPart part) {
-		ISelection selection = null;
-		if (part != null) {
-			if (part instanceof IEditorPart) {
-				Resource file = getResource((IEditorPart)part);
-		        if (file != null) {
-		        	selection = new StructuredSelection(file);
-		        }
-			} else {
-		    	try {
-		    		selection = part.getSite().getSelectionProvider().getSelection();
-		    	} catch(Exception e) {
-		    		// no op
-		    	}
-			}
-		}
-    	return selection;
+        ISelection selection = null;
+        if (part != null) {
+            if (part instanceof IEditorPart) {
+                Resource file = getResource((IEditorPart)part);
+                if (file != null) {
+                    selection = new StructuredSelection(file);
+                }
+            } else {
+                try {
+                    selection = part.getSite().getSelectionProvider().getSelection();
+                } catch(Exception e) {
+                    // no op
+                }
+            }
+        }
+        return selection;
     }
 
     static public Resource getResource(Object myObj) {
-    	Object object = null;
-    	
-    	if (myObj instanceof IEditorPart) {
-			IEditorPart editorPart = (IEditorPart)myObj;
-			IEditorInput input = editorPart.getEditorInput();
-	        Object adapter = input.getAdapter(IFile.class);
-	        if(adapter instanceof IFile){
-	        	object = (IFile) adapter;
-	        } else {
-	        	adapter = editorPart.getAdapter(IFile.class);
-	        	if(adapter instanceof IFile){
-	        		object = (IFile) adapter;
-	        	} else {
-	        		object = input;
-	        	}
-	        }    		
-    	} else {
-    		object = myObj;
-    	}
+        Object object = null;
 
-    	if (object instanceof Resource) {
-    		return new Resource((Resource)object);
-    	}
+        if (myObj instanceof IEditorPart) {
+            IEditorPart editorPart = (IEditorPart)myObj;
+            IEditorInput input = editorPart.getEditorInput();
+            Object adapter = input.getAdapter(IFile.class);
+            if(adapter instanceof IFile){
+                object = (IFile) adapter;
+            } else {
+                adapter = editorPart.getAdapter(IFile.class);
+                if(adapter instanceof IFile){
+                    object = (IFile) adapter;
+                } else {
+                    object = input;
+                }
+            }
+        } else {
+            object = myObj;
+        }
 
-		String projectName = null;
-		if (object instanceof IFile) {
-			projectName = ((IFile) object).getProject().getName();
-			return new Resource(((IFile) object).getLocation().toFile(),projectName);
-		}
-		if (object instanceof File) {
-			return new Resource((File) object,projectName);
-		}
-		if (object instanceof IAdaptable) {
-			IAdaptable adaptable = (IAdaptable) object;
-			IFile ifile = (IFile) adaptable.getAdapter(IFile.class);
-			if (ifile != null) {
-				projectName = ifile.getProject().getName();
-				return new Resource(ifile.getLocation().toFile(),projectName);
-			}
-			IResource ires = (IResource) adaptable.getAdapter(IResource.class);
-			if (ires != null) {
-				projectName = ires.getProject().getName();
-				// virtual (not present in file system) folder has no location
-				// there for cannot be handled with EasyShell
-				// see https://sourceforge.net/tracker/?func=detail&aid=3521852&group_id=99802&atid=630351
-				IPath path = ires.getLocation();
-				if (path != null) {
-					return new Resource(path.toFile(),projectName);
-				}
-			}
-			/*
-			if (adaptable instanceof PackageFragment
-					&& ((PackageFragment) adaptable).getPackageFragmentRoot() instanceof JarPackageFragmentRoot) {
-				return new Resource(getJarFile(((PackageFragment) adaptable)
-						.getPackageFragmentRoot()),projectName);
-			} else if (adaptable instanceof JarPackageFragmentRoot) {
-				return new Resource(getJarFile(adaptable),projectName);
-			} else if (adaptable instanceof FileStoreEditorInput) {
-				URI fileuri = ((FileStoreEditorInput) adaptable).getURI();
-				return new Resource(new File(fileuri.getPath()),projectName);
-			}
-			*/
-			File file = (File) adaptable.getAdapter(File.class);
-			if (file != null) {
-				return  new Resource(file,projectName);
-			}
-		}
-		return null;
-	}
-    
+        if (object instanceof Resource) {
+            return new Resource((Resource)object);
+        }
+
+        String projectName = null;
+        if (object instanceof IFile) {
+            projectName = ((IFile) object).getProject().getName();
+            return new Resource(((IFile) object).getLocation().toFile(),projectName);
+        }
+        if (object instanceof File) {
+            return new Resource((File) object,projectName);
+        }
+        if (object instanceof IAdaptable) {
+            IAdaptable adaptable = (IAdaptable) object;
+            IFile ifile = (IFile) adaptable.getAdapter(IFile.class);
+            if (ifile != null) {
+                projectName = ifile.getProject().getName();
+                return new Resource(ifile.getLocation().toFile(),projectName);
+            }
+            IResource ires = (IResource) adaptable.getAdapter(IResource.class);
+            if (ires != null) {
+                projectName = ires.getProject().getName();
+                // virtual (not present in file system) folder has no location
+                // there for cannot be handled with EasyShell
+                // see https://sourceforge.net/tracker/?func=detail&aid=3521852&group_id=99802&atid=630351
+                IPath path = ires.getLocation();
+                if (path != null) {
+                    return new Resource(path.toFile(),projectName);
+                }
+            }
+            /*
+            if (adaptable instanceof PackageFragment
+                    && ((PackageFragment) adaptable).getPackageFragmentRoot() instanceof JarPackageFragmentRoot) {
+                return new Resource(getJarFile(((PackageFragment) adaptable)
+                        .getPackageFragmentRoot()),projectName);
+            } else if (adaptable instanceof JarPackageFragmentRoot) {
+                return new Resource(getJarFile(adaptable),projectName);
+            } else if (adaptable instanceof FileStoreEditorInput) {
+                URI fileuri = ((FileStoreEditorInput) adaptable).getURI();
+                return new Resource(new File(fileuri.getPath()),projectName);
+            }
+            */
+            File file = (File) adaptable.getAdapter(File.class);
+            if (file != null) {
+                return  new Resource(file,projectName);
+            }
+        }
+        return null;
+    }
+
     /*
     static public File getJarFile(IAdaptable adaptable) {
-		JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
-		File resource = (File) jpfr.getPath().makeAbsolute().toFile();
-		if (!((File) resource).exists()) {
-			File projectFile =
-				new File(
-					jpfr
-						.getJavaProject()
-						.getProject()
-						.getLocation()
-						.toOSString());
-			resource = new File(projectFile.getParent() + resource.toString());
-		}
-		return resource;
-	}
-	*/
+        JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
+        File resource = (File) jpfr.getPath().makeAbsolute().toFile();
+        if (!((File) resource).exists()) {
+            File projectFile =
+                new File(
+                    jpfr
+                        .getJavaProject()
+                        .getProject()
+                        .getLocation()
+                        .toOSString());
+            resource = new File(projectFile.getParent() + resource.toString());
+        }
+        return resource;
+    }
+    */
 }

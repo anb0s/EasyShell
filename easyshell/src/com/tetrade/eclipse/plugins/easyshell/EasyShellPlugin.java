@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2010 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2013 by Marcel Schoen and Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,79 +33,80 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage;
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage.EasyShellDebug;
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage.EasyShellQuotes;
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage.EasyShellTokenizer;
 
 /**
  * The main plugin class to be used in the desktop.
  */
 public class EasyShellPlugin extends AbstractUIPlugin {
-	//The shared instance.
-	private static EasyShellPlugin plugin;
-	//Resource bundle.
-	private ResourceBundle resourceBundle;
-	// debug output
-	private boolean debug = false;
+    //The shared instance.
+    private static EasyShellPlugin plugin;
+    //Resource bundle.
+    private ResourceBundle resourceBundle;
 
-	/**
-	 * The constructor.
-	 */
-	public EasyShellPlugin(IPluginDescriptor descriptor) {
-		super(descriptor);
-		plugin = this;
-		try {
-			resourceBundle= ResourceBundle.getBundle("org.easyexplore.EasyExplorePluginResources");
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
-	}
+    /**
+     * The constructor.
+     */
+    public EasyShellPlugin(IPluginDescriptor descriptor) {
+        super(descriptor);
+        plugin = this;
+        try {
+            resourceBundle= ResourceBundle.getBundle("org.easyexplore.EasyExplorePluginResources");
+        } catch (MissingResourceException x) {
+            resourceBundle = null;
+        }
+    }
 
-	/**
-	 * Returns the shared instance.
-	 */
-	public static EasyShellPlugin getDefault() {
-		return plugin;
-	}
+    /**
+     * Returns the shared instance.
+     */
+    public static EasyShellPlugin getDefault() {
+        return plugin;
+    }
 
-	/**
-	 * Returns the workspace instance.
-	 */
-	public static IWorkspace getWorkspace() {
-		return ResourcesPlugin.getWorkspace();
-	}
+    /**
+     * Returns the workspace instance.
+     */
+    public static IWorkspace getWorkspace() {
+        return ResourcesPlugin.getWorkspace();
+    }
 
-	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
-	 */
-	public static String getResourceString(String key) {
-		ResourceBundle bundle= EasyShellPlugin.getDefault().getResourceBundle();
-		try {
-			return bundle.getString(key);
-		} catch (MissingResourceException e) {
-			return key;
-		}
-	}
+    /**
+     * Returns the string from the plugin's resource bundle,
+     * or 'key' if not found.
+     */
+    public static String getResourceString(String key) {
+        ResourceBundle bundle= EasyShellPlugin.getDefault().getResourceBundle();
+        try {
+            return bundle.getString(key);
+        } catch (MissingResourceException e) {
+            return key;
+        }
+    }
 
-	/**
-	 * Returns the plugin's resource bundle,
-	 */
-	public ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
+    /**
+     * Returns the plugin's resource bundle,
+     */
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
+    }
 
-	static public void log(Object msg) {
-		ILog log = EasyShellPlugin.getDefault().getLog();
-		Status status = new Status(IStatus.ERROR, EasyShellPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg + "\n", null);
-		log.log(status);
-	}
+    static public void log(Object msg) {
+        ILog log = EasyShellPlugin.getDefault().getLog();
+        Status status = new Status(IStatus.ERROR, EasyShellPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg + "\n", null);
+        log.log(status);
+    }
 
-	static public void log(Throwable ex) {
-		ILog log = EasyShellPlugin.getDefault().getLog();
-		StringWriter stringWriter = new StringWriter();
-	    ex.printStackTrace(new PrintWriter(stringWriter));
-		String msg = stringWriter.getBuffer().toString();
-		Status status = new Status(IStatus.ERROR, EasyShellPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg, null);
-		log.log(status);
-	}
+    static public void log(Throwable ex) {
+        ILog log = EasyShellPlugin.getDefault().getLog();
+        StringWriter stringWriter = new StringWriter();
+        ex.printStackTrace(new PrintWriter(stringWriter));
+        String msg = stringWriter.getBuffer().toString();
+        Status status = new Status(IStatus.ERROR, EasyShellPlugin.getDefault().getDescriptor().getUniqueIdentifier(), IStatus.ERROR, msg, null);
+        log.log(status);
+    }
     /**
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeDefaultPreferences(org.eclipse.jface.preference.IPreferenceStore)
      */
@@ -120,19 +121,54 @@ public class EasyShellPlugin extends AbstractUIPlugin {
      * @return String
      */
     public String getTarget(int num) {
-    	if (num == 0) {
-    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET);
-    	} else if (num == 1) {
-    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_RUN);
-    	} else if (num == 2) {
-    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_EXPLORE);
-    	} else if (num == 3) {
-    		return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_COPYPATH);
-    	}
+        if (num == 0) {
+            return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET);
+        } else if (num == 1) {
+            return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_RUN);
+        } else if (num == 2) {
+            return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_EXPLORE);
+        } else if (num == 3) {
+            return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_COPYPATH);
+        }
         return null;
     }
 
+    /**
+     * Return the quotes setted in EasyExplorePreferencePage.
+     * @return EasyShellQuotes
+     */
+    public EasyShellQuotes getQuotes() {
+        return EasyShellQuotes.valueOf(getPreferenceStore().getString(EasyShellPreferencePage.P_QUOTES_LIST_STR));
+    }
+
+    /**
+     * Return the Debug Yes or No setted in EasyExplorePreferencePage.
+     * @return boolean
+     */
     public boolean isDebug() {
-    	return debug;
+        //return debug;
+        String dbgStr = getPreferenceStore().getString(EasyShellPreferencePage.P_DEBUG_LIST_STR);
+        if (dbgStr != null && dbgStr.length() != 0)
+            return EasyShellDebug.valueOf(dbgStr) == EasyShellDebug.debugYes;
+        else
+            return false;
+    }
+
+    /**
+     * Return the String Tokenizer Yes or No setted in EasyExplorePreferencePage.
+     * @return boolean
+     */
+    public boolean isTokenizer() {
+        String tokenizerStr = getPreferenceStore().getString(EasyShellPreferencePage.P_TOKENIZER_LIST_STR);
+        if (tokenizerStr != null && tokenizerStr.length() != 0)
+            return EasyShellTokenizer.valueOf(tokenizerStr) == EasyShellTokenizer.EasyShellTokenizerYes;
+        else
+            return false;
+    }
+
+    public void sysout(boolean dbg, String str) {
+        if (!dbg || (dbg && isDebug())) {
+            System.out.println("[EasyShell] " + str);
+        }
     }
 }
