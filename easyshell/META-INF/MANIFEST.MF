@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Easy Shell Plugin
+Bundle-SymbolicName: com.tetrade.eclipse.plugins.easyshell; singleton:=true
+Bundle-Version: 1.4.2
+Bundle-Activator: org.eclipse.core.internal.compatibility.PluginActivator
+Bundle-Vendor: Marcel Schoen, Andre Bossert
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.ui,
+ org.eclipse.core.expressions,
+ org.eclipse.core.runtime.compatibility
+Plugin-Class: com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin
+Bundle-ActivationPolicy: lazy

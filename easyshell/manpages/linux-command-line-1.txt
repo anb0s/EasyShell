@@ -1,0 +1,47 @@
+copied from: http://www.tuxfiles.org/linuxhelp/weirdchars.html
+--------------------------------------------------------------
+
+< Spaces and special characters in a file name - 1.1 >
+
+When working at the Linux command line, you may notice that file names with special characters can cause some trouble. Learn how to deal with files that have spaces or special characters in their names, like $, ?, \, *, and so on.
+Author: Nana Långstedt < nana.langstedt at gmail.com >
+tuXfile created: 16 March 2003
+Last updated: 9 October 2005
+
+contents
+Why some file names cause trouble
+1: quoting
+2: escaping
+
+back to
+The shell and command line
+Linux help
+tuXfiles home
+
+< Why some file names cause trouble >
+
+You can have weird file names on your Linux system if you want. For example, nothing prevents you from having spaces in a file name. You can also use some strange characters in a file name, like &, *, \, $, and ? . The problems start when you try to use these file names at the command line.
+You see, when you type commands at the prompt, spaces are often used for separating different commands, the command's arguments, or different files. The shell doesn't know that the bunch of text that follows your command is in fact one single file name. However, there's an easy way to tell the shell that the bunch of text is just one file name, so having spaces in a file name usually isn't a big problem.
+A more problematic thing is special characters in file names. There are some characters that have a special meaning to the bash shell. For example, * and ? are wildcards and $ means a variable. If you can avoid using these characters in normal file names, do avoid it. If you have no idea what are wildcards or why $ means a variable, you have even more reasons to avoid these characters in normal file names!
+Anyway, if you have files with spaces or special characters in their names, you have two ways of dealing with them: quoting the file name or escaping the confusing characters.
+
+< Method 1: quoting >
+
+This is very straightforward: put the file name in single quotes ( ' ) so spaces or special characters won't bother you anymore:
+$ cat 'File With Spaces.txt'
+See why the quotes are so important? If you don't use them, cat tries to view three different files: File, With and Spaces.txt.
+Or another example:
+$ rm 'File*.txt'
+Here the quotes are even more important! Because * is a shell wildcard that matches any character, you'll be in a big trouble if you don't use the quotes. Without the quotes the shell removes File*.txt as intended, but in addition File.txt, File2.txt, File22.txt and others will get removed.
+
+< Method 2: escaping >
+
+Another way to deal with special characters in a file name is to escape the characters. You put a backslash ( \ ) in front of the special character or space. This makes the bash shell treat the special character like a normal character:
+$ cat File\ With\ Spaces.txt
+or:
+$ rm File\*.txt
+But what to do if the file name contains the \ character? Well, you escape it too!
+$ rm File\\.txt
+Of course you can also use the quotes:
+$ rm 'File\.txt'
+It's a matter of personal taste which method you use, quoting or escaping, but personally I prefer quoting. It's much more straightforward in my opinion. However, quoting doesn't always work. For example, if you want to use shell wildcards with a file that has special characters in its name, it's impossible to use quoting because that would escape the wildcards as well, so in these cases it's necessary to escape the special characters with a backslash.

@@ -1,0 +1,58 @@
+http://www.ghisler.ch/wiki/index.php/Command_line_parameters
+
+Command line parameters
+ 
+Total Commander can be called with one or two directories as command line parameters. This will set these directories in one or both of the file windows. This allows you to create multiple icons for Total Commander in progman or the start menu, which start Total Commander in different directories or even with packed files. Furthermore a different ini file than the default wincmd.ini can be specified to allow multiple users on the same machine to have different settings in Total Commander.
+ 
+Syntax:
+ 
+totalcmd.exe [/o] [/n] [Drive1:\Directory1 [Drive2:\Directory2]] [/i=name.ini] [/f=ftpname.ini]
+or:
+totalcmd.exe [/o] [/n] [/L=Drive1:\Directory1] [/R=Drive2:\Directory2] [/i=name.ini] [/f=ftpname.ini]
+ 
+Parameters:
+ 
+Drive:\Directory Loads the first directory passed to Total Commander into the left window, and the second into the right window. Directory names containing spaces must be put in double quotes! Always specify the full path name including the drive! To open a stored FTP connection, use FTPOPEN:stored_ftp_name as path.
+/O If Total Commander is already running, activate it and pass the path(s) in the command line to that instance (overrides the settings in the configuration dialog to have multiple windows)
+/N Opens in any case a new Total Commander window (overrides the settings in the configuration dialog to allow only one copy of Total Commander at a time)
+/L= Set path in left window
+/R= Set path right window
+/S Interprets the passed dirs as source/target instead of left/right (for usage with /O). For example, a dir passed with /R= will be interpreted as the target dir.
+/S=C Start "Compare by content" without TC main window, e.g. totalcmd.exe /S=C c:\file1 d:\file2
+/S=L Start Lister directly, pass file name to it for viewing (requires full name including path). May include bookmark in html files, e.g. c:\test\test.html#bookmark
+Accepts additional parameters separated by a colon, e.g. /S=L:AT1C1250
+A ANSI/Windows text
+S ASCII/DOS text
+V Variable width text
+T1..T7 View mode 1-7 (1: Text, 2: Binary, 3: Hex, 4: Multimedia, 5: HTML, 6:Unicode, 7: UTF-8)
+C<nr> Codepage, e.g. C1251 for Cyrillic
+N Auto-detect, but no multimedia or plugins allowed
+P<x> As LAST parameter: Choose plugin, e.g. /S=L:Piclview for iclview plugin (As shown in Lister title)
+/S=P:PORT Start a parallel or USB port server for direct cable connection (Use LPT1 or USB as port names)
+/S=S Start "Synchronize dirs" directly, accepts two paths as parameters, or alternatively a settings name in the form /S=S:SettingsName
+If the parameter begins with an equal sign "=", e.g. /S=S:=SettingsName, the comparison will start immediately. If the equal sign is the only parameter, e.g. /S=S:= , the comparison will start with the passed directories and last used options.
+/O=list_name Only combined with /S=S: Passes list file for function "Only selected (in main window)", e.g. /O=%F
+/T Opens the passed dir(s) in new tab(s). Now also works when Total Commander hasn't been open yet.
+/P= Sets the active panel at program start: /P=L left, /P=R right. Overrides wincmd.ini option ActiveRight=.
+/i=name.ini Use a different INI file name.ini instead of wincmd.ini to save settings (see also: INI file description).
+/F=ftpname.ini Use a different INI file name.ini instead of wcx_ftp.ini to save settings for built-in FTP client.
+/d=<x> Delays the start of Total Commander by <x> seconds (meant for the startup folder, if there are problems with other programs, which start at the same time)
+/INSTALLDRIVER (Windows NT-based systems) Install parallel port driver - only needed if you want to use the parallel port connection as a normal user and not as an administrator. Needs to be run as an administrator.
+/INSTALLDRIVERQ Like /INSTALLDRIVER, but silent installation
+/REMOVEDRIVER (Windows NT-based systems) Removes the driver installed with the switch /INSTALLDRIVER
+/REMOVEDRIVERQ Like /REMOVEDRIVER, but silent removal
+ 
+The switches are NOT case sensitive.
+ 
+Examples:
+ 
+totalcmd.exe c:\windows left window is loaded with c:\windows
+totalcmd.exe d:\data c:\programs left: d:\data, right: c:\programs
+totalcmd.exe /R=d:\data right window: d:\data
+totalcmd.exe "d:\Letters to Mr. Smith" left: long name -> in double quotes!
+totalcmd.exe /R="d:\Letters from Miller" right window loaded with long name
+totalcmd.exe c:\data\backup.zip opens backup.zip in the left window
+totalcmd.exe /I=Miller.ini /F=MFtp.ini use Miller.ini instead of wincmd.ini for all settings, and MFtp.ini for FTP
+totalcmd.exe /O /L=c:\ /R="d:\doc" Activate already running Total Commander and set the left path to c:\, and the right path to d:\doc
+totalcmd.exe /O /S /R=c:\somepath Open c:\somepath in the current TARGET panel of the running program. Explanation: /S causes Total Commander to read /L as source and /R as target directory instead of left and right.
+totalcmd.exe /O /T /L=c:\somepath Open a new directory tab on the left side of the already running Total commander with c:\somepath in it.

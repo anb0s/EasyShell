@@ -1,4 +1,4 @@
-Easy Shell 1.4.1 plugin for Eclipse
+Easy Shell 1.4.2 plugin for Eclipse
 -----------------------------------
 
 This plugin allows to open a shell window or file manager from the
@@ -25,6 +25,8 @@ Windows:
   https://sourceforge.net/projects/console
 - DOS-Shell / TotalCommander
   http://www.ghisler.com
+- Git (Bash) / Explorer (check path of Git-bash executable!)
+  http://msysgit.github.io
 
 Unix / Linux:
 - KDE Konsole / Konqueror and Dolphin

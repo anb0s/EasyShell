@@ -1,6 +1,11 @@
 Easy Shell Plugin Change History
 --------------------------------
 
+1.4.2 (by anb0s at 2013-07-21)
+------------------------------
++ added new preset "Windows Git-Bash / Explorer"
+  https://sourceforge.net/p/pluginbox/feature-requests/12/
+
 1.4.1 (by anb0s at 2013-04-01)
 ------------------------------
 ! fixed issues:

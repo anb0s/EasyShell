@@ -1,0 +1,4 @@
+anb0s = Andre Bossert <anb0s@users.sourceforge.net>
+marcelschoen = Marcel Schoen <marcelschoen@users.sourceforge.net>
+(no author) = unknown <unknown@users.sourceforge.net
+root = unknown <unknown@users.sourceforge.net>

@@ -1,0 +1,162 @@
+---------------------------------------------------------------------------------------------------------
+copied from: http://manpages.ubuntu.com/manpages/hardy/man1/konsole.1.html
+---------------------------------------------------------------------------------------------------------
+
+NAME
+       Konsole - X terminal emulator for KDE.
+
+SYNOPSIS
+       Konsole [Qt-options] [KDE-options] [options] [args]
+
+DESCRIPTION
+       Konsole  is  an  X  terminal  emulation  which  provides a command-line
+       interface (CLI)  while  using  the  graphical  K  Desktop  Environment.
+       Konsole  helps to better organize user’s desktop by containing multiple
+       sessions in a single window (a less cluttered desktop).
+
+       Konsole advanced features include simple configuration and the  ability
+       to  use  multiple terminal shells in a single window, making for a less
+       cluttered desktop.
+
+       Using Konsole, a user can open:
+
+              Linux console sessions
+
+              Shell sessions
+
+              Screen sessions
+
+              Midnight Commander file manager sessions
+
+              Root console sessions
+
+              Root Midnight Commander sessions
+
+              User created sessions
+
+       These sessions can be renamed to  help  you  keep  track  of  all  your
+       shells, or signaled (STOP, CONT, HUP, INT, TERM, KILL).
+
+       For more control over konsole, a user can: hide/show the menubar and/or
+       frame; select the size of a konsole window, fonts, color  schemes,  and
+       key  mapping;  change  location of the scrollbar or hide the scrollbar;
+       change location of the tabbar or hide the tabbar.
+
+       All chosen settings can be made the default for forthcoming sessions by
+       saving them.
+
+OPTIONS
+   Konsole specific options:
+       --name <name>
+              Set window class
+
+       --ls   Start login shell -T <title> Set the window title
+
+       --tn <terminal>
+              Specify  terminal  type  as  set in the TERM [xterm] environment
+              variable
+
+       --noclose
+              Do not close Konsole when command exits
+
+       --nohist
+              Do not save lines in history
+
+       --nomenubar
+              Do not display menubar
+
+       --notabbar, --notoolbar
+              Do not display tab bar
+
+       --noframe
+              Do not display frame
+
+       --noscrollbar
+              Do not display scrollbar
+
+       --noxft
+              Do not use Xft (anti-aliasing)
+
+       --vt_sz CCxLL
+              Terminal size in columns x lines
+
+       --noresize
+              Terminal size is fixed
+
+       --type <type>
+              Start with given session type
+
+       --types
+              List available session types
+
+       --keytab <name>
+              Set keytab to ’name’
+
+       --keytabs
+              List available keytabs
+
+       --profile <name>
+              Start with given session profile
+
+       --profiles
+              List available session profiles
+
+       --schema <name>
+              | <file>  Set schema to ’name’ or use ’file’
+
+       --schemas, --schemata
+              List available schemata
+
+       --script
+              Enable extended DCOP Qt functions
+
+       --workdir <dir>
+              Change working directory to ’dir’
+
+       -e <command> [ arguments ]
+              Execute ’command’ instead of shell.  It  also  sets  the  window
+              title  and  icon  name  to  be the basename of the program being
+              executed if neither -T nor -n are given  on  the  command  line.
+              This must be the last option on the command line.
+
+   Arguments:
+       args   Arguments for ’command’
+
+   Generic options:
+       --help Show help about options
+
+       --help-qt
+              Show Qt specific options
+
+       --help-kde
+              Show KDE specific options
+
+       --help-all
+              Show all options
+
+       --author
+              Show author information
+
+       -v, --version
+              Show version information
+
+       --license
+              Show license information
+
+       --     End of options
+
+SEE ALSO
+       Full  user documentation is available through the KDE Help Center.  You
+       can also enter the URL help:/konsole/ directly into  konqueror  or  you
+       can run 'helpcenter help:/konsole/' from the command-line.
+
+       Konsole homepage: http://konsole.kde.org/
+
+AUTHORS
+       Kurt V. Hindenburg <kurt.hindenburg@kdemail.net>
+
+       Lars Doelle <lars.doelle@on-line.de>
+
+OTHER
+       This   manual   page   was   written  by  Ana  Beatriz  Guerrero  Lopez
+       <ana@ekaia.org> for the Debian system (but may be used by others).
