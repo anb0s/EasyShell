@@ -133,6 +133,12 @@ public class EasyShellPreferencePage
 		                "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''{3}''",
 		                "explorer.exe /select, {2} ",
 		                "{2}{5}"
+        ),
+        cmdWinConEmu(11,	"Windows ConEmu / Explorer",
+                "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd cmd",
+                "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd \"{3}\"",
+                "explorer.exe /select, {2} ",
+                "{2}{5}"
         );
         // attributes
         private final int id;
