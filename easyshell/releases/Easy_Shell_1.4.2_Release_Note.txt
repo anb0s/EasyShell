@@ -2,7 +2,7 @@
 Easy Shell 1.4.2 Release Note
 -------------------------------
 
-by anb0s at 2014-07-13
+by anb0s at 2014-07-14
 
 Changes:
 --------
@@ -15,7 +15,7 @@ Changes:
   https://sourceforge.net/p/pluginbox/feature-requests/16/
 
 
-Tested with Windows 7 x64 (Cmd, PowerShell 1.0, Cygwin-bash, Console 2.0, TotalCommander 8.01, Git-bash, ConEmuPack.140505 )
+Tested with Windows 7 x64 (Cmd, PowerShell 1.0, Cygwin-bash, Console 2.0, TotalCommander 8.01, Git-bash, ConEmuPack.140505)
 and Linux (KDE / Kubuntu 12.04, Gnome / Ubuntu 12.04)
 
 Installation:
