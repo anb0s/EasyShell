@@ -134,7 +134,7 @@ public class EasyShellPreferencePage
 		                "explorer.exe /select, {2} ",
 		                "{2}{5}"
         ),
-        cmdWinConEmu(11,	"Windows ConEmu / Explorer",
+        cmdWinConEmu(12,	"Windows ConEmu / Explorer",
                 "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd cmd",
                 "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd \"{3}\"",
                 "explorer.exe /select, {2} ",
