@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2013 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2014 by Marcel Schoen and Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,17 +25,22 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.tetrade.eclipse.plugins.easyshell.EasyShellMyAction;
+import com.tetrade.eclipse.plugins.easyshell.Action;
 import com.tetrade.eclipse.plugins.easyshell.EditorPropertyTester;
-import com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction;
+import com.tetrade.eclipse.plugins.easyshell.actions.ActionDelegate;
 
-public class EasyShellCommand extends AbstractHandler {
+public class CommandHandler extends AbstractHandler {
 
     public Object execute(ExecutionEvent event) throws ExecutionException {
         IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-        EasyShellAction action = EditorPropertyTester.hasResourceSelection(activePart);
+        ActionDelegate action = EditorPropertyTester.hasResourceSelection(activePart);
         if (action != null) {
-            EasyShellMyAction act = new EasyShellMyAction(event.getCommand().getId());
+        	String id = event.getCommand().getId();
+        	String parameter = event.getParameter("com.tetrade.eclipse.plugins.easyshell.OpenParameter");
+            if (parameter != null) {
+            	id += "-" + parameter;
+            }
+            Action act = new Action(id);
             action.run((IAction)act);
         }
         return null;

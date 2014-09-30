@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2014 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2014 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,31 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package com.tetrade.eclipse.plugins.easyshell;
+package com.tetrade.eclipse.plugins.easyshell.preferences;
 
-import java.io.File;
+public class EasyShellPreferencePage1 extends EasyShellPreferencePage {
 
-public class Resource {
-
-    private File file = null;
-    private String projectName = null;
-
-    public Resource(Resource myRes) {
-        file = myRes.getFile();
-        projectName = myRes.getProjectName();
-    }
-
-    public Resource(File myFile, String myProjectName) {
-        file = myFile;
-        projectName = myProjectName;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
+	public EasyShellPreferencePage1() {
+		super(1);
+	}
 
 }

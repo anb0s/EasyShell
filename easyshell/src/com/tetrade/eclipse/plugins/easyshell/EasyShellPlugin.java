@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2013 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2014 by Marcel Schoen and Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,10 +32,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellDebug;
 import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage;
-import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage.EasyShellDebug;
-import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage.EasyShellQuotes;
-import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage.EasyShellTokenizer;
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferenceEntry;
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellQuotes;
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellTokenizer;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -111,7 +112,7 @@ public class EasyShellPlugin extends AbstractUIPlugin {
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeDefaultPreferences(org.eclipse.jface.preference.IPreferenceStore)
      */
     protected void initializeDefaultPreferences(IPreferenceStore store) {
-        EasyShellPreferencePage pref = new EasyShellPreferencePage();
+        EasyShellPreferencePage pref = new EasyShellPreferencePage(0);
         store = pref.getPreferenceStore();
         super.initializeDefaultPreferences(store);
     }
@@ -120,25 +121,20 @@ public class EasyShellPlugin extends AbstractUIPlugin {
      * Return the target program setted in EasyExplorePreferencePage.
      * @return String
      */
-    public String getTarget(int num) {
-        if (num == 0) {
-            return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET);
-        } else if (num == 1) {
-            return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_RUN);
-        } else if (num == 2) {
-            return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_EXPLORE);
-        } else if (num == 3) {
-            return getPreferenceStore().getString(EasyShellPreferencePage.P_TARGET_COPYPATH);
-        }
-        return null;
+    public String getTarget(int commandId, int instId) {
+    	return getPreferenceStore().getString(EasyShellPreferencePage.getPreferenceString(commandId, instId));
     }
 
     /**
      * Return the quotes setted in EasyExplorePreferencePage.
      * @return EasyShellQuotes
      */
-    public EasyShellQuotes getQuotes() {
-        return EasyShellQuotes.valueOf(getPreferenceStore().getString(EasyShellPreferencePage.P_QUOTES_LIST_STR));
+    public EasyShellQuotes getQuotes(int instId) {
+    	String quotesStr = getPreferenceStore().getString(EasyShellPreferenceEntry.preferenceQuotes.getString(instId));
+    	if (quotesStr != null && quotesStr.length() != 0)
+    		return EasyShellQuotes.valueOf(quotesStr);
+    	else
+    		return EasyShellQuotes.quotesNo;
     }
 
     /**
@@ -147,7 +143,7 @@ public class EasyShellPlugin extends AbstractUIPlugin {
      */
     public boolean isDebug() {
         //return debug;
-        String dbgStr = getPreferenceStore().getString(EasyShellPreferencePage.P_DEBUG_LIST_STR);
+        String dbgStr = getPreferenceStore().getString(EasyShellPreferenceEntry.preferenceDebug.getString());
         if (dbgStr != null && dbgStr.length() != 0)
             return EasyShellDebug.valueOf(dbgStr) == EasyShellDebug.debugYes;
         else
@@ -158,8 +154,8 @@ public class EasyShellPlugin extends AbstractUIPlugin {
      * Return the String Tokenizer Yes or No setted in EasyExplorePreferencePage.
      * @return boolean
      */
-    public boolean isTokenizer() {
-        String tokenizerStr = getPreferenceStore().getString(EasyShellPreferencePage.P_TOKENIZER_LIST_STR);
+    public boolean isTokenizer(int instId) {
+        String tokenizerStr = getPreferenceStore().getString(EasyShellPreferenceEntry.preferenceTokenizer.getString(instId));
         if (tokenizerStr != null && tokenizerStr.length() != 0)
             return EasyShellTokenizer.valueOf(tokenizerStr) == EasyShellTokenizer.EasyShellTokenizerYes;
         else

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2013 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2014 by Marcel Schoen and Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,9 +35,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin;
 import com.tetrade.eclipse.plugins.easyshell.Resource;
 import com.tetrade.eclipse.plugins.easyshell.ResourceUtils;
-import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage.EasyShellQuotes;
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellQuotes;
 
-public class EasyShellAction implements IObjectActionDelegate {
+public class ActionDelegate implements IObjectActionDelegate {
 
     private Resource[] resource = null;
     private IStructuredSelection currentSelection;
@@ -45,7 +45,7 @@ public class EasyShellAction implements IObjectActionDelegate {
     /**
      * Constructor for EasyExploreAction.
      */
-    public EasyShellAction() {
+    public ActionDelegate() {
         super();
     }
 
@@ -68,7 +68,8 @@ public class EasyShellAction implements IObjectActionDelegate {
             EasyShellPlugin.log("Wrong Selection");
             return;
         }
-
+        
+        // get the ID + instance
         String ActionIDStr = action.getId();
         EasyShellPlugin.getDefault().sysout(true, "Action ID: >" + ActionIDStr + "<");
         String[] EasyShellActionStr = { "com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
@@ -76,6 +77,24 @@ public class EasyShellAction implements IObjectActionDelegate {
                                         "com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
                                         "com.tetrade.eclipse.plugins.easyshell.command.copyPath"
         };
+
+        // check instance
+        int InstanceIDNum = 0;
+        if (ActionIDStr.contains("-")) {
+        	String[] parts 		 = ActionIDStr.split("-");
+        	ActionIDStr   		 = parts[0]; // ID
+        	InstanceIDNum = Integer.parseInt(parts[1]);
+        }
+
+        if (InstanceIDNum > 2) {
+            MessageDialog.openInformation(
+                new Shell(),
+                "Easy Shell",
+                "Wrong Instance ID");
+            EasyShellPlugin.log("Wrong Instance ID");
+            return;
+        }
+
         int ActionIDNum = -1;
         for (int i=0;i<EasyShellActionStr.length;i++)
         {
@@ -133,8 +152,8 @@ public class EasyShellAction implements IObjectActionDelegate {
                 }
 
                 try {
-                    String target = EasyShellPlugin.getDefault().getTarget(ActionIDNum);
-                    EasyShellQuotes quotes = EasyShellPlugin.getDefault().getQuotes();
+                    String target = EasyShellPlugin.getDefault().getTarget(ActionIDNum, InstanceIDNum);
+                    EasyShellQuotes quotes = EasyShellPlugin.getDefault().getQuotes(InstanceIDNum);
                     String[] args = new String[6];
 
                     args[0] = drive;
@@ -158,7 +177,7 @@ public class EasyShellAction implements IObjectActionDelegate {
                     // handling command line
                     else {
                     	// string tokenizer enabled ?
-                    	if (EasyShellPlugin.getDefault().isTokenizer())
+                    	if (EasyShellPlugin.getDefault().isTokenizer(InstanceIDNum))
                     	{
 							StringTokenizer st = new StringTokenizer(target);
 							String[] cmds = new String[st.countTokens()];

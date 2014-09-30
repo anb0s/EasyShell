@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2013 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2014 by Marcel Schoen and Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@ import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchPart;
 
-import com.tetrade.eclipse.plugins.easyshell.actions.EasyShellAction;
+import com.tetrade.eclipse.plugins.easyshell.actions.ActionDelegate;
 
 public class EditorPropertyTester extends PropertyTester {
 
@@ -37,10 +37,10 @@ public class EditorPropertyTester extends PropertyTester {
         return false;
     }
 
-    static public EasyShellAction hasResourceSelection(IWorkbenchPart part) {
+    static public ActionDelegate hasResourceSelection(IWorkbenchPart part) {
         ISelection selection = ResourceUtils.getResourceSelection(part);
         if (selection != null) {
-            EasyShellAction action = new EasyShellAction();
+            ActionDelegate action = new ActionDelegate();
             action.selectionChanged(null, selection);
             if (action.isEnabled())
                 return action;
