@@ -5,6 +5,8 @@ Easy Shell Plugin Change History
 ------------------------------
 + added new preset "Windows Git-Bash / Explorer"
   https://sourceforge.net/p/pluginbox/feature-requests/12/
++ added new preset "Windows ConEmu / Explorer"
+  https://sourceforge.net/p/pluginbox/feature-requests/16/
 
 1.4.1 (by anb0s at 2013-04-01)
 ------------------------------

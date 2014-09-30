@@ -2,7 +2,7 @@
 Easy Shell 1.4.2 Release Note
 -------------------------------
 
-by anb0s at 2014-07-14
+by anb0s at 2014-07-21
 
 Changes:
 --------

@@ -27,6 +27,8 @@ Windows:
   http://www.ghisler.com
 - Git (Bash) / Explorer (check path of Git-bash executable!)
   http://msysgit.github.io
+- ConEmu / Explorer (check path of ConEmu executable!)
+  https://code.google.com/p/conemu-maximus5/
 
 Unix / Linux:
 - KDE Konsole / Konqueror and Dolphin
