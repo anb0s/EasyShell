@@ -20,17 +20,25 @@ package com.tetrade.eclipse.plugins.easyshell;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 
 import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellDebug;
 import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage;
@@ -42,6 +50,14 @@ import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellTokenizer;
  * The main plugin class to be used in the desktop.
  */
 public class EasyShellPlugin extends AbstractUIPlugin {
+
+    public static final String PLUGIN_ID 			= "com.tetrade.eclipse.plugins.easyshell";
+    public static final String IMAGE_PATH 			= "icon/";
+    public static final String IMAGE_OPEN_ID 		= "easyshell.gif";
+    public static final String IMAGE_RUN_ID 		= "run_exc.gif";
+    public static final String IMAGE_EXPLORE_ID 	= "fldr_obj.gif";
+    public static final String IMAGE_COPYPATH_ID	= "copy_edit.gif";
+
     //The shared instance.
     private static EasyShellPlugin plugin;
     //Resource bundle.
@@ -66,6 +82,25 @@ public class EasyShellPlugin extends AbstractUIPlugin {
     public static EasyShellPlugin getDefault() {
         return plugin;
     }
+
+    protected void initializeImageRegistry(ImageRegistry registry) {
+        Bundle bundle = Platform.getBundle(PLUGIN_ID);
+        addImageToRegistry(registry, bundle, IMAGE_PATH + IMAGE_OPEN_ID, IMAGE_OPEN_ID);
+        addImageToRegistry(registry, bundle, IMAGE_PATH + IMAGE_RUN_ID, IMAGE_RUN_ID);
+        addImageToRegistry(registry, bundle, IMAGE_PATH + IMAGE_EXPLORE_ID, IMAGE_EXPLORE_ID);
+        addImageToRegistry(registry, bundle, IMAGE_PATH + IMAGE_COPYPATH_ID, IMAGE_COPYPATH_ID);
+     }
+
+    protected void addImageToRegistry(ImageRegistry registry, Bundle bundle, String imagePath, String image_id) {
+        IPath path = new Path(imagePath);
+        URL url = FileLocator.find(bundle, path, null);
+        ImageDescriptor desc = ImageDescriptor.createFromURL(url);
+        registry.put(image_id, desc);    	
+    }
+    
+ 	public static ImageDescriptor getImageDescriptor(String id) {
+ 		return getDefault().getImageRegistry().getDescriptor(id);
+ 	}
 
     /**
      * Returns the workspace instance.

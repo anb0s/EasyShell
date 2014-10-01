@@ -127,6 +127,29 @@
             </command>
          </menu>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <dynamic
+               class="com.tetrade.eclipse.plugins.easyshell.ContributionItem1"
+               id="com.tetrade.eclipse.plugins.easyshell.dynamic1">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <test
+                        forcePluginActivation="true"
+                        property="com.tetrade.eclipse.plugins.easyshell.EditorPropertyTester.hasResourceSelection">
+                  </test>
+               </with>
+            </visibleWhen>
+         </dynamic>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            class="com.tetrade.eclipse.plugins.easyshell.command.DefineCommands"
+            locationURI="popup:org.eclipse.ui.popup.any?after=group.open">
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">

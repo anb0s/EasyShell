@@ -8,13 +8,13 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 
-public class ContributionItem2 extends ContributionItem {
+public class ContributionItem1 extends ContributionItem {
 
-	public ContributionItem2() {
+	public ContributionItem1() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ContributionItem2(String id) {
+	public ContributionItem1(String id) {
 		super(id);
 		// TODO Auto-generated constructor stub
 	}
