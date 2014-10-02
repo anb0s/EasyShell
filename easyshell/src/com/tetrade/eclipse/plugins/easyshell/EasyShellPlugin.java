@@ -172,6 +172,10 @@ public class EasyShellPlugin extends AbstractUIPlugin {
     		return EasyShellQuotes.quotesNo;
     }
 
+    static public int getInstanceNumber() {
+    	return 3;
+    }
+    
     /**
      * Return the Debug Yes or No setted in EasyExplorePreferencePage.
      * @return boolean

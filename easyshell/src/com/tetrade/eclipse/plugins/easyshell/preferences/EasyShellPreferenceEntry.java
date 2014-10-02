@@ -57,6 +57,7 @@ public enum EasyShellPreferenceEntry {
         for(int i = 0; i < EasyShellPreferenceEntry.values().length; i++) {
             if (EasyShellPreferenceEntry.values()[i].getId() == id) {
                 ret = EasyShellPreferenceEntry.values()[i];
+                break;
             }
         }
         return ret;

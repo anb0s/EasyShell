@@ -22,79 +22,79 @@ package com.tetrade.eclipse.plugins.easyshell.preferences;
  * Commands.
  */
 public enum EasyShellCommand {
-    cmdUnknown(0, 	"Unknown shell / file browser",
+    cmdUnknown(0, 	"Unknown", "shell", "file browser", null,
                     "open {1}",
                     "cd {1} && run ./''{3}''",
                     "explore {2}",
                     "{2}{5}"
     ),
-    cmdWinDOS(1, 	"Windows DOS-Shell / Explorer",
+    cmdWinDOS(1, 	"Windows", "DOS-Shell", "Explorer", null,
                     "cmd.exe /C start \"{4}\" /D {1} cmd.exe /K",
                     "cmd.exe /C start \"{4}\" /D {1} {3}",
                     "explorer.exe /select, {2}",
                     "{2}{5}"
     ),
-    cmdWinPower(2,	"Windows PowerShell / Explorer",
+    cmdWinPower(2,	"Windows", "PowerShell", "Explorer", null,
                     "cmd.exe /C start \"{4}\" /D {1} powershell.exe",
                     "cmd.exe /C start \"{4}\" /D {1} powershell.exe -command ./''{3}''",
                     "explorer.exe /select, {2}",
                     "{2}{5}"
     ),
-    cmdWinCyg(3,	"Windows Cygwin (Bash) / Explorer",
+    cmdWinCyg(3,	"Windows", "Cygwin (Bash)", "Explorer", null,
                     "cmd.exe /C start \"{4}\" /D {1} \"C:\\Cygwin\\bin\\bash.exe\"",
                     "cmd.exe /C start \"{4}\" /D {1} \"C:\\Cygwin\\bin\\bash.exe\" -c ./''{3}''",
                     "explorer.exe /select, {2} ",
                     "{2}{5}"
     ),
-    cmdKonsoleKDEKonqueror(4, "KDE Konsole / Konqueror",
+    cmdKonsoleKDEKonqueror(4, "Linux", "KDE Konsole", "Konqueror", null,
                     "konsole --noclose --workdir {1}",
                     "konsole --noclose --workdir {1} -e ./''{3}''",
                     "konqueror file:\"{2}\"",
                     "{2}{5}"
     ),
-    cmdKonsoleGnome(5, "Gnome Terminal / Nautilus",
+    cmdKonsoleGnome(5, "Linux", "Gnome Terminal", "Nautilus", null,
                     "gnome-terminal --working-directory=\"{1}\"",
                     "gnome-terminal --working-directory=\"{1}\" --command=./''{3}''",
                     "nautilus {2}",
                     "{2}{5}"
     ),
-    cmdXtermDtfile(6, "CDE Xterm / Dtfile",
+    cmdXtermDtfile(6, "Linux" , "CDE Xterm", "Dtfile", null,
                     "cd {1} && xterm",
                     "cd {1} && xterm -e ./''{3}''",
                     "cd {1} && dtfile",
                     "{2}{5}"
     ),
-    cmdTerminalFinder(7, "MAC OS X Terminal / Finder",
+    cmdTerminalFinder(7, "MAC OS X", "Terminal", "Finder", null,
                     "open -a Terminal {1}",
                     "open -a Terminal {2}",
                     "open -R {2}",
                     "{2}{5}"
     ),
-    cmdKonsoleKDEDolphin(8, "KDE Konsole / Dolphin",
+    cmdKonsoleKDEDolphin(8, "Linux" , "KDE Konsole", "Dolphin", null,
 	                "konsole --workdir {1}",
 	                "konsole --workdir {1} --noclose -e {2}",
 	                "dolphin --select {2}",
 	                "{2}{5}"
     ),
-    cmdWinConsole(9, 	"Windows Console / Explorer",
+    cmdWinConsole(9, "Windows", "Console", "Explorer", null,
 	                "console.exe -w \"{4}\" -d {1}",
 	                "console.exe -w \"{4}\" -d {1} -r \"/k\\\"{3}\\\"\"",
 	                "explorer.exe /select, {2}",
 	                "{2}{5}"
     ),
-    cmdWinTotalCommander(10, 	"Windows DOS-Shell / TotalCommander",
+    cmdWinTotalCommander(10, "Windows", "DOS-Shell", "TotalCommander", null,
 	                "cmd.exe /C start \"{4}\" /D {1} cmd.exe /K",
 	                "cmd.exe /C start \"{4}\" /D {1} {3}",
 	                "totalcmd.exe /O /T {1}",
 	                "{2}{5}"
     ),
-    cmdWinGitBash(11,	"Windows Git-Bash / Explorer",
+    cmdWinGitBash(11, "Windows", "Git-Bash", "Explorer", null,
 	                "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i",
 	                "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''{3}''",
 	                "explorer.exe /select, {2} ",
 	                "{2}{5}"
     ),
-    cmdWinConEmu(12,	"Windows ConEmu / Explorer",
+    cmdWinConEmu(12, "Windows", "ConEmu", "Explorer", null,
             "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd cmd",
             "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd \"{3}\"",
             "explorer.exe /select, {2} ",
@@ -102,15 +102,25 @@ public enum EasyShellCommand {
     );
     // attributes
     private final int id;
+    private final String os;
+    private final String console;
+    private final String explorer;
     private final String label;
     private final String openCmd;
     private final String runCmd;
     private final String exploreCmd;
     private final String copyPathCmd;
     // construct
-    EasyShellCommand(int id, String label, String openCmd, String runCmd, String exploreCmd, String copyPathCmd) {
+    EasyShellCommand(int id, String os, String console, String explorer, String label, String openCmd, String runCmd, String exploreCmd, String copyPathCmd) {
         this.id = id;
-        this.label = label;
+        this.os = os;
+        this.console  = console;
+        this.explorer = explorer;
+        if (label != null) {
+        	this.label = label;
+        } else {
+        	this.label = os + " " + console + " / " + explorer;
+        }
         this.openCmd = openCmd;
         this.runCmd = runCmd;
         this.exploreCmd = exploreCmd;
@@ -118,6 +128,15 @@ public enum EasyShellCommand {
     }
     public int getId() {
         return id;
+    }
+    public String getOS() {
+        return os;
+    }
+    public String getConsole() {
+        return console;
+    }
+    public String getExplorer() {
+        return explorer;
     }
     public String getLabel() {
         return label;

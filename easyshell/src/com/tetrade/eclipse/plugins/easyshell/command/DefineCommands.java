@@ -11,6 +11,8 @@ import org.eclipse.ui.menus.IContributionRoot;
 import org.eclipse.ui.services.IServiceLocator;
 
 import com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin;
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellCommand;
+import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferenceEntry;
 
 public class DefineCommands extends ExtensionContributionFactory {
 
@@ -33,23 +35,37 @@ public class DefineCommands extends ExtensionContributionFactory {
         additions.addContributionItem(item1, null);
 		*/
 
+		for (int i = 0; i < EasyShellPlugin.getInstanceNumber(); i++) {
+			String instanceId 		= Integer.toString(i);
+			String presetId   		= EasyShellPlugin.getDefault().getTarget(EasyShellPreferenceEntry.preferenceListString.getId(), i);
+			EasyShellCommand cmd	= EasyShellCommand.valueOf(presetId);
+			String consoleName 		= cmd.getOS() + " " + cmd.getConsole();
+			String explorerName		= cmd.getOS() + " " + cmd.getExplorer();
+			addItem(serviceLocator, additions,
+					"EasyShell Open with " + consoleName,
+					"com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
+					"com.tetrade.eclipse.plugins.easyshell.Open.InstanceID",
+					instanceId,
+					EasyShellPlugin.IMAGE_OPEN_ID);
+			addItem(serviceLocator, additions,
+					"EasyShell Run with " + consoleName,
+					"com.tetrade.eclipse.plugins.easyshell.command.shellRun",
+					"com.tetrade.eclipse.plugins.easyshell.Run.InstanceID",
+					instanceId,
+					EasyShellPlugin.IMAGE_RUN_ID);
+			addItem(serviceLocator, additions,
+					"EasyShell Explore wiht " + explorerName,
+					"com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
+					"com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID",
+					instanceId,
+					EasyShellPlugin.IMAGE_EXPLORE_ID);		
+		}
+		/*
 		addItem(serviceLocator, additions,
 				"EasyShell Open 0",
 				"com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
-				"com.tetrade.eclipse.plugins.easyshell.OpenParameter",
+				"com.tetrade.eclipse.plugins.easyshell.ParameterInstanceID",
 				"0",
-				EasyShellPlugin.IMAGE_OPEN_ID);
-		addItem(serviceLocator, additions,
-				"EasyShell Open 1",
-				"com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
-				"com.tetrade.eclipse.plugins.easyshell.OpenParameter",
-				"1",
-				EasyShellPlugin.IMAGE_OPEN_ID);
-		addItem(serviceLocator, additions,
-				"EasyShell Open 2",
-				"com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
-				"com.tetrade.eclipse.plugins.easyshell.OpenParameter",
-				"2",
 				EasyShellPlugin.IMAGE_OPEN_ID);
 		addItem(serviceLocator, additions,
 				"EasyShell Run",
@@ -61,6 +77,7 @@ public class DefineCommands extends ExtensionContributionFactory {
 				"com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
 				null, null,
 				EasyShellPlugin.IMAGE_EXPLORE_ID);
+		*/
 		addItem(serviceLocator, additions,
 				"EasyShell Copy Path",
 				"com.tetrade.eclipse.plugins.easyshell.command.copyPath",
@@ -69,9 +86,9 @@ public class DefineCommands extends ExtensionContributionFactory {
 	}
 
     private void addItem(IServiceLocator serviceLocator, IContributionRoot additions,
-    		String commandLabel, String commandId, String paramId, String paramValue, String commandImageId) {
-		CommandContributionItemParameter param = new CommandContributionItemParameter(serviceLocator, "",
-				commandId, SWT.PUSH);
+    					 String commandLabel, String commandId,
+    					 String paramId, String paramValue, String commandImageId) {
+		CommandContributionItemParameter param = new CommandContributionItemParameter(serviceLocator, "", commandId, SWT.PUSH);
 		param.label = commandLabel;
 		param.icon = EasyShellPlugin.getImageDescriptor(commandImageId);
 		if (paramId != null) {
