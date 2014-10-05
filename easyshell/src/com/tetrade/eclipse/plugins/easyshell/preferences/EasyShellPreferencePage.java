@@ -28,6 +28,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -45,25 +46,26 @@ public class EasyShellPreferencePage
     extends PreferencePage
     implements IWorkbenchPreferencePage {
 
-
- 
     /**
      * Preference controls.
      */
+	private Composite targetColumn = null;
+	private Button targetEnabled = null;
     private Combo targetCombo = null;
+    private Button targetOpenEnabled = null;
     private StringFieldEditor targetOpenEditor = null;
     private StringFieldEditor targetRunEditor = null;
     private StringFieldEditor targetExploreEditor = null;
     private StringFieldEditor targetCopyPathEditor = null;
     private Combo quotesCombo = null;
     private Combo debugCombo = null;
-    private Combo TokenizerCombo = null;
+    private Combo tokenizerCombo = null;
 
     /**
      * locals
      */
     private int instanceId = 0;
-    
+
     /**
      * Constructs the preference page.
      */
@@ -86,6 +88,7 @@ public class EasyShellPreferencePage
         EasyShellCommand cmd = getProperCommand();
         // get store
         IPreferenceStore store = getPreferenceStore();
+        store.setDefault(EasyShellPreferenceEntry.preferenceTargetEnabled.getString(instanceId), false);
         // set default commands
         store.setDefault(EasyShellPreferenceEntry.preferenceTargetOpen.getString(instanceId), cmd.getOpenCmd());
         store.setDefault(EasyShellPreferenceEntry.preferenceTargetRun.getString(instanceId), cmd.getRunCmd());
@@ -115,16 +118,26 @@ public class EasyShellPreferencePage
         mainColumn.setFont(parent.getFont());
         mainColumn.setLayout(mainLayout);
 
-        Composite targetColumn = new Composite(mainColumn, SWT.NONE);
+        targetColumn = new Composite(mainColumn, SWT.NONE);
         GridLayout layout = new GridLayout(2, false);
         layout.marginWidth = 0;
         layout.marginHeight = 0;
         targetColumn.setFont(parent.getFont());
         targetColumn.setLayout(layout);
 
+        // --------------------------------- Enabled -------------------------------------------------
+        targetEnabled = new Button(targetColumn, SWT.TOGGLE); // SWT.CHECK
+        targetEnabled.setText("Enabled");
+        //new Label(targetColumn, 0);new Label(targetColumn, 0);
+        targetEnabled.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+            	refreshEnabled();
+            }
+        });
+
         // --------------------------------- Presets -------------------------------------------------
-        Label label = new Label(targetColumn, 0);
-        label.setText("Presets");
+        //Label label = new Label(targetColumn, 0);
+        //label.setText("Presets");
         targetCombo = new Combo(targetColumn, SWT.READ_ONLY | SWT.DROP_DOWN);
         for(int i = 0; i < EasyShellCommand.values().length; i++) {
             targetCombo.add(EasyShellCommand.getFromId(i).getLabel());
@@ -137,6 +150,9 @@ public class EasyShellPreferencePage
         String targetTooltip = "Please enable string tokenizer to pass parameters automatically to command line (prefered solution - quotes not needed).\nOR/AND use double quotes or two single quotes if you want enclose expanded arguments.";
 
         // ---------------------------------- Open ---------------------------------------------------
+//        targetOpenEnabled = new Button(targetColumn, SWT.CHECK); // SWT.CHECK
+//        new Label(targetColumn, 0);
+//        targetOpenEnabled.setText("Enabled");
         targetOpenEditor = new StringFieldEditor(
                 EasyShellPreferenceEntry.preferenceTargetOpen.getString(instanceId),
                 "&Shell Open command:",
@@ -168,9 +184,9 @@ public class EasyShellPreferencePage
         Label tokenizer = new Label(targetColumn, 0);
         tokenizer.setText("Enable string tokenizer");
         tokenizer.setToolTipText("Constructs a string tokenizer for the specified string. The tokenizer uses the default delimiter set,\nwhich is \" \\t\\n\\r\\f\": the space character, the tab character, the newline character,\nthe carriage-return character, and the form-feed character.\nATTENTION: please use it carefully with Add quotes!");
-        TokenizerCombo = new Combo(targetColumn, SWT.READ_ONLY | SWT.DROP_DOWN);
+        tokenizerCombo = new Combo(targetColumn, SWT.READ_ONLY | SWT.DROP_DOWN);
         for(int i = 0; i < EasyShellTokenizer.values().length; i++) {
-        	TokenizerCombo.add(EasyShellTokenizer.getFromId(i).getMode());
+        	tokenizerCombo.add(EasyShellTokenizer.getFromId(i).getMode());
         }
 
         // ----------------------------------- Quotes ------------------------------------------------
@@ -192,18 +208,18 @@ public class EasyShellPreferencePage
         }
 
         // ------------------------------------ Description ------------------------------------------
-        label = new Label(mainColumn, 0);
-        label.setText("Argument {0} is the drive letter on Win32");
-        label = new Label(mainColumn, 0);
-        label.setText("Argument {1} is the parent path*");
-        label = new Label(mainColumn, 0);
-        label.setText("Argument {2} is the full path*");
-        label = new Label(mainColumn, 0);
-        label.setText("Argument {3} is the file name*");
-        label = new Label(mainColumn, 0);
-        label.setText("Argument {4} is the project name");
-        label = new Label(mainColumn, 0);
-        label.setText("Argument {5} is the line separator");
+        Label desc_label = new Label(mainColumn, 0);
+        desc_label.setText("Argument {0} is the drive letter on Win32");
+        desc_label = new Label(mainColumn, 0);
+        desc_label.setText("Argument {1} is the parent path*");
+        desc_label = new Label(mainColumn, 0);
+        desc_label.setText("Argument {2} is the full path*");
+        desc_label = new Label(mainColumn, 0);
+        desc_label.setText("Argument {3} is the file name*");
+        desc_label = new Label(mainColumn, 0);
+        desc_label.setText("Argument {4} is the project name");
+        desc_label = new Label(mainColumn, 0);
+        desc_label.setText("Argument {5} is the line separator");
 
         // -------------------------------------------------------------------------------------------
         // now load the stored data
@@ -220,8 +236,9 @@ public class EasyShellPreferencePage
      */
     private boolean loadStore() {
         IPreferenceStore store = getPreferenceStore();
-        targetCombo.select(store.getInt(EasyShellPreferenceEntry.preferenceListId.getString(instanceId)) + 1); // get index: just for compatibility to old EasyShell version <= 1.2.0
-        String IdStr = store.getString(EasyShellPreferenceEntry.preferenceListString.getString(instanceId)); // get name: new method >= 1.3.0
+        targetEnabled.setSelection(store.getBoolean(EasyShellPreferenceEntry.preferenceTargetEnabled.getString(instanceId)));
+        targetCombo.select(store.getInt(EasyShellPreferenceEntry.preferenceListId.getString(instanceId)) + 1); 	// get index: just for compatibility to old EasyShell version <= 1.2.0
+        String IdStr = store.getString(EasyShellPreferenceEntry.preferenceListString.getString(instanceId)); 	// get name: new method >= 1.3.0
         if (IdStr != null && IdStr.length() > 0) {
             targetCombo.select(EasyShellCommand.valueOf(IdStr).getId());
         }
@@ -247,11 +264,13 @@ public class EasyShellPreferencePage
         if (DebugStr != null && DebugStr.length() > 0) {
             debugCombo.select(EasyShellDebug.valueOf(DebugStr).getId());
         }
-        TokenizerCombo.select(EasyShellTokenizer.EasyShellTokenizerYes.getId()); // just for the case it's new
+        tokenizerCombo.select(EasyShellTokenizer.EasyShellTokenizerYes.getId()); // just for the case it's new
         String TokenizerStr = store.getString(EasyShellPreferenceEntry.preferenceTokenizer.getString(instanceId));
         if (TokenizerStr != null && TokenizerStr.length() > 0) {
-            TokenizerCombo.select(EasyShellTokenizer.valueOf(TokenizerStr).getId());
+            tokenizerCombo.select(EasyShellTokenizer.valueOf(TokenizerStr).getId());
         }
+        // update the enabled state
+        refreshEnabled();
         return true;
     }
 
@@ -262,6 +281,7 @@ public class EasyShellPreferencePage
      */
     private boolean saveStore() {
         IPreferenceStore store = getPreferenceStore();
+        store.setValue(EasyShellPreferenceEntry.preferenceTargetEnabled.getString(instanceId), targetEnabled.getSelection());
         store.setValue(EasyShellPreferenceEntry.preferenceTargetOpen.getString(instanceId), targetOpenEditor.getStringValue());
         store.setValue(EasyShellPreferenceEntry.preferenceTargetRun.getString(instanceId), targetRunEditor.getStringValue());
         store.setValue(EasyShellPreferenceEntry.preferenceTargetExplore.getString(instanceId), targetExploreEditor.getStringValue());
@@ -270,8 +290,24 @@ public class EasyShellPreferencePage
         store.setValue(EasyShellPreferenceEntry.preferenceListString.getString(instanceId), EasyShellCommand.getFromId(targetCombo.getSelectionIndex()).name());
         store.setValue(EasyShellPreferenceEntry.preferenceQuotes.getString(instanceId), EasyShellQuotes.getFromId(quotesCombo.getSelectionIndex()).name());
         store.setValue(EasyShellPreferenceEntry.preferenceDebug.getString(instanceId), EasyShellDebug.getFromId(debugCombo.getSelectionIndex()).name());
-        store.setValue(EasyShellPreferenceEntry.preferenceTokenizer.getString(instanceId), EasyShellTokenizer.getFromId(TokenizerCombo.getSelectionIndex()).name());
+        store.setValue(EasyShellPreferenceEntry.preferenceTokenizer.getString(instanceId), EasyShellTokenizer.getFromId(tokenizerCombo.getSelectionIndex()).name());
         return true;
+    }
+
+    /**
+     * Refreshes the enablement according to enabled check.
+     */
+    private void refreshEnabled() {
+    	boolean enabled = targetEnabled.getSelection();
+    	targetEnabled.setText(enabled ? "Enabled" : "Disabled");
+        targetCombo.setEnabled(enabled);
+        targetOpenEditor.setEnabled(enabled, targetColumn);
+        targetRunEditor.setEnabled(enabled, targetColumn);
+        targetExploreEditor.setEnabled(enabled, targetColumn);
+        targetCopyPathEditor.setEnabled(enabled, targetColumn);
+        quotesCombo.setEnabled(enabled);
+        debugCombo.setEnabled(enabled);
+        tokenizerCombo.setEnabled(enabled);
     }
 
     /**
@@ -294,6 +330,7 @@ public class EasyShellPreferencePage
      */
     private void setToDefaults() {
         IPreferenceStore store = getPreferenceStore();
+        store.setToDefault(EasyShellPreferenceEntry.preferenceTargetEnabled.getString(instanceId));
         store.setToDefault(EasyShellPreferenceEntry.preferenceTargetOpen.getString(instanceId));
         store.setToDefault(EasyShellPreferenceEntry.preferenceTargetRun.getString(instanceId));
         store.setToDefault(EasyShellPreferenceEntry.preferenceTargetExplore.getString(instanceId));

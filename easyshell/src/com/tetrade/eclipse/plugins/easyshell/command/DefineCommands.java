@@ -23,7 +23,7 @@ public class DefineCommands extends ExtensionContributionFactory {
 	@Override
 	public void createContributionItems(IServiceLocator serviceLocator,
 			IContributionRoot additions) {
-		
+
 		/*
 		CommandContributionItemParameter p1 = new CommandContributionItemParameter(serviceLocator, "",
 		        "org.eclipse.ui.file.exit",
@@ -37,7 +37,11 @@ public class DefineCommands extends ExtensionContributionFactory {
 
 		for (int i = 0; i < EasyShellPlugin.getInstanceNumber(); i++) {
 			String instanceId 		= Integer.toString(i);
+			String enabled   		= EasyShellPlugin.getDefault().getTarget(EasyShellPreferenceEntry.preferenceTargetEnabled.getId(), i);
 			String presetId   		= EasyShellPlugin.getDefault().getTarget(EasyShellPreferenceEntry.preferenceListString.getId(), i);
+			EasyShellPlugin.getDefault().sysout(true,"instanceId : " + i + "; presetId : " + presetId);
+			if (enabled == "false" || presetId == null || presetId.isEmpty())
+				continue;
 			EasyShellCommand cmd	= EasyShellCommand.valueOf(presetId);
 			String consoleName 		= cmd.getOS() + " " + cmd.getConsole();
 			String explorerName		= cmd.getOS() + " " + cmd.getExplorer();
@@ -54,11 +58,11 @@ public class DefineCommands extends ExtensionContributionFactory {
 					instanceId,
 					EasyShellPlugin.IMAGE_RUN_ID);
 			addItem(serviceLocator, additions,
-					"EasyShell Explore wiht " + explorerName,
+					"EasyShell Explore with " + explorerName,
 					"com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
 					"com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID",
 					instanceId,
-					EasyShellPlugin.IMAGE_EXPLORE_ID);		
+					EasyShellPlugin.IMAGE_EXPLORE_ID);
 		}
 		/*
 		addItem(serviceLocator, additions,

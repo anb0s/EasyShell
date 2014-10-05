@@ -30,7 +30,8 @@ public enum EasyShellPreferenceEntry {
     preferenceListString(5, "IdStr"),
     preferenceQuotes(6, "QuotesStr"),
     preferenceDebug(7, "DebugStr"),
-    preferenceTokenizer(8, "TokenizerStr");
+    preferenceTokenizer(8, "TokenizerStr"),
+    preferenceTargetEnabled(9, "targetEnabled");
     // attributes
     private final int id;
     private final String preferenceString;
