@@ -2,6 +2,8 @@
 Eclipse Plugin - This plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. The current directory of the opened shell is the directory which was selected with the popup menu. Additionally it is possible to run selected file in the shell and copy file or directory path.
 Multiple selections are also supported.
 
+[![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
+
 EasyShell does not support virtual folders, because they are not
 present in the file system!
 
