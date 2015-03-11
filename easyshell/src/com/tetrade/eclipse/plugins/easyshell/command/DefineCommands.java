@@ -46,19 +46,19 @@ public class DefineCommands extends ExtensionContributionFactory {
 			String consoleName 		= cmd.getOS() + " " + cmd.getConsole();
 			String explorerName		= cmd.getOS() + " " + cmd.getExplorer();
 			addItem(serviceLocator, additions,
-					"EasyShell Open with " + consoleName,
+					"Open with " + consoleName,
 					"com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
 					"com.tetrade.eclipse.plugins.easyshell.Open.InstanceID",
 					instanceId,
 					EasyShellPlugin.IMAGE_OPEN_ID);
 			addItem(serviceLocator, additions,
-					"EasyShell Run with " + consoleName,
+					"Run with " + consoleName,
 					"com.tetrade.eclipse.plugins.easyshell.command.shellRun",
 					"com.tetrade.eclipse.plugins.easyshell.Run.InstanceID",
 					instanceId,
 					EasyShellPlugin.IMAGE_RUN_ID);
 			addItem(serviceLocator, additions,
-					"EasyShell Explore with " + explorerName,
+					"Explore with " + explorerName,
 					"com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
 					"com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID",
 					instanceId,
@@ -83,7 +83,7 @@ public class DefineCommands extends ExtensionContributionFactory {
 				EasyShellPlugin.IMAGE_EXPLORE_ID);
 		*/
 		addItem(serviceLocator, additions,
-				"EasyShell Copy Path",
+				"Copy Path",
 				"com.tetrade.eclipse.plugins.easyshell.command.copyPath",
 				null, null,
 				EasyShellPlugin.IMAGE_COPYPATH_ID);

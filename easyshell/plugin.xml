@@ -86,6 +86,12 @@
                      name="com.tetrade.eclipse.plugins.easyshell.Open.InstanceID"
                      value="0">
                </parameter>
+               <visibleWhen
+                     checkEnabled="false">
+                  <instanceof
+                        value="com.tetrade.eclipse.plugins.easyshell.Object2">
+                  </instanceof>
+               </visibleWhen>
             </command>
             <command
                   commandId="com.tetrade.eclipse.plugins.easyshell.command.shellRun"
@@ -96,6 +102,12 @@
                      name="com.tetrade.eclipse.plugins.easyshell.Run.InstanceID"
                      value="0">
                </parameter>
+               <visibleWhen
+                     checkEnabled="false">
+                  <instanceof
+                        value="com.tetrade.eclipse.plugins.easyshell.Object1">
+                  </instanceof>
+               </visibleWhen>
             </command>
             <command
                   commandId="com.tetrade.eclipse.plugins.easyshell.command.shellExplore"
@@ -106,12 +118,24 @@
                      name="com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID"
                      value="0">
                </parameter>
+               <visibleWhen
+                     checkEnabled="false">
+                  <instanceof
+                        value="com.tetrade.eclipse.plugins.easyshell.Object3">
+                  </instanceof>
+               </visibleWhen>
             </command>
             <command
                   commandId="com.tetrade.eclipse.plugins.easyshell.command.copyPath"
                   icon="icon/copy_edit.gif"
                   label="Copy Path"
                   style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <instanceof
+                        value="com.tetrade.eclipse.plugins.easyshell.Object4">
+                  </instanceof>
+               </visibleWhen>
             </command>
             <visibleWhen
                   checkEnabled="false">
@@ -123,26 +147,6 @@
                   </test>
                </with>
             </visibleWhen>
-            <command
-                  commandId="com.tetrade.eclipse.plugins.easyshell.command.shellOpen"
-                  icon="icon/easyshell.gif"
-                  label="Open 1..."
-                  style="push">
-               <parameter
-                     name="com.tetrade.eclipse.plugins.easyshell.Open.InstanceID"
-                     value="1">
-               </parameter>
-            </command>
-            <command
-                  commandId="com.tetrade.eclipse.plugins.easyshell.command.shellOpen"
-                  icon="icon/easyshell.gif"
-                  label="Open 2..."
-                  style="push">
-               <parameter
-                     name="com.tetrade.eclipse.plugins.easyshell.Open.InstanceID"
-                     value="2">
-               </parameter>
-            </command>
          </menu>
       </menuContribution>
       <menuContribution
@@ -179,6 +183,15 @@
             properties="hasResourceSelection"
             type="org.eclipse.ui.IWorkbenchPart">
       </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.core.variables.dynamicVariables">
+      <variable
+            description="EasyShell Variables"
+            name="easyshell"
+            resolver="com.tetrade.eclipse.plugins.easyshell.DynamicVariableResolver"
+            supportsArgument="true">
+      </variable>
    </extension>
 
 </plugin>
