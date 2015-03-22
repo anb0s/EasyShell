@@ -1,0 +1,45 @@
+-------------------------------
+Easy Shell 1.4.0.1 Release Note
+-------------------------------
+
+by anb0s at 2013-01-07
+
+Changes:
+--------
+! hot fix: install issue with 1.4.0
+
+! fixed: #9 Mac OS X defaults are wrong
+  https://sourceforge.net/p/pluginbox/bugs/9/
+
+! fixed: #13 EasyShell opening wrong folder in Linux
+  https://sourceforge.net/p/pluginbox/bugs/13/
+
+! fixed: #14 Binary download does not include MANIFEST.MF
+  https://sourceforge.net/p/pluginbox/bugs/14/
+
++ changed menu position: "Easy Shell" menu appears near "Open With"
+  https://sourceforge.net/p/pluginbox/bugs/15/
+
++ added new preset "Windows Console / Explorer"
+  https://sourceforge.net/p/pluginbox/feature-requests/10/
+  https://sourceforge.net/projects/console/
+
++ added new preset "Windows DOS-Shell / TotalCommander"
+  https://sourceforge.net/p/pluginbox/feature-requests/11/
+  http://www.ghisler.com
+
++ added new option "Add Quotes to {1}, {2}, {3}*" with values "No, Single, Double, Automatic"
+  default is "No", if changed to other values, parameters will be eclosed with quotes
+  ATTENTION: use it carefully and remove quotes from commands
+
++ added new option "Enable debug output" with values "No, Yes"
+  default is "No", if changed to "Yes", debug messages will be printed to console
+
+Tested with Windows 7 x64 (Cmd, PowerShell 1.0, Cygwin-bash, Console 2.0, TotalCommander 8.01)
+and Linux (KDE / Kubuntu 12.04, Gnome / Ubuntu 12.04)
+
+Installation:
+-------------
+a) Extract zip file to "eclipse\dropin" folder and restart.
+OR
+b) Use update site: http://pluginbox.sourceforge.net

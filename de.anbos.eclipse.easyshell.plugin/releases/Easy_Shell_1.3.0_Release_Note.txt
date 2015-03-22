@@ -1,0 +1,22 @@
+Easy Shell 1.3.0 Release Note
+-----------------------------
+
++ created new "Easy Shell" menu with sub menus
++ added new Actions "Run.." (BUG 2817545) and "Explore.."
++ added new parameters:
+  + Argument {2} is the full path
+  + Argument {3} is the file name
+  + Argument {4} is the project name (BUG 1017063)
+! fixed problem with external files (BUG 2813165)
++ added support for multiple selections
++ added / changed configurations:
+  ! Windows Cygwin (Bash) / Explorer
+  ! Windows DOS-Shell / Explorer
+  + KDE Konsole / Konqueror
+  + Gnome Terminal / Nautilus (BUG 1678502, not tested!)
+  + CDE Xterm / Dtfile (not tested!)
+Tested with Windows, Cygwin and Linux KDE.
+
+Installation
+------------
+Extract zip file to eclipse\dropin folder and restart.

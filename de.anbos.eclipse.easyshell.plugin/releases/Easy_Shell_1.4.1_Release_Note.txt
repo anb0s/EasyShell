@@ -1,0 +1,41 @@
+-------------------------------
+Easy Shell 1.4.1 Release Note
+-------------------------------
+
+by anb0s at 2013-04-01
+
+Changes:
+--------
+
+! fixed: Mac OS X defaults are wrong (Thanks to Mark Phippard)
+  https://sourceforge.net/p/pluginbox/bugs/9/
+
+! fixed: [1.4.0.1] bug: need to escape spaces when invoking nautilus
+  https://sourceforge.net/p/pluginbox/bugs/18/
+
+! ATTENTION: added new option "string tokenizer" and set it to Yes.
+  Your self defined presets with usage of quotes may not work anymore.
+  Please change this option to No or read how to fix:
+  ! used solution from Mark Phippard
+  ! the whole command line string will be splitted (tokenized) to single strings
+    before expansion of parameters {0} - {4} and passing to command line
+  ! with this solution there is no need to surround parameters {0} - {4} with
+    quotes when space character is possible between command line option and parameter,
+    e.g.: /D {1}
+  ! otherwise maybe quotes are still needed, e.g.: --working-directory="{1}"
+  ! PLEASE check your presets with debug output (error console)!
+
+! changed: removed not needed quotes from all presets, because "string tokenizer" enabled
+
+! changed: Run command for "Windows Console / Explorer"
+
+! changed: Explore command for "Windows DOS-Shell / TotalCommander"
+
+Tested with Windows 7 x64 (Cmd, PowerShell 1.0, Cygwin-bash, Console 2.0, TotalCommander 8.01)
+and Linux (KDE / Kubuntu 12.04, Gnome / Ubuntu 12.04)
+
+Installation:
+-------------
+a) Extract zip file to "eclipse\dropin" folder and restart.
+OR
+b) Use update site: http://pluginbox.sourceforge.net

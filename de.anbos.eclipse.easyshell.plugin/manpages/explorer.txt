@@ -1,0 +1,30 @@
+http://support.microsoft.com/kb/314853/en
+
+The options that you can use with Explorer.exe are /n, /e, /root (plus an object), and /select (plus an object).
+   Option            Function
+   ----------------------------------------------------------------------
+   /n                Opens a new single-pane window for the default
+                     selection. This is usually the root of the drive that
+                     Windows is installed on. If the window is already
+                     open, a duplicate opens.
+
+   /e                Opens Windows Explorer in its default view.
+
+   /root,<object>    Opens a window view of the specified object.
+
+   /select,<object>  Opens a window view with the specified folder, file,
+                     or program selected.
+
+   Examples
+   -----------------------------------------------------------------------
+   Example 1: Explorer /select,C:\TestDir\TestProg.exe
+              Opens a window view with TestProg selected.
+
+   Example 2: Explorer /e,/root,C:\TestDir\TestProg.exe
+              Opens Explorer with drive C expanded and TestProg selected.
+
+   Example 3: Explorer /root,\\TestSvr\TestShare
+              Opens a window view of the specified share.
+
+   Example 4: Explorer /root,\\TestSvr\TestShare,select,TestProg.exe
+              Opens a window view of the specified share with TestProg selected.
