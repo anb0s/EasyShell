@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2015 Andre Bossert.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Andre Bossert - initial API and implementation and/or initial documentation
+ *******************************************************************************/
+
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
 import org.eclipse.jface.preference.*;
@@ -7,10 +18,10 @@ import de.anbos.eclipse.easyshell.plugin.Activator;
 
 /**
  * This class represents a preference page that
- * is contributed to the Preferences dialog. By 
+ * is contributed to the Preferences dialog. By
  * subclassing <samp>FieldEditorPreferencePage</samp>, we
  * can use the field support built into JFace that allows
- * us to create a page that is small and knows how to 
+ * us to create a page that is small and knows how to
  * save, restore and apply itself.
  * <p>
  * This page is used to modify preferences only. They
@@ -28,7 +39,7 @@ public class SamplePreferencePage
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("A demonstration of a preference page implementation");
 	}
-	
+
 	/**
 	 * Creates the field editors. Field editors are abstractions of
 	 * the common GUI blocks needed to manipulate various types
@@ -36,7 +47,7 @@ public class SamplePreferencePage
 	 * restore itself.
 	 */
 	public void createFieldEditors() {
-		addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, 
+		addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH,
 				"&Directory preference:", getFieldEditorParent()));
 		addField(
 			new BooleanFieldEditor(
@@ -60,5 +71,5 @@ public class SamplePreferencePage
 	 */
 	public void init(IWorkbench workbench) {
 	}
-	
+
 }
