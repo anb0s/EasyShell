@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
     <title>Easyshell by anb0s</title>
@@ -34,7 +34,17 @@
 <p>Eclipse Plugin - This plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. The current directory of the opened shell is the directory which was selected with the popup menu. Additionally it is possible to run selected file in the shell and copy file or directory path.
 Multiple selections are also supported.</p>
 
-<p><a href="https://sourceforge.net/projects/pluginbox/files/latest/download"><img src="https://img.shields.io/sourceforge/dt/pluginbox.svg" alt="Download EasyShell"></a></p>
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation:</h2>
+
+<p>Use update site: <a href="http://anbos.de/eclipse/pluginbox-updatesite/">http://anbos.de/eclipse/pluginbox-updatesite/</a></p>
+
+<p>OR</p>
+
+<p><a href="https://sourceforge.net/projects/pluginbox/files/latest/download">Download ZIP file</a>, extract it to "eclipse\dropin" folder and restart.</p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features:</h2>
 
 <p>EasyShell does not support virtual folders, because they are not
 present in the file system!</p>
@@ -86,14 +96,14 @@ can figure out how to run a command to open the shell with given
 parameters. The following substitution variables are available
 for building the command:</p>
 
-<p>{0} = The drive letter (only Windows, not used on other platforms)
-{1} = The selected directory path
-{2} = The selected file or directory path
-{3} = The selected file name
-{4} = The project name of selected directory or path (for external files it's "Easy Shell")
-{5} = The line separator</p>
+<p>{0} = The drive letter (only Windows, not used on other platforms)<br>
+{1} = The selected directory path<br>
+{2} = The selected file or directory path<br>
+{3} = The selected file name<br>
+{4} = The project name of selected directory or path (for external files it's "Easy Shell")<br>
+{5} = The line separator<br></p>
 
-<p>Option "Enable string tokenizer" with values "Yes, No" and default value "Yes".
+<p>Option "Enable string tokenizer" with values "Yes, No" and default value "Yes".<br>
 The whole command line string will be splitted (tokenized) to single strings before expansion
 of parameters {0} - {4} and passing to command line. With this solution there is no need to
 surround parameters {0} - {4} with quotes when space character is possible between command
@@ -101,18 +111,12 @@ line option and parameter, e.g.: /D {1}. Otherwise maybe quotes are still needed
 e.g.: --working-directory="{1}".</p>
 
 <p>Option "Add quotes to {1}, {2}, {3}*" with values "No, Single, Double, Automatic" and default
-value "No". If changed to other values, parameters will be eclosed with quotes.
+value "No". <br>
+If changed to other values, parameters will be eclosed with quotes.
 ATTENTION: use it carefully with "string tokenizer" and remove quotes from commands.</p>
 
-<p>Option "Enable debug output" with values "Yes, No" and default value "No".
+<p>Option "Enable debug output" with values "Yes, No" and default value "No".<br>
 If changed to "Yes", debug messages will be printed to error console.</p>
-
-<h2>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation:</h2>
-
-<p>a) Extract zip file to "eclipse\dropin" folder and restart.
-OR
-b) Use update site: <a href="http://pluginbox.sourceforge.net">http://pluginbox.sourceforge.net</a></p>
       </section>
     </div>
 
