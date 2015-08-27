@@ -12,6 +12,8 @@ Download ZIP file
 [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
 , extract it to "eclipse\dropin" folder and restart.
 
+Eclipse Markeplace: http://marketplace.eclipse.org/content/easyshell
+
 Features:
 ---------
 
