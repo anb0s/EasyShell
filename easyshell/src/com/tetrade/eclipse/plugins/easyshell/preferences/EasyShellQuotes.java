@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 by Andre Bossert
+ * Copyright (C) 2014 - 2015 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,9 @@ public enum EasyShellQuotes {
     quotesNo(0, "No"),
     quotesSingle(1, "Single"),
     quotesDouble(2, "Double"),
-    quotesAuto(3, "Automatic"); // check if no quotes and space in string, then add
+    quotesAuto(3, "Double (automatic)"), // check if no quotes and space in string, then add
+    quotesAutoSingle(4, "Single (automatic)"), // check if no quotes and space in string, then add
+	quotesEscape(5, "Escape"); // check if no quotes and space in string, then escape
     // attributes
     private final int id;
     private final String mode;

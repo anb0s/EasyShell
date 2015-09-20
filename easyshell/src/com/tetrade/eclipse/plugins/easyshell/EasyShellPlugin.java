@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2014 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2015 by Marcel Schoen and Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -95,9 +95,9 @@ public class EasyShellPlugin extends AbstractUIPlugin {
         IPath path = new Path(imagePath);
         URL url = FileLocator.find(bundle, path, null);
         ImageDescriptor desc = ImageDescriptor.createFromURL(url);
-        registry.put(image_id, desc);    	
+        registry.put(image_id, desc);
     }
-    
+
  	public static ImageDescriptor getImageDescriptor(String id) {
  		return getDefault().getImageRegistry().getDescriptor(id);
  	}
@@ -175,7 +175,7 @@ public class EasyShellPlugin extends AbstractUIPlugin {
     static public int getInstanceNumber() {
     	return 3;
     }
-    
+
     /**
      * Return the Debug Yes or No setted in EasyExplorePreferencePage.
      * @return boolean

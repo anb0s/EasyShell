@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 by Andre Bossert
+ * Copyright (C) 2014 - 2015 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,96 +23,96 @@ package com.tetrade.eclipse.plugins.easyshell.preferences;
  */
 public enum EasyShellCommand {
     cmdUnknown(0, 	"Unknown", "shell", "file browser", null,
-                    "open {1}",
-                    "cd {1} && run ./''{3}''",
-                    "explore {2}",
-                    "{2}{5}"
+                    "open ${easyshell:container_loc}",
+                    "cd ${easyshell:container_loc} && run ./''${easyshell:resource_name}''",
+                    "explore ${easyshell:resource_loc}",
+                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdWinDOS(1, 	"Windows", "DOS-Shell", "Explorer", null,
-                    "cmd.exe /C start \"{4}\" /D {1} cmd.exe /K",
-                    "cmd.exe /C start \"{4}\" /D {1} {3}",
-                    "explorer.exe /select, {2}",
-                    "{2}{5}"
+                    "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} cmd.exe /K",
+                    "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} ${easyshell:resource_name}",
+                    "explorer.exe /select, ${easyshell:resource_loc}",
+                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdWinPower(2,	"Windows", "PowerShell", "Explorer", null,
-                    "cmd.exe /C start \"{4}\" /D {1} powershell.exe",
-                    "cmd.exe /C start \"{4}\" /D {1} powershell.exe -command ./''{3}''",
-                    "explorer.exe /select, {2}",
-                    "{2}{5}"
+                    "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} powershell.exe",
+                    "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} powershell.exe -command ./''${easyshell:resource_name}''",
+                    "explorer.exe /select, ${easyshell:resource_loc}",
+                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdWinCyg(3,	"Windows", "Cygwin (Bash)", "Explorer", null,
-                    "cmd.exe /C start \"{4}\" /D {1} \"C:\\Cygwin\\bin\\bash.exe\"",
-                    "cmd.exe /C start \"{4}\" /D {1} \"C:\\Cygwin\\bin\\bash.exe\" -c ./''{3}''",
-                    "explorer.exe /select, {2} ",
-                    "{2}{5}"
+                    "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Cygwin\\bin\\bash.exe\"",
+                    "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Cygwin\\bin\\bash.exe\" -c ./''${easyshell:resource_name}''",
+                    "explorer.exe /select, ${easyshell:resource_loc} ",
+                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdKonsoleKDEKonqueror(4, "Linux", "KDE Konsole", "Konqueror", null,
-                    "konsole --noclose --workdir {1}",
-                    "konsole --noclose --workdir {1} -e ./''{3}''",
-                    "konqueror file:\"{2}\"",
-                    "{2}{5}"
+                    "konsole --noclose --workdir ${easyshell:container_loc}",
+                    "konsole --noclose --workdir ${easyshell:container_loc} -e ./''${easyshell:resource_name}''",
+                    "konqueror file:\"${easyshell:resource_loc}\"",
+                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdKonsoleGnome(5, "Linux", "Gnome Terminal", "Nautilus", null,
-                    "gnome-terminal --working-directory=\"{1}\"",
-                    "gnome-terminal --working-directory=\"{1}\" --command=./''{3}''",
-                    "nautilus {2}",
-                    "{2}{5}"
+                    "gnome-terminal --working-directory=\"${easyshell:container_loc}\"",
+                    "gnome-terminal --working-directory=\"${easyshell:container_loc}\" --command=./''${easyshell:resource_name}''",
+                    "nautilus ${easyshell:resource_loc}",
+                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdXtermDtfile(6, "Linux" , "CDE Xterm", "Dtfile", null,
-                    "cd {1} && xterm",
-                    "cd {1} && xterm -e ./''{3}''",
-                    "cd {1} && dtfile",
-                    "{2}{5}"
+                    "cd ${easyshell:container_loc} && xterm",
+                    "cd ${easyshell:container_loc} && xterm -e ./''${easyshell:resource_name}''",
+                    "cd ${easyshell:container_loc} && dtfile",
+                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdTerminalFinder(7, "MAC OS X", "Terminal", "Finder", null,
-                    "open -a Terminal {1}",
-                    "open -a Terminal {2}",
-                    "open -R {2}",
-                    "{2}{5}"
+                    "open -a Terminal ${easyshell:container_loc}",
+                    "open -a Terminal ${easyshell:resource_loc}",
+                    "open -R ${easyshell:resource_loc}",
+                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdKonsoleKDEDolphin(8, "Linux" , "KDE Konsole", "Dolphin", null,
-	                "konsole --workdir {1}",
-	                "konsole --workdir {1} --noclose -e {2}",
-	                "dolphin --select {2}",
-	                "{2}{5}"
+	                "konsole --workdir ${easyshell:container_loc}",
+	                "konsole --workdir ${easyshell:container_loc} --noclose -e ${easyshell:resource_loc}",
+	                "dolphin --select ${easyshell:resource_loc}",
+	                "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdWinConsole(9, "Windows", "Console", "Explorer", null,
-	                "console.exe -w \"{4}\" -d {1}",
-	                "console.exe -w \"{4}\" -d {1} -r \"/k\\\"{3}\\\"\"",
-	                "explorer.exe /select, {2}",
-	                "{2}{5}"
+	                "console.exe -w \"${easyshell:project_name}\" -d ${easyshell:container_loc}",
+	                "console.exe -w \"${easyshell:project_name}\" -d ${easyshell:container_loc} -r \"/k\\\"${easyshell:resource_name}\\\"\"",
+	                "explorer.exe /select, ${easyshell:resource_loc}",
+	                "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdWinTotalCommander(10, "Windows", "DOS-Shell", "TotalCommander", null,
-	                "cmd.exe /C start \"{4}\" /D {1} cmd.exe /K",
-	                "cmd.exe /C start \"{4}\" /D {1} {3}",
-	                "totalcmd.exe /O /T {1}",
-	                "{2}{5}"
+	                "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} cmd.exe /K",
+	                "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} ${easyshell:resource_name}",
+	                "totalcmd.exe /O /T ${easyshell:container_loc}",
+	                "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdWinGitBash(11, "Windows", "Git-Bash", "Explorer", null,
-	                "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i",
-	                "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''{3}''",
-	                "explorer.exe /select, {2} ",
-	                "{2}{5}"
+	                "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i",
+	                "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''${easyshell:resource_name}''",
+	                "explorer.exe /select, ${easyshell:resource_loc} ",
+	                "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     cmdWinConEmu(12, "Windows", "ConEmu", "Explorer", null,
-            "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd cmd",
-            "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd \"{3}\"",
-            "explorer.exe /select, {2} ",
-            "{2}{5}"
+            "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd cmd",
+            "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd \"${easyshell:resource_name}\"",
+            "explorer.exe /select, ${easyshell:resource_loc} ",
+            "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     // https://sourceforge.net/p/pluginbox/feature-requests/18/
     cmdGnomeTermNemo(13, "Linux", "Gnome Terminal", "Nemo", null,
-            "gnome-terminal --working-directory=\"{1}\"",
-            "gnome-terminal --working-directory=\"{1}\" --command=./''{3}''",
-            "nemo {2}",
-            "{2}{5}"
+            "gnome-terminal --working-directory=\"${easyshell:container_loc}\"",
+            "gnome-terminal --working-directory=\"${easyshell:container_loc}\" --command=./''${easyshell:resource_name}''",
+            "nemo ${easyshell:resource_loc}",
+            "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     // https://sourceforge.net/p/pluginbox/feature-requests/24/
     cmdGnomeTermThunar(14, "Linux", "Gnome Terminal", "Thunar", null,
-            "gnome-terminal --working-directory=\"{1}\"",
-            "gnome-terminal --working-directory=\"{1}\" --command=./''{3}''",
-            "thunar {1}",
-            "{2}{5}"
+            "gnome-terminal --working-directory=\"${easyshell:container_loc}\"",
+            "gnome-terminal --working-directory=\"${easyshell:container_loc}\" --command=./''${easyshell:resource_name}''",
+            "thunar ${easyshell:container_loc}",
+            "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     );
     // attributes
     private final int id;

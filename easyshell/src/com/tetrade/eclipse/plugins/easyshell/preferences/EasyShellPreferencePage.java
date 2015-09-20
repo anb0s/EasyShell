@@ -212,17 +212,17 @@ public class EasyShellPreferencePage
 
         // ------------------------------------ Description ------------------------------------------
         Label desc_label = new Label(mainColumn, 0);
-        desc_label.setText("Argument {0} is the drive letter on Win32");
+        desc_label.setText("${easyshell:drive} is the drive letter on Win32");
         desc_label = new Label(mainColumn, 0);
-        desc_label.setText("Argument {1} is the parent path*");
+        desc_label.setText("${easyshell:container_loc} is the parent path*");
         desc_label = new Label(mainColumn, 0);
-        desc_label.setText("Argument {2} is the full path*");
+        desc_label.setText("${easyshell:resource_loc} is the full path*");
         desc_label = new Label(mainColumn, 0);
-        desc_label.setText("Argument {3} is the file name*");
+        desc_label.setText("${easyshell:resource_name} is the file name*");
         desc_label = new Label(mainColumn, 0);
-        desc_label.setText("Argument {4} is the project name");
+        desc_label.setText("${easyshell:project_name} is the project name");
         desc_label = new Label(mainColumn, 0);
-        desc_label.setText("Argument {5} is the line separator");
+        desc_label.setText("${easyshell:line_separator} is the line separator");
 
         // -------------------------------------------------------------------------------------------
         // now load the stored data

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2014 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2014 - 2015 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -241,17 +241,23 @@ public class ActionDelegate implements IObjectActionDelegate {
     }
 
     private String autoQuotes(String str, EasyShellQuotes quotes) {
-        String ret;
+        String ret = str;
         if (quotes == EasyShellQuotes.quotesSingle) {
             ret = "'" + str + "'";
         }
         else if (quotes == EasyShellQuotes.quotesDouble) {
             ret = "\"" + str + "\"";
         }
-        else if (quotes == EasyShellQuotes.quotesAuto && (str.indexOf("\"") == -1) && (str.indexOf(" ") != -1) ) { // if no quotes and space add quotes
-            ret = "\"" + str + "\"";
-        } else {
-            ret = str;
+        else if (quotes == EasyShellQuotes.quotesEscape) {
+        	ret = str.replaceAll("\\s", "\\\\ ");
+        }
+        else if ( ((quotes == EasyShellQuotes.quotesAuto) || (quotes == EasyShellQuotes.quotesAutoSingle))
+        			&& (str.indexOf(" ") != -1) ) { // if space there
+          	if ((quotes == EasyShellQuotes.quotesAutoSingle) && str.indexOf("\"") == -1) { // if no single quotes
+          		ret = "'" + str + "'";
+           	} else if (str.indexOf("'") == -1){ // if no double quotes
+           		ret = "\"" + str + "\"";
+           	}
         }
         return ret;
     }
