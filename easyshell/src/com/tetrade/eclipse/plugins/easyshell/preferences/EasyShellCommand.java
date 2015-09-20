@@ -99,6 +99,20 @@ public enum EasyShellCommand {
             "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd \"{3}\"",
             "explorer.exe /select, {2} ",
             "{2}{5}"
+    ),
+    // https://sourceforge.net/p/pluginbox/feature-requests/18/
+    cmdGnomeTermNemo(13, "Linux", "Gnome Terminal", "Nemo", null,
+            "gnome-terminal --working-directory=\"{1}\"",
+            "gnome-terminal --working-directory=\"{1}\" --command=./''{3}''",
+            "nemo {2}",
+            "{2}{5}"
+    ),
+    // https://sourceforge.net/p/pluginbox/feature-requests/24/
+    cmdGnomeTermThunar(14, "Linux", "Gnome Terminal", "Thunar", null,
+            "gnome-terminal --working-directory=\"{1}\"",
+            "gnome-terminal --working-directory=\"{1}\" --command=./''{3}''",
+            "thunar {1}",
+            "{2}{5}"
     );
     // attributes
     private final int id;

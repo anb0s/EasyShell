@@ -23,10 +23,11 @@ package com.tetrade.eclipse.plugins.easyshell.preferences;
  */
 public enum LinuxDesktop {
     desktopUnknown(0, "Unknown"),
-    desktopCde(1, "CDE"),
-    desktopKde(2, "KDE"),
-    desktopGnome(3, "Gnome");
-    //desktopXfce(4, "Xfce");
+    desktopKde(1, "KDE"),
+    desktopGnome(2, "Gnome"),
+    desktopCinnamon(3, "Cinnamon"),
+    desktopCde(4, "CDE"),
+    desktopXfce(5, "Xfce");
     // attributes
     private final int id;
     private final String name;
@@ -42,7 +43,7 @@ public enum LinuxDesktop {
         return name;
     }
     public static LinuxDesktop getFromId(int id) {
-        LinuxDesktop ret = desktopCde;
+        LinuxDesktop ret = desktopUnknown;
         for(int i = 0; i < LinuxDesktop.values().length; i++) {
             if (LinuxDesktop.values()[i].getId() == id) {
                 ret = LinuxDesktop.values()[i];

@@ -21,7 +21,7 @@ public class ContributionItemDynamic extends ContributionItem {
 
 	protected IContributionItem[] getContributionItems() {
 	    IContributionItem[] list = new IContributionItem[2];
-	    Map parms = new HashMap();
+	    Map<String, String> parms = new HashMap<String, String>();
 	    parms.put("groupBy", "Severity");
 	    CommandContributionItemParameter contributionParameters = null;
 		list[0] = new CommandContributionItem(contributionParameters);
@@ -31,7 +31,7 @@ public class ContributionItemDynamic extends ContributionItem {
 	            "org.eclipse.ui.views.problems.grouping",
 	            id, parms, null, null, null, "Severity", null,
 	            null, CommandContributionItem.STYLE_PUSH);
-	 
+
 	    parms = new HashMap();
 	    parms.put("groupBy", "None");
 	    list[1] = new CommandContributionItem(null,
