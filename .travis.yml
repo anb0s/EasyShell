@@ -4,4 +4,4 @@ jdk:
 
 before_script:
 
-script: mvn clean install -DskipTests
+script: mvn clean verify
