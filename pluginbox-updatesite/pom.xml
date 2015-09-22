@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.tetrade.eclipse.plugins.easyshell</groupId>
-    <artifactId>pluginbox</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <groupId>com.tetrade.eclipse.plugins.easyshell</groupId>
-  <artifactId>pluginbox-updatesite</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>eclipse-update-site</packaging>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.tetrade.eclipse.plugins.easyshell</groupId>
+		<artifactId>pluginbox</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>com.tetrade.eclipse.plugins.easyshell</groupId>
+	<artifactId>com.tetrade.eclipse.plugins.pluginbox.updatesite</artifactId>
+	<version>1.5.0</version>
+	<packaging>eclipse-update-site</packaging>
+
+	<properties>
+		<tycho.version>0.23.1</tycho.version>
+	</properties>
+
+	<repositories>
+		<!-- add Mars repository to resolve dependencies -->
+		<repository>
+			<id>Mars</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/mars/</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- enable tycho build extension -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<allowConflictingDependencies>true</allowConflictingDependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

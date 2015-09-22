@@ -1,39 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="PluginBox" url="http://pluginbox.sourceforge.net">
+   <description name="PluginBox" url="http://anbos.de/eclipse/pluginbox-updatesite">
       The Pluginbox is a container for several Eclipse plugins.
    </description>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.3.0.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.3.0">
-      <category name="PluginBox"/>
+   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.5.0.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.5.0">
+      <category name="PluginBox1_5"/>
    </feature>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.3.1.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.3.1">
-      <category name="PluginBox"/>
-   </feature>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.3.2.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.3.2">
-      <category name="PluginBox"/>
-   </feature>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.3.3.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.3.3">
-      <category name="PluginBox"/>
-   </feature>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.3.4.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.3.4">
-      <category name="PluginBox"/>
-   </feature>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.3.5.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.3.5">
-      <category name="PluginBox"/>
-   </feature>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.3.6.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.3.6">
-      <category name="PluginBox"/>
-   </feature>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.4.0.1.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.4.0.1">
-      <category name="PluginBox"/>
-   </feature>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.4.1.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.4.1">
-      <category name="PluginBox"/>
-   </feature>
-   <feature url="features/com.tetrade.eclipse.plugins.easyshell.feature_1.4.2.jar" id="com.tetrade.eclipse.plugins.easyshell.feature" version="1.4.2">
-      <category name="PluginBox"/>
-   </feature>
-   <category-def name="PluginBox" label="PluginBox">
+   <category-def name="PluginBox1_5" label="PluginBox 1.5.x">
       <description>
          The Pluginbox is a container for several Eclipse plugins.
       </description>
