@@ -435,7 +435,7 @@ public class EasyShellPreferencePage
      * detects desktop from $DESKTOP_SESSION
      */
     private LinuxDesktop detectDesktopSession() {
-    	ArrayList<String> command = new ArrayList<>();
+    	ArrayList<String> command = new ArrayList<String>();
     	command.add("sh");
     	command.add("-c");
     	command.add("echo \"$DESKTOP_SESSION\"");
@@ -470,7 +470,7 @@ public class EasyShellPreferencePage
      * detects programs from $DESKTOP_SESSION
      */
     private String detectLinuxDefaultFileBrowser() {
-    	ArrayList<String> command = new ArrayList<>();
+    	ArrayList<String> command = new ArrayList<String>();
     	command.add("xdg-mime");
     	command.add("query");
     	command.add("default");

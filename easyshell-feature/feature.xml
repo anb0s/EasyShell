@@ -894,8 +894,8 @@ Public License instead of this License.
    </license>
 
    <url>
-      <update label="PluginBox Update Site" url="http://pluginbox.sourceforge.net"/>
-      <discovery label="PluginBox Update Site" url="http://pluginbox.sourceforge.net"/>
+      <update label="PluginBox Update Site" url="http://anbos.de/eclipse/pluginbox-updatesite"/>
+      <discovery label="PluginBox Update Site" url="http://anbos.de/eclipse/pluginbox-updatesite"/>
    </url>
 
    <requires>
