@@ -1,4 +1,4 @@
-# EasyShell [![Build Status](https://travis-ci.org/anb0s/EasyShell.svg)](https://travis-ci.org/anb0s/EasyShell) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
+# EasyShell [![Build Status](https://travis-ci.org/anb0s/EasyShell.svg)](https://travis-ci.org/anb0s/EasyShell) [![Build Status](https://buildhive.cloudbees.com/job/anb0s/job/EasyShell/badge/icon)](https://buildhive.cloudbees.com/job/anb0s/job/EasyShell/) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
 Eclipse Plugin - This plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. The current directory of the opened shell is the directory which was selected with the popup menu. Additionally it is possible to run selected file in the shell and copy file or directory path.
 Multiple selections are also supported.
 
