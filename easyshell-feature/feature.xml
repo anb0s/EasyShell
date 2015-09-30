@@ -2,7 +2,7 @@
 <feature
       id="com.tetrade.eclipse.plugins.easyshell.feature"
       label="Easy Shell Feature"
-      version="1.5.0"
+      version="1.5.0.qualifier"
       provider-name="Marcel Schoen, Andre Bossert">
 
    <description url="http://pluginbox.sourceforge.net/plugins.html">
