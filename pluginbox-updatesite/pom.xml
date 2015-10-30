@@ -10,19 +10,4 @@
 		<artifactId>pluginbox</artifactId>
 		<version>1.5.0-SNAPSHOT</version>
 	</parent>
-
-	<!--build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<allowConflictingDependencies>true</allowConflictingDependencies>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build-->
-
-	<version>1.5.0-SNAPSHOT</version>
 </project>
