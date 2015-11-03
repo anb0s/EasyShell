@@ -4,7 +4,7 @@ Multiple selections are also supported.
 
 Installation:
 -------------
-Use update site: http://anbos.de/eclipse/pluginbox-updatesite/
+Use update site: http://anb0s.github.io/EasyShell
 
 OR
 
