@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 by Andre Bossert
+ * Copyright (C) 2014 - 2016 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,7 @@ package com.tetrade.eclipse.plugins.easyshell.preferences;
 /**
  * Strings for preference store.
  */
-public enum EasyShellPreferenceEntry {
+public enum PreferenceEntry {
     preferenceTargetOpen(0, "targetPreference"),
     preferenceTargetRun(1, "targetRunPreference"),
     preferenceTargetExplore(2, "targetExplorePreference"),
@@ -36,7 +36,7 @@ public enum EasyShellPreferenceEntry {
     private final int id;
     private final String preferenceString;
     // construct
-    EasyShellPreferenceEntry(int id, String pref) {
+    PreferenceEntry(int id, String pref) {
         this.id = id;
         this.preferenceString = pref;
     }
@@ -53,11 +53,11 @@ public enum EasyShellPreferenceEntry {
     		return getString() + (new Integer(instId)).toString();
     	}
     }
-    public static EasyShellPreferenceEntry getFromId(int id) {
-    	EasyShellPreferenceEntry ret = preferenceTargetOpen;
-        for(int i = 0; i < EasyShellPreferenceEntry.values().length; i++) {
-            if (EasyShellPreferenceEntry.values()[i].getId() == id) {
-                ret = EasyShellPreferenceEntry.values()[i];
+    public static PreferenceEntry getFromId(int id) {
+    	PreferenceEntry ret = preferenceTargetOpen;
+        for(int i = 0; i < PreferenceEntry.values().length; i++) {
+            if (PreferenceEntry.values()[i].getId() == id) {
+                ret = PreferenceEntry.values()[i];
                 break;
             }
         }

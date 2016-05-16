@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 by Andre Bossert
+ * Copyright (C) 2014 - 2016 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,20 +19,16 @@
 package com.tetrade.eclipse.plugins.easyshell.preferences;
 
 /**
- * Quotes.
+ * Tokenizer.
  */
-public enum EasyShellQuotes {
-    quotesNo(0, "No"),
-    quotesSingle(1, "Single"),
-    quotesDouble(2, "Double"),
-    quotesAuto(3, "Double (automatic)"), // check if no quotes and space in string, then add
-    quotesAutoSingle(4, "Single (automatic)"), // check if no quotes and space in string, then add
-	quotesEscape(5, "Escape"); // check if no quotes and space in string, then escape
+public enum Tokenizer {
+	EasyShellTokenizerNo(0, "No"),
+	EasyShellTokenizerYes(1, "Yes");
     // attributes
     private final int id;
     private final String mode;
     // construct
-    EasyShellQuotes(int id, String mode) {
+    Tokenizer(int id, String mode) {
         this.id = id;
         this.mode = mode;
     }
@@ -42,13 +38,13 @@ public enum EasyShellQuotes {
     public String getMode() {
         return mode;
     }
-    public static EasyShellQuotes getFromId(int id) {
-        EasyShellQuotes ret = quotesNo;
-        for(int i = 0; i < EasyShellQuotes.values().length; i++) {
-            if (EasyShellQuotes.values()[i].getId() == id) {
-                ret = EasyShellQuotes.values()[i];
+    public static Tokenizer getFromId(int id) {
+    	Tokenizer ret = EasyShellTokenizerYes;
+        for(int i = 0; i < Tokenizer.values().length; i++) {
+            if (Tokenizer.values()[i].getId() == id) {
+                ret = Tokenizer.values()[i];
             }
         }
         return ret;
     }
-}
+};

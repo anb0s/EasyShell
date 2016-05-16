@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 by Andre Bossert
+ * Copyright (C) 2014 - 2016 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,19 +25,19 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class EasyShellPreferencePageMain extends PreferencePage implements
+public class PreferencePageMain extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
-	public EasyShellPreferencePageMain() {
+	public PreferencePageMain() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public EasyShellPreferencePageMain(String title) {
+	public PreferencePageMain(String title) {
 		super(title);
 		// TODO Auto-generated constructor stub
 	}
 
-	public EasyShellPreferencePageMain(String title, ImageDescriptor image) {
+	public PreferencePageMain(String title, ImageDescriptor image) {
 		super(title, image);
 		// TODO Auto-generated constructor stub
 	}

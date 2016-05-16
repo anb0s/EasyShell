@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2004 - 2015 by Marcel Schoen and Andre Bossert
+ * Copyright (C) 2004 - 2008 by Marcel Schoen
+ * Copyright (C) 2009 - 2016 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

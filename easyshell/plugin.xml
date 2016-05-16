@@ -5,24 +5,24 @@
          point="org.eclipse.ui.preferencePages">
       <page
             name="Easy Shell"
-            class="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePageMain"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
             id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePageMain">
       </page>
       <page
             category="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePageMain"
-            class="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage0"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance0"
             id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage0"
             name="Easy Shell 0">
       </page>
       <page
             category="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePageMain"
-            class="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage1"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance1"
             id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage1"
             name="Easy Shell 1">
       </page>
       <page
             category="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePageMain"
-            class="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage2"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance2"
             id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage2"
             name="Easy Shell 2">
       </page>
@@ -89,7 +89,7 @@
                <visibleWhen
                      checkEnabled="false">
                   <instanceof
-                        value="com.tetrade.eclipse.plugins.easyshell.Object2">
+                        value="com.tetrade.eclipse.plugins.easyshell.Object1">
                   </instanceof>
                </visibleWhen>
             </command>
@@ -105,7 +105,7 @@
                <visibleWhen
                      checkEnabled="false">
                   <instanceof
-                        value="com.tetrade.eclipse.plugins.easyshell.Object1">
+                        value="com.tetrade.eclipse.plugins.easyshell.Object2">
                   </instanceof>
                </visibleWhen>
             </command>

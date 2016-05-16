@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 by Andre Bossert
+ * Copyright (C) 2014 - 2016 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,33 +18,10 @@
 
 package com.tetrade.eclipse.plugins.easyshell.preferences;
 
-/**
- * Debug.
- */
-public enum EasyShellDebug {
-    debugNo(0, "No"),
-    debugYes(1, "Yes");
-    // attributes
-    private final int id;
-    private final String mode;
-    // construct
-    EasyShellDebug(int id, String mode) {
-        this.id = id;
-        this.mode = mode;
-    }
-    public int getId() {
-        return id;
-    }
-    public String getMode() {
-        return mode;
-    }
-    public static EasyShellDebug getFromId(int id) {
-        EasyShellDebug ret = debugNo;
-        for(int i = 0; i < EasyShellDebug.values().length; i++) {
-            if (EasyShellDebug.values()[i].getId() == id) {
-                ret = EasyShellDebug.values()[i];
-            }
-        }
-        return ret;
-    }
+public class PreferencePageInstance1 extends PreferencePage {
+
+	public PreferencePageInstance1() {
+		super(1);
+	}
+
 }

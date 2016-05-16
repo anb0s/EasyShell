@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 by Andre Bossert
+ * Copyright (C) 2014 - 2016 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,12 +18,9 @@
 
 package com.tetrade.eclipse.plugins.easyshell.actions;
 
-import java.text.MessageFormat;
 import java.util.StringTokenizer;
 
-import org.eclipse.core.variables.IDynamicVariable;
 import org.eclipse.core.variables.IStringVariableManager;
-import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -38,10 +35,10 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.tetrade.eclipse.plugins.easyshell.DynamicVariableResolver;
-import com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin;
+import com.tetrade.eclipse.plugins.easyshell.Activator;
 import com.tetrade.eclipse.plugins.easyshell.Resource;
 import com.tetrade.eclipse.plugins.easyshell.ResourceUtils;
-import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellQuotes;
+import com.tetrade.eclipse.plugins.easyshell.preferences.Quotes;
 
 public class ActionDelegate implements IObjectActionDelegate {
 
@@ -71,13 +68,13 @@ public class ActionDelegate implements IObjectActionDelegate {
                 new Shell(),
                 "Easy Shell",
                 "Wrong Selection");
-            EasyShellPlugin.log("Wrong Selection");
+            Activator.log("Wrong Selection");
             return;
         }
 
         // get the ID + instance
         String ActionIDStr = action.getId();
-        EasyShellPlugin.getDefault().sysout(true, "Action ID: >" + ActionIDStr + "<");
+        Activator.getDefault().sysout(true, "Action ID: >" + ActionIDStr + "<");
         String[] EasyShellActionStr = { "com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
                                         "com.tetrade.eclipse.plugins.easyshell.command.shellRun",
                                         "com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
@@ -97,7 +94,7 @@ public class ActionDelegate implements IObjectActionDelegate {
                 new Shell(),
                 "Easy Shell",
                 "Wrong Instance ID");
-            EasyShellPlugin.log("Wrong Instance ID");
+            Activator.log("Wrong Instance ID");
             return;
         }
 
@@ -116,7 +113,7 @@ public class ActionDelegate implements IObjectActionDelegate {
                 new Shell(),
                 "Easy Shell",
                 "Wrong Action ID");
-            EasyShellPlugin.log("Wrong Action ID");
+            Activator.log("Wrong Action ID");
             return;
         }
 
@@ -150,9 +147,9 @@ public class ActionDelegate implements IObjectActionDelegate {
 
             if (full_path != null) {
 
-                EasyShellPlugin.getDefault().sysout(true, "full_path  : >" + full_path + "<");
-                EasyShellPlugin.getDefault().sysout(true, "parent_path: >" + parent_path + "<");
-                EasyShellPlugin.getDefault().sysout(true, "file_name  : >" + file_name + "<");
+                Activator.getDefault().sysout(true, "full_path  : >" + full_path + "<");
+                Activator.getDefault().sysout(true, "parent_path: >" + parent_path + "<");
+                Activator.getDefault().sysout(true, "file_name  : >" + file_name + "<");
 
                 // Try to extract drive on Win32
                 if (full_path.indexOf(":") != -1) {
@@ -160,8 +157,8 @@ public class ActionDelegate implements IObjectActionDelegate {
                 }
 
                 try {
-                    String target = EasyShellPlugin.getDefault().getTarget(ActionIDNum, InstanceIDNum);
-                    EasyShellQuotes quotes = EasyShellPlugin.getDefault().getQuotes(InstanceIDNum);
+                    String target = Activator.getDefault().getTarget(ActionIDNum, InstanceIDNum);
+                    Quotes quotes = Activator.getDefault().getQuotes(InstanceIDNum);
                     String[] args = new String[6];
                     // args format
                     args[0] = drive;							// {0} == ${easyshell:drive}
@@ -178,42 +175,42 @@ public class ActionDelegate implements IObjectActionDelegate {
                     if (ActionIDNum == 3) {
                     	//String cmd = fixQuotes(MessageFormat.format(target, (Object[])args), quotes);
                     	String cmd = fixQuotes(variableManager.performStringSubstitution(target, false), quotes);
-                    	EasyShellPlugin.getDefault().sysout(true, "--- clp: >");
+                    	Activator.getDefault().sysout(true, "--- clp: >");
                         cmdAll += cmd;
-                        EasyShellPlugin.getDefault().sysout(true, cmd);
-                        EasyShellPlugin.getDefault().sysout(true, "--- clp: <");
+                        Activator.getDefault().sysout(true, cmd);
+                        Activator.getDefault().sysout(true, "--- clp: <");
                     }
                     // handling command line
                     else {
                     	// string tokenizer enabled ?
-                    	if (EasyShellPlugin.getDefault().isTokenizer(InstanceIDNum))
+                    	if (Activator.getDefault().isTokenizer(InstanceIDNum))
                     	{
 							StringTokenizer st = new StringTokenizer(target);
 							String[] cmds = new String[st.countTokens()];
 							int c = 0;
-	                    	EasyShellPlugin.getDefault().sysout(true, "--- cmd: >");
+	                    	Activator.getDefault().sysout(true, "--- cmd: >");
 							while (st.hasMoreElements()) {
 								//cmds[c] = fixQuotes(MessageFormat.format(st.nextToken(), (Object[])args), quotes);
 								cmds[c] = fixQuotes(variableManager.performStringSubstitution(st.nextToken(), false), quotes);
-								EasyShellPlugin.getDefault().sysout(true, cmds[c]);
+								Activator.getDefault().sysout(true, cmds[c]);
 								c++;
 							}
-							EasyShellPlugin.getDefault().sysout(true, "--- cmd: <");
+							Activator.getDefault().sysout(true, "--- cmd: <");
 							Runtime.getRuntime().exec(cmds);
                     	}
                     	// the old command line passing without string tokenizer
                     	else {
                         	//String cmd = fixQuotes(MessageFormat.format(target, (Object[])args), quotes);
                         	String cmd = fixQuotes(variableManager.performStringSubstitution(target, false), quotes);
-                        	EasyShellPlugin.getDefault().sysout(true, "--- cmd: >");
+                        	Activator.getDefault().sysout(true, "--- cmd: >");
                         	Runtime.getRuntime().exec(cmd);
-                            EasyShellPlugin.getDefault().sysout(true, cmd);
-                            EasyShellPlugin.getDefault().sysout(true, "--- cmd: <");
+                            Activator.getDefault().sysout(true, cmd);
+                            Activator.getDefault().sysout(true, "--- cmd: <");
                     	}
                     }
 
                 } catch (Exception e) {
-                    EasyShellPlugin.log(e);
+                    Activator.log(e);
                 }
 
             } else {
@@ -222,7 +219,7 @@ public class ActionDelegate implements IObjectActionDelegate {
                     new Shell(),
                     "Easy Shell",
                     "Unable to open shell");
-                EasyShellPlugin.log("Unable to open shell");
+                Activator.log("Unable to open shell");
                 return;
 
             }
@@ -240,20 +237,20 @@ public class ActionDelegate implements IObjectActionDelegate {
 
     }
 
-    private String autoQuotes(String str, EasyShellQuotes quotes) {
+    private String autoQuotes(String str, Quotes quotes) {
         String ret = str;
-        if (quotes == EasyShellQuotes.quotesSingle) {
+        if (quotes == Quotes.quotesSingle) {
             ret = "'" + str + "'";
         }
-        else if (quotes == EasyShellQuotes.quotesDouble) {
+        else if (quotes == Quotes.quotesDouble) {
             ret = "\"" + str + "\"";
         }
-        else if (quotes == EasyShellQuotes.quotesEscape) {
+        else if (quotes == Quotes.quotesEscape) {
         	ret = str.replaceAll("\\s", "\\\\ ");
         }
-        else if ( ((quotes == EasyShellQuotes.quotesAuto) || (quotes == EasyShellQuotes.quotesAutoSingle))
+        else if ( ((quotes == Quotes.quotesAuto) || (quotes == Quotes.quotesAutoSingle))
         			&& (str.indexOf(" ") != -1) ) { // if space there
-          	if ((quotes == EasyShellQuotes.quotesAutoSingle) && str.indexOf("\"") == -1) { // if no single quotes
+          	if ((quotes == Quotes.quotesAutoSingle) && str.indexOf("\"") == -1) { // if no single quotes
           		ret = "'" + str + "'";
            	} else if (str.indexOf("'") == -1){ // if no double quotes
            		ret = "\"" + str + "\"";
@@ -262,7 +259,7 @@ public class ActionDelegate implements IObjectActionDelegate {
         return ret;
     }
 
-    private String fixQuotes(String str, EasyShellQuotes quotes) {
+    private String fixQuotes(String str, Quotes quotes) {
         String ret = str;
         /*if ( (quotes == EasyShellQuotes.quotesYes) ||
              (quotes == EasyShellQuotes.quotesAuto) ) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 by Andre Bossert
+ * Copyright (C) 2014 - 2016 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,9 +28,9 @@ import org.eclipse.ui.menus.ExtensionContributionFactory;
 import org.eclipse.ui.menus.IContributionRoot;
 import org.eclipse.ui.services.IServiceLocator;
 
-import com.tetrade.eclipse.plugins.easyshell.EasyShellPlugin;
-import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellCommand;
-import com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferenceEntry;
+import com.tetrade.eclipse.plugins.easyshell.Activator;
+import com.tetrade.eclipse.plugins.easyshell.preferences.Command;
+import com.tetrade.eclipse.plugins.easyshell.preferences.PreferenceEntry;
 
 public class DefineCommands extends ExtensionContributionFactory {
 
@@ -53,14 +53,14 @@ public class DefineCommands extends ExtensionContributionFactory {
         additions.addContributionItem(item1, null);
 		*/
 
-		for (int i = 0; i < EasyShellPlugin.getInstanceNumber(); i++) {
+		for (int i = 0; i < Activator.getInstanceNumber(); i++) {
 			String instanceId 		= Integer.toString(i);
-			String enabled   		= EasyShellPlugin.getDefault().getTarget(EasyShellPreferenceEntry.preferenceTargetEnabled.getId(), i);
-			String presetId   		= EasyShellPlugin.getDefault().getTarget(EasyShellPreferenceEntry.preferenceListString.getId(), i);
-			EasyShellPlugin.getDefault().sysout(true,"instanceId : " + i + "; presetId : " + presetId);
+			String enabled   		= Activator.getDefault().getTarget(PreferenceEntry.preferenceTargetEnabled.getId(), i);
+			String presetId   		= Activator.getDefault().getTarget(PreferenceEntry.preferenceListString.getId(), i);
+			Activator.getDefault().sysout(true,"instanceId : " + i + "; presetId : " + presetId);
 			if (enabled == "false" || presetId == null || presetId.isEmpty())
 				continue;
-			EasyShellCommand cmd	= EasyShellCommand.valueOf(presetId);
+			Command cmd	= Command.valueOf(presetId);
 			String consoleName 		= cmd.getOS() + " " + cmd.getConsole();
 			String explorerName		= cmd.getOS() + " " + cmd.getExplorer();
 			addItem(serviceLocator, additions,
@@ -68,19 +68,19 @@ public class DefineCommands extends ExtensionContributionFactory {
 					"com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
 					"com.tetrade.eclipse.plugins.easyshell.Open.InstanceID",
 					instanceId,
-					EasyShellPlugin.IMAGE_OPEN_ID);
+					Activator.IMAGE_OPEN_ID);
 			addItem(serviceLocator, additions,
 					"Run with " + consoleName,
 					"com.tetrade.eclipse.plugins.easyshell.command.shellRun",
 					"com.tetrade.eclipse.plugins.easyshell.Run.InstanceID",
 					instanceId,
-					EasyShellPlugin.IMAGE_RUN_ID);
+					Activator.IMAGE_RUN_ID);
 			addItem(serviceLocator, additions,
 					"Explore with " + explorerName,
 					"com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
 					"com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID",
 					instanceId,
-					EasyShellPlugin.IMAGE_EXPLORE_ID);
+					Activator.IMAGE_EXPLORE_ID);
 		}
 		/*
 		addItem(serviceLocator, additions,
@@ -104,7 +104,7 @@ public class DefineCommands extends ExtensionContributionFactory {
 				"Copy Path",
 				"com.tetrade.eclipse.plugins.easyshell.command.copyPath",
 				null, null,
-				EasyShellPlugin.IMAGE_COPYPATH_ID);
+				Activator.IMAGE_COPYPATH_ID);
 	}
 
     private void addItem(IServiceLocator serviceLocator, IContributionRoot additions,
@@ -112,7 +112,7 @@ public class DefineCommands extends ExtensionContributionFactory {
     					 String paramId, String paramValue, String commandImageId) {
 		CommandContributionItemParameter param = new CommandContributionItemParameter(serviceLocator, "", commandId, SWT.PUSH);
 		param.label = commandLabel;
-		param.icon = EasyShellPlugin.getImageDescriptor(commandImageId);
+		param.icon = Activator.getImageDescriptor(commandImageId);
 		if (paramId != null) {
 			Map<String, Object> commandParamametersMap = new HashMap<String, Object>();
 			commandParamametersMap.put(paramId,  paramValue);

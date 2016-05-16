@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 by Andre Bossert
+ * Copyright (C) 2014 - 2016 by Andre Bossert
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,7 @@ package com.tetrade.eclipse.plugins.easyshell.preferences;
 /**
  * Commands.
  */
-public enum EasyShellCommand {
+public enum Command {
     cmdUnknown(0, 	"Unknown", "shell", "file browser", null,
                     "open ${easyshell:container_loc}",
                     "cd ${easyshell:container_loc} && run ./''${easyshell:resource_name}''",
@@ -125,7 +125,7 @@ public enum EasyShellCommand {
     private final String exploreCmd;
     private final String copyPathCmd;
     // construct
-    EasyShellCommand(int id, String os, String console, String explorer, String label, String openCmd, String runCmd, String exploreCmd, String copyPathCmd) {
+    Command(int id, String os, String console, String explorer, String label, String openCmd, String runCmd, String exploreCmd, String copyPathCmd) {
         this.id = id;
         this.os = os;
         this.console  = console;
@@ -167,11 +167,11 @@ public enum EasyShellCommand {
     public String getCopyPathCmd() {
         return copyPathCmd;
     }
-    public static EasyShellCommand getFromId(int id) {
-        EasyShellCommand ret = cmdUnknown;
-        for(int i = 0; i < EasyShellCommand.values().length; i++) {
-            if (EasyShellCommand.values()[i].getId() == id) {
-                ret = EasyShellCommand.values()[i];
+    public static Command getFromId(int id) {
+        Command ret = cmdUnknown;
+        for(int i = 0; i < Command.values().length; i++) {
+            if (Command.values()[i].getId() == id) {
+                ret = Command.values()[i];
             }
         }
         return ret;
