@@ -11,4 +11,4 @@ http://codeandme.blogspot.co.at/2012/12/tycho-build-9-updating-version-numbers.h
 https://wiki.eclipse.org/Tycho/Packaging_Types#eclipse-plugin
 https://eclipse.org/tycho/sitedocs/tycho-release/tycho-versions-plugin/plugin-info.html
 
-30.09.2015 anb0s
+16.05.2016 anb0s
