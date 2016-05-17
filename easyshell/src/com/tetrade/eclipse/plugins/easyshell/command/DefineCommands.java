@@ -55,8 +55,8 @@ public class DefineCommands extends ExtensionContributionFactory {
 
 		for (int i = 0; i < Activator.getInstanceNumber(); i++) {
 			String instanceId 		= Integer.toString(i);
-			String enabled   		= Activator.getDefault().getTarget(PreferenceEntry.preferenceTargetEnabled.getId(), i);
-			String presetId   		= Activator.getDefault().getTarget(PreferenceEntry.preferenceListString.getId(), i);
+			String enabled   		= Activator.getDefault().getPreferenceString(PreferenceEntry.preferenceTargetEnabled.getId(), i);
+			String presetId   		= Activator.getDefault().getPreferenceString(PreferenceEntry.preferenceListString.getId(), i);
 			Activator.getDefault().sysout(true,"instanceId : " + i + "; presetId : " + presetId);
 			if (enabled == "false" || presetId == null || presetId.isEmpty())
 				continue;

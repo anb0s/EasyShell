@@ -157,7 +157,7 @@ public class ActionDelegate implements IObjectActionDelegate {
                 }
 
                 try {
-                    String target = Activator.getDefault().getTarget(ActionIDNum, InstanceIDNum);
+                    String target = Activator.getDefault().getPreferenceString(ActionIDNum, InstanceIDNum);
                     Quotes quotes = Activator.getDefault().getQuotes(InstanceIDNum);
                     String[] args = new String[6];
                     // args format

@@ -72,6 +72,9 @@ public class Activator extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         getImageRegistry();
+        PreferencePage.initializeDefaults(getPreferenceStore(), 0);
+        PreferencePage.initializeDefaults(getPreferenceStore(), 1);
+        PreferencePage.initializeDefaults(getPreferenceStore(), 2);
         plugin = this;
     }
 
@@ -147,10 +150,10 @@ public class Activator extends AbstractUIPlugin {
     }
 
     /**
-     * Return the target program setted in EasyExplorePreferencePage.
+     * Return the preference string defined in PreferencePage.
      * @return String
      */
-    public String getTarget(int commandId, int instId) {
+    public String getPreferenceString(int commandId, int instId) {
     	return getPreferenceStore().getString(PreferencePage.getPreferenceString(commandId, instId));
     }
 

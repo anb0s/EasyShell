@@ -76,7 +76,7 @@ public class PreferencePage
     	instanceId = instId;
         setPreferenceStore(Activator.getDefault().getPreferenceStore());
         setDescription("Set up a shell command window for instance number " + new Integer(instanceId).toString() + "!");
-        initializeDefaults();
+        initializeDefaults(getPreferenceStore(), instanceId);
     }
 
     public static String getPreferenceString(int stringId, int instId) {
@@ -86,24 +86,23 @@ public class PreferencePage
     /**
      * Sets the default values of the preferences.
      */
-    private void initializeDefaults() {
+    public static void initializeDefaults(IPreferenceStore store, int instId) {
         // get proper command (detect)
         Command cmd = getProperCommand();
         // get store
-        IPreferenceStore store = getPreferenceStore();
-        store.setDefault(PreferenceEntry.preferenceTargetEnabled.getString(instanceId), false);
+        store.setDefault(PreferenceEntry.preferenceTargetEnabled.getString(instId), false);
         // set default commands
-        store.setDefault(PreferenceEntry.preferenceTargetOpen.getString(instanceId), cmd.getOpenCmd());
-        store.setDefault(PreferenceEntry.preferenceTargetRun.getString(instanceId), cmd.getRunCmd());
-        store.setDefault(PreferenceEntry.preferenceTargetExplore.getString(instanceId), cmd.getExploreCmd());
-        store.setDefault(PreferenceEntry.preferenceTargetCopyPath.getString(instanceId), cmd.getCopyPathCmd());
+        store.setDefault(PreferenceEntry.preferenceTargetOpen.getString(instId), cmd.getOpenCmd());
+        store.setDefault(PreferenceEntry.preferenceTargetRun.getString(instId), cmd.getRunCmd());
+        store.setDefault(PreferenceEntry.preferenceTargetExplore.getString(instId), cmd.getExploreCmd());
+        store.setDefault(PreferenceEntry.preferenceTargetCopyPath.getString(instId), cmd.getCopyPathCmd());
         // set default selected preset
-        store.setDefault(PreferenceEntry.preferenceListId.getString(instanceId), cmd.getId() - 1);
-        store.setDefault(PreferenceEntry.preferenceListString.getString(instanceId), cmd.name());
+        store.setDefault(PreferenceEntry.preferenceListId.getString(instId), cmd.getId() - 1);
+        store.setDefault(PreferenceEntry.preferenceListString.getString(instId), cmd.name());
         // set default
-        store.setDefault(PreferenceEntry.preferenceQuotes.getString(instanceId), Quotes.quotesNo.name());
-        store.setDefault(PreferenceEntry.preferenceDebug.getString(instanceId), Debug.debugNo.name());
-        store.setDefault(PreferenceEntry.preferenceTokenizer.getString(instanceId), Tokenizer.EasyShellTokenizerYes.name());
+        store.setDefault(PreferenceEntry.preferenceQuotes.getString(instId), Quotes.quotesNo.name());
+        store.setDefault(PreferenceEntry.preferenceDebug.getString(instId), Debug.debugNo.name());
+        store.setDefault(PreferenceEntry.preferenceTokenizer.getString(instId), Tokenizer.EasyShellTokenizerYes.name());
     }
 
     /**
@@ -350,7 +349,7 @@ public class PreferencePage
     }
 
     public void performDefaults() {
-        initializeDefaults();
+        initializeDefaults(getPreferenceStore(), instanceId);
         setToDefaults();
         //refreshTarget();
         loadStore();
@@ -359,7 +358,7 @@ public class PreferencePage
     public void init(IWorkbench workbench) {
     }
 
-    private Command getProperCommand() {
+    private static Command getProperCommand() {
         Command cmd = Command.cmdUnknown;
         /* possible OS string:
             AIX
@@ -419,7 +418,7 @@ public class PreferencePage
         return cmd;
     }
 
-    private LinuxDesktop detectLinuxDesktop() {
+    private static LinuxDesktop detectLinuxDesktop() {
         LinuxDesktop resultCode = detectDesktopSession();
         if (resultCode == LinuxDesktop.desktopUnknown)
         {
@@ -434,7 +433,7 @@ public class PreferencePage
     /**
      * detects desktop from $DESKTOP_SESSION
      */
-    private LinuxDesktop detectDesktopSession() {
+    private static LinuxDesktop detectDesktopSession() {
     	ArrayList<String> command = new ArrayList<String>();
     	command.add("sh");
     	command.add("-c");
@@ -455,21 +454,21 @@ public class PreferencePage
     /**
      * TODO: detects CDE desktop
      */
-    private boolean isCde() {
+    private static boolean isCde() {
         return false;
     }
 
     /**
      * TODO: detects Xfce desktop
      */
-    private boolean isXfce() {
+    private static boolean isXfce() {
         return false;
     }
 
     /**
      * detects programs from $DESKTOP_SESSION
      */
-    private String detectLinuxDefaultFileBrowser() {
+    private static String detectLinuxDefaultFileBrowser() {
     	ArrayList<String> command = new ArrayList<String>();
     	command.add("xdg-mime");
     	command.add("query");
@@ -494,7 +493,7 @@ public class PreferencePage
      * @return The type of desktop.
      * @see detectDesktop
      */
-    private String isExpectedCommandOutput(ArrayList<String> command, Map<String, Object> expectedOutput, boolean toLowerCase) {
+    private static String isExpectedCommandOutput(ArrayList<String> command, Map<String, Object> expectedOutput, boolean toLowerCase) {
         boolean found = false;
         String expectedLine = null;
         try {
