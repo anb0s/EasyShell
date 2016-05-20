@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="PluginBox" url="http://anbos.de/eclipse/pluginbox-updatesite">
+      The Pluginbox is a container for several Eclipse plugins.
+   </description>
+   <feature url="features/de.anbos.eclipse.easyshell.feature_2.0.0.qualifier.jar" id="de.anbos.eclipse.easyshell.feature" version="2.0.0.qualifier">
+      <category name="EasyShell2"/>
+   </feature>
+   <category-def name="EasyShell2" label="EasyShell 2.x">
+      <description>
+         EasyShell Releases
+      </description>
+   </category-def>
+</site>
