@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?compositeMetadataRepository version='1.0.0'?>
+<repository name='Project PluginBox Releases Repository' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
+    <properties size='1'>
+        <property name='p2.atomic.composite.loading' value='true'/>
+    </properties>
+    <children size='2'>
+        <child location='site_1_3-1_4'/>
+        <child location='site_1_5'/>
+        <!--child location='site_2_0'/-->
+    </children>
+</repository>

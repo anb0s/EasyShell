@@ -2,11 +2,15 @@
 <feature
       id="com.tetrade.eclipse.plugins.easyshell.feature"
       label="Easy Shell Feature"
-      version="1.4.2"
+      version="1.5.0.qualifier"
       provider-name="Marcel Schoen, Andre Bossert">
 
-   <description url="http://pluginbox.sourceforge.net/plugins.html">
-      Adds an option to the popup-menu in the navigator (or package browser) view which opens a shell window. The current (or working) directory of that shell is the directory that was selected in the navigator. Custom shell command configurable in preferences page.
+   <description url="http://anb0s.github.io/EasyShell">
+      Adds an option to the popup-menu in the navigator (or package
+browser) view which opens a shell window. The current (or working)
+directory of that shell is the directory that was selected in
+the navigator. Custom shell command configurable in preferences
+page.
    </description>
 
    <copyright url="http://pluginbox.sourceforge.net/lgpl.html">
@@ -347,7 +351,7 @@ of promoting the sharing and reuse of software generally.
 NO WARRANTY
 11. BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS
 NO WARRANTY
-FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. 
+FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
 EXCEPT WHEN
 OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER
 PARTIES
@@ -789,7 +793,7 @@ of promoting the sharing and reuse of software generally.
 NO WARRANTY
 11. BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS
 NO WARRANTY
-FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. 
+FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
 EXCEPT WHEN
 OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER
 PARTIES
@@ -894,16 +898,16 @@ Public License instead of this License.
    </license>
 
    <url>
-      <update label="PluginBox Update Site" url="http://pluginbox.sourceforge.net"/>
-      <discovery label="PluginBox Update Site" url="http://pluginbox.sourceforge.net"/>
+      <update label="EasyShell Update Site" url="http://anb0s.github.io/EasyShell"/>
+      <discovery label="EasyShell Update Site" url="http://anb0s.github.io/EasyShell"/>
    </url>
 
    <requires>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.expressions"/>
-      <import plugin="org.eclipse.core.runtime.compatibility"/>
-      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.core.variables"/>
+      <import plugin="org.eclipse.core.runtime"/>
    </requires>
 
    <plugin

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?compositeArtifactRepository version='1.0.0'?>
+<repository name='Project PluginBox Releases Repository' type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'>
+    <properties size='0'>
+    </properties>
+    <children size='2'>
+        <child location='site_1_3-1_4'/>
+        <child location='site_1_5'/>
+        <!-- child location='site_2_0'/-->
+    </children>
+</repository>

@@ -5,8 +5,38 @@
          point="org.eclipse.ui.preferencePages">
       <page
             name="Easy Shell"
-            class="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage"
-            id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage">
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain">
+      </page>
+      <page
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance0"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance0"
+            name="Easy Shell 0">
+      </page>
+      <page
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance1"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance1"
+            name="Easy Shell 1">
+      </page>
+      <page
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance2"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance2"
+            name="Easy Shell 2">
+      </page>
+      <page
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageTools"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageTools"
+            name="Easy Shell Tools">
+      </page>
+      <page
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePagePresets"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePagePresets"
+            name="Easy Shell Presets">
       </page>
    </extension>
    <extension
@@ -19,16 +49,31 @@
             categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
             id="com.tetrade.eclipse.plugins.easyshell.command.shellOpen"
             name="Easy Shell Open">
+         <commandParameter
+               id="com.tetrade.eclipse.plugins.easyshell.Open.InstanceID"
+               name="name"
+               optional="false">
+         </commandParameter>
       </command>
       <command
             categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
             id="com.tetrade.eclipse.plugins.easyshell.command.shellRun"
             name="Easy Shell Run">
+         <commandParameter
+               id="com.tetrade.eclipse.plugins.easyshell.Run.InstanceID"
+               name="name"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
             id="com.tetrade.eclipse.plugins.easyshell.command.shellExplore"
             name="Easy Shell Explore">
+         <commandParameter
+               id="com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID"
+               name="name"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
@@ -41,6 +86,7 @@
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?after=group.open">
          <menu
+               icon="icon/easyshell.gif"
                id="com.tetrade.eclipse.plugins.easyshell.menu"
                label="Easy Shell">
             <command
@@ -48,24 +94,60 @@
                   icon="icon/easyshell.gif"
                   label="Open..."
                   style="push">
+               <parameter
+                     name="com.tetrade.eclipse.plugins.easyshell.Open.InstanceID"
+                     value="0">
+               </parameter>
+               <visibleWhen
+                     checkEnabled="false">
+                  <instanceof
+                        value="com.tetrade.eclipse.plugins.easyshell.Object1">
+                  </instanceof>
+               </visibleWhen>
             </command>
             <command
                   commandId="com.tetrade.eclipse.plugins.easyshell.command.shellRun"
                   icon="icon/run_exc.gif"
                   label="Run..."
                   style="push">
+               <parameter
+                     name="com.tetrade.eclipse.plugins.easyshell.Run.InstanceID"
+                     value="0">
+               </parameter>
+               <visibleWhen
+                     checkEnabled="false">
+                  <instanceof
+                        value="com.tetrade.eclipse.plugins.easyshell.Object2">
+                  </instanceof>
+               </visibleWhen>
             </command>
             <command
                   commandId="com.tetrade.eclipse.plugins.easyshell.command.shellExplore"
                   icon="icon/fldr_obj.gif"
                   label="Explore..."
                   style="push">
+               <parameter
+                     name="com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID"
+                     value="0">
+               </parameter>
+               <visibleWhen
+                     checkEnabled="false">
+                  <instanceof
+                        value="com.tetrade.eclipse.plugins.easyshell.Object3">
+                  </instanceof>
+               </visibleWhen>
             </command>
             <command
                   commandId="com.tetrade.eclipse.plugins.easyshell.command.copyPath"
                   icon="icon/copy_edit.gif"
                   label="Copy Path"
                   style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <instanceof
+                        value="com.tetrade.eclipse.plugins.easyshell.Object4">
+                  </instanceof>
+               </visibleWhen>
             </command>
             <visibleWhen
                   checkEnabled="false">
@@ -79,23 +161,28 @@
             </visibleWhen>
          </menu>
       </menuContribution>
+      <menuContribution
+            allPopups="true"
+            class="com.tetrade.eclipse.plugins.easyshell.command.DefineCommands"
+            locationURI="popup:com.tetrade.eclipse.plugins.easyshell.menu">
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShellCommand"
+            class="com.tetrade.eclipse.plugins.easyshell.command.CommandHandler"
             commandId="com.tetrade.eclipse.plugins.easyshell.command.shellOpen">
       </handler>
       <handler
-            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShellCommand"
+            class="com.tetrade.eclipse.plugins.easyshell.command.CommandHandler"
             commandId="com.tetrade.eclipse.plugins.easyshell.command.shellRun">
       </handler>
       <handler
-            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShellCommand"
+            class="com.tetrade.eclipse.plugins.easyshell.command.CommandHandler"
             commandId="com.tetrade.eclipse.plugins.easyshell.command.shellExplore">
       </handler>
       <handler
-            class="com.tetrade.eclipse.plugins.easyshell.command.EasyShellCommand"
+            class="com.tetrade.eclipse.plugins.easyshell.command.CommandHandler"
             commandId="com.tetrade.eclipse.plugins.easyshell.command.copyPath">
       </handler>
    </extension>
@@ -108,6 +195,15 @@
             properties="hasResourceSelection"
             type="org.eclipse.ui.IWorkbenchPart">
       </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.core.variables.dynamicVariables">
+      <variable
+            description="EasyShell Variables"
+            name="easyshell"
+            resolver="com.tetrade.eclipse.plugins.easyshell.DynamicVariableResolver"
+            supportsArgument="true">
+      </variable>
    </extension>
 
 </plugin>
