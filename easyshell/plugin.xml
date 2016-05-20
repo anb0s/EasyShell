@@ -6,25 +6,37 @@
       <page
             name="Easy Shell"
             class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
-            id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePageMain">
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain">
       </page>
       <page
-            category="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePageMain"
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
             class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance0"
-            id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage0"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance0"
             name="Easy Shell 0">
       </page>
       <page
-            category="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePageMain"
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
             class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance1"
-            id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage1"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance1"
             name="Easy Shell 1">
       </page>
       <page
-            category="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePageMain"
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
             class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance2"
-            id="com.tetrade.eclipse.plugins.easyshell.preferences.EasyShellPreferencePage2"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance2"
             name="Easy Shell 2">
+      </page>
+      <page
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageTools"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageTools"
+            name="Easy Shell Tools">
+      </page>
+      <page
+            category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
+            class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePagePresets"
+            id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePagePresets"
+            name="Easy Shell Presets">
       </page>
    </extension>
    <extension
