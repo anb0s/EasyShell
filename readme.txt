@@ -15,5 +15,7 @@ target defintions
 https://wiki.eclipse.org/Eclipse_Project_Update_Sites
 http://codeandme.blogspot.de/2012/12/tycho-build-8-using-target-platform.html
 https://wiki.eclipse.org/Tycho/Packaging_Types#eclipse-target-definition
+https://bugs.eclipse.org/bugs/show_bug.cgi?id=383865
+http://blog.vogella.com/2013/01/03/tycho-advanced/
 
 24.05.2016 anb0s

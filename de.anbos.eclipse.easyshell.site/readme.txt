@@ -1,4 +1,8 @@
-beta update site: https://raw.githubusercontent.com/anb0s/EasyShell/v1_5/pluginbox-updatesite/composite
+beta update site:
+https://raw.githubusercontent.com/anb0s/EasyShell/v2_0/de.anbos.eclipse.easyshell.site/updates/testing
+
+main update site:
+https://raw.githubusercontent.com/anb0s/EasyShell/v2_0/de.anbos.eclipse.easyshell.site/updates/release
 
 1. build the site with maven: mvn clean install
 2. copy target\site to composite\site_x_y !!! Only one site with one / last plugin version !!!
@@ -6,4 +10,4 @@ beta update site: https://raw.githubusercontent.com/anb0s/EasyShell/v1_5/pluginb
 
 source: http://stackoverflow.com/questions/20951842/combine-aggregate-eclipse-p2-repositories-extendable-p2-repository
 
-03.03.2016 anb0s
+24.05.2016 anb0s
