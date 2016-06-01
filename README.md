@@ -12,6 +12,10 @@ OR
 
 Eclipse Markeplace: http://marketplace.eclipse.org/content/easyshell
 
+![alt text](https://github.com/anb0s/EasyShell/blob/master/pluginbox-updatesite/images/EasyShell_Preferences_1.4.1.png "Preferences")
+
+![alt text](https://github.com/anb0s/EasyShell/blob/master/pluginbox-updatesite/images/EasyShell_Menu_1.4.1.png "Main menue")
+
 Features:
 ---------
 
