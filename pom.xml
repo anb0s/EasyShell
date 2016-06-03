@@ -11,10 +11,10 @@
 	<name>EasyShell</name>
 
 	<modules>
-		<module>de.anbos.eclipse.easyshell.target</module>
-		<module>de.anbos.eclipse.easyshell.plugin</module>
-		<module>de.anbos.eclipse.easyshell.feature</module>
-		<module>de.anbos.eclipse.easyshell.site</module>
+		<module>platform</module>
+		<module>plugin</module>
+		<module>feature</module>
+		<module>site</module>
 	</modules>
 
 	<properties>
@@ -42,7 +42,7 @@
 					<target>
 						<artifact>
 							<groupId>de.anbos.eclipse.easyshell.group</groupId>
-							<artifactId>de.anbos.eclipse.easyshell.target</artifactId>
+							<artifactId>de.anbos.eclipse.easyshell.platform</artifactId>
 							<version>2.0.0-SNAPSHOT</version>
 							<classifier>${target.platform}</classifier>
 						</artifact>

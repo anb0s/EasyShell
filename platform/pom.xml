@@ -4,12 +4,12 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>de.anbos.eclipse.easyshell.target</artifactId>
+	<artifactId>de.anbos.eclipse.easyshell.platform</artifactId>
 	<!-- hint: not using this packaging here, because not possible to define
 		classifier = file name during build -->
 	<!-- packaging>eclipse-target-definition</packaging -->
 	<packaging>pom</packaging>
-	<name>EasyShell Target</name>
+	<name>EasyShell Platform</name>
 
 	<parent>
 		<groupId>de.anbos.eclipse.easyshell.group</groupId>
