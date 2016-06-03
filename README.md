@@ -1,6 +1,9 @@
 # EasyShell [![Build Status](https://travis-ci.org/anb0s/EasyShell.svg)](https://travis-ci.org/anb0s/EasyShell) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
-Eclipse Plugin - This plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. The current directory of the opened shell is the directory which was selected with the popup menu. Additionally it is possible to run selected file in the shell and copy file or directory path.
-Multiple selections are also supported.
+This eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. The current directory of the opened shell is the directory which was selected with the popup menu. Additionally it is possible to run selected file in the system shell and copy file or directory path. Multiple selections are also supported.
+
+![alt text](https://github.com/anb0s/EasyShell/blob/master/site/images/EasyShell_Menu_1.4.1.png "Menu")
+
+![alt text](https://github.com/anb0s/EasyShell/blob/master/site/images/EasyShell_Preferences_1.4.1.png "Preferences")
 
 Installation:
 -------------
@@ -14,11 +17,6 @@ Eclipse Markeplace: http://marketplace.eclipse.org/content/easyshell
 
 Features:
 ---------
-
-![alt text](https://github.com/anb0s/EasyShell/blob/master/pluginbox-updatesite/images/EasyShell_Preferences_1.4.1.png "Preferences")
-
-![alt text](https://github.com/anb0s/EasyShell/blob/master/pluginbox-updatesite/images/EasyShell_Menu_1.4.1.png "Main menue")
-
 
 EasyShell does not support virtual folders, because they are not
 present in the file system!
