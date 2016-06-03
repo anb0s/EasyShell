@@ -1,9 +1,9 @@
 # EasyShell [![Build Status](https://travis-ci.org/anb0s/EasyShell.svg)](https://travis-ci.org/anb0s/EasyShell) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
 This eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. The current directory of the opened shell is the directory which was selected with the popup menu. Additionally it is possible to run selected file in the system shell and copy file or directory path. Multiple selections are also supported.
 
-![alt text](https://github.com/anb0s/EasyShell/blob/master/site/images/EasyShell_Menu_1.4.1.png "Menu")
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_Menu_1.4.1.png "Menu")
 
-![alt text](https://github.com/anb0s/EasyShell/blob/master/site/images/EasyShell_Preferences_1.4.1.png "Preferences")
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_Preferences_1.4.1.png "Preferences")
 
 Installation:
 -------------
@@ -11,9 +11,11 @@ Use update site: http://anb0s.github.io/EasyShell
 
 OR
 
-[Download EasyShell] (https://sourceforge.net/projects/pluginbox/files/latest/download), extract it to "eclipse\dropin" folder and restart.
-
 Eclipse Markeplace: http://marketplace.eclipse.org/content/easyshell
+
+OR
+
+[Download EasyShell] (https://sourceforge.net/projects/pluginbox/files/latest/download), extract it to "eclipse\dropin" folder and restart.
 
 Features:
 ---------
