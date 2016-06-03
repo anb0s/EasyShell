@@ -6,13 +6,17 @@
 
 	<artifactId>de.anbos.eclipse.easyshell.site</artifactId>
 	<packaging>eclipse-repository</packaging>
-	<name>EasyShell Update Site</name>
+	<name>EasyShell Site</name>
 
 	<parent>
 		<groupId>de.anbos.eclipse.easyshell.group</groupId>
 		<artifactId>de.anbos.eclipse.easyshell</artifactId>
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
+
+	<properties>
+		<site.dir>testing</site.dir>
+	</properties>
 
 	<build>
 		<plugins>
@@ -22,7 +26,7 @@
 				<version>${tycho.version}</version>
 				<configuration>
 				    <!-- IMPORTANT: DO NOT split the arg line -->
-					<appArgLine>-application org.eclipse.ant.core.antRunner -buildfile packaging-p2composite.ant p2.composite.add -Dsite.label="EasyShell" -Dproject.build.directory=${project.build.directory} -DunqualifiedVersion=${unqualifiedVersion} -DbuildQualifier=${buildQualifier}</appArgLine>
+					<appArgLine>-application org.eclipse.ant.core.antRunner -buildfile packaging-p2composite.ant p2.composite.add -Dsite.label="EasyShell" -Dsite.dir=${site.dir} -Dproject.build.directory=${project.build.directory} -DunqualifiedVersion=${unqualifiedVersion} -DbuildQualifier=${buildQualifier}</appArgLine>
 					<repositories>
 						<repository>
 							<id>Mars</id>

@@ -11,10 +11,10 @@
 	<name>EasyShell</name>
 
 	<modules>
-		<module>de.anbos.eclipse.easyshell.feature</module>
-		<module>de.anbos.eclipse.easyshell.plugin</module>
-		<module>de.anbos.eclipse.easyshell.site</module>
 		<module>de.anbos.eclipse.easyshell.target</module>
+		<module>de.anbos.eclipse.easyshell.plugin</module>
+		<module>de.anbos.eclipse.easyshell.feature</module>
+		<module>de.anbos.eclipse.easyshell.site</module>
 	</modules>
 
 	<properties>

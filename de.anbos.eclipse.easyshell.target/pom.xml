@@ -9,7 +9,7 @@
 		classifier = file name during build -->
 	<!-- packaging>eclipse-target-definition</packaging -->
 	<packaging>pom</packaging>
-	<name>EasyShell Target Platform Definition</name>
+	<name>EasyShell Target</name>
 
 	<parent>
 		<groupId>de.anbos.eclipse.easyshell.group</groupId>
