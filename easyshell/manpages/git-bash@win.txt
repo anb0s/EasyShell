@@ -1,2 +1,0 @@
-http://msysgit.github.io/
-http://pieces.elyscape.com/51/adding-open-in-git-bash-to-the-context-menu/

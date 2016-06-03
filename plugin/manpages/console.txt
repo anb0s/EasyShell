@@ -1,0 +1,9 @@
+https://sourceforge.net/projects/console/
+
+https://sourceforge.net/p/pluginbox/feature-requests/10/
+
+Open: console.exe -w "{4}" -d "{1}"
+Run: console.exe -w "{4}" -d "{1}" -r "/k \"{3}\""
+
+Escape chars:
+http://www.robvanderwoude.com/escapechars.php

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/de.anbos.eclipse.easyshell.feature_2.0.0.qualifier.jar" id="de.anbos.eclipse.easyshell.feature" version="2.0.0.qualifier">
+      <category name="EasyShell-2.0"/>
+   </feature>
+   <category-def name="EasyShell-2.0" label="EasyShell 2.0.x">
+      <description>
+         EasyShell 2.0.x Releases
+      </description>
+   </category-def>
+</site>
