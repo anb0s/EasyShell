@@ -50,31 +50,31 @@ public enum Command {
                     "konsole --noclose --workdir ${easyshell:container_loc}",
                     "konsole --noclose --workdir ${easyshell:container_loc} -e ./''${easyshell:resource_name}''",
                     "konqueror file:\"${easyshell:resource_loc}\"",
-                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
+                    "${easyshell:resource_loc}${easyshell:line_separator}"
     ),
     cmdKonsoleGnome(5, "Linux", "Gnome Terminal", "Nautilus", null,
-                    "gnome-terminal --working-directory=\"${easyshell:container_loc}\"",
-                    "gnome-terminal --working-directory=\"${easyshell:container_loc}\" --command=./''${easyshell:resource_name}''",
+                    "gnome-terminal --working-directory=${easyshell:container_loc}",
+                    "gnome-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''",
                     "nautilus ${easyshell:resource_loc}",
-                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
+                    "${easyshell:resource_loc}${easyshell:line_separator}"
     ),
     cmdXtermDtfile(6, "Linux" , "CDE Xterm", "Dtfile", null,
                     "cd ${easyshell:container_loc} && xterm",
                     "cd ${easyshell:container_loc} && xterm -e ./''${easyshell:resource_name}''",
                     "cd ${easyshell:container_loc} && dtfile",
-                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
+                    "${easyshell:resource_loc}${easyshell:line_separator}"
     ),
     cmdTerminalFinder(7, "MAC OS X", "Terminal", "Finder", null,
                     "open -a Terminal ${easyshell:container_loc}",
                     "open -a Terminal ${easyshell:resource_loc}",
                     "open -R ${easyshell:resource_loc}",
-                    "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
+                    "${easyshell:resource_loc}${easyshell:line_separator}"
     ),
     cmdKonsoleKDEDolphin(8, "Linux" , "KDE Konsole", "Dolphin", null,
 	                "konsole --workdir ${easyshell:container_loc}",
 	                "konsole --workdir ${easyshell:container_loc} --noclose -e ${easyshell:resource_loc}",
 	                "dolphin --select ${easyshell:resource_loc}",
-	                "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
+	                "${easyshell:resource_loc}${easyshell:line_separator}"
     ),
     cmdWinConsole(9, "Windows", "Console", "Explorer", null,
 	                "console.exe -w \"${easyshell:project_name}\" -d ${easyshell:container_loc}",
@@ -101,18 +101,28 @@ public enum Command {
             "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
     ),
     // https://sourceforge.net/p/pluginbox/feature-requests/18/
+    // https://github.com/anb0s/EasyShell/issues/17
     cmdGnomeTermNemo(13, "Linux", "Gnome Terminal", "Nemo", null,
-            "gnome-terminal --working-directory=\"${easyshell:container_loc}\"",
-            "gnome-terminal --working-directory=\"${easyshell:container_loc}\" --command=./''${easyshell:resource_name}''",
+            "gnome-terminal --working-directory=${easyshell:container_loc}",
+            "gnome-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''",
             "nemo ${easyshell:resource_loc}",
-            "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
+            "${easyshell:resource_loc}${easyshell:line_separator}"
     ),
     // https://sourceforge.net/p/pluginbox/feature-requests/24/
+    // https://github.com/anb0s/EasyShell/issues/23
     cmdGnomeTermThunar(14, "Linux", "Gnome Terminal", "Thunar", null,
-            "gnome-terminal --working-directory=\"${easyshell:container_loc}\"",
-            "gnome-terminal --working-directory=\"${easyshell:container_loc}\" --command=./''${easyshell:resource_name}''",
+            "gnome-terminal --working-directory=${easyshell:container_loc}",
+            "gnome-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''",
             "thunar ${easyshell:container_loc}",
-            "\"${easyshell:resource_loc}\"${easyshell:line_separator}"
+            "${easyshell:resource_loc}${easyshell:line_separator}"
+    ),
+    // https://sourceforge.net/p/pluginbox/feature-requests/22/
+    // https://github.com/anb0s/EasyShell/issues/21
+    cmdXfceTermThunar(15, "Linux", "Xfce Terminal", "Thunar", null,
+            "xfce4-terminal --working-directory=${easyshell:container_loc}",
+            "xfce4-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}'' --hold",
+            "thunar ${easyshell:container_loc}",
+            "${easyshell:resource_loc}${easyshell:line_separator}"
     );
     // attributes
     private final int id;

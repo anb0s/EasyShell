@@ -26,7 +26,7 @@
             id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageInstance2"
             name="Easy Shell 2">
       </page>
-      <page
+      <!--page
             category="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageMain"
             class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageTools"
             id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePageTools"
@@ -37,7 +37,7 @@
             class="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePagePresets"
             id="com.tetrade.eclipse.plugins.easyshell.preferences.PreferencePagePresets"
             name="Easy Shell Presets">
-      </page>
+      </page-->
    </extension>
    <extension
          point="org.eclipse.ui.commands">

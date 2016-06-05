@@ -1,4 +1,4 @@
-Easy Shell 1.4.2 plugin for Eclipse
+Easy Shell 1.5.0 plugin for Eclipse
 -----------------------------------
 
 This plugin allows to open a shell window or file manager from the
@@ -32,7 +32,8 @@ Windows:
 
 Unix / Linux:
 - KDE Konsole / Konqueror and Dolphin
-- Gnome Terminal / Nautilus
+- Gnome Terminal / Nautilus and Thunar and Nemo
+- Xfce Terminal / Thunar
 - MAC OS X Terminal / Finder
 - CDE Xterm / Dtfile (not tested!)
 
@@ -44,12 +45,12 @@ can figure out how to run a command to open the shell with given
 parameters. The following substitution variables are available
 for building the command:
 
-{0} = The drive letter (only Windows, not used on other platforms)
-{1} = The selected directory path
-{2} = The selected file or directory path
-{3} = The selected file name
-{4} = The project name of selected directory or path (for external files it's "Easy Shell")
-{5} = The line separator
+{0} or ${easyshell:drive} 			= The drive letter (only Windows, not used on other platforms)
+{1} or ${easyshell:container_loc} 	= The selected directory path
+{2} or ${easyshell:resource_loc}	= The selected file or directory path
+{3} or ${easyshell:resource_name}	= The selected file name
+{4} or ${easyshell:project_name}	= The project name of selected directory or path (for external files it's "Easy Shell")
+{5} or ${easyshell:line_separator}	= The line separator
 
 Option "Enable string tokenizer" with values "Yes, No" and default value "Yes".
 The whole command line string will be splitted (tokenized) to single strings before expansion
@@ -69,4 +70,4 @@ Installation:
 -------------
 a) Extract zip file to "eclipse\dropin" folder and restart.
 OR
-b) Use update site: http://pluginbox.sourceforge.net
+b) Use update site: http://anb0s.github.io/EasyShell

@@ -407,6 +407,7 @@ public class PreferencePage
             	case desktopCinnamon: cmd = Command.cmdGnomeTermNemo; break;
             	case desktopGnome: cmd = Command.cmdKonsoleGnome; break;
             	case desktopCde: cmd = Command.cmdXtermDtfile; break;
+            	case desktopXfce: cmd = Command.cmdXfceTermThunar; break;
             	default: cmd = Command.cmdUnknown;
             }
             // try to detect the default file browser
@@ -424,8 +425,6 @@ public class PreferencePage
         {
         	if (isCde())
         		resultCode = LinuxDesktop.desktopCde;
-        	else if (isXfce())
-        		resultCode = LinuxDesktop.desktopXfce;
         }
         return resultCode;
     }
@@ -443,6 +442,7 @@ public class PreferencePage
         desktops.put("kde", LinuxDesktop.desktopKde);
         desktops.put("gnome", LinuxDesktop.desktopGnome);
         desktops.put("cinnamon", LinuxDesktop.desktopCinnamon);
+        desktops.put("xfce", LinuxDesktop.desktopXfce);
         // execute
         String desktop = isExpectedCommandOutput(command, desktops, true);
         if (desktop != null && !desktop.isEmpty()) {
@@ -455,13 +455,6 @@ public class PreferencePage
      * TODO: detects CDE desktop
      */
     private static boolean isCde() {
-        return false;
-    }
-
-    /**
-     * TODO: detects Xfce desktop
-     */
-    private static boolean isXfce() {
         return false;
     }
 

@@ -71,11 +71,11 @@ public class Activator extends AbstractUIPlugin {
      */
     public void start(BundleContext context) throws Exception {
         super.start(context);
+        plugin = this;
         getImageRegistry();
         PreferencePage.initializeDefaults(getPreferenceStore(), 0);
         PreferencePage.initializeDefaults(getPreferenceStore(), 1);
         PreferencePage.initializeDefaults(getPreferenceStore(), 2);
-        plugin = this;
     }
 
     /*

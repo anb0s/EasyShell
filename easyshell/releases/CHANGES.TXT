@@ -1,12 +1,31 @@
 Easy Shell Plugin Change History
 --------------------------------
 
-1.4.2 (by anb0s at 2013-07-21)
+http://anb0s.github.io/EasyShell
+
+1.5.0 (by anb0s at 2016-06-05)
 ------------------------------
-+ added new preset "Windows Git-Bash / Explorer"
-  https://sourceforge.net/p/pluginbox/feature-requests/12/
-+ added new preset "Windows ConEmu / Explorer"
-  https://sourceforge.net/p/pluginbox/feature-requests/16/
++ migration to GitHub
+  https://github.com/anb0s/EasyShell/issues/2
+! EasyShell v1.4.2 cannot be installed in Eclipse Neon(4.6.0M5)
+  https://github.com/anb0s/EasyShell/issues/29
+! Compatibility Issue with Neon-M7
+  https://github.com/anb0s/EasyShell/issues/30
+! gnome-terminal: change to working directory does not work in LMDE 201403
+  https://github.com/anb0s/EasyShell/issues/6
+! fixed all linux presets like gnome-terminal presets to not use "{1}" --> {1},
+  because of tokenizer it works also for "spaces in names"
++ added Xfce detection
++ added 3 instances of property pages 
++ added new preset "Gnome Terminal / Nemo"
+  https://sourceforge.net/p/pluginbox/feature-requests/18/
+  https://github.com/anb0s/EasyShell/issues/17
++ added new preset "Gnome Terminal / Thunar"
+  https://sourceforge.net/p/pluginbox/feature-requests/24/
+  https://github.com/anb0s/EasyShell/issues/23
++ added new preset "Xfce Terminal / Thunar"
+  https://sourceforge.net/p/pluginbox/feature-requests/22/
+  https://github.com/anb0s/EasyShell/issues/21
 
 1.4.1 (by anb0s at 2013-04-01)
 ------------------------------
