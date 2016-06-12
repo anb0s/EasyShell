@@ -66,40 +66,22 @@ public class DefineCommands extends ExtensionContributionFactory {
 			addItem(serviceLocator, additions,
 					"Open with " + consoleName,
 					"com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
-					"com.tetrade.eclipse.plugins.easyshell.Open.InstanceID",
+					"com.tetrade.eclipse.plugins.easyshell.Command.InstanceID",
 					instanceId,
 					Activator.IMAGE_OPEN_ID);
 			addItem(serviceLocator, additions,
 					"Run with " + consoleName,
 					"com.tetrade.eclipse.plugins.easyshell.command.shellRun",
-					"com.tetrade.eclipse.plugins.easyshell.Run.InstanceID",
+					"com.tetrade.eclipse.plugins.easyshell.Command.InstanceID",
 					instanceId,
 					Activator.IMAGE_RUN_ID);
 			addItem(serviceLocator, additions,
 					"Explore with " + explorerName,
 					"com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
-					"com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID",
+					"com.tetrade.eclipse.plugins.easyshell.Command.InstanceID",
 					instanceId,
 					Activator.IMAGE_EXPLORE_ID);
 		}
-		/*
-		addItem(serviceLocator, additions,
-				"EasyShell Open 0",
-				"com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
-				"com.tetrade.eclipse.plugins.easyshell.ParameterInstanceID",
-				"0",
-				EasyShellPlugin.IMAGE_OPEN_ID);
-		addItem(serviceLocator, additions,
-				"EasyShell Run",
-				"com.tetrade.eclipse.plugins.easyshell.command.shellRun",
-				null, null,
-				EasyShellPlugin.IMAGE_RUN_ID);
-		addItem(serviceLocator, additions,
-				"EasyShell Explore",
-				"com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
-				null, null,
-				EasyShellPlugin.IMAGE_EXPLORE_ID);
-		*/
 		addItem(serviceLocator, additions,
 				"Copy Path",
 				"com.tetrade.eclipse.plugins.easyshell.command.copyPath",

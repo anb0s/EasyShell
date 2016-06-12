@@ -75,10 +75,11 @@ public class ActionDelegate implements IObjectActionDelegate {
         // get the ID + instance
         String ActionIDStr = action.getId();
         Activator.getDefault().sysout(true, "Action ID: >" + ActionIDStr + "<");
-        String[] EasyShellActionStr = { "com.tetrade.eclipse.plugins.easyshell.command.shellOpen",
-                                        "com.tetrade.eclipse.plugins.easyshell.command.shellRun",
-                                        "com.tetrade.eclipse.plugins.easyshell.command.shellExplore",
-                                        "com.tetrade.eclipse.plugins.easyshell.command.copyPath"
+        String[] EasyShellActionStr = { "com.tetrade.eclipse.plugins.easyshell.command.shellOpen"
+                                        ,"com.tetrade.eclipse.plugins.easyshell.command.shellRun"
+                                        ,"com.tetrade.eclipse.plugins.easyshell.command.shellExplore"
+                                        ,"com.tetrade.eclipse.plugins.easyshell.command.copyPath"
+                                        //,"com.tetrade.eclipse.plugins.easyshell.command.toolbar"
         };
 
         // check instance
@@ -89,7 +90,7 @@ public class ActionDelegate implements IObjectActionDelegate {
         	InstanceIDNum = Integer.parseInt(parts[1]);
         }
 
-        if (InstanceIDNum > 2) {
+        if (InstanceIDNum >= Activator.getInstanceNumber()) {
             MessageDialog.openInformation(
                 new Shell(),
                 "Easy Shell",
@@ -109,12 +110,16 @@ public class ActionDelegate implements IObjectActionDelegate {
         }
 
         if (ActionIDNum == -1) {
+        	// map all other commands to the first one
+        	ActionIDNum = 0;
+        	/*
             MessageDialog.openInformation(
                 new Shell(),
                 "Easy Shell",
                 "Wrong Action ID");
             Activator.log("Wrong Action ID");
             return;
+            */
         }
 
         // String for all commands

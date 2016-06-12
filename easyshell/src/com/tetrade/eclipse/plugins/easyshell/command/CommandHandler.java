@@ -36,13 +36,7 @@ public class CommandHandler extends AbstractHandler {
         ActionDelegate action = EditorPropertyTester.hasResourceSelection(activePart);
         if (action != null) {
         	String commandID  = event.getCommand().getId();
-        	String instanceID = event.getParameter("com.tetrade.eclipse.plugins.easyshell.Open.InstanceID");
-            if (instanceID == null) {
-            	instanceID = event.getParameter("com.tetrade.eclipse.plugins.easyshell.Run.InstanceID");
-                if (instanceID == null) {
-                	instanceID = event.getParameter("com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID");
-                }
-            }
+        	String instanceID = event.getParameter("com.tetrade.eclipse.plugins.easyshell.Command.InstanceID");
             if (instanceID != null) {
             	commandID += "-" + instanceID;
             }

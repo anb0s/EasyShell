@@ -50,7 +50,7 @@
             id="com.tetrade.eclipse.plugins.easyshell.command.shellOpen"
             name="Easy Shell Open">
          <commandParameter
-               id="com.tetrade.eclipse.plugins.easyshell.Open.InstanceID"
+               id="com.tetrade.eclipse.plugins.easyshell.Command.InstanceID"
                name="name"
                optional="false">
          </commandParameter>
@@ -60,9 +60,9 @@
             id="com.tetrade.eclipse.plugins.easyshell.command.shellRun"
             name="Easy Shell Run">
          <commandParameter
-               id="com.tetrade.eclipse.plugins.easyshell.Run.InstanceID"
+               id="com.tetrade.eclipse.plugins.easyshell.Command.InstanceID"
                name="name"
-               optional="true">
+               optional="false">
          </commandParameter>
       </command>
       <command
@@ -70,15 +70,19 @@
             id="com.tetrade.eclipse.plugins.easyshell.command.shellExplore"
             name="Easy Shell Explore">
          <commandParameter
-               id="com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID"
+               id="com.tetrade.eclipse.plugins.easyshell.Command.InstanceID"
                name="name"
-               optional="true">
+               optional="false">
          </commandParameter>
       </command>
       <command
             categoryId="com.tetrade.eclipse.plugins.easyshell.command.category1"
             id="com.tetrade.eclipse.plugins.easyshell.command.copyPath"
             name="Easy Shell Copy Path">
+      </command>
+      <command
+            id="com.tetrade.eclipse.plugins.easyshell.command.toolbar"
+            name="EasyShell Main Action">
       </command>
    </extension>
    <extension
@@ -87,7 +91,7 @@
             locationURI="popup:org.eclipse.ui.popup.any?after=group.open">
          <menu
                icon="icon/easyshell.gif"
-               id="com.tetrade.eclipse.plugins.easyshell.menu"
+               id="com.tetrade.eclipse.plugins.easyshell.menu.main"
                label="Easy Shell">
             <command
                   commandId="com.tetrade.eclipse.plugins.easyshell.command.shellOpen"
@@ -95,7 +99,7 @@
                   label="Open..."
                   style="push">
                <parameter
-                     name="com.tetrade.eclipse.plugins.easyshell.Open.InstanceID"
+                     name="com.tetrade.eclipse.plugins.easyshell.Command.InstanceID"
                      value="0">
                </parameter>
                <visibleWhen
@@ -111,7 +115,7 @@
                   label="Run..."
                   style="push">
                <parameter
-                     name="com.tetrade.eclipse.plugins.easyshell.Run.InstanceID"
+                     name="com.tetrade.eclipse.plugins.easyshell.Command.InstanceID"
                      value="0">
                </parameter>
                <visibleWhen
@@ -127,7 +131,7 @@
                   label="Explore..."
                   style="push">
                <parameter
-                     name="com.tetrade.eclipse.plugins.easyshell.Explore.InstanceID"
+                     name="com.tetrade.eclipse.plugins.easyshell.Command.InstanceID"
                      value="0">
                </parameter>
                <visibleWhen
@@ -164,7 +168,27 @@
       <menuContribution
             allPopups="true"
             class="com.tetrade.eclipse.plugins.easyshell.command.DefineCommands"
-            locationURI="popup:com.tetrade.eclipse.plugins.easyshell.menu">
+            locationURI="popup:com.tetrade.eclipse.plugins.easyshell.menu.main">
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="com.tetrade.eclipse.plugins.easyshell.toolbar1"
+               label="EasyShell">
+            <command
+                  commandId="com.tetrade.eclipse.plugins.easyshell.command.toolbar"
+                  icon="icon/easyshell.gif"
+                  id="com.tetrade.eclipse.plugins.easyshell.menu.toolbar"
+                  label="Easy Shell"
+                  style="pulldown">
+            </command>
+         </toolbar>
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            class="com.tetrade.eclipse.plugins.easyshell.command.DefineCommands"
+            locationURI="menu:com.tetrade.eclipse.plugins.easyshell.menu.toolbar">
       </menuContribution>
    </extension>
    <extension
@@ -184,6 +208,10 @@
       <handler
             class="com.tetrade.eclipse.plugins.easyshell.command.CommandHandler"
             commandId="com.tetrade.eclipse.plugins.easyshell.command.copyPath">
+      </handler>
+      <handler
+            class="com.tetrade.eclipse.plugins.easyshell.command.CommandHandler"
+            commandId="com.tetrade.eclipse.plugins.easyshell.command.toolbar">
       </handler>
    </extension>
    <extension
