@@ -77,3 +77,7 @@ ATTENTION: use it carefully with "string tokenizer" and remove quotes from comma
 
 Option "Enable debug output" with values "Yes, No" and default value "No".<br/>
 If changed to "Yes", debug messages will be printed to error console.
+
+License:
+--------
+https://eclipse.org/org/documents/epl-v10.html
