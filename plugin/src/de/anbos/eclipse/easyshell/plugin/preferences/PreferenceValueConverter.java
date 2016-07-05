@@ -26,16 +26,16 @@ public class PreferenceValueConverter {
 
 	// Static ------------------------------------------------------------------
 
-    public static String asString(List<PresetData> items) {
+    public static String asString(List<CommandData> items) {
         StringBuffer buffer = new StringBuffer();
-        for(PresetData item : items) {
+        for(CommandData item : items) {
             buffer.append(asString(item));
             buffer.append(ITEM_DELIMITER);
         }
         return buffer.toString();
     }
 
-    public static final String asString(PresetData data) {
+    public static final String asString(CommandData data) {
         String position = Integer.toString(data.getPosition());
         String enabled = Boolean.toString(data.isEnabled());
         String id = data.getId();
@@ -57,17 +57,17 @@ public class PreferenceValueConverter {
     }
     */
 
-    public static PresetData[] asPresetDataArray(String value) {
+    public static CommandData[] asPresetDataArray(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
-        PresetData[] items = new PresetData[tokenizer.countTokens()];
+        CommandData[] items = new CommandData[tokenizer.countTokens()];
         for(int i = 0 ; i < items.length ; i++) {
             items[i] = asPresetData(tokenizer.nextToken());
         }
         return items;
     }
 
-    public static PresetData asPresetData(String value) {
-        PresetData data = new PresetData();
+    public static CommandData asPresetData(String value) {
+        CommandData data = new CommandData();
         data.fillTokens(value, VALUE_DELIMITER);
         return data;
     }

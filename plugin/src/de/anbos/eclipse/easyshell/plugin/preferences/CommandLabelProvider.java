@@ -17,13 +17,13 @@ import org.eclipse.swt.graphics.Image;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 
-public class PresetLabelProvider extends LabelProvider implements ITableLabelProvider {
+public class CommandLabelProvider extends LabelProvider implements ITableLabelProvider {
 
     public Image getColumnImage(Object element, int columnIndex) {
-        if(!(element instanceof PresetData)) {
+        if(!(element instanceof CommandData)) {
             return null;
         }
-        PresetData data = (PresetData)element;
+        CommandData data = (CommandData)element;
         switch(columnIndex) {
             case 0:
                 return new Image(null, Activator.getImageDescriptor(data.getMenuIcon()).getImageData());
@@ -33,10 +33,10 @@ public class PresetLabelProvider extends LabelProvider implements ITableLabelPro
     }
 
     public String getColumnText(Object element, int columnIndex) {
-        if(!(element instanceof PresetData)) {
+        if(!(element instanceof CommandData)) {
             return ""; //$NON-NLS-1$
         }
-        PresetData data = (PresetData)element;
+        CommandData data = (CommandData)element;
         switch(columnIndex) {
             case 0:
                 return data.getName();

@@ -19,11 +19,11 @@ import org.eclipse.swt.widgets.TableItem;
 public class ItemMover implements SelectionListener {
 
 	private Table table;
-	private PresetsStore store;
+	private CommandsStore store;
 
-	private PresetData currentSelection;
+	private CommandData currentSelection;
 
-	public ItemMover(Table table, PresetsStore store) {
+	public ItemMover(Table table, CommandsStore store) {
 		this.table = table;
 		this.store = store;
 		table.addSelectionListener(this);
@@ -33,7 +33,7 @@ public class ItemMover implements SelectionListener {
 		if(currentSelection == null) {
 			return;
 		}
-		PresetData previousElement = store.getPreviousElement(currentSelection);
+		CommandData previousElement = store.getPreviousElement(currentSelection);
 		if(previousElement == null) {
 			return;
 		}
@@ -47,7 +47,7 @@ public class ItemMover implements SelectionListener {
 		if(currentSelection == null) {
 			return;
 		}
-		PresetData nextElement = store.getNextElement(currentSelection);
+		CommandData nextElement = store.getNextElement(currentSelection);
 		if(nextElement == null) {
 			return;
 		}
@@ -68,10 +68,10 @@ public class ItemMover implements SelectionListener {
 			currentSelection = null;
 			return;
 		}
-		if(item == null || !(item.getData() instanceof PresetData)) {
+		if(item == null || !(item.getData() instanceof CommandData)) {
 			currentSelection = null;
 			return;
 		}
-		currentSelection = (PresetData)item.getData();
+		currentSelection = (CommandData)item.getData();
 	}
 }

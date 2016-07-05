@@ -60,7 +60,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="de.anbos.eclipse.easyshell.plugin.preferences.PresetsPage"
+            class="de.anbos.eclipse.easyshell.plugin.preferences.CommandsPage"
             id="de.anbos.eclipse.easyshell.plugin.preferences.PresetsPage"
             name="EasyShell">
       </page>

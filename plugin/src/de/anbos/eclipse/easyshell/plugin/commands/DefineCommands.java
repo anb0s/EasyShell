@@ -12,6 +12,7 @@
 package de.anbos.eclipse.easyshell.plugin.commands;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -22,8 +23,8 @@ import org.eclipse.ui.menus.IContributionRoot;
 import org.eclipse.ui.services.IServiceLocator;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
-import de.anbos.eclipse.easyshell.plugin.preferences.PresetData;
-import de.anbos.eclipse.easyshell.plugin.preferences.PresetsStore;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandData;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandsStore;
 
 public class DefineCommands extends ExtensionContributionFactory {
 
@@ -35,18 +36,18 @@ public class DefineCommands extends ExtensionContributionFactory {
 			IContributionRoot additions) {
 
 	    // load the preferences
-	    PresetsStore store = new PresetsStore(Activator.getDefault().getPreferenceStore());
+	    CommandsStore store = new CommandsStore(Activator.getDefault().getPreferenceStore());
 	    store.load();
-	    PresetData[] items = store.getAllEnabledPresets();
-        for (int i = 0; i < items.length; ++i) {
+	    List<CommandData> items = store.getAllEnabledCommands();
+        for (CommandData item : items) {
             addItem(serviceLocator, additions,
-                    items[i].getMenuName(),
+                    item.getMenuName(),
                     "de.anbos.eclipse.easyshell.plugin.commands.execute",
                     "de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
-                    items[i].getTypeAction(),
+                    item.getTypeAction(),
                     "de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
-                    items[i].getValue(),
-                    items[i].getMenuIcon());
+                    item.getValue(),
+                    item.getMenuIcon());
         }
 	}
 

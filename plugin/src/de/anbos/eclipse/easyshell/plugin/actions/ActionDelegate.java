@@ -30,7 +30,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver;
 import de.anbos.eclipse.easyshell.plugin.Resource;
 import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
-import de.anbos.eclipse.easyshell.plugin.preferences.PresetType;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandType;
 import de.anbos.eclipse.easyshell.plugin.preferences.Quotes;
 
 public class ActionDelegate implements IObjectActionDelegate {
@@ -38,13 +38,13 @@ public class ActionDelegate implements IObjectActionDelegate {
     private Resource[] resource = null;
     private IStructuredSelection currentSelection;
     private String commandValue = null;
-    private PresetType commandType = PresetType.presetTypeUnknown;
+    private CommandType commandType = CommandType.commandTypeUnknown;
 
-    public PresetType getCommandType() {
+    public CommandType getCommandType() {
         return commandType;
     }
 
-    public void setCommandType(PresetType commandType) {
+    public void setCommandType(CommandType commandType) {
         this.commandType = commandType;
     }
 
@@ -79,7 +79,7 @@ public class ActionDelegate implements IObjectActionDelegate {
 
         // String for all commands in case of clipboard
         String cmdAll = null;
-        if (commandType == PresetType.presetTypeClipboard) {
+        if (commandType == CommandType.commandTypeClipboard) {
             cmdAll = new String();
         }
 
@@ -133,7 +133,7 @@ public class ActionDelegate implements IObjectActionDelegate {
                     // variable format
                     DynamicVariableResolver.setArgs(args);
                     // handling copy to clipboard
-                    if (commandType == PresetType.presetTypeClipboard) {
+                    if (commandType == CommandType.commandTypeClipboard) {
                     	String cmd = fixQuotes(variableManager.performStringSubstitution(target, false), quotes);
                     	//Activator.getDefault().sysout(true, "--- clp: >");
                         cmdAll += cmd;
@@ -185,7 +185,7 @@ public class ActionDelegate implements IObjectActionDelegate {
         }
 
         // handling copy to clipboard
-        if ((commandType == PresetType.presetTypeClipboard) && (cmdAll != null) && (cmdAll.length() != 0)) {
+        if ((commandType == CommandType.commandTypeClipboard) && (cmdAll != null) && (cmdAll.length() != 0)) {
             Clipboard clipboard = new Clipboard(Display.getCurrent());
             TextTransfer textTransfer = TextTransfer.getInstance();
             Transfer[] transfers = new Transfer[]{textTransfer};

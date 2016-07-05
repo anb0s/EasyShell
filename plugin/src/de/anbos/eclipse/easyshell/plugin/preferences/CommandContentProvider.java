@@ -14,12 +14,12 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-public class PresetContentProvider implements IStructuredContentProvider {
+public class CommandContentProvider implements IStructuredContentProvider {
 
-    private PresetsStore store;
+    private CommandsStore store;
 
     public Object[] getElements(Object inputElement) {
-        return store.getAllPresets().toArray();
+        return store.getAllCommandsArray();
     }
 
     public void dispose() {
@@ -27,8 +27,8 @@ public class PresetContentProvider implements IStructuredContentProvider {
     }
 
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-        if(newInput instanceof PresetsStore) {
-            store = (PresetsStore)newInput;
+        if(newInput instanceof CommandsStore) {
+            store = (CommandsStore)newInput;
         }
     }
 

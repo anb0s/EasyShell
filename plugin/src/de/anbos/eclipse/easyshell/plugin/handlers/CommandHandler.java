@@ -21,7 +21,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.anbos.eclipse.easyshell.plugin.EditorPropertyTester;
 import de.anbos.eclipse.easyshell.plugin.actions.Action;
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
-import de.anbos.eclipse.easyshell.plugin.preferences.PresetType;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandType;
 
 public class CommandHandler extends AbstractHandler {
 
@@ -32,7 +32,7 @@ public class CommandHandler extends AbstractHandler {
         	String commandID  = event.getCommand().getId();
         	String commandType = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.type");
         	String commanValue = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.value");
-        	action.setCommandType(PresetType.getFromAction(commandType));
+        	action.setCommandType(CommandType.getFromAction(commandType));
         	action.setCommandValue(commanValue);
             Action act = new Action(commandID);
             action.run((IAction)act);

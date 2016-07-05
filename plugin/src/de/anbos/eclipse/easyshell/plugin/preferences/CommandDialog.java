@@ -32,9 +32,9 @@ import org.eclipse.swt.widgets.Text;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 
-public class PresetDialog extends StatusDialog {
+public class CommandDialog extends StatusDialog {
 
-    private PresetData data;
+    private CommandData data;
     private boolean edit;
 
     private Button  enabledCheckBox;
@@ -42,7 +42,7 @@ public class PresetDialog extends StatusDialog {
     private CCombo  typeCombo;
     private Text    valueText;
 
-    public PresetDialog(Shell parent, PresetData data, boolean edit) {
+    public CommandDialog(Shell parent, CommandData data, boolean edit) {
         super(parent);
         this.data = data;
         this.edit = edit;
@@ -51,11 +51,16 @@ public class PresetDialog extends StatusDialog {
         // set title
         String title = null;
         if(edit) {
-            title = Activator.getResourceString("easyshell.preseteditor.dialog.edit.title"); //$NON-NLS-1$
+            title = Activator.getResourceString("easyshell.command.editor.dialog.edit.title"); //$NON-NLS-1$
         } else {
-            title = Activator.getResourceString("easyshell.preseteditor.dialog.new.title"); //$NON-NLS-1$
+            title = Activator.getResourceString("easyshell.command.editor.dialog.new.title"); //$NON-NLS-1$
         }
         setTitle(title);
+    }
+
+    @Override
+    protected boolean isResizable() {
+      return true;
     }
 
     public Control createDialogArea(Composite parent) {
@@ -67,11 +72,12 @@ public class PresetDialog extends StatusDialog {
         layout0.marginHeight = 4;
         pageComponent.setLayout(layout0);
         GridData data0 = new GridData(GridData.FILL_HORIZONTAL);
+        data0.widthHint = 640;
         pageComponent.setLayoutData(data0);
         pageComponent.setFont(parent.getFont());
     	// define group1
     	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup1.setText(Activator.getResourceString("easyshell.preseteditor.dialog.title"));
+    	pageGroup1.setText(Activator.getResourceString("easyshell.command.editor.dialog.title"));
         GridLayout layout1 = new GridLayout();
         layout1.numColumns = 2;
         layout1.makeColumnsEqualWidth = false;
@@ -86,12 +92,26 @@ public class PresetDialog extends StatusDialog {
         // create rule type combo
         createTypeCombo(pageGroup1);
         //create input nameText field
-        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.preseteditor.dialog.name.label"), data.getName());
+        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.name.label"), data.getName());
         // create input valueText field
-        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.preseteditor.dialog.value.label"), data.getValue());
+        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.value.label"), data.getValue());
+
+        // ------------------------------------ Description ------------------------------------------
+        Label desc_label = new Label(pageComponent, 0);
+        desc_label.setText("${easyshell:drive} is the drive letter on Win32");
+        desc_label = new Label(pageComponent, 0);
+        desc_label.setText("${easyshell:container_loc} is the parent path*");
+        desc_label = new Label(pageComponent, 0);
+        desc_label.setText("${easyshell:resource_loc} is the full path*");
+        desc_label = new Label(pageComponent, 0);
+        desc_label.setText("${easyshell:resource_name} is the file name*");
+        desc_label = new Label(pageComponent, 0);
+        desc_label.setText("${easyshell:project_name} is the project name");
+        desc_label = new Label(pageComponent, 0);
+        desc_label.setText("${easyshell:line_separator} is the line separator");
 
         //if (edit) {
-	    	// send event to refresh matchMode
+	    	// send event to refresh
 	    	Event event = new Event();
 			event.item = null;
 			typeCombo.notifyListeners(SWT.Selection, event);
@@ -101,15 +121,12 @@ public class PresetDialog extends StatusDialog {
     }
 
     protected void okPressed() {
-        int position = -1;
-
         boolean rulesOK = validateRuleValues();
         if (!rulesOK) {
             return;
         }
-        data.setPosition(position);
         data.setEnabled(enabledCheckBox.getSelection());
-        data.setType(PresetType.getFromName(typeCombo.getText()));
+        data.setType(CommandType.getFromName(typeCombo.getText()));
         data.setName(nameText.getText());
         data.setValue(valueText.getText());
         super.okPressed();
@@ -117,25 +134,25 @@ public class PresetDialog extends StatusDialog {
 
     private boolean validateRuleValues() {
 
-    	final String title = Activator.getResourceString("easyshell.preseteditor.dialog.error.incompletedata.title");
+    	final String title = Activator.getResourceString("easyshell.command.editor.dialog.error.incompletedata.title");
 
     	// check type
         if ( (typeCombo.getText() == null) || (typeCombo.getText().length() <= 0)) {
-        	MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.preseteditor.dialog.error.type.text"));
+        	MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.command.editor.dialog.error.type.text"));
         	return false;
         }
 
     	boolean valid = true;
 
         // check name
-        String text  = Activator.getResourceString("easyshell.preseteditor.dialog.error.name.text");
+        String text  = Activator.getResourceString("easyshell.command.editor.dialog.error.name.text");
         if ( (nameText.getText() == null) || (nameText.getText().length() <= 0)) {
             valid = false;
         }
 
         // check value
         if (valid) {
-        	text  = Activator.getResourceString("easyshell.preseteditor.dialog.error.value.text");
+        	text  = Activator.getResourceString("easyshell.command.editor.dialog.error.value.text");
             if ( (valueText.getText() == null) || (valueText.getText().length() <= 0)) {
             	valid = false;
             }
@@ -152,7 +169,7 @@ public class PresetDialog extends StatusDialog {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);
         comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.preseteditor.dialog.active.label")); //$NON-NLS-1$
+        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.active.label")); //$NON-NLS-1$
         // draw checkbox
         enabledCheckBox = new Button(parent,SWT.CHECK);
         if(edit) {
@@ -163,7 +180,7 @@ public class PresetDialog extends StatusDialog {
     }
 
     private String[] getAllPresetTypesAsComboNames() {
-        List<String> list = PresetType.getNamesAsList();
+        List<String> list = CommandType.getNamesAsList();
         String[] arr = new String[list.size()];
         for (int i=0;i<list.size();i++) {
             arr[i] = list.get(i);
@@ -175,7 +192,7 @@ public class PresetDialog extends StatusDialog {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);
         comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.preseteditor.dialog.combo.label")); //$NON-NLS-1$
+        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.combo.label")); //$NON-NLS-1$
         // draw combo
         typeCombo = new CCombo(parent,SWT.BORDER);
         typeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -195,7 +212,7 @@ public class PresetDialog extends StatusDialog {
         if(edit) {
             String[] items = typeCombo.getItems();
             for(int i = 0 ; i < items.length ; i++) {
-                if(items[i].equals(this.data.getName())) {
+                if(items[i].equals(this.data.getType().getName())) {
                     typeCombo.select(i);
                     return;
                 }

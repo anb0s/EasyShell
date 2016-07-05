@@ -13,6 +13,7 @@ package de.anbos.eclipse.easyshell.plugin;
 
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -27,6 +28,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import de.anbos.eclipse.easyshell.plugin.preferences.Constants;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandType;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -96,10 +98,9 @@ public class Activator extends AbstractUIPlugin {
     }
     protected void initializeImageRegistry(ImageRegistry registry) {
         Bundle bundle = Platform.getBundle(Constants.PLUGIN_ID);
-        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_OPEN, Constants.IMAGE_OPEN);
-        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_RUN, Constants.IMAGE_RUN);
-        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_EXPLORE, Constants.IMAGE_EXPLORE);
-        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_CLIPBOARD, Constants.IMAGE_CLIPBOARD);
+        for (String icon : CommandType.getIconsAsList()) {
+            addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + icon, icon);
+        }
      }
 
     protected void addImageToRegistry(ImageRegistry registry, Bundle bundle, String imagePath, String image_id) {

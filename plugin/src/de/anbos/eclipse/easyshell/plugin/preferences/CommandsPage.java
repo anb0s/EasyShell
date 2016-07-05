@@ -45,14 +45,14 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 
-public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
+public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         implements IWorkbenchPreferencePage {
 
     private static final int TABLE_WIDTH = 400;
 
     private Table table;
     private ItemMover itemMover;
-    private PresetsStore store;
+    private CommandsStore store;
     private CheckboxTableViewer tableViewer;
     private Button addButton;
     private Button editButton;
@@ -60,23 +60,31 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
     private Button downButton;
     private Button removeButton;
 
+    @Override
     public void init(IWorkbench workbench) {
     }
 
+    @Override
     public boolean performOk() {
         store.save();
         return true;
     }
 
-    public void performDefaults() {
-        store.loadDefault();
-        tableViewer.refresh();
+    @Override
+    protected void performDefaults() {
+        store.loadDefaults();
+        for (CommandData item : store.getAllEnabledCommands()) {
+            tableViewer.setChecked(item, true);
+        }
+        //tableViewer.refresh();
     }
 
+    @Override
     protected void performApply() {
         performOk();
     }
 
+    @Override
     protected Control createContents(Composite parent) {
         Font font = parent.getFont();
         // define default grid
@@ -96,11 +104,11 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
         table.setFont(parent.getFont());
 
         TableColumn column1 = new TableColumn(table, SWT.LEFT);
-        column1.setText(Activator.getResourceString("easyshell.preseteditor.table.header.column0.title")); //$NON-NLS-1$
+        column1.setText(Activator.getResourceString("easyshell.command.editor.table.header.column0.title")); //$NON-NLS-1$
         column1.setResizable(false);
 
         TableColumn column2 = new TableColumn(table, SWT.LEFT);
-        column2.setText(Activator.getResourceString("easyshell.preseteditor.table.header.column1.title")); //$NON-NLS-1$
+        column2.setText(Activator.getResourceString("easyshell.command.editor.table.header.column1.title")); //$NON-NLS-1$
         column2.setResizable(false);
 
         int availableRows = availableRows(pageComponent);
@@ -109,13 +117,13 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
         table.setLayoutData(data);
 
         tableViewer = new CheckboxTableViewer(table);
-        tableViewer.setLabelProvider(new PresetLabelProvider());
-        tableViewer.setContentProvider(new PresetContentProvider());
-        store = new PresetsStore(Activator.getDefault().getPreferenceStore());
+        tableViewer.setLabelProvider(new CommandLabelProvider());
+        tableViewer.setContentProvider(new CommandContentProvider());
+        store = new CommandsStore(Activator.getDefault().getPreferenceStore());
         store.load();
         tableViewer.setInput(store);
         tableViewer.setAllChecked(false);
-        tableViewer.setCheckedElements(store.getAllEnabledPresets());
+        tableViewer.setCheckedElements(store.getAllEnabledCommandsArray());
 
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             @Override
@@ -127,7 +135,7 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
         tableViewer.addCheckStateListener(new ICheckStateListener() {
             @Override
             public void checkStateChanged(CheckStateChangedEvent event) {
-                PresetData data = (PresetData) event.getElement();
+                CommandData data = (CommandData) event.getElement();
                 data.setEnabled(event.getChecked());
             }
         });
@@ -146,11 +154,11 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
 
         tableViewer.setSorter(new ViewerSorter() {
             public int compare(Viewer viewer, Object object1, Object object2) {
-                if (!(object1 instanceof PresetData) || !(object2 instanceof PresetData)) {
+                if (!(object1 instanceof CommandData) || !(object2 instanceof CommandData)) {
                     return super.compare(viewer, object1, object2);
                 }
-                PresetData data1 = (PresetData) object1;
-                PresetData data2 = (PresetData) object2;
+                CommandData data1 = (CommandData) object1;
+                CommandData data2 = (CommandData) object2;
                 if (data1.getPosition() > data2.getPosition()) {
                     return 1;
                 }
@@ -184,7 +192,7 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
 
         // buttons
         addButton = new Button(groupComponent, SWT.PUSH);
-        addButton.setText(Activator.getResourceString("easyshell.preseteditor.button.add")); //$NON-NLS-1$
+        addButton.setText(Activator.getResourceString("easyshell.command.editor.button.add")); //$NON-NLS-1$
         addButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -196,7 +204,7 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
         setButtonLayoutData(addButton);
 
         editButton = new Button(groupComponent, SWT.PUSH);
-        editButton.setText(Activator.getResourceString("easyshell.preseteditor.button.edit")); //$NON-NLS-1$
+        editButton.setText(Activator.getResourceString("easyshell.command.editor.button.edit")); //$NON-NLS-1$
         editButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -208,7 +216,7 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
         setButtonLayoutData(editButton);
 
         removeButton = new Button(groupComponent, SWT.PUSH);
-        removeButton.setText(Activator.getResourceString("easyshell.preseteditor.button.remove")); //$NON-NLS-1$
+        removeButton.setText(Activator.getResourceString("easyshell.command.editor.button.remove")); //$NON-NLS-1$
         removeButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -219,7 +227,7 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
         setButtonLayoutData(removeButton);
 
         upButton = new Button(groupComponent, SWT.PUSH);
-        upButton.setText(Activator.getResourceString("easyshell.preseteditor.button.up")); //$NON-NLS-1$
+        upButton.setText(Activator.getResourceString("easyshell.command.editor.button.up")); //$NON-NLS-1$
         upButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -230,7 +238,7 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
         setButtonLayoutData(upButton);
 
         downButton = new Button(groupComponent, SWT.PUSH);
-        downButton.setText(Activator.getResourceString("easyshell.preseteditor.button.down")); //$NON-NLS-1$
+        downButton.setText(Activator.getResourceString("easyshell.command.editor.button.down")); //$NON-NLS-1$
         downButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -249,7 +257,6 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
         // send event to refresh tableViewer
         Event event = new Event();
         event.item = null;
-        table.pack();
         tableViewer.refresh();
         tableViewer.getTable().notifyListeners(SWT.Selection, event);
         //tableViewer.getControl().setEnabled(true);
@@ -349,11 +356,10 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void add() {
-        PresetData data = new PresetData();
-        PresetDialog dialog = new PresetDialog(getShell(), data, false);
+        CommandData data = new CommandData();
+        CommandDialog dialog = new CommandDialog(getShell(), data, false);
         if (dialog.open() == Window.OK) {
             store.add(data);
-            table.pack();
             tableViewer.refresh();
             tableViewer.setChecked(data, data.isEnabled());
             tableViewer.setSelection(new StructuredSelection(data));
@@ -365,19 +371,17 @@ public class PresetsPage extends org.eclipse.jface.preference.PreferencePage
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
         Iterator<?> elements = selection.iterator();
         while (elements.hasNext()) {
-            PresetData data = (PresetData) elements.next();
+            CommandData data = (CommandData) elements.next();
             store.delete(data);
         }
-        table.pack();
         tableViewer.refresh();
     }
 
     private void edit() {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-        PresetData data = (PresetData) selection.getFirstElement();
-        PresetDialog dialog = new PresetDialog(getShell(), data, true);
+        CommandData data = (CommandData) selection.getFirstElement();
+        CommandDialog dialog = new CommandDialog(getShell(), data, true);
         if (dialog.open() == Window.OK) {
-            table.pack();
             tableViewer.refresh();
             tableViewer.setChecked(data, data.isEnabled());
             tableViewer.setSelection(new StructuredSelection(data));

@@ -14,7 +14,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
-public class PresetData {
+public class CommandData {
 
 	// Status
     private int position = 0;
@@ -23,18 +23,18 @@ public class PresetData {
     // Preset
     private String id = UUID.randomUUID().toString();
     private String name = "Name";
-    private PresetType type = PresetType.presetTypeOpen;
+    private CommandType type = CommandType.commandTypeOpen;
     private String command = "command";
     private OS os = OS.osWindows;
 
-    public PresetData(OS os, String name, PresetType type, String command) {
+    public CommandData(OS os, String name, CommandType type, String command) {
         this.os = os;
         this.name = name;
         this.type = type;
         this.command = command;
     }
 
-    public PresetData() {
+    public CommandData() {
     }
 
 	public int getPosition() {
@@ -53,7 +53,7 @@ public class PresetData {
         return name;
     }
 
-    public PresetType getType() {
+    public CommandType getType() {
         return type;
     }
 
@@ -81,7 +81,7 @@ public class PresetData {
 	    this.name = name;
 	}
 
-    public void setType(PresetType type) {
+    public void setType(CommandType type) {
         this.type = type;
     }
 
@@ -94,10 +94,10 @@ public class PresetData {
     }
 
 	public boolean equals(Object object) {
-    	if(!(object instanceof PresetData)) {
+    	if(!(object instanceof CommandData)) {
     		return false;
     	}
-    	PresetData data = (PresetData)object;
+    	CommandData data = (CommandData)object;
     	if(data.getPosition() == this.getPosition() &
     	   data.getId().equals(this.getId()) &
     	   data.getName().equals(this.getName()) &
@@ -128,7 +128,7 @@ public class PresetData {
 		setEnabled(Boolean.valueOf(enabledStr).booleanValue());
 		setId(idStr);
 		setName(nameStr);
-		setType(PresetType.getFromName(typeStr));
+		setType(CommandType.getFromName(typeStr));
 		setValue(valueStr);
 		setOs(OS.getFromName(osStr));
 		return true;
