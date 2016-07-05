@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Andre Bossert.
+ * Copyright (c) 2014 - 2016 Andre Bossert.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,22 +16,19 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 
-/**
- * Class used to initialize default preference values.
- */
-public class PreferenceInitializer extends AbstractPreferenceInitializer {
+public class Initializer extends AbstractPreferenceInitializer {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		String defaultPresets = PreferenceValueConverter.asString(PresetDataDefaultCollection.getDefaultPresetsStatic());
+		store.setDefault(Constants.PREF_PRESETS,defaultPresets);
+		//getDefaultPresets();
+		/*
 		store.setDefault(PreferenceConstants.P_BOOLEAN, true);
 		store.setDefault(PreferenceConstants.P_CHOICE, "choice2");
 		store.setDefault(PreferenceConstants.P_STRING,
 				"Default value");
+		*/
 	}
 
 }
