@@ -11,11 +11,8 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.eclipse.core.internal.preferences.Base64;
 
 public class PreferenceValueConverter {
 
@@ -26,49 +23,59 @@ public class PreferenceValueConverter {
 
 	// Static ------------------------------------------------------------------
 
-    public static String asString(List<CommandData> items) {
+    public static String asCommandDataString(List<CommandData> items) {
         StringBuffer buffer = new StringBuffer();
         for(CommandData item : items) {
-            buffer.append(asString(item));
+            buffer.append(asCommandDataString(item));
             buffer.append(ITEM_DELIMITER);
         }
         return buffer.toString();
     }
 
-    public static final String asString(CommandData data) {
-        String position = Integer.toString(data.getPosition());
-        String enabled = Boolean.toString(data.isEnabled());
-        String id = data.getId();
-        String name = data.getName();
-        String type = data.getType().getName();
-        String value = data.getValue();
-        String os = data.getOs().getName();
-        return position + VALUE_DELIMITER + enabled + VALUE_DELIMITER + id + VALUE_DELIMITER + name + VALUE_DELIMITER + type + VALUE_DELIMITER + value + VALUE_DELIMITER + os + VALUE_DELIMITER;
+    public static String asCommandMenuDataString(List<CommandMenuData> items) {
+        StringBuffer buffer = new StringBuffer();
+        for(CommandMenuData item : items) {
+            buffer.append(asCommandMenuDataString(item));
+            buffer.append(ITEM_DELIMITER);
+        }
+        return buffer.toString();
     }
 
-    /*
-    public static final String asStringBase64(PresetData data) {
-        String position = Base64.encode(Integer.toString(data.getPosition()).getBytes(StandardCharsets.UTF_8)).toString();
-        String checked = Base64.encode(Boolean.toString(data.isEnabled()).getBytes(StandardCharsets.UTF_8)).toString();
-        String name = Base64.encode(data.getName().getBytes(StandardCharsets.UTF_8)).toString();
-        String type = Base64.encode(data.getType().getBytes(StandardCharsets.UTF_8)).toString();
-        String value = Base64.encode(data.getValue().getBytes(StandardCharsets.UTF_8)).toString();
-        return position + VALUE_DELIMITER + checked + VALUE_DELIMITER + name + VALUE_DELIMITER + type + VALUE_DELIMITER + value + VALUE_DELIMITER;
+    public static final String asCommandDataString(CommandData data) {
+        return data.serialize(VALUE_DELIMITER);
     }
-    */
 
-    public static CommandData[] asPresetDataArray(String value) {
+    public static final String asCommandMenuDataString(CommandMenuData data) {
+        return data.serialize(VALUE_DELIMITER);
+    }
+
+    public static CommandData[] asCommandDataArray(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
         CommandData[] items = new CommandData[tokenizer.countTokens()];
         for(int i = 0 ; i < items.length ; i++) {
-            items[i] = asPresetData(tokenizer.nextToken());
+            items[i] = asCommandData(tokenizer.nextToken());
         }
         return items;
     }
 
-    public static CommandData asPresetData(String value) {
+    public static CommandMenuData[] asCommandMenuDataArray(String value) {
+        StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
+        CommandMenuData[] items = new CommandMenuData[tokenizer.countTokens()];
+        for(int i = 0 ; i < items.length ; i++) {
+            items[i] = asCommandMenuData(tokenizer.nextToken());
+        }
+        return items;
+    }
+
+    public static CommandData asCommandData(String value) {
         CommandData data = new CommandData();
-        data.fillTokens(value, VALUE_DELIMITER);
+        data.deserialize(value, null, VALUE_DELIMITER);
+        return data;
+    }
+
+    public static CommandMenuData asCommandMenuData(String value) {
+        CommandMenuData data = new CommandMenuData();
+        data.deserialize(value, null, VALUE_DELIMITER);
         return data;
     }
 }

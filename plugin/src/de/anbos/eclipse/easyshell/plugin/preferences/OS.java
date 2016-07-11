@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum OS {
-    osUnknown(0, "Unknown"),
-    osWindows(1, "Windows"),
-    osLinux(2, "Linux"),
-    osMacOSX(3, "MAC OS X");
+    osUnknown(-1, "Unknown"),
+    osWindows(0, "Windows"),
+    osLinux(1, "Linux"),
+    osMacOSX(2, "MAC OS X");
     // attributes
     private final int id;
     private final String name;
@@ -47,6 +47,16 @@ public enum OS {
         OS ret = osUnknown;
         for(int i = 0; i < OS.values().length; i++) {
             if (OS.values()[i].getName().equals(name)) {
+                ret = OS.values()[i];
+                break;
+            }
+        }
+        return ret;
+    }
+    public static OS getFromEnum(String name) {
+        OS ret = osUnknown;
+        for(int i = 0; i < OS.values().length; i++) {
+            if (OS.values()[i].toString().equals(name)) {
                 ret = OS.values()[i];
                 break;
             }

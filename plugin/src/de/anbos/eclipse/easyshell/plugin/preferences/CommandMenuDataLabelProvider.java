@@ -17,31 +17,31 @@ import org.eclipse.swt.graphics.Image;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 
-public class CommandLabelProvider extends LabelProvider implements ITableLabelProvider {
+public class CommandMenuDataLabelProvider extends LabelProvider implements ITableLabelProvider {
 
     public Image getColumnImage(Object element, int columnIndex) {
-        if(!(element instanceof CommandData)) {
+        if(!(element instanceof CommandMenuData)) {
             return null;
         }
-        CommandData data = (CommandData)element;
+        CommandMenuData data = (CommandMenuData)element;
         switch(columnIndex) {
             case 0:
-                return new Image(null, Activator.getImageDescriptor(data.getMenuIcon()).getImageData());
+                return new Image(null, Activator.getImageDescriptor(data.getCommandData().getTypeIcon()).getImageData());
             default:
                 return null;
         }
     }
 
     public String getColumnText(Object element, int columnIndex) {
-        if(!(element instanceof CommandData)) {
+        if(!(element instanceof CommandMenuData)) {
             return ""; //$NON-NLS-1$
         }
-        CommandData data = (CommandData)element;
+        CommandMenuData data = (CommandMenuData)element;
         switch(columnIndex) {
             case 0:
                 return data.getName();
             case 1:
-            	return data.getValue();
+            	return data.getCommandData().getCommand();
             default:
                 return ""; //$NON-NLS-1$
         }

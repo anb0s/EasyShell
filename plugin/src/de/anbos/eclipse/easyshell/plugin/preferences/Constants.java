@@ -14,7 +14,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 public interface Constants {
 
     // Plugin
-    public static final String PLUGIN_ID = "de.anbos.eclipse.easyshell.plugin"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "de.anbos.eclipse.easyshell.plugin";
 
 	// Images
     public static final String IMAGE_PATH        = "icons/";
@@ -26,7 +26,8 @@ public interface Constants {
     public static final String IMAGE_OTHER       = "editor.gif";
 
 	// Preferences
-	public static final String PREF_PRESETS	    = "PRESETS"; //$NON-NLS-1$
+	public static final String PREF_COMMANDS	 = "COMMANDS";
+	public static final String PREF_MENU         = "MENU";
 
 	// Actions
 	public static final String ACTION_UNKNOWN    = "de.anbos.eclipse.easyshell.plugin.commands.Unknown";

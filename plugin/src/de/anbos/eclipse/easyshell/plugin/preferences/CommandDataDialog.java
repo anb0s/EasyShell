@@ -21,7 +21,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -32,17 +31,16 @@ import org.eclipse.swt.widgets.Text;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 
-public class CommandDialog extends StatusDialog {
+public class CommandDataDialog extends StatusDialog {
 
     private CommandData data;
     private boolean edit;
 
-    private Button  enabledCheckBox;
     private Text    nameText;
     private CCombo  typeCombo;
     private Text    valueText;
 
-    public CommandDialog(Shell parent, CommandData data, boolean edit) {
+    public CommandDataDialog(Shell parent, CommandData data, boolean edit) {
         super(parent);
         this.data = data;
         this.edit = edit;
@@ -87,14 +85,12 @@ public class CommandDialog extends StatusDialog {
         GridData data1 = new GridData(GridData.FILL_HORIZONTAL);
         pageGroup1.setLayoutData(data1);
         pageGroup1.setFont(parent.getFont());
-        // create activity checkbox
-        createEnabledCheckBox(pageGroup1);
-        // create rule type combo
+        // create type type combo
         createTypeCombo(pageGroup1);
         //create input nameText field
         nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.name.label"), data.getName());
         // create input valueText field
-        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.value.label"), data.getValue());
+        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.value.label"), data.getCommand());
 
         // ------------------------------------ Description ------------------------------------------
         Label desc_label = new Label(pageComponent, 0);
@@ -121,18 +117,16 @@ public class CommandDialog extends StatusDialog {
     }
 
     protected void okPressed() {
-        boolean rulesOK = validateRuleValues();
-        if (!rulesOK) {
+        if (!validateValues()) {
             return;
         }
-        data.setEnabled(enabledCheckBox.getSelection());
-        data.setType(CommandType.getFromName(typeCombo.getText()));
+        data.setCommandType(CommandType.getFromName(typeCombo.getText()));
         data.setName(nameText.getText());
-        data.setValue(valueText.getText());
+        data.setCommand(valueText.getText());
         super.okPressed();
     }
 
-    private boolean validateRuleValues() {
+    private boolean validateValues() {
 
     	final String title = Activator.getResourceString("easyshell.command.editor.dialog.error.incompletedata.title");
 
@@ -165,21 +159,7 @@ public class CommandDialog extends StatusDialog {
         return valid;
     }
 
-    private void createEnabledCheckBox(Composite parent) {
-        // draw label
-        Label comboLabel = new Label(parent,SWT.LEFT);
-        comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.active.label")); //$NON-NLS-1$
-        // draw checkbox
-        enabledCheckBox = new Button(parent,SWT.CHECK);
-        if(edit) {
-            enabledCheckBox.setSelection(this.data.isEnabled());
-        } else {
-        	enabledCheckBox.setSelection(true);
-        }
-    }
-
-    private String[] getAllPresetTypesAsComboNames() {
+    private String[] getAllCommandTypesAsComboNames() {
         List<String> list = CommandType.getNamesAsList();
         String[] arr = new String[list.size()];
         for (int i=0;i<list.size();i++) {
@@ -197,7 +177,7 @@ public class CommandDialog extends StatusDialog {
         typeCombo = new CCombo(parent,SWT.BORDER);
         typeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         typeCombo.setEditable(false);
-        typeCombo.setItems(getAllPresetTypesAsComboNames());
+        typeCombo.setItems(getAllCommandTypesAsComboNames());
         typeCombo.select(0);
         typeCombo.addSelectionListener(new SelectionListener() {
             @Override
@@ -212,7 +192,7 @@ public class CommandDialog extends StatusDialog {
         if(edit) {
             String[] items = typeCombo.getItems();
             for(int i = 0 ; i < items.length ; i++) {
-                if(items[i].equals(this.data.getType().getName())) {
+                if(items[i].equals(this.data.getCommandType().getName())) {
                     typeCombo.select(i);
                     return;
                 }

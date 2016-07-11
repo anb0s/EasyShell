@@ -21,140 +21,159 @@ import java.util.Map;
 public class CommandDataDefaultCollection {
 
     private List<CommandData> list = new ArrayList<CommandData>();
+    private static CommandDataDefaultCollection instance = new CommandDataDefaultCollection();
 
-    static public List<CommandData> getAllPresetsStatic() {
-        return new CommandDataDefaultCollection().getAllPresets();
+    public static List<CommandData> getAllCommandsStatic() {
+        return instance.getCommands();
     }
 
-    static public List<CommandData> getDefaultPresetsStatic() {
-        return new CommandDataDefaultCollection().getDefaultPresets();
+    public static List<CommandData> getDefaultCommandsStatic() {
+        return getDefaultCommands();
+    }
+
+    public static List<CommandMenuData> getDefaultCommandsMenuStatic() {
+        List<CommandData> list = getDefaultCommandsStatic();
+        List<CommandMenuData> ret = new ArrayList<CommandMenuData>();
+        for (CommandData data : list) {
+            ret.add(new CommandMenuData(data));
+        }
+        return ret;
     }
 
     CommandDataDefaultCollection() {
         // Windows DOS-Shell
-        list.add(new CommandData(OS.osWindows, "DOS-Shell", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osWindows, "DOS-Shell", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} cmd.exe /K"));
-        list.add(new CommandData(OS.osWindows, "DOS-Shell", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osWindows, "DOS-Shell", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} ${easyshell:resource_name}"));
         // Windows Explorer
-        list.add(new CommandData(OS.osWindows, "Explorer", CommandType.commandTypeExplore,
+        list.add(new CommandData(OS.osWindows, "Explorer", RessourceType.ressourceFileOrFolder, CommandType.commandTypeExplore,
                 "explorer.exe /select, ${easyshell:resource_loc}"));
         // Windows PowerShell
-        list.add(new CommandData(OS.osWindows, "PowerShell", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osWindows, "PowerShell", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} powershell.exe"));
-        list.add(new CommandData(OS.osWindows, "PowerShell", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osWindows, "PowerShell", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} powershell.exe -command ./''${easyshell:resource_name}''"));
         // Windows Cygwin (Bash)
-        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Cygwin\\bin\\bash.exe\""));
-        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Cygwin\\bin\\bash.exe\" -c ./''${easyshell:resource_name}''"));
         // Windows Console
-        list.add(new CommandData(OS.osWindows, "Console", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osWindows, "Console", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "console.exe -w \"${easyshell:project_name}\" -d ${easyshell:container_loc}"));
-        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "console.exe -w \"${easyshell:project_name}\" -d ${easyshell:container_loc} -r \"/k\\\"${easyshell:resource_name}\\\"\""));
         // Windows Git-Bash
-        list.add(new CommandData(OS.osWindows, "Git-Bash", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osWindows, "Git-Bash", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i"));
-        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''${easyshell:resource_name}''"));
         // Windows ConEmu
-        list.add(new CommandData(OS.osWindows, "ConEmu", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osWindows, "ConEmu", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd cmd"));
-        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osWindows, "Cygwin (Bash)", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd \"${easyshell:resource_name}\""));
         // Windows TotalCommander
-        list.add(new CommandData(OS.osWindows, "TotalCommander", CommandType.commandTypeExplore,
+        list.add(new CommandData(OS.osWindows, "TotalCommander", RessourceType.ressourceFileOrFolder, CommandType.commandTypeExplore,
                 "totalcmd.exe /O /T ${easyshell:container_loc}"));
         // Windows Clipboard
-        list.add(new CommandData(OS.osWindows, "Full path", CommandType.commandTypeClipboard,
+        list.add(new CommandData(OS.osWindows, "Full path", RessourceType.ressourceFileOrFolder, CommandType.commandTypeClipboard,
                 "\"${easyshell:resource_loc}\"${easyshell:line_separator}"));
         // Linux KDE Konsole
-        list.add(new CommandData(OS.osLinux, "KDE Konsole", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osLinux, "KDE Konsole", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "konsole --workdir ${easyshell:container_loc}"));
-        list.add(new CommandData(OS.osLinux, "KDE Konsole", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osLinux, "KDE Konsole", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "konsole --workdir ${easyshell:container_loc} --noclose  -e ${easyshell:resource_loc}"));
         // Linux Konqueror
-        list.add(new CommandData(OS.osLinux, "Konqueror", CommandType.commandTypeExplore,
+        list.add(new CommandData(OS.osLinux, "Konqueror", RessourceType.ressourceFileOrFolder, CommandType.commandTypeExplore,
                 "konqueror file:\"${easyshell:resource_loc}\""));
         // Linux Gnome Terminal
-        list.add(new CommandData(OS.osLinux, "Gnome Terminal", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osLinux, "Gnome Terminal", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "gnome-terminal --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData(OS.osLinux, "Gnome Terminal", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osLinux, "Gnome Terminal", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "gnome-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
         // Linux Xfce Terminal
-        list.add(new CommandData(OS.osLinux, "Xfce Terminal", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osLinux, "Xfce Terminal", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "xfce4-terminal --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData(OS.osLinux, "Xfce Terminal", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osLinux, "Xfce Terminal", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "xfce4-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}'' --hold"));
         // Linux Nautilus
-        list.add(new CommandData(OS.osLinux, "Nautilus", CommandType.commandTypeExplore,
+        list.add(new CommandData(OS.osLinux, "Nautilus", RessourceType.ressourceFileOrFolder, CommandType.commandTypeExplore,
                 "nautilus ${easyshell:resource_loc}"));
         // Linux Dolphin
-        list.add(new CommandData(OS.osLinux, "Dolphin", CommandType.commandTypeExplore,
+        list.add(new CommandData(OS.osLinux, "Dolphin", RessourceType.ressourceFileOrFolder, CommandType.commandTypeExplore,
                 "dolphin --select ${easyshell:resource_loc}"));
         // Linux Nemo
-        list.add(new CommandData(OS.osLinux, "Nemo", CommandType.commandTypeExplore,
+        list.add(new CommandData(OS.osLinux, "Nemo", RessourceType.ressourceFileOrFolder, CommandType.commandTypeExplore,
                 "nemo ${easyshell:resource_loc}"));
         // Linux Thunar
-        list.add(new CommandData(OS.osLinux, "Thunar", CommandType.commandTypeExplore,
+        list.add(new CommandData(OS.osLinux, "Thunar", RessourceType.ressourceFileOrFolder, CommandType.commandTypeExplore,
                 "thunar ${easyshell:resource_loc}"));
         // Linux Clipboard
-        list.add(new CommandData(OS.osLinux, "Full path", CommandType.commandTypeClipboard,
+        list.add(new CommandData(OS.osLinux, "Full path", RessourceType.ressourceFileOrFolder, CommandType.commandTypeClipboard,
                 "${easyshell:resource_loc}${easyshell:line_separator}"));
         // MAC OS X Terminal
-        list.add(new CommandData(OS.osMacOSX, "Terminal", CommandType.commandTypeOpen,
+        list.add(new CommandData(OS.osMacOSX, "Terminal", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOpen,
                 "open -a Terminal ${easyshell:container_loc}"));
-        list.add(new CommandData(OS.osMacOSX, "Terminal", CommandType.commandTypeRun,
+        list.add(new CommandData(OS.osMacOSX, "Terminal", RessourceType.ressourceFileOrFolder, CommandType.commandTypeRun,
                 "open -a Terminal ${easyshell:container_loc}"));
         // MAC OS X Finder
-        list.add(new CommandData(OS.osMacOSX, "Finder", CommandType.commandTypeExplore,
+        list.add(new CommandData(OS.osMacOSX, "Finder", RessourceType.ressourceFileOrFolder, CommandType.commandTypeExplore,
                 "open -R ${easyshell:resource_loc}"));
         // MAC OS X Clipboard
-        list.add(new CommandData(OS.osMacOSX, "Full path", CommandType.commandTypeClipboard,
+        list.add(new CommandData(OS.osMacOSX, "Full path", RessourceType.ressourceFileOrFolder, CommandType.commandTypeClipboard,
                 "${easyshell:resource_loc}${easyshell:line_separator}"));
     }
 
-    public List<CommandData> getAllPresets() {
+    public List<CommandData> getCommands() {
         return list;
     }
 
-    public List<CommandData> getDefaultPresets() {
-        List<CommandData> listAll = getAllPresets();
+    public static List<CommandData> getCommandsNative(List<CommandData> list) {
+        if (list == null) {
+            list = getAllCommandsStatic();
+        }
+        return getCommandData(list, getOS());
+    }
+
+    public static List<CommandData> getDefaultCommands() {
+        List<CommandData> listAll = getAllCommandsStatic();
         List<CommandData> listOS = new ArrayList<CommandData>();
         List<CommandData> listDefault = new ArrayList<CommandData>();
         OS os = getOS();
         // now get all data by OS
-        listOS = getPresetData(listAll, os);
+        listOS = getCommandData(listAll, os);
         // now get by name
         switch(os)
         {
+            case osUnknown:
+                break;
             case osWindows:
-                listDefault.add(getPresetData(listOS, "DOS-Shell", CommandType.commandTypeOpen));
-                listDefault.add(getPresetData(listOS, "DOS-Shell", CommandType.commandTypeRun));
-                listDefault.add(getPresetData(listOS, "Explorer", CommandType.commandTypeExplore));
+                listDefault.add(getCommandData(listOS, "DOS-Shell", CommandType.commandTypeOpen));
+                listDefault.add(getCommandData(listOS, "DOS-Shell", CommandType.commandTypeRun));
+                listDefault.add(getCommandData(listOS, "Explorer", CommandType.commandTypeExplore));
                 break;
             case osLinux:
                 // try to detect the desktop
                 LinuxDesktop desktop = detectLinuxDesktop();
                 //Activator.getDefault().sysout(true, "Detected linux (Unix) desktop: >" + desktop.getName() + "<");
                 switch (desktop) {
-                    case desktopKde:    listDefault.add(getPresetData(listOS, "KDE", CommandType.commandTypeOpen));
-                                        listDefault.add(getPresetData(listOS, "KDE", CommandType.commandTypeRun));
-                                        listDefault.add(getPresetData(listOS, "Dolphin", CommandType.commandTypeExplore));
+                    case desktopKde:    listDefault.add(getCommandData(listOS, "KDE", CommandType.commandTypeOpen));
+                                        listDefault.add(getCommandData(listOS, "KDE", CommandType.commandTypeRun));
+                                        listDefault.add(getCommandData(listOS, "Dolphin", CommandType.commandTypeExplore));
                     break;
-                    case desktopCinnamon:   listDefault.add(getPresetData(listOS, "Gnome", CommandType.commandTypeOpen));
-                                            listDefault.add(getPresetData(listOS, "Gnome", CommandType.commandTypeRun));
-                                            listDefault.add(getPresetData(listOS, "Nemo", CommandType.commandTypeExplore));
+                    case desktopCinnamon:   listDefault.add(getCommandData(listOS, "Gnome", CommandType.commandTypeOpen));
+                                            listDefault.add(getCommandData(listOS, "Gnome", CommandType.commandTypeRun));
+                                            listDefault.add(getCommandData(listOS, "Nemo", CommandType.commandTypeExplore));
                     break;
-                    case desktopGnome:  listDefault.add(getPresetData(listOS, "Gnome", CommandType.commandTypeOpen));
-                                        listDefault.add(getPresetData(listOS, "Gnome", CommandType.commandTypeRun));
-                                        listDefault.add(getPresetData(listOS, "Nautilus", CommandType.commandTypeExplore));
+                    case desktopGnome:  listDefault.add(getCommandData(listOS, "Gnome", CommandType.commandTypeOpen));
+                                        listDefault.add(getCommandData(listOS, "Gnome", CommandType.commandTypeRun));
+                                        listDefault.add(getCommandData(listOS, "Nautilus", CommandType.commandTypeExplore));
                     break;
-                    case desktopXfce:   listDefault.add(getPresetData(listOS, "Xfce", CommandType.commandTypeOpen));
-                                        listDefault.add(getPresetData(listOS, "Xfce", CommandType.commandTypeRun));
-                                        listDefault.add(getPresetData(listOS, "Thunar", CommandType.commandTypeExplore));
+                    case desktopXfce:   listDefault.add(getCommandData(listOS, "Xfce", CommandType.commandTypeOpen));
+                                        listDefault.add(getCommandData(listOS, "Xfce", CommandType.commandTypeRun));
+                                        listDefault.add(getCommandData(listOS, "Thunar", CommandType.commandTypeExplore));
                     break;
                     default:;
                 }
@@ -165,17 +184,17 @@ public class CommandDataDefaultCollection {
                 }
                 break;
             case osMacOSX:
-                listDefault.add(getPresetData(listOS, "Terminal", CommandType.commandTypeOpen));
-                listDefault.add(getPresetData(listOS, "Terminal", CommandType.commandTypeRun));
-                listDefault.add(getPresetData(listOS, "Finder", CommandType.commandTypeExplore));
+                listDefault.add(getCommandData(listOS, "Terminal", CommandType.commandTypeOpen));
+                listDefault.add(getCommandData(listOS, "Terminal", CommandType.commandTypeRun));
+                listDefault.add(getCommandData(listOS, "Finder", CommandType.commandTypeExplore));
                 break;
         }
         // add clipboard
-        listDefault.add(getPresetData(listOS, ".*path", CommandType.commandTypeClipboard));
+        listDefault.add(getCommandData(listOS, ".*path", CommandType.commandTypeClipboard));
         return listDefault;
     }
 
-    private OS getOS() {
+    public static OS getOS() {
         OS os = OS.osUnknown;
         /* possible OS string:
             AIX
@@ -221,19 +240,19 @@ public class CommandDataDefaultCollection {
         return os;
     }
 
-    private static List<CommandData> getPresetData(List<CommandData> list, OS os) {
+    public static List<CommandData> getCommandData(List<CommandData> list, OS os) {
         List<CommandData> listOut = new ArrayList<CommandData>();
         for (CommandData entry : list) {
-            if (entry.getOs() == os) {
+            if (entry.getOS() == os) {
                 listOut.add(entry);
             }
         }
         return listOut;
     }
 
-    private static CommandData getPresetData(List<CommandData> list, String name, CommandType type) {
+    private static CommandData getCommandData(List<CommandData> list, String name, CommandType type) {
         for (CommandData entry : list) {
-            if (entry.getType() == type && entry.getName().matches(name)) {
+            if (entry.getCommandType() == type && entry.getName().matches(name)) {
                 return entry;
             }
         }

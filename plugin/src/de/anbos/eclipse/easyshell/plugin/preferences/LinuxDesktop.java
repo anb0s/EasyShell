@@ -15,12 +15,11 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
  * Linux desktops.
  */
 public enum LinuxDesktop {
-    desktopUnknown(0, "Unknown"),
+    desktopUnknown(-1, "Unknown"),
+    desktopXfce(0, "Xfce"),
     desktopKde(1, "KDE"),
     desktopGnome(2, "Gnome"),
-    desktopCinnamon(3, "Cinnamon"),
-    desktopCde(4, "CDE"),
-    desktopXfce(5, "Xfce");
+    desktopCinnamon(3, "Cinnamon");
     // attributes
     private final int id;
     private final String name;
@@ -39,6 +38,26 @@ public enum LinuxDesktop {
         LinuxDesktop ret = desktopUnknown;
         for(int i = 0; i < LinuxDesktop.values().length; i++) {
             if (LinuxDesktop.values()[i].getId() == id) {
+                ret = LinuxDesktop.values()[i];
+                break;
+            }
+        }
+        return ret;
+    }
+    public static LinuxDesktop getFromName(String name) {
+        LinuxDesktop ret = desktopUnknown;
+        for(int i = 0; i < LinuxDesktop.values().length; i++) {
+            if (LinuxDesktop.values()[i].getName().equals(name)) {
+                ret = LinuxDesktop.values()[i];
+                break;
+            }
+        }
+        return ret;
+    }
+    public static LinuxDesktop getFromEnum(String name) {
+        LinuxDesktop ret = desktopUnknown;
+        for(int i = 0; i < LinuxDesktop.values().length; i++) {
+            if (LinuxDesktop.values()[i].toString().equals(name)) {
                 ret = LinuxDesktop.values()[i];
                 break;
             }

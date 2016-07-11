@@ -15,26 +15,47 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
  * Debug.
  */
 public enum Debug {
+    debugUnknown(-1, "Unknown"),
     debugNo(0, "No"),
     debugYes(1, "Yes");
     // attributes
     private final int id;
-    private final String mode;
+    private final String name;
     // construct
-    Debug(int id, String mode) {
+    Debug(int id, String name) {
         this.id = id;
-        this.mode = mode;
+        this.name = name;
     }
     public int getId() {
         return id;
     }
-    public String getMode() {
-        return mode;
+    public String getName() {
+        return name;
     }
     public static Debug getFromId(int id) {
-        Debug ret = debugNo;
+        Debug ret = debugUnknown;
         for(int i = 0; i < Debug.values().length; i++) {
             if (Debug.values()[i].getId() == id) {
+                ret = Debug.values()[i];
+                break;
+            }
+        }
+        return ret;
+    }
+    public static Debug getFromName(String name) {
+        Debug ret = debugUnknown;
+        for(int i = 0; i < Debug.values().length; i++) {
+            if (Debug.values()[i].getName().equals(name)) {
+                ret = Debug.values()[i];
+                break;
+            }
+        }
+        return ret;
+    }
+    public static Debug getFromEnum(String name) {
+        Debug ret = debugUnknown;
+        for(int i = 0; i < Debug.values().length; i++) {
+            if (Debug.values()[i].toString().equals(name)) {
                 ret = Debug.values()[i];
                 break;
             }

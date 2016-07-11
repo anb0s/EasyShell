@@ -11,30 +11,48 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
-/**
- * Tokenizer.
- */
 public enum Tokenizer {
-	EasyShellTokenizerNo(0, "No"),
-	EasyShellTokenizerYes(1, "Yes");
+    tokenizerUnknown(-1, "Unknown"),
+	tokenizerNo(0, "No"),
+	tokenizerYes(1, "Yes");
     // attributes
     private final int id;
-    private final String mode;
+    private final String name;
     // construct
     Tokenizer(int id, String mode) {
         this.id = id;
-        this.mode = mode;
+        this.name = mode;
     }
     public int getId() {
         return id;
     }
-    public String getMode() {
-        return mode;
+    public String getName() {
+        return name;
     }
     public static Tokenizer getFromId(int id) {
-    	Tokenizer ret = EasyShellTokenizerYes;
+    	Tokenizer ret = tokenizerUnknown;
         for(int i = 0; i < Tokenizer.values().length; i++) {
             if (Tokenizer.values()[i].getId() == id) {
+                ret = Tokenizer.values()[i];
+                break;
+            }
+        }
+        return ret;
+    }
+    public static Tokenizer getFromName(String name) {
+        Tokenizer ret = tokenizerUnknown;
+        for(int i = 0; i < Tokenizer.values().length; i++) {
+            if (Tokenizer.values()[i].getName().equals(name)) {
+                ret = Tokenizer.values()[i];
+                break;
+            }
+        }
+        return ret;
+    }
+    public static Tokenizer getFromEnum(String name) {
+        Tokenizer ret = tokenizerUnknown;
+        for(int i = 0; i < Tokenizer.values().length; i++) {
+            if (Tokenizer.values()[i].toString().equals(name)) {
                 ret = Tokenizer.values()[i];
                 break;
             }

@@ -12,6 +12,7 @@
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -51,8 +52,10 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
     private static final int TABLE_WIDTH = 400;
 
     private Table table;
-    private ItemMover itemMover;
-    private CommandsStore store;
+    private CommandMenuDataMover itemMover;
+    private CommandDataStore cmdStore;
+    List<CommandData> cmdList;
+    private CommandMenuDataStore menuStore;
     private CheckboxTableViewer tableViewer;
     private Button addButton;
     private Button editButton;
@@ -66,14 +69,14 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     @Override
     public boolean performOk() {
-        store.save();
+        menuStore.save();
         return true;
     }
 
     @Override
     protected void performDefaults() {
-        store.loadDefaults();
-        for (CommandData item : store.getAllEnabledCommands()) {
+        menuStore.loadDefaults();
+        for (CommandMenuData item : menuStore.getCommandMenuDataList()) {
             tableViewer.setChecked(item, true);
         }
         //tableViewer.refresh();
@@ -117,13 +120,22 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         table.setLayoutData(data);
 
         tableViewer = new CheckboxTableViewer(table);
-        tableViewer.setLabelProvider(new CommandLabelProvider());
-        tableViewer.setContentProvider(new CommandContentProvider());
-        store = new CommandsStore(Activator.getDefault().getPreferenceStore());
-        store.load();
-        tableViewer.setInput(store);
+        tableViewer.setLabelProvider(new CommandMenuDataLabelProvider());
+        tableViewer.setContentProvider(new CommandMenuDataContentProvider());
+
+        // command store
+        cmdStore = new CommandDataStore(Activator.getDefault().getPreferenceStore());
+        cmdStore.load();
+
+        // get the native commands list
+        cmdList = CommandDataDefaultCollection.getCommandsNative(cmdStore.getAllCommands());
+
+        // menu store
+        menuStore = new CommandMenuDataStore(Activator.getDefault().getPreferenceStore());
+        menuStore.load();
+        tableViewer.setInput(menuStore);
         tableViewer.setAllChecked(false);
-        tableViewer.setCheckedElements(store.getAllEnabledCommandsArray());
+        tableViewer.setCheckedElements(menuStore.getEnabledCommandMenuDataArray());
 
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             @Override
@@ -135,7 +147,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         tableViewer.addCheckStateListener(new ICheckStateListener() {
             @Override
             public void checkStateChanged(CheckStateChangedEvent event) {
-                CommandData data = (CommandData) event.getElement();
+                CommandMenuData data = (CommandMenuData) event.getElement();
                 data.setEnabled(event.getChecked());
             }
         });
@@ -154,11 +166,11 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
         tableViewer.setSorter(new ViewerSorter() {
             public int compare(Viewer viewer, Object object1, Object object2) {
-                if (!(object1 instanceof CommandData) || !(object2 instanceof CommandData)) {
+                if (!(object1 instanceof CommandMenuData) || !(object2 instanceof CommandMenuData)) {
                     return super.compare(viewer, object1, object2);
                 }
-                CommandData data1 = (CommandData) object1;
-                CommandData data2 = (CommandData) object2;
+                CommandMenuData data1 = (CommandMenuData) object1;
+                CommandMenuData data2 = (CommandMenuData) object2;
                 if (data1.getPosition() > data2.getPosition()) {
                     return 1;
                 }
@@ -176,7 +188,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
             }
         });
 
-        itemMover = new ItemMover(table, store);
+        itemMover = new CommandMenuDataMover(table, menuStore);
 
         // button pageComponent
         Composite groupComponent = new Composite(pageComponent, SWT.NULL);
@@ -356,10 +368,11 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void add() {
-        CommandData data = new CommandData();
-        CommandDialog dialog = new CommandDialog(getShell(), data, false);
+        CommandMenuData data = new CommandMenuData();
+        data.setCommandData(cmdList.get(0));
+        CommandMenuDataDialog dialog = new CommandMenuDataDialog(getShell(), data, cmdStore, cmdList, false);
         if (dialog.open() == Window.OK) {
-            store.add(data);
+            menuStore.add(data);
             tableViewer.refresh();
             tableViewer.setChecked(data, data.isEnabled());
             tableViewer.setSelection(new StructuredSelection(data));
@@ -371,16 +384,16 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
         Iterator<?> elements = selection.iterator();
         while (elements.hasNext()) {
-            CommandData data = (CommandData) elements.next();
-            store.delete(data);
+            CommandMenuData data = (CommandMenuData) elements.next();
+            menuStore.delete(data);
         }
         tableViewer.refresh();
     }
 
     private void edit() {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-        CommandData data = (CommandData) selection.getFirstElement();
-        CommandDialog dialog = new CommandDialog(getShell(), data, true);
+        CommandMenuData data = (CommandMenuData) selection.getFirstElement();
+        CommandMenuDataDialog dialog = new CommandMenuDataDialog(getShell(), data, cmdStore, cmdList, true);
         if (dialog.open() == Window.OK) {
             tableViewer.refresh();
             tableViewer.setChecked(data, data.isEnabled());
