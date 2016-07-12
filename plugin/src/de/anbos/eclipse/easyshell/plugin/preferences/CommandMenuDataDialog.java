@@ -15,10 +15,13 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -44,6 +47,9 @@ public class CommandMenuDataDialog extends StatusDialog {
     private Text    commandText;
     private CCombo  commandCombo;
 
+    private Button addButton;
+    private Button editButton;
+
     public CommandMenuDataDialog(Shell parent, CommandMenuData data, CommandDataStore cmdStore, List<CommandData> cmdList, boolean edit) {
         super(parent);
         this.data = data;
@@ -68,6 +74,7 @@ public class CommandMenuDataDialog extends StatusDialog {
     }
 
     public Control createDialogArea(Composite parent) {
+        Font font = parent.getFont();
     	Composite pageComponent = new Composite(parent,SWT.NULL);
         GridLayout layout0 = new GridLayout();
         layout0.numColumns = 1;
@@ -75,10 +82,10 @@ public class CommandMenuDataDialog extends StatusDialog {
         layout0.marginWidth = 5;
         layout0.marginHeight = 4;
         pageComponent.setLayout(layout0);
-        GridData data0 = new GridData(GridData.FILL_HORIZONTAL);
-        data0.widthHint = 640;
-        pageComponent.setLayoutData(data0);
-        pageComponent.setFont(parent.getFont());
+        GridData gridData0 = new GridData(GridData.FILL_HORIZONTAL);
+        gridData0.widthHint = 640;
+        pageComponent.setLayoutData(gridData0);
+        pageComponent.setFont(font);
     	// define group1
     	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
     	pageGroup1.setText(Activator.getResourceString("easyshell.menu.editor.dialog.title"));
@@ -88,15 +95,39 @@ public class CommandMenuDataDialog extends StatusDialog {
         layout1.marginWidth = 5;
         layout1.marginHeight = 4;
         pageGroup1.setLayout(layout1);
-        GridData data1 = new GridData(GridData.FILL_HORIZONTAL);
-        pageGroup1.setLayoutData(data1);
-        pageGroup1.setFont(parent.getFont());
+        GridData gridData1 = new GridData(GridData.FILL_HORIZONTAL);
+        pageGroup1.setLayoutData(gridData1);
+        pageGroup1.setFont(font);
         // create activity checkbox
         createEnabledCheckBox(pageGroup1);
         // create selected command combo
         createCommandCombo(pageGroup1);
         //create input nameText field
         commandText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.command.label"), data.getCommandData().getCommand(), false);
+        // buttons
+        addButton = new Button(pageGroup1, SWT.PUSH);
+        addButton.setText(Activator.getResourceString("easyshell.page.table.button.add")); //$NON-NLS-1$
+        addButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                add();
+            }
+        });
+        addButton.setLayoutData(gridData1);
+        addButton.setFont(font);
+        setButtonLayoutData(addButton);
+        editButton = new Button(pageGroup1, SWT.PUSH);
+        editButton.setText(Activator.getResourceString("easyshell.page.table.button.edit")); //$NON-NLS-1$
+        editButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                edit();
+            }
+        });
+        editButton.setLayoutData(gridData1);
+        editButton.setFont(font);
+        setButtonLayoutData(editButton);
+
         //create input nameText field
         nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.name.label"), data.getName(), true);
 
@@ -115,9 +146,51 @@ public class CommandMenuDataDialog extends StatusDialog {
             return;
         }
         data.setEnabled(enabledCheckBox.getSelection());
-        data.setCommandData(cmdList.get(commandCombo.getSelectionIndex()));
+        data.setCommandData(cmdList.get(commandCombo.getSelectionIndex()), false);
         data.setName(nameText.getText());
         super.okPressed();
+    }
+
+    private void add() {
+        CommandData data = new CommandData();
+        CommandDataDialog dialog = new CommandDataDialog(getShell(), data, false);
+        if (dialog.open() == Window.OK) {
+            cmdStore.add(data);
+            cmdStore.save();
+            cmdList.add(data);
+            String[] names = getAllCommandsAsComboNames(cmdList);
+            commandCombo.setItems(names);
+            commandCombo.select(names.length-1);
+            // send event to refresh
+            Event event = new Event();
+            event.item = null;
+            commandCombo.notifyListeners(SWT.Selection, event);
+            /*
+            tableViewer.refresh();
+            tableViewer.setChecked(data, data.isEnabled());
+            tableViewer.setSelection(new StructuredSelection(data));
+            */
+            return;
+        }
+    }
+
+    private void edit() {
+        int index = commandCombo.getSelectionIndex();
+        CommandData data = cmdList.get(index);
+        CommandDataDialog dialog = new CommandDataDialog(getShell(), data, true);
+        if (dialog.open() == Window.OK) {
+            commandCombo.setItem(index, getCommandAsComboName(data));
+            // send event to refresh
+            Event event = new Event();
+            event.item = null;
+            commandCombo.notifyListeners(SWT.Selection, event);
+            /*
+            tableViewer.refresh();
+            tableViewer.setChecked(data, data.isEnabled());
+            tableViewer.setSelection(new StructuredSelection(data));
+            */
+            return;
+        }
     }
 
     private boolean validateValues() {
@@ -159,11 +232,14 @@ public class CommandMenuDataDialog extends StatusDialog {
         }
     }
 
+    private String getCommandAsComboName(CommandData data) {
+        return data.getOS().getName() + " - " + data.getCommandType().getName() + " - " + data.getName();
+    }
+
     private String[] getAllCommandsAsComboNames(List<CommandData> list) {
         String[] arr = new String[list.size()];
         for (int i=0;i<list.size();i++) {
-            CommandData dt = list.get(i);
-            arr[i] = dt.getOS().getName() + " - " + dt.getCommandType().getName() + " - " + dt.getName();
+            arr[i] = getCommandAsComboName(list.get(i));
         }
         return arr;
     }
@@ -184,8 +260,7 @@ public class CommandMenuDataDialog extends StatusDialog {
 			public void widgetSelected(SelectionEvent e) {
                 int index = commandCombo.getSelectionIndex();
 				//String text = commandCombo.getItem(index);
-				data.setCommandData(cmdList.get(index));
-				data.setDefaultName();
+				data.setCommandData(cmdList.get(index), true);
 				nameText.setText(data.getName());
 				commandText.setText(data.getCommandData().getCommand());
 			}

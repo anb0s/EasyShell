@@ -74,7 +74,7 @@ public class ActionDelegate implements IObjectActionDelegate {
         }
 
         // get the ID
-        String ActionIDStr = action.getId();
+        //String ActionIDStr = action.getId();
         //Activator.getDefault().sysout(true, "Action ID: >" + ActionIDStr + "<");
 
         // String for all commands in case of clipboard

@@ -182,7 +182,7 @@ public class CommandDataDialog extends StatusDialog {
         typeCombo.addSelectionListener(new SelectionListener() {
             @Override
 			public void widgetSelected(SelectionEvent e) {
-				String text = typeCombo.getItem(typeCombo.getSelectionIndex());
+				//String text = typeCombo.getItem(typeCombo.getSelectionIndex());
 			}
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {

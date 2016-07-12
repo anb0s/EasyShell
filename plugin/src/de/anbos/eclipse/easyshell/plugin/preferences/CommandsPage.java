@@ -76,10 +76,10 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
     @Override
     protected void performDefaults() {
         menuStore.loadDefaults();
+        tableViewer.refresh();
         for (CommandMenuData item : menuStore.getCommandMenuDataList()) {
             tableViewer.setChecked(item, true);
         }
-        //tableViewer.refresh();
     }
 
     @Override
@@ -99,7 +99,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         pageComponent.setLayout(layout);
 
         // list
-        GridData data = new GridData(GridData.FILL_BOTH);
+        GridData gridData = new GridData(GridData.FILL_BOTH);
         // create table
         table = new Table(pageComponent, SWT.MULTI | SWT.CHECK | SWT.FULL_SELECTION);
         table.setHeaderVisible(true);
@@ -107,17 +107,17 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         table.setFont(parent.getFont());
 
         TableColumn column1 = new TableColumn(table, SWT.LEFT);
-        column1.setText(Activator.getResourceString("easyshell.command.editor.table.header.column0.title")); //$NON-NLS-1$
+        column1.setText(Activator.getResourceString("easyshell.page.table.header.column0.title")); //$NON-NLS-1$
         column1.setResizable(false);
 
         TableColumn column2 = new TableColumn(table, SWT.LEFT);
-        column2.setText(Activator.getResourceString("easyshell.command.editor.table.header.column1.title")); //$NON-NLS-1$
+        column2.setText(Activator.getResourceString("easyshell.page.table.header.column1.title")); //$NON-NLS-1$
         column2.setResizable(false);
 
         int availableRows = availableRows(pageComponent);
-        data.heightHint = table.getItemHeight() * (availableRows / 8);
-        data.widthHint = TABLE_WIDTH;
-        table.setLayoutData(data);
+        gridData.heightHint = table.getItemHeight() * (availableRows / 8);
+        gridData.widthHint = TABLE_WIDTH;
+        table.setLayoutData(gridData);
 
         tableViewer = new CheckboxTableViewer(table);
         tableViewer.setLabelProvider(new CommandMenuDataLabelProvider());
@@ -196,39 +196,39 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         groupLayout.marginWidth = 0;
         groupLayout.marginHeight = 0;
         groupComponent.setLayout(groupLayout);
-        data = new GridData();
-        data.verticalAlignment = GridData.FILL;
-        data.horizontalAlignment = GridData.FILL;
-        groupComponent.setLayoutData(data);
+        gridData = new GridData();
+        gridData.verticalAlignment = GridData.FILL;
+        gridData.horizontalAlignment = GridData.FILL;
+        groupComponent.setLayoutData(gridData);
         groupComponent.setFont(font);
 
         // buttons
         addButton = new Button(groupComponent, SWT.PUSH);
-        addButton.setText(Activator.getResourceString("easyshell.command.editor.button.add")); //$NON-NLS-1$
+        addButton.setText(Activator.getResourceString("easyshell.page.table.button.add")); //$NON-NLS-1$
         addButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
                 add();
             }
         });
-        addButton.setLayoutData(data);
+        addButton.setLayoutData(gridData);
         addButton.setFont(font);
         setButtonLayoutData(addButton);
 
         editButton = new Button(groupComponent, SWT.PUSH);
-        editButton.setText(Activator.getResourceString("easyshell.command.editor.button.edit")); //$NON-NLS-1$
+        editButton.setText(Activator.getResourceString("easyshell.page.table.button.edit")); //$NON-NLS-1$
         editButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
                 edit();
             }
         });
-        editButton.setLayoutData(data);
+        editButton.setLayoutData(gridData);
         editButton.setFont(font);
         setButtonLayoutData(editButton);
 
         removeButton = new Button(groupComponent, SWT.PUSH);
-        removeButton.setText(Activator.getResourceString("easyshell.command.editor.button.remove")); //$NON-NLS-1$
+        removeButton.setText(Activator.getResourceString("easyshell.page.table.button.remove")); //$NON-NLS-1$
         removeButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -239,7 +239,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         setButtonLayoutData(removeButton);
 
         upButton = new Button(groupComponent, SWT.PUSH);
-        upButton.setText(Activator.getResourceString("easyshell.command.editor.button.up")); //$NON-NLS-1$
+        upButton.setText(Activator.getResourceString("easyshell.page.table.button.up")); //$NON-NLS-1$
         upButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -250,7 +250,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         setButtonLayoutData(upButton);
 
         downButton = new Button(groupComponent, SWT.PUSH);
-        downButton.setText(Activator.getResourceString("easyshell.command.editor.button.down")); //$NON-NLS-1$
+        downButton.setText(Activator.getResourceString("easyshell.page.table.button.down")); //$NON-NLS-1$
         downButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -369,7 +369,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     private void add() {
         CommandMenuData data = new CommandMenuData();
-        data.setCommandData(cmdList.get(0));
+        data.setCommandData(cmdList.get(0), false);
         CommandMenuDataDialog dialog = new CommandMenuDataDialog(getShell(), data, cmdStore, cmdList, false);
         if (dialog.open() == Window.OK) {
             menuStore.add(data);

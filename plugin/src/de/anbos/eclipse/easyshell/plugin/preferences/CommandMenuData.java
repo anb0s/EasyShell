@@ -83,7 +83,7 @@ public class CommandMenuData {
         setId(tokenizer.nextToken());
         setName(tokenizer.nextToken());
         //
-        setCommandData(new CommandData());
+        setCommandData(new CommandData(), false);
         getCommandData().deserialize(null, tokenizer, delimiter);
         return true;
     }
@@ -112,8 +112,11 @@ public class CommandMenuData {
         this.name = getCommandData().getCommandType().getName() + ": " + getCommandData().getName();
     }
 
-    public void setCommandData(CommandData commandData) {
+    public void setCommandData(CommandData commandData, boolean setDefaultName) {
         this.commandData = commandData;
+        if (setDefaultName) {
+            setDefaultName();
+        }
     }
 
 }

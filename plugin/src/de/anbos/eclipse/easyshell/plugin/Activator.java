@@ -13,7 +13,6 @@ package de.anbos.eclipse.easyshell.plugin;
 
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
