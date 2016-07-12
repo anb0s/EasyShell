@@ -14,7 +14,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
-public class CommandMenuData {
+public class MenuData {
 
 	// status
     private int position = 0;
@@ -27,15 +27,20 @@ public class CommandMenuData {
     // command data
     private CommandData commandData;
 
-    public CommandMenuData(CommandData commandData) {
+    public MenuData(CommandData commandData) {
         this.commandData = commandData;
         setDefaultName();
     }
 
-    public CommandMenuData() {
+    public MenuData(MenuData data) {
+        this(data.getCommandData());
+        this.name = data.getName();
     }
 
-	public int getPosition() {
+    public MenuData() {
+    }
+
+    public int getPosition() {
 		return position;
 	}
 
@@ -56,10 +61,10 @@ public class CommandMenuData {
 	}
 
 	public boolean equals(Object object) {
-    	if(!(object instanceof CommandMenuData)) {
+    	if(!(object instanceof MenuData)) {
     		return false;
     	}
-    	CommandMenuData data = (CommandMenuData)object;
+    	MenuData data = (MenuData)object;
     	if( data.getPosition() == this.getPosition() &&
     	    data.getName().equals(this.getName()) &&
     	    data.getCommandData().equals(this.getCommandData())

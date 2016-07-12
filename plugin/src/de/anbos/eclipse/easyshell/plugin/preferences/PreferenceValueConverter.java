@@ -32,9 +32,9 @@ public class PreferenceValueConverter {
         return buffer.toString();
     }
 
-    public static String asCommandMenuDataString(List<CommandMenuData> items) {
+    public static String asCommandMenuDataString(List<MenuData> items) {
         StringBuffer buffer = new StringBuffer();
-        for(CommandMenuData item : items) {
+        for(MenuData item : items) {
             buffer.append(asCommandMenuDataString(item));
             buffer.append(ITEM_DELIMITER);
         }
@@ -45,7 +45,7 @@ public class PreferenceValueConverter {
         return data.serialize(VALUE_DELIMITER);
     }
 
-    public static final String asCommandMenuDataString(CommandMenuData data) {
+    public static final String asCommandMenuDataString(MenuData data) {
         return data.serialize(VALUE_DELIMITER);
     }
 
@@ -58,9 +58,9 @@ public class PreferenceValueConverter {
         return items;
     }
 
-    public static CommandMenuData[] asCommandMenuDataArray(String value) {
+    public static MenuData[] asCommandMenuDataArray(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
-        CommandMenuData[] items = new CommandMenuData[tokenizer.countTokens()];
+        MenuData[] items = new MenuData[tokenizer.countTokens()];
         for(int i = 0 ; i < items.length ; i++) {
             items[i] = asCommandMenuData(tokenizer.nextToken());
         }
@@ -73,8 +73,8 @@ public class PreferenceValueConverter {
         return data;
     }
 
-    public static CommandMenuData asCommandMenuData(String value) {
-        CommandMenuData data = new CommandMenuData();
+    public static MenuData asCommandMenuData(String value) {
+        MenuData data = new MenuData();
         data.deserialize(value, null, VALUE_DELIMITER);
         return data;
     }

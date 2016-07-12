@@ -11,6 +11,7 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -35,35 +36,35 @@ import org.eclipse.swt.widgets.Text;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 
-public class CommandMenuDataDialog extends StatusDialog {
+public class MenuDataDialog extends StatusDialog {
 
-    private CommandMenuData data;
+    private MenuData data;
     private CommandDataStore cmdStore;
     private List<CommandData> cmdList;
-    private boolean edit;
 
     private Button  enabledCheckBox;
     private Text    nameText;
     private Text    commandText;
     private CCombo  commandCombo;
 
-    private Button addButton;
+    private Button addNewButton;
+    private Button addCopyButton;
     private Button editButton;
+    private Button removeButton;
 
-    public CommandMenuDataDialog(Shell parent, CommandMenuData data, CommandDataStore cmdStore, List<CommandData> cmdList, boolean edit) {
+    public MenuDataDialog(Shell parent, MenuData data, CommandDataStore cmdStore, List<CommandData> cmdList, boolean edit) {
         super(parent);
         this.data = data;
         this.cmdStore = cmdStore;
         this.cmdList = cmdList;
-        this.edit = edit;
         // do layout and title
         setShellStyle(getShellStyle() | SWT.MAX);
         // set title
         String title = null;
         if(edit) {
-            title = Activator.getResourceString("easyshell.menu.editor.dialog.edit.title"); //$NON-NLS-1$
+            title = Activator.getResourceString("easyshell.menu.editor.dialog.title.edit"); //$NON-NLS-1$
         } else {
-            title = Activator.getResourceString("easyshell.menu.editor.dialog.new.title"); //$NON-NLS-1$
+            title = Activator.getResourceString("easyshell.menu.editor.dialog.title.new"); //$NON-NLS-1$
         }
         setTitle(title);
     }
@@ -88,9 +89,9 @@ public class CommandMenuDataDialog extends StatusDialog {
         pageComponent.setFont(font);
     	// define group1
     	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup1.setText(Activator.getResourceString("easyshell.menu.editor.dialog.title"));
+    	pageGroup1.setText(Activator.getResourceString("easyshell.menu.editor.dialog.title.group1"));
         GridLayout layout1 = new GridLayout();
-        layout1.numColumns = 2;
+        layout1.numColumns = 3;
         layout1.makeColumnsEqualWidth = false;
         layout1.marginWidth = 5;
         layout1.marginHeight = 4;
@@ -99,46 +100,80 @@ public class CommandMenuDataDialog extends StatusDialog {
         pageGroup1.setLayoutData(gridData1);
         pageGroup1.setFont(font);
         // create activity checkbox
-        createEnabledCheckBox(pageGroup1);
+        createEnabledCheckBox(pageGroup1);createNewButton(font, pageGroup1, gridData1);
         // create selected command combo
-        createCommandCombo(pageGroup1);
-        //create input nameText field
-        commandText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.command.label"), data.getCommandData().getCommand(), false);
+        createCommandCombo(pageGroup1);createCopyButton(font, pageGroup1, gridData1);
+        //create input commandText field
+        commandText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), data.getCommandData().getCommand(), false);
         // buttons
-        addButton = new Button(pageGroup1, SWT.PUSH);
-        addButton.setText(Activator.getResourceString("easyshell.page.table.button.add")); //$NON-NLS-1$
-        addButton.addSelectionListener(new SelectionAdapter() {
+        createEditButton(font, pageGroup1, gridData1);
+        //create input nameText field
+        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), data.getName(), true);
+        createRemoveButton(font, pageGroup1, gridData1);
+
+        refreshCommandCombo();
+
+        return pageComponent;
+    }
+
+    private void createRemoveButton(Font font, Group pageGroup1, GridData gridData1) {
+        removeButton = new Button(pageGroup1, SWT.PUSH);
+        removeButton.setText(Activator.getResourceString("easyshell.menu.editor.dialog.button.text.remove"));
+        removeButton.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.button.tooltip.remove"));
+        removeButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
-                add();
+                removeDialog();
             }
         });
-        addButton.setLayoutData(gridData1);
-        addButton.setFont(font);
-        setButtonLayoutData(addButton);
+        removeButton.setLayoutData(gridData1);
+        removeButton.setFont(font);
+        setButtonLayoutData(removeButton);
+    }
+
+    private void createEditButton(Font font, Group pageGroup1, GridData gridData1) {
         editButton = new Button(pageGroup1, SWT.PUSH);
-        editButton.setText(Activator.getResourceString("easyshell.page.table.button.edit")); //$NON-NLS-1$
+        editButton.setText(Activator.getResourceString("easyshell.menu.editor.dialog.button.text.edit"));
+        editButton.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.button.tooltip.edit"));
         editButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
-                edit();
+                editDialog();
             }
         });
         editButton.setLayoutData(gridData1);
         editButton.setFont(font);
         setButtonLayoutData(editButton);
+    }
 
-        //create input nameText field
-        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.name.label"), data.getName(), true);
+    private void createCopyButton(Font font, Group pageGroup1, GridData gridData1) {
+        addCopyButton = new Button(pageGroup1, SWT.PUSH);
+        addCopyButton.setText(Activator.getResourceString("easyshell.menu.editor.dialog.button.text.copy"));
+        addCopyButton.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.button.tooltip.copy"));
+        addCopyButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                addCopyDialog();
+            }
+        });
+        addCopyButton.setLayoutData(gridData1);
+        addCopyButton.setFont(font);
+        setButtonLayoutData(addCopyButton);
+    }
 
-        //if (edit) {
-	    	// send event to refresh
-	    	Event event = new Event();
-			event.item = null;
-			commandCombo.notifyListeners(SWT.Selection, event);
-        //}
-
-        return pageComponent;
+    private void createNewButton(Font font, Group pageGroup1, GridData gridData1) {
+        addNewButton = new Button(pageGroup1, SWT.PUSH);
+        addNewButton.setText(Activator.getResourceString("easyshell.menu.editor.dialog.button.text.new"));
+        addNewButton.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.button.tooltip.new"));
+        addNewButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent event) {
+                addNewDialog();
+            }
+        });
+        addNewButton.setLayoutData(gridData1);
+        addNewButton.setFont(font);
+        setButtonLayoutData(addNewButton);
     }
 
     protected void okPressed() {
@@ -151,46 +186,83 @@ public class CommandMenuDataDialog extends StatusDialog {
         super.okPressed();
     }
 
-    private void add() {
-        CommandData data = new CommandData();
+    private void addDialog(CommandData data) {
         CommandDataDialog dialog = new CommandDataDialog(getShell(), data, false);
         if (dialog.open() == Window.OK) {
-            cmdStore.add(data);
-            cmdStore.save();
-            cmdList.add(data);
-            String[] names = getAllCommandsAsComboNames(cmdList);
-            commandCombo.setItems(names);
-            commandCombo.select(names.length-1);
-            // send event to refresh
-            Event event = new Event();
-            event.item = null;
-            commandCombo.notifyListeners(SWT.Selection, event);
-            /*
-            tableViewer.refresh();
-            tableViewer.setChecked(data, data.isEnabled());
-            tableViewer.setSelection(new StructuredSelection(data));
-            */
-            return;
+            addCommand(data);
+            refreshCommandCombo();
         }
     }
 
-    private void edit() {
+    private void addCommand(CommandData data) {
+        cmdStore.add(data);
+        cmdStore.save();
+        cmdList.add(data);
+        String[] names = getAllCommandsAsComboNames(cmdList);
+        commandCombo.setItems(names);
+        commandCombo.select(names.length-1);
+    }
+
+    private void removeCommand(int index, CommandData data) {
+        cmdStore.delete(data);
+        cmdStore.save();
+        //cmdList.remove(data); // no need to search for data, use index instead:
+        cmdList.remove(index);
+        String[] names = getAllCommandsAsComboNames(cmdList);
+        commandCombo.setItems(names);
+        commandCombo.select(names.length-1);
+    }
+
+    private void addNewDialog() {
+        CommandData data = new CommandData(PresetType.presetUser, Utils.getOS(), "MyNewCommand", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOther, "my_new_command");
+        addDialog(data);
+    }
+
+    private void addCopyDialog() {
+        int index = commandCombo.getSelectionIndex();
+        CommandData data = new CommandData(cmdList.get(index));
+        data.setPresetType(PresetType.presetUser);
+        addDialog(data);
+    }
+
+    private void editDialog() {
         int index = commandCombo.getSelectionIndex();
         CommandData data = cmdList.get(index);
         CommandDataDialog dialog = new CommandDataDialog(getShell(), data, true);
         if (dialog.open() == Window.OK) {
-            commandCombo.setItem(index, getCommandAsComboName(data));
-            // send event to refresh
-            Event event = new Event();
-            event.item = null;
-            commandCombo.notifyListeners(SWT.Selection, event);
-            /*
-            tableViewer.refresh();
-            tableViewer.setChecked(data, data.isEnabled());
-            tableViewer.setSelection(new StructuredSelection(data));
-            */
-            return;
+            replaceCommand(index, data);
+            refreshCommandCombo();
         }
+    }
+
+    private void removeDialog() {
+        int index = commandCombo.getSelectionIndex();
+        String title = Activator.getResourceString("easyshell.menu.editor.dialog.title.remove");
+        String question = MessageFormat.format(
+                Activator.getResourceString("easyshell.menu.editor.dialog.question.remove"),
+                commandCombo.getItem(index));
+        MessageDialog dialog = new MessageDialog(
+                null, title, null, question,
+                MessageDialog.QUESTION,
+                new String[] {"Yes", "No"},
+                1); // no is the default
+        int result = dialog.open();
+        if (result == 0) {
+            CommandData data = cmdList.get(index);
+            removeCommand(index, data);
+            refreshCommandCombo();
+        }
+    }
+
+    private void replaceCommand(int index, CommandData data) {
+        commandCombo.setItem(index, getCommandAsComboName(data));
+    }
+
+    private void refreshCommandCombo() {
+        // send event to refresh
+        Event event = new Event();
+        event.item = null;
+        commandCombo.notifyListeners(SWT.Selection, event);
     }
 
     private boolean validateValues() {
@@ -206,7 +278,7 @@ public class CommandMenuDataDialog extends StatusDialog {
     	boolean valid = true;
 
         // check name
-        String text  = Activator.getResourceString("easyshell.menu.editor.dialog.error.name.text");
+        String text  = Activator.getResourceString("easyshell.menu.editor.dialog.error.text.name");
         if ( (nameText.getText() == null) || (nameText.getText().length() <= 0)) {
             valid = false;
         }
@@ -222,18 +294,14 @@ public class CommandMenuDataDialog extends StatusDialog {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);
         comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.menu.editor.dialog.active.label")); //$NON-NLS-1$
+        comboLabel.setText(Activator.getResourceString("easyshell.menu.editor.dialog.label.active")); //$NON-NLS-1$
         // draw checkbox
         enabledCheckBox = new Button(parent,SWT.CHECK);
-        if(edit) {
-            enabledCheckBox.setSelection(this.data.isEnabled());
-        } else {
-        	enabledCheckBox.setSelection(true);
-        }
+        enabledCheckBox.setSelection(this.data.isEnabled());
     }
 
     private String getCommandAsComboName(CommandData data) {
-        return data.getOS().getName() + " - " + data.getCommandType().getName() + " - " + data.getName();
+        return data.getPresetType().getName() + " - " + data.getOS().getName() + " - " + data.getCommandType().getName() + " - " + data.getName();
     }
 
     private String[] getAllCommandsAsComboNames(List<CommandData> list) {
@@ -248,7 +316,7 @@ public class CommandMenuDataDialog extends StatusDialog {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);
         comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.menu.editor.dialog.combo.label")); //$NON-NLS-1$
+        comboLabel.setText(Activator.getResourceString("easyshell.menu.editor.dialog.label.combo")); //$NON-NLS-1$
         // draw combo
         commandCombo = new CCombo(parent,SWT.BORDER);
         commandCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -263,21 +331,20 @@ public class CommandMenuDataDialog extends StatusDialog {
 				data.setCommandData(cmdList.get(index), true);
 				nameText.setText(data.getName());
 				commandText.setText(data.getCommandData().getCommand());
+				boolean isUserDefined = data.getCommandData().getPresetType() == PresetType.presetUser;
+				editButton.setEnabled(isUserDefined);
+				removeButton.setEnabled(isUserDefined);
 			}
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // TODO Auto-generated method stub
             }
 		});
-        if (edit) {
-            for(int i = 0 ; i < cmdList.size() ; i++) {
-                if (cmdList.get(i).equals(this.data.getCommandData())) {
-                    commandCombo.select(i);
-                    return;
-                }
+        for(int i = 0 ; i < cmdList.size() ; i++) {
+            if (cmdList.get(i).equals(this.data.getCommandData())) {
+                commandCombo.select(i);
+                return;
             }
-        } else {
-            commandCombo.select(0);
         }
     }
 
@@ -289,10 +356,8 @@ public class CommandMenuDataDialog extends StatusDialog {
         // draw textfield
         Text text = new Text(parent,SWT.BORDER);
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        if(edit) {
-            text.setText(editValue);
-            text.setEditable(editable);
-        }
+        text.setText(editValue);
+        text.setEditable(editable);
         return text;
     }
 

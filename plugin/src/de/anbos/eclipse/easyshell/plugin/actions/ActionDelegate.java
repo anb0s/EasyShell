@@ -19,19 +19,18 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver;
 import de.anbos.eclipse.easyshell.plugin.Resource;
 import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.preferences.CommandType;
 import de.anbos.eclipse.easyshell.plugin.preferences.Quotes;
+import de.anbos.eclipse.easyshell.plugin.preferences.Utils;
 
 public class ActionDelegate implements IObjectActionDelegate {
 
@@ -156,6 +155,7 @@ public class ActionDelegate implements IObjectActionDelegate {
 								c++;
 							}
 							//Activator.getDefault().sysout(true, "--- cmd: <");
+							//Utils.showToolTip(Display.getDefault().getActiveShell(), "EasyShell: executed", target);
 							Runtime.getRuntime().exec(cmds);
                     	}
                     	// the old command line passing without string tokenizer
@@ -186,12 +186,8 @@ public class ActionDelegate implements IObjectActionDelegate {
 
         // handling copy to clipboard
         if ((commandType == CommandType.commandTypeClipboard) && (cmdAll != null) && (cmdAll.length() != 0)) {
-            Clipboard clipboard = new Clipboard(Display.getCurrent());
-            TextTransfer textTransfer = TextTransfer.getInstance();
-            Transfer[] transfers = new Transfer[]{textTransfer};
-            Object[] data = new Object[]{cmdAll};
-            clipboard.setContents(data, transfers);
-            clipboard.dispose();
+            Utils.copyToClipboard(cmdAll);
+            Utils.showToolTip(Display.getDefault().getActiveShell(), Activator.getResourceString("easyshell.plugin.name") + ": " + Activator.getResourceString("easyshell.message.copytoclipboard"), cmdAll);
         }
     }
 

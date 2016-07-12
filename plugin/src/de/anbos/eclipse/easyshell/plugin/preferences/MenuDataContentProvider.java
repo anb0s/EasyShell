@@ -14,9 +14,9 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-public class CommandMenuDataContentProvider implements IStructuredContentProvider {
+public class MenuDataContentProvider implements IStructuredContentProvider {
 
-    private CommandMenuDataStore store;
+    private MenuDataStore store;
 
     public Object[] getElements(Object inputElement) {
         return store.getCommandMenuDataArray();
@@ -27,8 +27,8 @@ public class CommandMenuDataContentProvider implements IStructuredContentProvide
     }
 
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-        if(newInput instanceof CommandMenuDataStore) {
-            store = (CommandMenuDataStore)newInput;
+        if(newInput instanceof MenuDataStore) {
+            store = (MenuDataStore)newInput;
         }
     }
 

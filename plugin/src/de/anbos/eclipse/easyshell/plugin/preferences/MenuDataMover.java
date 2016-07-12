@@ -16,14 +16,14 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-public class CommandMenuDataMover implements SelectionListener {
+public class MenuDataMover implements SelectionListener {
 
 	private Table table;
-	private CommandMenuDataStore store;
+	private MenuDataStore store;
 
-	private CommandMenuData currentSelection;
+	private MenuData currentSelection;
 
-	public CommandMenuDataMover(Table table, CommandMenuDataStore store) {
+	public MenuDataMover(Table table, MenuDataStore store) {
 		this.table = table;
 		this.store = store;
 		table.addSelectionListener(this);
@@ -33,7 +33,7 @@ public class CommandMenuDataMover implements SelectionListener {
 		if(currentSelection == null) {
 			return;
 		}
-		CommandMenuData previousElement = store.getPreviousElement(currentSelection);
+		MenuData previousElement = store.getPreviousElement(currentSelection);
 		if(previousElement == null) {
 			return;
 		}
@@ -47,7 +47,7 @@ public class CommandMenuDataMover implements SelectionListener {
 		if(currentSelection == null) {
 			return;
 		}
-		CommandMenuData nextElement = store.getNextElement(currentSelection);
+		MenuData nextElement = store.getNextElement(currentSelection);
 		if(nextElement == null) {
 			return;
 		}
@@ -68,10 +68,10 @@ public class CommandMenuDataMover implements SelectionListener {
 			currentSelection = null;
 			return;
 		}
-		if(item == null || !(item.getData() instanceof CommandMenuData)) {
+		if(item == null || !(item.getData() instanceof MenuData)) {
 			currentSelection = null;
 			return;
 		}
-		currentSelection = (CommandMenuData)item.getData();
+		currentSelection = (MenuData)item.getData();
 	}
 }

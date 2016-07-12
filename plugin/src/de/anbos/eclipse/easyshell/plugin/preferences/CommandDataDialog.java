@@ -17,6 +17,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -34,7 +37,6 @@ import de.anbos.eclipse.easyshell.plugin.Activator;
 public class CommandDataDialog extends StatusDialog {
 
     private CommandData data;
-    private boolean edit;
 
     private Text    nameText;
     private CCombo  typeCombo;
@@ -43,15 +45,14 @@ public class CommandDataDialog extends StatusDialog {
     public CommandDataDialog(Shell parent, CommandData data, boolean edit) {
         super(parent);
         this.data = data;
-        this.edit = edit;
         // do layout and title
         setShellStyle(getShellStyle() | SWT.MAX);
         // set title
         String title = null;
         if(edit) {
-            title = Activator.getResourceString("easyshell.command.editor.dialog.edit.title"); //$NON-NLS-1$
+            title = Activator.getResourceString("easyshell.command.editor.dialog.title.edit");
         } else {
-            title = Activator.getResourceString("easyshell.command.editor.dialog.new.title"); //$NON-NLS-1$
+            title = Activator.getResourceString("easyshell.command.editor.dialog.title.new");
         }
         setTitle(title);
     }
@@ -75,7 +76,8 @@ public class CommandDataDialog extends StatusDialog {
         pageComponent.setFont(parent.getFont());
     	// define group1
     	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup1.setText(Activator.getResourceString("easyshell.command.editor.dialog.title"));
+    	pageGroup1.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group1"));
+    	pageGroup1.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group1"));
         GridLayout layout1 = new GridLayout();
         layout1.numColumns = 2;
         layout1.makeColumnsEqualWidth = false;
@@ -88,32 +90,78 @@ public class CommandDataDialog extends StatusDialog {
         // create type type combo
         createTypeCombo(pageGroup1);
         //create input nameText field
-        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.name.label"), data.getName());
+        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), data.getName());
         // create input valueText field
-        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.value.label"), data.getCommand());
+        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), data.getCommand());
 
         // ------------------------------------ Description ------------------------------------------
-        Label desc_label = new Label(pageComponent, 0);
-        desc_label.setText("${easyshell:drive} is the drive letter on Win32");
-        desc_label = new Label(pageComponent, 0);
-        desc_label.setText("${easyshell:container_loc} is the parent path*");
-        desc_label = new Label(pageComponent, 0);
-        desc_label.setText("${easyshell:resource_loc} is the full path*");
-        desc_label = new Label(pageComponent, 0);
-        desc_label.setText("${easyshell:resource_name} is the file name*");
-        desc_label = new Label(pageComponent, 0);
-        desc_label.setText("${easyshell:project_name} is the project name");
-        desc_label = new Label(pageComponent, 0);
-        desc_label.setText("${easyshell:line_separator} is the line separator");
+        // define group2
+        Group pageGroup2 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
+        pageGroup2.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group2"));
+        pageGroup2.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group2"));
+        GridLayout layout2 = new GridLayout();
+        layout2.numColumns = 2;
+        layout2.makeColumnsEqualWidth = false;
+        layout2.marginWidth = 5;
+        layout2.marginHeight = 4;
+        pageGroup2.setLayout(layout2);
+        GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
+        pageGroup2.setLayoutData(data2);
+        pageGroup2.setFont(parent.getFont());
 
-        //if (edit) {
-	    	// send event to refresh
-	    	Event event = new Event();
-			event.item = null;
-			typeCombo.notifyListeners(SWT.Selection, event);
-        //}
+        createLabel(pageGroup2, "${easyshell:drive}", "is the drive letter on Win32");
+        createLabel(pageGroup2, "${easyshell:container_loc}", "is the parent path*");
+        createLabel(pageGroup2, "${easyshell:resource_loc}", "is the full path*");
+        createLabel(pageGroup2, "${easyshell:resource_name}", "is the file name*");
+        createLabel(pageGroup2, "${easyshell:project_name}", "is the project name");
+        createLabel(pageGroup2, "${easyshell:line_separator}", "is the line separator");
+
+        refreshTypeCombo();
 
         return pageComponent;
+    }
+
+    private void createLabel(Composite parent, String varText, String labelText) {
+        StyledText styledTextWidget = new StyledText(parent, SWT.NONE);
+        styledTextWidget.setText(varText);
+        styledTextWidget.setBackground(parent.getBackground());
+        styledTextWidget.setEditable(false);
+        styledTextWidget.setCaret(null); //Set caret null this will hide caret
+        styledTextWidget.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseUp(MouseEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void mouseDown(MouseEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                StyledText text = (StyledText)(e.getSource());
+                Control control = text;
+                text.selectAll();
+                String title = Activator.getResourceString("easyshell.message.copytoclipboard");
+                String message = text.getText();
+                Utils.copyToClipboard(title);
+                Utils.showToolTip(control, title, message);
+                text.setSelection(0, 0);
+            }
+        });
+        Label label = new Label(parent, 0);
+        label.setText(labelText);
+    }
+
+    private void refreshTypeCombo() {
+        // send event to refresh
+        Event event = new Event();
+        event.item = null;
+        typeCombo.notifyListeners(SWT.Selection, event);
     }
 
     protected void okPressed() {
@@ -128,25 +176,25 @@ public class CommandDataDialog extends StatusDialog {
 
     private boolean validateValues() {
 
-    	final String title = Activator.getResourceString("easyshell.command.editor.dialog.error.incompletedata.title");
+    	final String title = Activator.getResourceString("easyshell.command.editor.dialog.error.title.incompletedata");
 
     	// check type
         if ( (typeCombo.getText() == null) || (typeCombo.getText().length() <= 0)) {
-        	MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.command.editor.dialog.error.type.text"));
+        	MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.command.editor.dialog.error.text.type"));
         	return false;
         }
 
     	boolean valid = true;
 
         // check name
-        String text  = Activator.getResourceString("easyshell.command.editor.dialog.error.name.text");
+        String text  = Activator.getResourceString("easyshell.command.editor.dialog.error.text.name");
         if ( (nameText.getText() == null) || (nameText.getText().length() <= 0)) {
             valid = false;
         }
 
         // check value
         if (valid) {
-        	text  = Activator.getResourceString("easyshell.command.editor.dialog.error.value.text");
+        	text  = Activator.getResourceString("easyshell.command.editor.dialog.error.text.value");
             if ( (valueText.getText() == null) || (valueText.getText().length() <= 0)) {
             	valid = false;
             }
@@ -172,7 +220,7 @@ public class CommandDataDialog extends StatusDialog {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);
         comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.combo.label")); //$NON-NLS-1$
+        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.label.combo"));
         // draw combo
         typeCombo = new CCombo(parent,SWT.BORDER);
         typeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -189,16 +237,12 @@ public class CommandDataDialog extends StatusDialog {
                 // TODO Auto-generated method stub
             }
 		});
-        if(edit) {
-            String[] items = typeCombo.getItems();
-            for(int i = 0 ; i < items.length ; i++) {
-                if(items[i].equals(this.data.getCommandType().getName())) {
-                    typeCombo.select(i);
-                    return;
-                }
+        String[] items = typeCombo.getItems();
+        for(int i = 0 ; i < items.length ; i++) {
+            if(items[i].equals(this.data.getCommandType().getName())) {
+                typeCombo.select(i);
+                return;
             }
-        } else {
-        	typeCombo.select(0);
         }
     }
 
@@ -210,9 +254,7 @@ public class CommandDataDialog extends StatusDialog {
         // draw textfield
         Text text = new Text(parent,SWT.BORDER);
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        if(edit) {
-            text.setText(editValue);
-        }
+        text.setText(editValue);
         return text;
     }
 

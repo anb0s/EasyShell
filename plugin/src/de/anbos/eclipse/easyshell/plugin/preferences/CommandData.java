@@ -20,18 +20,29 @@ public class CommandData {
     private int position = 0;
     private String id = UUID.randomUUID().toString();
     // command
-    private OS os = OS.osWindows;
-    private String name = "Name";
+    private PresetType presetType = PresetType.presetUser;
+    private OS os = OS.osUnknown;
+    private String name = "MyNewCommand";
     private RessourceType resType = RessourceType.ressourceFileOrFolder;
-    private CommandType cmdType = CommandType.commandTypeOpen;
-    private String command = "command";
+    private CommandType cmdType = CommandType.commandTypeOther;
+    private String command = "my_new_command";
 
-    public CommandData(OS os, String name, RessourceType resType, CommandType cmdType, String command) {
+    public CommandData(PresetType presetType, OS os, String name, RessourceType resType, CommandType cmdType, String command) {
+        this.presetType = presetType;
         this.os = os;
         this.name = name;
         this.resType = resType;
         this.cmdType = cmdType;
         this.command = command;
+    }
+
+    public CommandData(CommandData commandData) {
+        this.presetType = commandData.getPresetType();
+        this.os = commandData.getOS();
+        this.name = commandData.getName();
+        this.resType = commandData.getRessourceType();
+        this.cmdType = commandData.getCommandType();
+        this.command = commandData.getCommand();
     }
 
     public CommandData() {
@@ -51,6 +62,10 @@ public class CommandData {
 
     public OS getOS() {
         return os;
+    }
+
+    public PresetType getPresetType() {
+        return presetType;
     }
 
     public RessourceType getRessourceType() {
@@ -81,6 +96,10 @@ public class CommandData {
         this.os = os;
     }
 
+    public void setPresetType(PresetType presetType) {
+        this.presetType = presetType;
+    }
+
     public void setRessourceType(RessourceType resType) {
         this.resType = resType;
     }
@@ -101,6 +120,7 @@ public class CommandData {
     	if(data.getPosition() == this.getPosition() &&
     	   data.getName().equals(this.getName()) &&
     	   data.getOS() == this.getOS() &&
+    	   data.getPresetType() == this.getPresetType() &&
     	   data.getRessourceType() == this.getRessourceType() &&
     	   data.getCommandType() == this.getCommandType() &&
     	   data.getCommand().equals(this.getCommand()
@@ -122,8 +142,9 @@ public class CommandData {
 		// set members
         setPosition(Integer.parseInt(tokenizer.nextToken()));
 		setId(tokenizer.nextToken());
+        setPresetType(PresetType.getFromEnum(tokenizer.nextToken()));
+        setOs(OS.getFromEnum(tokenizer.nextToken()));
 		setName(tokenizer.nextToken());
-		setOs(OS.getFromEnum(tokenizer.nextToken()));
 		setRessourceType(RessourceType.getFromEnum(tokenizer.nextToken()));
 		setCommandType(CommandType.getFromEnum(tokenizer.nextToken()));
 		setCommand(tokenizer.nextToken());
@@ -131,7 +152,7 @@ public class CommandData {
 	}
 
     public String serialize(String delimiter) {
-        return Integer.toString(getPosition()) + delimiter + getId() + delimiter + getName() + delimiter + getOS().toString() + delimiter + getRessourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
+        return Integer.toString(getPosition()) + delimiter + getId() + delimiter + getPresetType().toString() + delimiter + getOS().toString() + delimiter + getName() + delimiter + getRessourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
     }
 
     public String getTypeIcon() {
