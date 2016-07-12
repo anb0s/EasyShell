@@ -23,11 +23,11 @@ public class CommandData {
     private PresetType presetType = PresetType.presetUser;
     private OS os = OS.osUnknown;
     private String name = "MyNewCommand";
-    private RessourceType resType = RessourceType.ressourceFileOrFolder;
+    private ResourceType resType = ResourceType.resourceFileOrFolder;
     private CommandType cmdType = CommandType.commandTypeOther;
     private String command = "my_new_command";
 
-    public CommandData(PresetType presetType, OS os, String name, RessourceType resType, CommandType cmdType, String command) {
+    public CommandData(PresetType presetType, OS os, String name, ResourceType resType, CommandType cmdType, String command) {
         this.presetType = presetType;
         this.os = os;
         this.name = name;
@@ -40,7 +40,7 @@ public class CommandData {
         this.presetType = commandData.getPresetType();
         this.os = commandData.getOS();
         this.name = commandData.getName();
-        this.resType = commandData.getRessourceType();
+        this.resType = commandData.getResourceType();
         this.cmdType = commandData.getCommandType();
         this.command = commandData.getCommand();
     }
@@ -68,7 +68,7 @@ public class CommandData {
         return presetType;
     }
 
-    public RessourceType getRessourceType() {
+    public ResourceType getResourceType() {
         return resType;
     }
 
@@ -100,7 +100,7 @@ public class CommandData {
         this.presetType = presetType;
     }
 
-    public void setRessourceType(RessourceType resType) {
+    public void setResourceType(ResourceType resType) {
         this.resType = resType;
     }
 
@@ -121,7 +121,7 @@ public class CommandData {
     	   data.getName().equals(this.getName()) &&
     	   data.getOS() == this.getOS() &&
     	   data.getPresetType() == this.getPresetType() &&
-    	   data.getRessourceType() == this.getRessourceType() &&
+    	   data.getResourceType() == this.getResourceType() &&
     	   data.getCommandType() == this.getCommandType() &&
     	   data.getCommand().equals(this.getCommand()
     	   )
@@ -145,14 +145,14 @@ public class CommandData {
         setPresetType(PresetType.getFromEnum(tokenizer.nextToken()));
         setOs(OS.getFromEnum(tokenizer.nextToken()));
 		setName(tokenizer.nextToken());
-		setRessourceType(RessourceType.getFromEnum(tokenizer.nextToken()));
+		setResourceType(ResourceType.getFromEnum(tokenizer.nextToken()));
 		setCommandType(CommandType.getFromEnum(tokenizer.nextToken()));
 		setCommand(tokenizer.nextToken());
 		return true;
 	}
 
     public String serialize(String delimiter) {
-        return Integer.toString(getPosition()) + delimiter + getId() + delimiter + getPresetType().toString() + delimiter + getOS().toString() + delimiter + getName() + delimiter + getRessourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
+        return Integer.toString(getPosition()) + delimiter + getId() + delimiter + getPresetType().toString() + delimiter + getOS().toString() + delimiter + getName() + delimiter + getResourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
     }
 
     public String getTypeIcon() {

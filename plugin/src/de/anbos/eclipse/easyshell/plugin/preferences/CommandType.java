@@ -94,6 +94,14 @@ public enum CommandType {
         }
         return list;
     }
+    public static String[] getNamesAsArray() {
+        List<String> list = getNamesAsList();
+        String[] arr = new String[list.size()];
+        for (int i=0;i<list.size();i++) {
+            arr[i] = list.get(i);
+        }
+        return arr;
+    }
     public static List<String> getIconsAsList() {
         List<String> list = new ArrayList<String>();
         for(int i = 0; i < CommandType.values().length; i++) {

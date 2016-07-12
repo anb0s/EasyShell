@@ -11,12 +11,9 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
-import java.util.List;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -24,6 +21,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -38,8 +36,9 @@ public class CommandDataDialog extends StatusDialog {
 
     private CommandData data;
 
+    private Combo  resourceTypeCombo;
+    private Combo  commandTypeCombo;
     private Text    nameText;
-    private CCombo  typeCombo;
     private Text    valueText;
 
     public CommandDataDialog(Shell parent, CommandData data, boolean edit) {
@@ -87,8 +86,10 @@ public class CommandDataDialog extends StatusDialog {
         GridData data1 = new GridData(GridData.FILL_HORIZONTAL);
         pageGroup1.setLayoutData(data1);
         pageGroup1.setFont(parent.getFont());
-        // create type type combo
-        createTypeCombo(pageGroup1);
+        // create resource type combo
+        createResourceTypeCombo(pageGroup1);
+        // create command type combo
+        createCommandTypeCombo(pageGroup1);
         //create input nameText field
         nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), data.getName());
         // create input valueText field
@@ -116,7 +117,9 @@ public class CommandDataDialog extends StatusDialog {
         createLabel(pageGroup2, "${easyshell:project_name}", "is the project name");
         createLabel(pageGroup2, "${easyshell:line_separator}", "is the line separator");
 
-        refreshTypeCombo();
+        refreshResourceTypeCombo();
+
+        refreshCommandTypeCombo();
 
         return pageComponent;
     }
@@ -157,18 +160,26 @@ public class CommandDataDialog extends StatusDialog {
         label.setText(labelText);
     }
 
-    private void refreshTypeCombo() {
+    private void refreshResourceTypeCombo() {
         // send event to refresh
         Event event = new Event();
         event.item = null;
-        typeCombo.notifyListeners(SWT.Selection, event);
+        resourceTypeCombo.notifyListeners(SWT.Selection, event);
+    }
+
+    private void refreshCommandTypeCombo() {
+        // send event to refresh
+        Event event = new Event();
+        event.item = null;
+        commandTypeCombo.notifyListeners(SWT.Selection, event);
     }
 
     protected void okPressed() {
         if (!validateValues()) {
             return;
         }
-        data.setCommandType(CommandType.getFromName(typeCombo.getText()));
+        data.setResourceType(ResourceType.getFromName(resourceTypeCombo.getText()));
+        data.setCommandType(CommandType.getFromName(commandTypeCombo.getText()));
         data.setName(nameText.getText());
         data.setCommand(valueText.getText());
         super.okPressed();
@@ -178,8 +189,14 @@ public class CommandDataDialog extends StatusDialog {
 
     	final String title = Activator.getResourceString("easyshell.command.editor.dialog.error.title.incompletedata");
 
+        // check resource
+        if ( (resourceTypeCombo.getText() == null) || (resourceTypeCombo.getText().length() <= 0)) {
+            MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.command.editor.dialog.error.text.resource"));
+            return false;
+        }
+
     	// check type
-        if ( (typeCombo.getText() == null) || (typeCombo.getText().length() <= 0)) {
+        if ( (commandTypeCombo.getText() == null) || (commandTypeCombo.getText().length() <= 0)) {
         	MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.command.editor.dialog.error.text.type"));
         	return false;
         }
@@ -207,40 +224,61 @@ public class CommandDataDialog extends StatusDialog {
         return valid;
     }
 
-    private String[] getAllCommandTypesAsComboNames() {
-        List<String> list = CommandType.getNamesAsList();
-        String[] arr = new String[list.size()];
-        for (int i=0;i<list.size();i++) {
-            arr[i] = list.get(i);
-        }
-        return arr;
-    }
-
-    private void createTypeCombo(Composite parent) {
+    private void createResourceTypeCombo(Composite parent) {
         // draw label
         Label comboLabel = new Label(parent,SWT.LEFT);
         comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.label.combo"));
+        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.label.combo2"));
         // draw combo
-        typeCombo = new CCombo(parent,SWT.BORDER);
-        typeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        typeCombo.setEditable(false);
-        typeCombo.setItems(getAllCommandTypesAsComboNames());
-        typeCombo.select(0);
-        typeCombo.addSelectionListener(new SelectionListener() {
+        resourceTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
+        resourceTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        //resourceTypeCombo.setEditable(false);
+        resourceTypeCombo.setItems(ResourceType.getNamesAsArray());
+        resourceTypeCombo.select(0);
+        resourceTypeCombo.addSelectionListener(new SelectionListener() {
             @Override
 			public void widgetSelected(SelectionEvent e) {
-				//String text = typeCombo.getItem(typeCombo.getSelectionIndex());
+				//String text = resourceTypeCombo.getItem(resourceTypeCombo.getSelectionIndex());
 			}
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // TODO Auto-generated method stub
             }
 		});
-        String[] items = typeCombo.getItems();
+        String[] items = resourceTypeCombo.getItems();
+        for(int i = 0 ; i < items.length ; i++) {
+            if(items[i].equals(this.data.getResourceType().getName())) {
+                resourceTypeCombo.select(i);
+                return;
+            }
+        }
+    }
+
+    private void createCommandTypeCombo(Composite parent) {
+        // draw label
+        Label comboLabel = new Label(parent,SWT.LEFT);
+        comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.label.combo1"));
+        // draw combo
+        commandTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
+        commandTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        //commandTypeCombo.setEditable(false);
+        commandTypeCombo.setItems(CommandType.getNamesAsArray());
+        commandTypeCombo.select(0);
+        commandTypeCombo.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                //String text = typeCombo.getItem(typeCombo.getSelectionIndex());
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // TODO Auto-generated method stub
+            }
+        });
+        String[] items = commandTypeCombo.getItems();
         for(int i = 0 ; i < items.length ; i++) {
             if(items[i].equals(this.data.getCommandType().getName())) {
-                typeCombo.select(i);
+                commandTypeCombo.select(i);
                 return;
             }
         }

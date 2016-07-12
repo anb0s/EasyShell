@@ -18,7 +18,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -26,6 +25,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -45,7 +45,7 @@ public class MenuDataDialog extends StatusDialog {
     private Button  enabledCheckBox;
     private Text    nameText;
     private Text    commandText;
-    private CCombo  commandCombo;
+    private Combo   commandCombo;
 
     private Button addNewButton;
     private Button addCopyButton;
@@ -214,7 +214,7 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void addNewDialog() {
-        CommandData data = new CommandData(PresetType.presetUser, Utils.getOS(), "MyNewCommand", RessourceType.ressourceFileOrFolder, CommandType.commandTypeOther, "my_new_command");
+        CommandData data = new CommandData(PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceFileOrFolder, CommandType.commandTypeOther, "my_new_command");
         addDialog(data);
     }
 
@@ -318,9 +318,9 @@ public class MenuDataDialog extends StatusDialog {
         comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
         comboLabel.setText(Activator.getResourceString("easyshell.menu.editor.dialog.label.combo")); //$NON-NLS-1$
         // draw combo
-        commandCombo = new CCombo(parent,SWT.BORDER);
+        commandCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         commandCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        commandCombo.setEditable(false);
+        //commandCombo.setEditable(false);
         commandCombo.setItems(getAllCommandsAsComboNames(cmdList));
         commandCombo.select(0);
         commandCombo.addSelectionListener(new SelectionListener() {
