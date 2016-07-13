@@ -43,7 +43,7 @@ public class MenuDataStore {
         }
         MenuData[] allArray = new MenuData[allItems.size()];
         for(int i = 0 ; i < allArray.length ; i++) {
-            allArray[i] = (MenuData)allItems.get(i);
+            allArray[i] = allItems.get(i);
         }
         return allArray;
     }

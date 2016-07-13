@@ -16,20 +16,14 @@ import org.eclipse.jface.viewers.Viewer;
 
 public class MenuDataContentProvider implements IStructuredContentProvider {
 
-    private MenuDataStore store;
-
     public Object[] getElements(Object inputElement) {
-        return store.getCommandMenuDataArray();
+        return ((MenuDataStore)inputElement).getCommandMenuDataArray();
     }
 
     public void dispose() {
-        store = null;
     }
 
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-        if(newInput instanceof MenuDataStore) {
-            store = (MenuDataStore)newInput;
-        }
     }
 
 }

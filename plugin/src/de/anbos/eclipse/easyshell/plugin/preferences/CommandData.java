@@ -146,7 +146,7 @@ public class CommandData {
         }
 		// set members
         setPosition(Integer.parseInt(tokenizer.nextToken()));
-		setId(tokenizer.nextToken());
+		//setId(tokenizer.nextToken());
         setPresetType(PresetType.getFromEnum(tokenizer.nextToken()));
         setOs(OS.getFromEnum(tokenizer.nextToken()));
 		setName(tokenizer.nextToken());
@@ -157,7 +157,7 @@ public class CommandData {
 	}
 
     public String serialize(String delimiter) {
-        return Integer.toString(getPosition()) + delimiter + getId() + delimiter + getPresetType().toString() + delimiter + getOS().toString() + delimiter + getName() + delimiter + getResourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
+        return Integer.toString(getPosition()) + delimiter + /*getId() + delimiter +*/ getPresetType().toString() + delimiter + getOS().toString() + delimiter + getName() + delimiter + getResourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
     }
 
     public String getTypeIcon() {

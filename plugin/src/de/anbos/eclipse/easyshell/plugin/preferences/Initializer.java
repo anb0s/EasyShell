@@ -21,8 +21,8 @@ public class Initializer extends AbstractPreferenceInitializer {
 
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		String defaultCommand = PreferenceValueConverter.asCommandDataString(CommandDataDefaultCollection.getAllCommandsStatic());
-		String defaultMenu    = PreferenceValueConverter.asCommandMenuDataString(CommandDataDefaultCollection.getDefaultCommandsMenuStatic());
+		String defaultCommand = PreferenceValueConverter.asCommandDataString(CommandDataDefaultCollection.getCommandsNative(null, true));
+		String defaultMenu    = PreferenceValueConverter.asCommandMenuDataString(CommandDataDefaultCollection.getDefaultCommandsMenuStatic(true));
 		store.setDefault(Constants.PREF_COMMANDS, defaultCommand);
 		store.setDefault(Constants.PREF_MENU, defaultMenu);
 		//getDefaultPresets();

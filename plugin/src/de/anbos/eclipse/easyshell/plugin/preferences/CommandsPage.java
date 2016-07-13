@@ -130,7 +130,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         cmdStore.load();
 
         // get the native commands list
-        cmdList = CommandDataDefaultCollection.getCommandsNative(cmdStore.getAllCommands());
+        cmdList = CommandDataDefaultCollection.getCommandsNative(cmdStore.getAllCommands(), true);
 
         // menu store
         menuStore = new MenuDataStore(Activator.getDefault().getPreferenceStore());
@@ -421,7 +421,6 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         if (dialog.open() == Window.OK) {
             menuStore.add(data);
             refreshTableViewer(data);
-            return;
         }
     }
 
@@ -432,7 +431,6 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         if (dialog.open() == Window.OK) {
             menuStore.add(data);
             refreshTableViewer(data);
-            return;
         }
     }
 
@@ -442,7 +440,6 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         MenuDataDialog dialog = new MenuDataDialog(getShell(), data, cmdStore, cmdList, true);
         if (dialog.open() == Window.OK) {
             refreshTableViewer(data);
-            return;
         }
     }
 

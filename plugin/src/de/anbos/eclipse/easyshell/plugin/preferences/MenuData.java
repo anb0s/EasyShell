@@ -85,16 +85,16 @@ public class MenuData {
         // set members
         setPosition(Integer.parseInt(tokenizer.nextToken()));
         setEnabled(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
-        setId(tokenizer.nextToken());
+        //setId(tokenizer.nextToken());
         setName(tokenizer.nextToken());
-        //
+        // command data
         setCommandData(new CommandData(), false);
         getCommandData().deserialize(null, tokenizer, delimiter);
         return true;
     }
 
     public String serialize(String delimiter) {
-        return Integer.toString(getPosition()) + delimiter + Boolean.toString(isEnabled())+ delimiter + getId() + delimiter + getName() + delimiter + commandData.serialize(delimiter);
+        return Integer.toString(getPosition()) + delimiter + Boolean.toString(isEnabled())+ delimiter + /*getId() + delimiter +*/ getName() + delimiter + commandData.serialize(delimiter);
     }
 
     public void setPosition(int position) {

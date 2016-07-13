@@ -26,19 +26,29 @@ public class CommandDataDefaultCollection {
     private List<CommandData> list = new ArrayList<CommandData>();
     private static CommandDataDefaultCollection instance = new CommandDataDefaultCollection();
 
-    public static List<CommandData> getAllCommandsStatic() {
-        return instance.getCommands();
+    public static List<CommandData> getAllCommandsStatic(boolean sorted) {
+        List<CommandData> ret = instance.getCommands();
+        if (sorted) {
+            for (int i=0;i<ret.size();i++) {
+                ret.get(i).setPosition(i);
+            }
+        }
+        return ret;
     }
 
     public static List<CommandData> getDefaultCommandsStatic() {
         return getDefaultCommands();
     }
 
-    public static List<MenuData> getDefaultCommandsMenuStatic() {
+    public static List<MenuData> getDefaultCommandsMenuStatic(boolean sorted) {
         List<CommandData> list = getDefaultCommandsStatic();
         List<MenuData> ret = new ArrayList<MenuData>();
-        for (CommandData data : list) {
-            ret.add(new MenuData(data));
+        for (int i=0;i<list.size();i++) {
+            MenuData newData = new MenuData(list.get(i));
+            if (sorted) {
+                newData.setPosition(i);
+            }
+            ret.add(newData);
         }
         return ret;
     }
@@ -133,20 +143,20 @@ public class CommandDataDefaultCollection {
         return list;
     }
 
-    public static List<CommandData> getCommandsNative(List<CommandData> list) {
+    public static List<CommandData> getCommandsNative(List<CommandData> list, boolean sorted) {
         if (list == null) {
-            list = getAllCommandsStatic();
+            list = getAllCommandsStatic(false);
         }
-        return getCommandData(list, Utils.getOS());
+        return getCommandData(list, Utils.getOS(), sorted);
     }
 
-    public static List<CommandData> getDefaultCommands() {
-        List<CommandData> listAll = getAllCommandsStatic();
+    private static List<CommandData> getDefaultCommands() {
+        List<CommandData> listAll = getAllCommandsStatic(false);
         List<CommandData> listOS = new ArrayList<CommandData>();
         List<CommandData> listDefault = new ArrayList<CommandData>();
         OS os = Utils.getOS();
         // now get all data by OS
-        listOS = getCommandData(listAll, os);
+        listOS = getCommandData(listAll, os, false);
         // now get by name
         switch(os)
         {
@@ -197,11 +207,17 @@ public class CommandDataDefaultCollection {
         return listDefault;
     }
 
-    public static List<CommandData> getCommandData(List<CommandData> list, OS os) {
+    public static List<CommandData> getCommandData(List<CommandData> list, OS os, boolean sorted) {
         List<CommandData> listOut = new ArrayList<CommandData>();
+        int position = 0;
         for (CommandData entry : list) {
             if (entry.getOS() == os) {
-                listOut.add(entry);
+                CommandData newData = new CommandData(entry);
+                if (sorted) {
+                    newData.setPosition(position);
+                }
+                listOut.add(newData);
+                position++;
             }
         }
         return listOut;

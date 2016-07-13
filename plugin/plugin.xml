@@ -89,12 +89,6 @@
             resolver="de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver"
             supportsArgument="true">
       </variable>
-      <variable
-            description="EasyShell Variables"
-            name="container_loc"
-            resolver="de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver"
-            supportsArgument="true">
-      </variable>
    </extension>
 
 </plugin>
