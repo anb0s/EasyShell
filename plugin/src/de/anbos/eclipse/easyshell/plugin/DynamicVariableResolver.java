@@ -22,23 +22,37 @@ public class DynamicVariableResolver implements IDynamicVariableResolver {
 	@Override
 	public String resolveValue(IDynamicVariable variable, String argument)
 			throws CoreException {
-		if (variable.getName().equals("easyshell")) {
-		    if (argument.equals("drive")) {
-			    return args[0];
-		    } else if (argument.equals("container_loc")) {
-				return args[1];
-			} else if (argument.equals("resource_loc")) {
-				return args[2];
-			} else if (argument.equals("resource_name")) {
-				return args[3];
-			} else if (argument.equals("project_name")) {
-				return args[4];
-			} else if (argument.equals("line_separator")) {
-				return args[5];
-			}
-		}
-		return null;
+	    // easyshell own variables
+	    String variableName = variable.getName();
+		if (variableName.equals("easyshell")) {
+		    return handleOwnVariable(argument);
+		} else {
+            return handleEclipseVariable(variableName, argument);
+        }
 	}
+
+    private String handleOwnVariable(String argument) {
+        if (argument.equals("drive")) {
+            return args[0];
+        } else if (argument.equals("line_separator")) {
+        	return args[5];
+        }
+        // here we have eclipse variables embedded in easyshell variable as parameter
+        return handleEclipseVariable(argument, null);
+    }
+
+    private String handleEclipseVariable(String variable, String argument) {
+        if (variable.equals("container_loc")) {
+            return args[1];
+        } else if (variable.equals("resource_loc")) {
+            return args[2];
+        } else if (variable.equals("resource_name")) {
+            return args[3];
+        } else if (variable.equals("project_name")) {
+            return args[4];
+        }
+        return null;
+    }
 
 	public String[] getArgs() {
 		return args;

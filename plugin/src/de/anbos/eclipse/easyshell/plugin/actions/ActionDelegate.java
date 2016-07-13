@@ -13,6 +13,7 @@ package de.anbos.eclipse.easyshell.plugin.actions;
 
 import java.util.StringTokenizer;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.jface.action.IAction;
@@ -28,6 +29,7 @@ import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Quotes;
+import de.anbos.eclipse.easyshell.plugin.types.Tokenizer;
 
 public class ActionDelegate implements IObjectActionDelegate {
 
@@ -61,13 +63,15 @@ public class ActionDelegate implements IObjectActionDelegate {
 
     public void run(IAction action) {
         if (!isEnabled()) {
-            Activator.getDefault().logError("Wrong Selection", null);
+            Activator.logError("Wrong Selection", null);
             return;
         }
 
+        /* TODO: remove
         // get the ID
-        //String ActionIDStr = action.getId();
-        //Activator.getDefault().sysout(true, "Action ID: >" + ActionIDStr + "<");
+        String ActionIDStr = action.getId();
+        Activator.logDebug("Action ID: >" + ActionIDStr + "<");
+        */
 
         // String for all commands in case of clipboard
         String cmdAll = null;
@@ -90,7 +94,7 @@ public class ActionDelegate implements IObjectActionDelegate {
             full_path = resource[i].getFile().toString();
             if (resource[i].getFile().isDirectory()) {
                 parent_path = resource[i].getFile().getPath();
-                file_name = "dir"; // dummy cmd
+                //file_name = "dir"; // dummy cmd
             }else
             {
                 parent_path = resource[i].getFile().getParent();
@@ -99,9 +103,9 @@ public class ActionDelegate implements IObjectActionDelegate {
 
             if (full_path != null) {
 
-                //Activator.getDefault().sysout(true, "full_path  : >" + full_path + "<");
-                //Activator.getDefault().sysout(true, "parent_path: >" + parent_path + "<");
-                //Activator.getDefault().sysout(true, "file_name  : >" + file_name + "<");
+                Activator.logDebug("full_path  : >" + full_path + "<");
+                Activator.logDebug("parent_path: >" + parent_path + "<");
+                Activator.logDebug("file_name  : >" + file_name + "<");
 
                 // Try to extract drive on Win32
                 if (full_path.indexOf(":") != -1) {
@@ -109,8 +113,8 @@ public class ActionDelegate implements IObjectActionDelegate {
                 }
 
                 try {
-                    String target = commandValue;
-                    //Quotes quotes = Activator.getDefault().getQuotes(InstanceIDNum);
+                    // TODO: get from preferences store
+                    //Quotes quotes = Activator.getQuotes(InstanceIDNum);
                     Quotes quotes = Quotes.quotesNo;
                     String[] args = new String[6];
                     // args format
@@ -120,60 +124,66 @@ public class ActionDelegate implements IObjectActionDelegate {
                     args[3] = autoQuotes(file_name, quotes);	// {3} == ${easyshell:resource_name}
                     args[4] = resource[i].getProjectName();		// {4} == ${easyshell:project_name}
                     if (args[4] == null)
-                        args[4] = "EasyShell";
+                        args[4] = Activator.getResourceString("easyshell.plugin.name");
                     args[5] = System.getProperty("line.separator"); // {5} == ${easyshell:line_separator}
                     // variable format
                     DynamicVariableResolver.setArgs(args);
+                    variableManager.validateStringVariables(commandValue);
+                    Activator.logDebug(commandValue);
                     // handling copy to clipboard
                     if (commandType == CommandType.commandTypeClipboard) {
-                    	String cmd = fixQuotes(variableManager.performStringSubstitution(target, false), quotes);
-                    	//Activator.getDefault().sysout(true, "--- clp: >");
+                    	String cmd = fixQuotes(variableManager.performStringSubstitution(commandValue, false), quotes);
+                    	Activator.logDebug("--- clp: >");
                         cmdAll += cmd;
-                        //Activator.getDefault().sysout(true, cmd);
-                        //Activator.getDefault().sysout(true, "--- clp: <");
+                        Activator.logDebug(cmd);
+                        Activator.logDebug("--- clp: <");
                     }
                     // handling command line
                     else {
                     	// string tokenizer enabled ?
-                    	//if (Activator.getDefault().isTokenizer(InstanceIDNum))
-                        if (true)
+                        // TODO: get from preferences store
+                        //Tokenizer tokenizer = Activator.isTokenizer(InstanceIDNum);
+                        Tokenizer tokenizer = Tokenizer.tokenizerYes;
+                        if (tokenizer == Tokenizer.tokenizerYes)
                     	{
-							StringTokenizer st = new StringTokenizer(target);
+							StringTokenizer st = new StringTokenizer(commandValue);
 							String[] cmds = new String[st.countTokens()];
 							int c = 0;
-	                    	//Activator.getDefault().sysout(true, "--- cmd: >");
+							Activator.logDebug("--- cmd: >");
 							while (st.hasMoreElements()) {
 								cmds[c] = fixQuotes(variableManager.performStringSubstitution(st.nextToken(), false), quotes);
-								//Activator.getDefault().sysout(true, cmds[c]);
+								Activator.logDebug(cmds[c]);
 								c++;
 							}
-							//Activator.getDefault().sysout(true, "--- cmd: <");
-							//Utils.showToolTip(Display.getDefault().getActiveShell(), "EasyShell: executed", target);
+							Activator.logDebug("--- cmd: <");
+							//Utils.showToolTip(Display.getDefault().getActiveShell(), "EasyShell: executed", commandValue);
+							// ---------- RUN --------------
 							Runtime.getRuntime().exec(cmds);
                     	}
                     	// the old command line passing without string tokenizer
                     	else {
-                        	String cmd = fixQuotes(variableManager.performStringSubstitution(target, false), quotes);
-                        	//Activator.getDefault().sysout(true, "--- cmd: >");
+                        	String cmd = fixQuotes(variableManager.performStringSubstitution(commandValue, false), quotes);
+                        	Activator.logDebug("--- cmd: >");
+                        	Activator.logDebug(cmd);
+                        	Activator.logDebug("--- cmd: <");
                         	Runtime.getRuntime().exec(cmd);
-                            //Activator.getDefault().sysout(true, cmd);
-                            //Activator.getDefault().sysout(true, "--- cmd: <");
                     	}
                     }
-
+                } catch (CoreException e) {
+                    Activator.logError(Activator.getResourceString("easyshell.message.error.validation"), commandValue, e, true);
                 } catch (Exception e) {
-                    Activator.getDefault().logError(Activator.getResourceString("easyshell.message.error.exec"), commandValue, e, true);
+                    Activator.logError(Activator.getResourceString("easyshell.message.error.execution"), commandValue, e, true);
                 }
 
             } else {
-                Activator.getDefault().logError(Activator.getResourceString("easyshell.message.error.internal"), commandValue, null, true);
+                Activator.logError(Activator.getResourceString("easyshell.message.error.internal"), commandValue, null, true);
             }
         }
 
         // handling copy to clipboard
         if ((commandType == CommandType.commandTypeClipboard) && (cmdAll != null) && (cmdAll.length() != 0)) {
             Utils.copyToClipboard(cmdAll);
-            Activator.getDefault().tooltipInfo(Activator.getResourceString("easyshell.message.copytoclipboard"), cmdAll);
+            Activator.tooltipInfo(Activator.getResourceString("easyshell.message.copytoclipboard"), cmdAll);
         }
     }
 

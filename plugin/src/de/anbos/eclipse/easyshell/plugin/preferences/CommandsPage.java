@@ -11,7 +11,6 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
-import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
 
