@@ -36,12 +36,8 @@ public class CommandDataDefaultCollection {
         return ret;
     }
 
-    public static List<CommandData> getDefaultCommandsStatic() {
-        return getDefaultCommands();
-    }
-
-    public static List<MenuData> getDefaultCommandsMenuStatic(boolean sorted) {
-        List<CommandData> list = getDefaultCommandsStatic();
+    public static List<MenuData> getCommandsNativeAsMenu(boolean sorted) {
+        List<CommandData> list = getDefaultCommands();
         List<MenuData> ret = new ArrayList<MenuData>();
         for (int i=0;i<list.size();i++) {
             MenuData newData = new MenuData(list.get(i));
@@ -156,7 +152,7 @@ public class CommandDataDefaultCollection {
         List<CommandData> listDefault = new ArrayList<CommandData>();
         OS os = Utils.getOS();
         // now get all data by OS
-        listOS = getCommandData(listAll, os, false);
+        listOS = getCommandData(listAll, os, true);
         // now get by name
         switch(os)
         {
