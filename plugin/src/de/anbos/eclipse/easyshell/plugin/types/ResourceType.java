@@ -18,7 +18,7 @@ public enum ResourceType {
     resourceTypeUnknown(-1, "Unknown"),
     resourceTypeFile(0, "File"),
     resourceTypeFolder(1, "Folder"),
-    resourceFileOrFolder(2, "File or Folder");
+    resourceTypeFileOrDirectory(2, "File or Directory");
     // attributes
     private final int id;
     private final String name;

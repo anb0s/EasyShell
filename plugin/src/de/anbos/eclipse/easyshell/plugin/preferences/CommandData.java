@@ -28,7 +28,7 @@ public class CommandData {
     private PresetType presetType = PresetType.presetUser;
     private OS os = OS.osUnknown;
     private String name = "MyNewCommand";
-    private ResourceType resType = ResourceType.resourceFileOrFolder;
+    private ResourceType resType = ResourceType.resourceTypeFileOrDirectory;
     private CommandType cmdType = CommandType.commandTypeOther;
     private String command = "my_new_command";
 

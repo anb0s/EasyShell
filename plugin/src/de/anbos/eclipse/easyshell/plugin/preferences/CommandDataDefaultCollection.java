@@ -51,87 +51,87 @@ public class CommandDataDefaultCollection {
 
     CommandDataDefaultCollection() {
         // Windows DOS-Shell
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "DOS-Shell", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "DOS-Shell", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} cmd.exe /K"));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "DOS-Shell", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "DOS-Shell", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} ${easyshell:resource_name}"));
         // Windows Explorer
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Explorer", ResourceType.resourceFileOrFolder, CommandType.commandTypeExplore,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Explorer", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "explorer.exe /select, ${easyshell:resource_loc}"));
         // Windows PowerShell
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "PowerShell", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "PowerShell", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} powershell.exe"));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "PowerShell", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "PowerShell", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} powershell.exe -command ./''${easyshell:resource_name}''"));
         // Windows Cygwin (Bash)
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Cygwin\\bin\\bash.exe\""));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Cygwin\\bin\\bash.exe\" -c ./''${easyshell:resource_name}''"));
         // Windows Console
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Console", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Console", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "console.exe -w \"${easyshell:project_name}\" -d ${easyshell:container_loc}"));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "console.exe -w \"${easyshell:project_name}\" -d ${easyshell:container_loc} -r \"/k\\\"${easyshell:resource_name}\\\"\""));
         // Windows Git-Bash
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Git-Bash", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Git-Bash", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i"));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''${easyshell:resource_name}''"));
         // Windows ConEmu
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "ConEmu", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "ConEmu", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd cmd"));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd \"${easyshell:resource_name}\""));
         // Windows TotalCommander
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "TotalCommander", ResourceType.resourceFileOrFolder, CommandType.commandTypeExplore,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "TotalCommander", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "totalcmd.exe /O /T ${easyshell:container_loc}"));
         // Windows Clipboard
-        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Full path", ResourceType.resourceFileOrFolder, CommandType.commandTypeClipboard,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osWindows, "Full path", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeClipboard,
                 "\"${easyshell:resource_loc}\"${easyshell:line_separator}"));
         // Linux KDE Konsole
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "KDE Konsole", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "KDE Konsole", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "konsole --workdir ${easyshell:container_loc}"));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "KDE Konsole", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "KDE Konsole", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "konsole --workdir ${easyshell:container_loc} --noclose  -e ${easyshell:resource_loc}"));
         // Linux Konqueror
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Konqueror", ResourceType.resourceFileOrFolder, CommandType.commandTypeExplore,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Konqueror", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "konqueror file:\"${easyshell:resource_loc}\""));
         // Linux Gnome Terminal
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Gnome Terminal", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Gnome Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "gnome-terminal --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Gnome Terminal", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Gnome Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "gnome-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
         // Linux Xfce Terminal
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "xfce4-terminal --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "xfce4-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}'' --hold"));
         // Linux Nautilus
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Nautilus", ResourceType.resourceFileOrFolder, CommandType.commandTypeExplore,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Nautilus", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "nautilus ${easyshell:resource_loc}"));
         // Linux Dolphin
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Dolphin", ResourceType.resourceFileOrFolder, CommandType.commandTypeExplore,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Dolphin", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "dolphin --select ${easyshell:resource_loc}"));
         // Linux Nemo
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Nemo", ResourceType.resourceFileOrFolder, CommandType.commandTypeExplore,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Nemo", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "nemo ${easyshell:resource_loc}"));
         // Linux Thunar
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Thunar", ResourceType.resourceFileOrFolder, CommandType.commandTypeExplore,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Thunar", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "thunar ${easyshell:resource_loc}"));
         // Linux Clipboard
-        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Full path", ResourceType.resourceFileOrFolder, CommandType.commandTypeClipboard,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osLinux, "Full path", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeClipboard,
                 "${easyshell:resource_loc}${easyshell:line_separator}"));
         // MAC OS X Terminal
-        list.add(new CommandData(PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceFileOrFolder, CommandType.commandTypeOpen,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "open -a Terminal ${easyshell:container_loc}"));
-        list.add(new CommandData(PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceFileOrFolder, CommandType.commandTypeRun,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "open -a Terminal ${easyshell:container_loc}"));
         // MAC OS X Finder
-        list.add(new CommandData(PresetType.presetPlugin, OS.osMacOSX, "Finder", ResourceType.resourceFileOrFolder, CommandType.commandTypeExplore,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osMacOSX, "Finder", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "open -R ${easyshell:resource_loc}"));
         // MAC OS X Clipboard
-        list.add(new CommandData(PresetType.presetPlugin, OS.osMacOSX, "Full path", ResourceType.resourceFileOrFolder, CommandType.commandTypeClipboard,
+        list.add(new CommandData(PresetType.presetPlugin, OS.osMacOSX, "Full path", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeClipboard,
                 "${easyshell:resource_loc}${easyshell:line_separator}"));
     }
 
