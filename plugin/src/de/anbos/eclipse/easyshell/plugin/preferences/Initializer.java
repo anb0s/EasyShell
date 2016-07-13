@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.Constants;
 
 public class Initializer extends AbstractPreferenceInitializer {
 

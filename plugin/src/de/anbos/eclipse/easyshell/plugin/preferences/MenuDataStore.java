@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
+import de.anbos.eclipse.easyshell.plugin.Constants;
+
 public class MenuDataStore {
 
     private IPreferenceStore store;

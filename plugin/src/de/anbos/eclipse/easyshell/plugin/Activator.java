@@ -26,8 +26,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
-import de.anbos.eclipse.easyshell.plugin.preferences.Constants;
-import de.anbos.eclipse.easyshell.plugin.preferences.CommandType;
+import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 
 /**
  * The activator class controls the plug-in life cycle

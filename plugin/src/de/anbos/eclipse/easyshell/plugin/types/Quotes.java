@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package de.anbos.eclipse.easyshell.plugin.preferences;
+package de.anbos.eclipse.easyshell.plugin.types;
 
 /**
  * Quotes.

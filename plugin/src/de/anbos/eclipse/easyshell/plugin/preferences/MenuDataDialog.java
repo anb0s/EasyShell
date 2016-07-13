@@ -35,6 +35,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.Utils;
+import de.anbos.eclipse.easyshell.plugin.types.CommandType;
+import de.anbos.eclipse.easyshell.plugin.types.PresetType;
+import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 
 public class MenuDataDialog extends StatusDialog {
 

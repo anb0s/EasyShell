@@ -9,10 +9,12 @@
  *    Andre Bossert - initial API and implementation and/or initial documentation
  *******************************************************************************/
 
-package de.anbos.eclipse.easyshell.plugin.preferences;
+package de.anbos.eclipse.easyshell.plugin.types;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.anbos.eclipse.easyshell.plugin.Constants;
 
 public enum CommandType {
     commandTypeUnknown(-1, "Unknown", Constants.IMAGE_UNKNOWN, Constants.ACTION_UNKNOWN),

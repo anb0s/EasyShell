@@ -21,7 +21,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.anbos.eclipse.easyshell.plugin.EditorPropertyTester;
 import de.anbos.eclipse.easyshell.plugin.actions.Action;
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
-import de.anbos.eclipse.easyshell.plugin.preferences.CommandType;
+import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 
 public class CommandHandler extends AbstractHandler {
 

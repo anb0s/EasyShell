@@ -14,6 +14,13 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.anbos.eclipse.easyshell.plugin.Utils;
+import de.anbos.eclipse.easyshell.plugin.types.CommandType;
+import de.anbos.eclipse.easyshell.plugin.types.LinuxDesktop;
+import de.anbos.eclipse.easyshell.plugin.types.OS;
+import de.anbos.eclipse.easyshell.plugin.types.PresetType;
+import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+
 public class CommandDataDefaultCollection {
 
     private List<CommandData> list = new ArrayList<CommandData>();

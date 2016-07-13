@@ -14,6 +14,11 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
+import de.anbos.eclipse.easyshell.plugin.types.CommandType;
+import de.anbos.eclipse.easyshell.plugin.types.OS;
+import de.anbos.eclipse.easyshell.plugin.types.PresetType;
+import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+
 public class CommandData {
 
     // internal

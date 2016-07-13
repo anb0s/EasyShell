@@ -9,7 +9,7 @@
  *    Andre Bossert - initial API and implementation and/or initial documentation
  *******************************************************************************/
 
-package de.anbos.eclipse.easyshell.plugin.preferences;
+package de.anbos.eclipse.easyshell.plugin.types;
 
 /**
  * Linux desktops.

@@ -9,7 +9,7 @@
  *    Andre Bossert - initial API and implementation and/or initial documentation
  *******************************************************************************/
 
-package de.anbos.eclipse.easyshell.plugin.preferences;
+package de.anbos.eclipse.easyshell.plugin;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -24,6 +24,9 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolTip;
+
+import de.anbos.eclipse.easyshell.plugin.types.LinuxDesktop;
+import de.anbos.eclipse.easyshell.plugin.types.OS;
 
 public class Utils {
 
