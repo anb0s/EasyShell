@@ -198,13 +198,31 @@ public class Utils {
         clipboard.dispose();
     }
 
-    public static void showToolTip(Control control, String title, String message) {
-        ToolTip tooltip = new ToolTip(control.getShell(), /*SWT.BALLOON | */SWT.ICON_INFORMATION);
+    public static void showToolTipSuccess(Control control, String title, String message) {
+        showToolTip(control, SWT.ICON_WORKING, title, message);
+    }
+
+    public static void showToolTipInfo(Control control, String title, String message) {
+        showToolTip(control, SWT.ICON_INFORMATION, title, message);
+    }
+
+    public static void showToolTipWarning(Control control, String title, String message) {
+        showToolTip(control, SWT.ICON_WARNING, title, message);
+    }
+
+    public static void showToolTipError(Control control, String title, String message) {
+        showToolTip(control, SWT.ICON_ERROR, title, message);
+    }
+
+    public static void showToolTip(Control control, int style, String title, String message) {
+        if (control == null) {
+            control = Display.getDefault().getActiveShell();
+        }
+        ToolTip tooltip = new ToolTip(control.getShell(), /*SWT.BALLOON | */ style);
         tooltip.setAutoHide(true);
         tooltip.setLocation(control.toDisplay(control.getSize().x/2, control.getSize().y + 5));
         tooltip.setText(title);
         tooltip.setMessage(message);
         tooltip.setVisible(true);
     }
-
 }

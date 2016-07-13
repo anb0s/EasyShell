@@ -20,11 +20,13 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+
 
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 
@@ -123,6 +125,82 @@ public class Activator extends AbstractUIPlugin {
 
     public static String getResourceString(String key, Object[] args) {
         return MessageFormat.format(getResourceString(key),args);
+    }
+
+    public void log(String msg) {
+        log(null, msg, null);
+    }
+
+    public void log(String msg, Exception e) {
+        logInfo(null, msg, e, false);
+     }
+
+    public void log(String title, String msg, Exception e) {
+       logInfo(title, msg, e, false);
+    }
+
+    public void logSuccess(String title, String msg, Exception e, boolean tooltip) {
+        log(Status.OK, title != null ? title + ": " + msg : msg, e);
+        if (tooltip) {
+            tooltipSuccess(getResourceString("easyshell.plugin.name") + ": " + title, msg);
+        }
+    }
+
+    public void logInfo(String title, String msg, Exception e, boolean tooltip) {
+        log(Status.INFO, title != null ? title + ": " + msg : msg, e);
+        if (tooltip) {
+            tooltipInfo(getResourceString("easyshell.plugin.name") + ": " + title, msg);
+        }
+    }
+
+    public void logWarning(String title, String msg, Exception e, boolean tooltip) {
+        log(Status.WARNING, title != null ? title + ": " + msg : msg, e);
+        if (tooltip) {
+            tooltipWarning(getResourceString("easyshell.plugin.name") + ": " + title, msg);
+        }
+    }
+
+    public void logError(String title, String msg, Exception e, boolean tooltip) {
+        log(Status.ERROR, title != null ? title + ": " + msg : msg, e);
+        if (tooltip) {
+            tooltipError(getResourceString("easyshell.plugin.name") + ": " + title, msg);
+        }
+    }
+
+    public void logSuccess(String msg, Exception e) {
+        logSuccess(null, msg, null, false);
+    }
+
+    public void logInfo(String msg, Exception e) {
+        logInfo(null, msg, null, false);
+    }
+
+    public void logWarning(String msg, Exception e) {
+        logWarning(null, msg, null, false);
+    }
+
+    public void logError(String msg, Exception e) {
+        logError(null, msg, null, false);
+    }
+
+    public void log(int status, String msg, Exception e) {
+        getLog().log(new Status(status, Constants.PLUGIN_ID, Status.OK, msg, e));
+     }
+
+    public void tooltipSuccess(String title, String msg) {
+        Utils.showToolTipSuccess(null, getResourceString("easyshell.plugin.name") + ": " + title, msg);
+    }
+
+    public void tooltipInfo(String title, String msg) {
+        Utils.showToolTipInfo(null, getResourceString("easyshell.plugin.name") + ": " + title, msg);
+    }
+
+    public void tooltipWarning(String title, String msg) {
+        Utils.showToolTipWarning(null, getResourceString("easyshell.plugin.name") + ": " + title, msg);
+    }
+
+    public void tooltipError(String title, String msg) {
+        Utils.showToolTipError(null, getResourceString("easyshell.plugin.name") + ": " + title, msg);
     }
 
 }

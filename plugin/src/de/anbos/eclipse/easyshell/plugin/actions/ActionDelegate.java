@@ -16,11 +16,8 @@ import java.util.StringTokenizer;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -64,11 +61,7 @@ public class ActionDelegate implements IObjectActionDelegate {
 
     public void run(IAction action) {
         if (!isEnabled()) {
-            MessageDialog.openInformation(
-                new Shell(),
-                "Easy Shell",
-                "Wrong Selection");
-            //Activator.log("Wrong Selection");
+            Activator.getDefault().logError("Wrong Selection", null);
             return;
         }
 
@@ -169,25 +162,18 @@ public class ActionDelegate implements IObjectActionDelegate {
                     }
 
                 } catch (Exception e) {
-                    //Activator.log(e);
+                    Activator.getDefault().logError(Activator.getResourceString("easyshell.message.error.exec"), commandValue, e, true);
                 }
 
             } else {
-
-                MessageDialog.openInformation(
-                    new Shell(),
-                    "Easy Shell",
-                    "Unable to open shell");
-                //Activator.log("Unable to open shell");
-                return;
-
+                Activator.getDefault().logError(Activator.getResourceString("easyshell.message.error.internal"), commandValue, null, true);
             }
         }
 
         // handling copy to clipboard
         if ((commandType == CommandType.commandTypeClipboard) && (cmdAll != null) && (cmdAll.length() != 0)) {
             Utils.copyToClipboard(cmdAll);
-            Utils.showToolTip(Display.getDefault().getActiveShell(), Activator.getResourceString("easyshell.plugin.name") + ": " + Activator.getResourceString("easyshell.message.copytoclipboard"), cmdAll);
+            Activator.getDefault().tooltipInfo(Activator.getResourceString("easyshell.message.copytoclipboard"), cmdAll);
         }
     }
 

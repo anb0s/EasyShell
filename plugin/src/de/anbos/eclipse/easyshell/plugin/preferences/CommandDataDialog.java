@@ -154,8 +154,8 @@ public class CommandDataDialog extends StatusDialog {
                 text.selectAll();
                 String title = Activator.getResourceString("easyshell.message.copytoclipboard");
                 String message = text.getText();
-                Utils.copyToClipboard(title);
-                Utils.showToolTip(control, title, message);
+                Utils.copyToClipboard(message);
+                Utils.showToolTipInfo(control, title, message);
                 text.setSelection(0, 0);
             }
         });
