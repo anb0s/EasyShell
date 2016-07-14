@@ -23,16 +23,21 @@ public class CommandData {
 
     // internal
     private int position = 0;
-    private String id = UUID.randomUUID().toString();
+    private String id = null;
     // command
-    private PresetType presetType = PresetType.presetUser;
+    private PresetType presetType = PresetType.presetUnknown;
     private OS os = OS.osUnknown;
-    private String name = "MyNewCommand";
-    private ResourceType resType = ResourceType.resourceTypeFileOrDirectory;
-    private CommandType cmdType = CommandType.commandTypeOther;
-    private String command = "my_new_command";
+    private String name = null;
+    private ResourceType resType = ResourceType.resourceTypeUnknown;
+    private CommandType cmdType = CommandType.commandTypeUnknown;
+    private String command = null;
 
-    public CommandData(PresetType presetType, OS os, String name, ResourceType resType, CommandType cmdType, String command) {
+    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, CommandType cmdType, String command) {
+        if (id == null || id.isEmpty()) {
+            this.id = UUID.randomUUID().toString();
+        } else {
+            this.id = id;
+        }
         this.presetType = presetType;
         this.os = os;
         this.name = name;
@@ -41,13 +46,18 @@ public class CommandData {
         this.command = command;
     }
 
-    public CommandData(CommandData commandData) {
+    public CommandData(CommandData commandData, String newId) {
+        this.id = newId;
         this.presetType = commandData.getPresetType();
         this.os = commandData.getOS();
         this.name = commandData.getName();
         this.resType = commandData.getResourceType();
         this.cmdType = commandData.getCommandType();
         this.command = commandData.getCommand();
+    }
+
+    public CommandData(CommandData commandData, boolean generateNewId) {
+        this(commandData, generateNewId ? UUID.randomUUID().toString() : commandData.getId());
     }
 
     public CommandData() {
@@ -122,14 +132,14 @@ public class CommandData {
     		return false;
     	}
     	CommandData data = (CommandData)object;
-    	if(data.getPosition() == this.getPosition() &&
-    	   data.getName().equals(this.getName()) &&
+    	if(data.getId().equals(this.getId())
+    	   /*data.getPosition() == this.getPosition() &&*/
+    	   /*data.getName().equals(this.getName()) &&
     	   data.getOS() == this.getOS() &&
     	   data.getPresetType() == this.getPresetType() &&
     	   data.getResourceType() == this.getResourceType() &&
     	   data.getCommandType() == this.getCommandType() &&
-    	   data.getCommand().equals(this.getCommand()
-    	   )
+    	   data.getCommand().equals(this.getCommand()*/
     	  )
     	{
     		return true;
@@ -144,9 +154,10 @@ public class CommandData {
         if (tokenizer == null) {
             tokenizer = new StringTokenizer(value,delimiter);
         }
-		// set members
+        // set internal members
         setPosition(Integer.parseInt(tokenizer.nextToken()));
-		//setId(tokenizer.nextToken());
+		setId(tokenizer.nextToken());
+		// set command data members
         setPresetType(PresetType.getFromEnum(tokenizer.nextToken()));
         setOs(OS.getFromEnum(tokenizer.nextToken()));
 		setName(tokenizer.nextToken());
@@ -157,7 +168,7 @@ public class CommandData {
 	}
 
     public String serialize(String delimiter) {
-        return Integer.toString(getPosition()) + delimiter + /*getId() + delimiter +*/ getPresetType().toString() + delimiter + getOS().toString() + delimiter + getName() + delimiter + getResourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
+        return Integer.toString(getPosition()) + delimiter + getId() + delimiter + getPresetType().toString() + delimiter + getOS().toString() + delimiter + getName() + delimiter + getResourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
     }
 
     public String getTypeIcon() {

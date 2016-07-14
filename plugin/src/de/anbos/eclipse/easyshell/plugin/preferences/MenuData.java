@@ -16,25 +16,43 @@ import java.util.UUID;
 
 public class MenuData {
 
-	// status
+	// internal
     private int position = 0;
-    private boolean enabled = true;
+    private String id = null;
 
     // menu
-    private String id = UUID.randomUUID().toString();
+    private boolean enabled = true;
     private String name = null;
+    // copy of or reference to command
+    private CommandData commandData = null;
 
-    // command data
-    private CommandData commandData;
-
-    public MenuData(CommandData commandData) {
-        this.commandData = commandData;
-        setDefaultName();
+    public MenuData(String id, boolean enabled, String name, CommandData commandData, boolean setDefaultName) {
+        if (id == null || id.isEmpty()) {
+            this.id = UUID.randomUUID().toString();
+        } else {
+            this.id = id;
+        }
+        this.enabled = enabled;
+        this.name = name;
+        setCommandData(commandData, setDefaultName);
     }
 
-    public MenuData(MenuData data) {
-        this(data.getCommandData());
+    public MenuData(String newId, CommandData commandData, boolean setDefaultName) {
+        this.id = newId;
+        setCommandData(commandData, setDefaultName);
+    }
+
+    public MenuData(CommandData commandData, boolean setDefaultName, boolean generateNewId) {
+        this(generateNewId ? UUID.randomUUID().toString() : commandData.getId(), commandData, setDefaultName);
+    }
+
+    public MenuData(String newId, MenuData data) {
+        this(newId, data.getCommandData(), false);
         this.name = data.getName();
+    }
+
+    public MenuData(MenuData data, boolean generateNewId) {
+        this(generateNewId ? UUID.randomUUID().toString() : data.getId(), data);
     }
 
     public MenuData() {
@@ -65,9 +83,10 @@ public class MenuData {
     		return false;
     	}
     	MenuData data = (MenuData)object;
-    	if( data.getPosition() == this.getPosition() &&
+    	if( data.getId().equals(this.getId())
+    	    /*data.getPosition() == this.getPosition() &&
     	    data.getName().equals(this.getName()) &&
-    	    data.getCommandData().equals(this.getCommandData())
+    	    data.getCommandData().equals(this.getCommandData())*/
     	  )
     	{
     		return true;
@@ -82,19 +101,20 @@ public class MenuData {
         if (tokenizer == null) {
             tokenizer = new StringTokenizer(value,delimiter);
         }
-        // set members
+        // set internal members
         setPosition(Integer.parseInt(tokenizer.nextToken()));
+        setId(tokenizer.nextToken());
+        // set menu data members
         setEnabled(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
-        //setId(tokenizer.nextToken());
         setName(tokenizer.nextToken());
-        // command data
+        // set command data members
         setCommandData(new CommandData(), false);
         getCommandData().deserialize(null, tokenizer, delimiter);
         return true;
     }
 
     public String serialize(String delimiter) {
-        return Integer.toString(getPosition()) + delimiter + Boolean.toString(isEnabled())+ delimiter + /*getId() + delimiter +*/ getName() + delimiter + commandData.serialize(delimiter);
+        return Integer.toString(getPosition()) + delimiter + getId() + delimiter + Boolean.toString(isEnabled())+ delimiter + getName() + delimiter + commandData.serialize(delimiter);
     }
 
     public void setPosition(int position) {

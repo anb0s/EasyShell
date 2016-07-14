@@ -218,13 +218,13 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void addNewDialog() {
-        CommandData data = new CommandData(PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOther, "my_new_command");
+        CommandData data = new CommandData(null, PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOther, "my_new_command");
         addDialog(data);
     }
 
     private void addCopyDialog() {
         int index = commandCombo.getSelectionIndex();
-        CommandData data = new CommandData(cmdList.get(index));
+        CommandData data = new CommandData(cmdList.get(index), true);
         data.setPresetType(PresetType.presetUser);
         addDialog(data);
     }

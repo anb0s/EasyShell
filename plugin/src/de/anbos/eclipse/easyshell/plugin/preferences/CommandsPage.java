@@ -416,7 +416,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void addNewDialog() {
-        MenuData data = new MenuData(cmdList.get(0));
+        MenuData data = new MenuData(cmdList.get(0), true, true);
         MenuDataDialog dialog = new MenuDataDialog(getShell(), data, cmdStore, cmdList, false);
         if (dialog.open() == Window.OK) {
             menuStore.add(data);
@@ -426,7 +426,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     private void addCopyDialog() {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-        MenuData data = new MenuData((MenuData)selection.getFirstElement());
+        MenuData data = new MenuData((MenuData)selection.getFirstElement(), true);
         MenuDataDialog dialog = new MenuDataDialog(getShell(), data, cmdStore, cmdList, false);
         if (dialog.open() == Window.OK) {
             menuStore.add(data);
