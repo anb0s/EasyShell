@@ -21,9 +21,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
@@ -36,11 +39,16 @@ import de.anbos.eclipse.easyshell.plugin.types.Debug;
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The shared instance
+    // The shared instance
 	private static Activator plugin;
 
     //Resource bundle.
     private ResourceBundle resourceBundle;
+
+    /**
+     * Storage for preferences.
+     */
+    private IPreferenceStore myPreferenceStore;
 
 	/**
 	 * The constructor
@@ -211,6 +219,20 @@ public class Activator extends AbstractUIPlugin {
         if (debug == Debug.debugYes) {
             log(Status.INFO, string, null);
         }
+    }
+
+    @Override
+    public IPreferenceStore getPreferenceStore() {
+        // Create the preference store lazily.
+        if (myPreferenceStore == null) {
+            myPreferenceStore = getNewPreferenceStoreByVersion(Constants.PREF_VERSIONS[0]);
+        }
+        return myPreferenceStore;
+    }
+
+    public IPreferenceStore getNewPreferenceStoreByVersion(String version) {
+        String pluginNodeName = getBundle().getSymbolicName();
+        return new ScopedPreferenceStore(InstanceScope.INSTANCE, pluginNodeName + "/" + version, pluginNodeName);
     }
 
 }

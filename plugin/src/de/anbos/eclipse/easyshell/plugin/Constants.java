@@ -16,7 +16,7 @@ public interface Constants {
     // Plugin
     public static final String PLUGIN_ID = "de.anbos.eclipse.easyshell.plugin";
 
-	// Images
+    // Images
     public static final String IMAGE_PATH        = "icons/";
     public static final String IMAGE_UNKNOWN     = "sample.gif";
     public static final String IMAGE_OPEN        = "prompt.gif";
@@ -26,6 +26,10 @@ public interface Constants {
     public static final String IMAGE_OTHER       = "editor.gif";
 
 	// Preferences
+    // version with index = 0 is the used one
+    public static final String[] PREF_VERSIONS   = {
+            "v2_0_001"
+    };
 	public static final String PREF_COMMANDS	 = "COMMANDS";
 	public static final String PREF_MENU         = "MENU";
 
