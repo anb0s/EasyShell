@@ -152,28 +152,28 @@ public class Activator extends AbstractUIPlugin {
     public static void logSuccess(String title, String msg, Exception e, boolean tooltip) {
         log(Status.OK, title != null ? title + ": " + msg : msg, e);
         if (tooltip) {
-            tooltipSuccess(getResourceString("easyshell.plugin.name") + ": " + title, msg);
+            tooltipSuccess(title, msg);
         }
     }
 
     public static void logInfo(String title, String msg, Exception e, boolean tooltip) {
         log(Status.INFO, title != null ? title + ": " + msg : msg, e);
         if (tooltip) {
-            tooltipInfo(getResourceString("easyshell.plugin.name") + ": " + title, msg);
+            tooltipInfo(title, msg);
         }
     }
 
     public static void logWarning(String title, String msg, Exception e, boolean tooltip) {
         log(Status.WARNING, title != null ? title + ": " + msg : msg, e);
         if (tooltip) {
-            tooltipWarning(getResourceString("easyshell.plugin.name") + ": " + title, msg);
+            tooltipWarning(title, msg);
         }
     }
 
     public static void logError(String title, String msg, Exception e, boolean tooltip) {
         log(Status.ERROR, title != null ? title + ": " + msg : msg, e);
         if (tooltip) {
-            tooltipError(getResourceString("easyshell.plugin.name") + ": " + title, msg);
+            tooltipError(title, msg);
         }
     }
 

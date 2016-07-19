@@ -14,6 +14,8 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import de.anbos.eclipse.easyshell.plugin.types.PresetType;
+
 public class PreferenceValueConverter {
 
 	// Constant ----------------------------------------------------------------
@@ -32,10 +34,10 @@ public class PreferenceValueConverter {
         return buffer.toString();
     }
 
-    public static String asCommandMenuDataString(List<MenuData> items) {
+    public static String asMenuDataString(List<MenuData> items) {
         StringBuffer buffer = new StringBuffer();
         for(MenuData item : items) {
-            buffer.append(asCommandMenuDataString(item));
+            buffer.append(asMenuDataString(item));
             buffer.append(ITEM_DELIMITER);
         }
         return buffer.toString();
@@ -45,7 +47,7 @@ public class PreferenceValueConverter {
         return data.serialize(VALUE_DELIMITER);
     }
 
-    public static final String asCommandMenuDataString(MenuData data) {
+    public static final String asMenuDataString(MenuData data) {
         return data.serialize(VALUE_DELIMITER);
     }
 
@@ -58,11 +60,11 @@ public class PreferenceValueConverter {
         return items;
     }
 
-    public static MenuData[] asCommandMenuDataArray(String value) {
+    public static MenuData[] asMenuDataArray(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
         MenuData[] items = new MenuData[tokenizer.countTokens()];
         for(int i = 0 ; i < items.length ; i++) {
-            items[i] = asCommandMenuData(tokenizer.nextToken());
+            items[i] = asMenuData(tokenizer.nextToken());
         }
         return items;
     }
@@ -73,9 +75,58 @@ public class PreferenceValueConverter {
         return data;
     }
 
-    public static MenuData asCommandMenuData(String value) {
+    public static MenuData asMenuData(String value) {
         MenuData data = new MenuData();
         data.deserialize(value, null, VALUE_DELIMITER);
         return data;
     }
+
+    public static CommandData migrateCommandData(String version, String value) {
+        CommandData data = new CommandData();
+        if (version.equals("v2_0_001")) {
+            data.deserialize_v2_0_001(value, null, VALUE_DELIMITER);
+            // skip commands from preset
+            if (data.getPresetType() == PresetType.presetPlugin) {
+                data = null;
+            }
+        }
+        return data;
+    }
+
+    public static MenuData migrateMenuData(String version, String value) {
+        MenuData data = new MenuData();
+        if (version.equals("v2_0_001")) {
+            data.deserialize_v2_0_001(value, null, VALUE_DELIMITER);
+        }
+        return data;
+    }
+
+    public static String migrateCommandDataList(String version, String value) {
+        StringBuffer buffer = new StringBuffer();
+        StringTokenizer tokenizer = new StringTokenizer(value, ITEM_DELIMITER);
+        int num = tokenizer.countTokens();
+        for(int i = 0 ; i < num; i++) {
+            CommandData data = migrateCommandData(version, tokenizer.nextToken());
+            if (data != null) {
+                buffer.append(asCommandDataString(data));
+                buffer.append(ITEM_DELIMITER);
+            }
+        }
+        return buffer.toString();
+    }
+
+    public static String migrateMenuDataList(String version, String value) {
+        StringBuffer buffer = new StringBuffer();
+        StringTokenizer tokenizer = new StringTokenizer(value, ITEM_DELIMITER);
+        int num = tokenizer.countTokens();
+        for(int i = 0 ; i < num; i++) {
+            MenuData data = migrateMenuData(version, tokenizer.nextToken());
+            if (data != null) {
+                buffer.append(asMenuDataString(data));
+                buffer.append(ITEM_DELIMITER);
+            }
+        }
+        return buffer.toString();
+    }
+
 }

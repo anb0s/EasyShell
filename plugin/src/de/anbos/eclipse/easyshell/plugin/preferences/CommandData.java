@@ -167,6 +167,10 @@ public class CommandData {
 		return true;
 	}
 
+    public boolean deserialize_v2_0_001(String value, StringTokenizer tokenizer, String delimiter) {
+        return deserialize(value, tokenizer, delimiter);
+    }
+
     public String serialize(String delimiter) {
         return Integer.toString(getPosition()) + delimiter + getId() + delimiter + getPresetType().toString() + delimiter + getOS().toString() + delimiter + getName() + delimiter + getResourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
     }

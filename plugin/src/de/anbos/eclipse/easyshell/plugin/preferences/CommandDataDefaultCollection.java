@@ -41,7 +41,7 @@ public class CommandDataDefaultCollection {
         List<MenuData> ret = new ArrayList<MenuData>();
         for (int i=0;i<list.size();i++) {
             CommandData cmdData = list.get(i);
-            MenuData newData = new MenuData(cmdData.getId(), cmdData, true); // use the same id like the default command to have same defaults
+            MenuData newData = new MenuData(cmdData.getId(), cmdData); // use the same id like the default command to have same defaults
             if (sorted) {
                 newData.setPosition(i);
             }

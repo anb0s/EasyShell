@@ -127,8 +127,13 @@ public class MenuDataStore {
         sort();
     }
 
+    public void replace(MenuData data) {
+        items.set(data.getPosition(), data);
+        sort();
+    }
+
     public void save() {
-        store.setValue(Constants.PREF_MENU,PreferenceValueConverter.asCommandMenuDataString(getCommandMenuDataList()));
+        store.setValue(Constants.PREF_MENU,PreferenceValueConverter.asMenuDataString(getCommandMenuDataList()));
     }
 
     public void loadDefaults() {
@@ -137,7 +142,7 @@ public class MenuDataStore {
     }
 
     public void load() {
-        MenuData[] items = PreferenceValueConverter.asCommandMenuDataArray(store.getString(Constants.PREF_MENU));
+        MenuData[] items = PreferenceValueConverter.asMenuDataArray(store.getString(Constants.PREF_MENU));
         this.items.clear();
         for(int i = 0 ; i < items.length ; i++) {
             this.items.add(items[i]);
@@ -147,6 +152,14 @@ public class MenuDataStore {
 
     public void removeAll() {
     	items.clear();
+    }
+
+    public boolean isMigrated() {
+        return store.getBoolean(Constants.PREF_MIGRATED);
+    }
+
+    public void setMigrated(boolean migrated) {
+        store.setValue(Constants.PREF_MIGRATED, migrated);
     }
 
     private void sort() {
@@ -184,4 +197,5 @@ public class MenuDataStore {
 			return -1;
 		}
     }
+
 }

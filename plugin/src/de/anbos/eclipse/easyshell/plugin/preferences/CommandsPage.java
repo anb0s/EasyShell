@@ -71,16 +71,44 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     @Override
     public boolean performOk() {
-        menuStore.save();
-        return true;
+        boolean save = true;
+        if (!menuStore.isMigrated()) {
+            String title = Activator.getResourceString("easyshell.page.table.dialog.migration.title");
+            String question = Activator.getResourceString("easyshell.page.table.dialog.migration.question");
+            MessageDialog dialog = new MessageDialog(
+                    null, title, null, question,
+                    MessageDialog.WARNING,
+                    new String[] {"Yes", "No"},
+                    1); // no is the default
+            int result = dialog.open();
+            if (result == 0) {
+                menuStore.setMigrated(true);
+            } else {
+                save = false;
+            }
+        }
+        if (save) {
+            menuStore.save();
+        }
+        return save;
     }
 
     @Override
     protected void performDefaults() {
-        menuStore.loadDefaults();
-        tableViewer.refresh();
-        for (MenuData item : menuStore.getCommandMenuDataList()) {
-            tableViewer.setChecked(item, true);
+        String title = Activator.getResourceString("easyshell.page.table.dialog.defaults.title");
+        String question = Activator.getResourceString("easyshell.page.table.dialog.defaults.question");
+        MessageDialog dialog = new MessageDialog(
+                null, title, null, question,
+                MessageDialog.WARNING,
+                new String[] {"Yes", "No"},
+                1); // no is the default
+        int result = dialog.open();
+        if (result == 0) {
+            menuStore.loadDefaults();
+            tableViewer.refresh();
+            for (MenuData item : menuStore.getCommandMenuDataList()) {
+                tableViewer.setChecked(item, true);
+            }
         }
     }
 
@@ -416,31 +444,42 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void addNewDialog() {
-        MenuData data = new MenuData(cmdList.get(0), true, true);
-        MenuDataDialog dialog = new MenuDataDialog(getShell(), data, cmdStore, cmdList, false);
+        MenuData dataNew = new MenuData(cmdList.get(0), true);
+        MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, cmdStore, cmdList, false);
         if (dialog.open() == Window.OK) {
-            menuStore.add(data);
-            refreshTableViewer(data);
+            menuStore.add(dataNew);
+            refreshTableViewer(dataNew);
+        } else {
+            dataNew = null;
         }
     }
 
     private void addCopyDialog() {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-        MenuData data = new MenuData((MenuData)selection.getFirstElement(), true);
-        MenuDataDialog dialog = new MenuDataDialog(getShell(), data, cmdStore, cmdList, false);
+        MenuData dataSelected = (MenuData)selection.getFirstElement();
+        MenuData dataNew = new MenuData(dataSelected, true);
+        MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, cmdStore, cmdList, false);
         if (dialog.open() == Window.OK) {
-            menuStore.add(data);
-            refreshTableViewer(data);
+            menuStore.add(dataNew);
+            refreshTableViewer(dataNew);
+        } else {
+            dataNew = null;
         }
     }
 
     private void editDialog() {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-        MenuData data = (MenuData) selection.getFirstElement();
-        MenuDataDialog dialog = new MenuDataDialog(getShell(), data, cmdStore, cmdList, true);
+        MenuData dataSelected = (MenuData)selection.getFirstElement();
+        MenuData dataNew = new MenuData(dataSelected, false);
+        dataNew.setPosition(dataSelected.getPosition());
+        MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, cmdStore, cmdList, true);
         if (dialog.open() == Window.OK) {
-            refreshTableViewer(data);
+            menuStore.replace(dataNew);
+            refreshTableViewer(dataNew);
+        } else {
+            dataNew = null;
         }
+
     }
 
     private void removeDialog() {

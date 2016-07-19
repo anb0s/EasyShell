@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import de.anbos.eclipse.easyshell.plugin.Constants;
+import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 
 public class CommandDataStore {
 
@@ -32,7 +33,27 @@ public class CommandDataStore {
     }
 
     public List<CommandData> getAllCommands() {
-        return items;
+       return items;
+    }
+
+    private List<CommandData> getUserCommands() {
+        List<CommandData> userItems = new ArrayList<CommandData>();
+        for (CommandData data : items) {
+            if (data.getPresetType() == PresetType.presetUser) {
+                userItems.add(data);
+            }
+        }
+        return userItems;
+    }
+
+    private List<CommandData> getPresetCommands() {
+        List<CommandData> presetItems = new ArrayList<CommandData>();
+        for (CommandData data : items) {
+            if (data.getPresetType() == PresetType.presetPlugin) {
+                presetItems.add(data);
+            }
+        }
+        return presetItems;
     }
 
     public CommandData[] getAllCommandsArray() {
@@ -48,7 +69,7 @@ public class CommandDataStore {
     }
 
     public CommandData getPreviousElement(CommandData data) {
-        sort();
+        sort(items);
         for(int i = 0 ; i < items.size() ; i++) {
             CommandData item = (CommandData)items.get(i);
             if(item.equals(data)) {
@@ -63,7 +84,7 @@ public class CommandDataStore {
     }
 
     public CommandData getNextElement(CommandData data) {
-        sort();
+        sort(items);
         for(int i = 0 ; i < items.size() ; i++) {
             CommandData item = (CommandData)items.get(i);
             if(item.equals(data)) {
@@ -78,7 +99,7 @@ public class CommandDataStore {
     }
 
     public CommandData getLastElement() {
-        sort();
+        sort(items);
     	int index = items.size() - 1;
     	if(index < 0) {
     		return null;
@@ -94,34 +115,40 @@ public class CommandDataStore {
         }
         data.setPosition(position);
         items.add(data);
-        sort();
+        sort(items);
     }
 
     public void delete(CommandData data) {
         items.remove(data);
-        sort();
+        sort(items);
     }
 
     public void save() {
-        store.setValue(Constants.PREF_COMMANDS,PreferenceValueConverter.asCommandDataString(getAllCommands()));
+        store.setValue(Constants.PREF_COMMANDS_PRESET,PreferenceValueConverter.asCommandDataString(getPresetCommands()));
+        store.setValue(Constants.PREF_COMMANDS,PreferenceValueConverter.asCommandDataString(getUserCommands()));
     }
 
     public void loadDefaults() {
+        store.setToDefault(Constants.PREF_COMMANDS_PRESET);
         store.setToDefault(Constants.PREF_COMMANDS);
         load();
     }
 
     public void load() {
-        CommandData[] items = PreferenceValueConverter.asCommandDataArray(store.getString(Constants.PREF_COMMANDS));
+        CommandData[] arrayPreset = PreferenceValueConverter.asCommandDataArray(store.getString(Constants.PREF_COMMANDS_PRESET));
+        CommandData[] arrayUser   = PreferenceValueConverter.asCommandDataArray(store.getString(Constants.PREF_COMMANDS));
         this.items.clear();
-        for(int i = 0 ; i < items.length ; i++) {
-            this.items.add(items[i]);
+        for(int i = 0 ; i < arrayPreset.length ; i++) {
+            this.items.add(arrayPreset[i]);
         }
-        sort();
+        for(int i = 0 ; i < arrayUser.length ; i++) {
+            this.items.add(arrayUser[i]);
+        }
+        sort(items);
     }
 
     public void removeAll() {
-    	items.clear();
+        items.clear();
     }
 
     public CommandData getCommandDataByName(String name) {
@@ -137,11 +164,11 @@ public class CommandDataStore {
         return items.get(position);
     }
 
-    private void sort() {
+    private void sort(List<CommandData> items) {
         if(comparator == null) {
             comparator = new DataObjectComparator();
         }
-        Collections.sort(items,comparator);
+        Collections.sort(items, comparator);
         for (int i=0;i<items.size();i++) {
             ((CommandData)items.get(i)).setPosition(i);
         }

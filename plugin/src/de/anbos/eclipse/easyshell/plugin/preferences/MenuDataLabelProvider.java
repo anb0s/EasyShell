@@ -39,7 +39,7 @@ public class MenuDataLabelProvider extends LabelProvider implements ITableLabelP
         MenuData data = (MenuData)element;
         switch(columnIndex) {
             case 0:
-                return data.getName();
+                return data.getNameExpanded();
             case 1:
             	return data.getCommandData().getCommand();
             default:

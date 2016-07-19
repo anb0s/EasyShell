@@ -26,12 +26,17 @@ public interface Constants {
     public static final String IMAGE_OTHER       = "editor.gif";
 
 	// Preferences
-    // version with index = 0 is the used one
+    // version with index = 0 is the actual one
+    // do not delete old entries !!!
     public static final String[] PREF_VERSIONS   = {
-            "v2_0_001"
+            "v2_0_002",
+            "v2_0_001",
+            "v1_4"
     };
-	public static final String PREF_COMMANDS	 = "COMMANDS";
-	public static final String PREF_MENU         = "MENU";
+    public static final String PREF_COMMANDS_PRESET = "COMMANDS_PRESET";
+	public static final String PREF_COMMANDS        = "COMMANDS";
+	public static final String PREF_MENU            = "MENU";
+	public static final String PREF_MIGRATED        = "MIGRATED";
 
 	// Actions
 	public static final String ACTION_UNKNOWN    = "de.anbos.eclipse.easyshell.plugin.commands.Unknown";

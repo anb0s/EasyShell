@@ -41,7 +41,7 @@ public class DefineCommands extends ExtensionContributionFactory {
 	    List<MenuData> items = store.getEnabledCommandMenuDataList();
         for (MenuData item : items) {
             addItem(serviceLocator, additions,
-                    item.getName(),
+                    item.getNameExpanded(),
                     "de.anbos.eclipse.easyshell.plugin.commands.execute",
                     "de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
                     item.getCommandData().getTypeAction(),
