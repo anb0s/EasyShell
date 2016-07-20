@@ -69,7 +69,7 @@ public class CommandDataStore {
     }
 
     public CommandData getPreviousElement(CommandData data) {
-        sort(items);
+        sort();
         for(int i = 0 ; i < items.size() ; i++) {
             CommandData item = (CommandData)items.get(i);
             if(item.equals(data)) {
@@ -84,7 +84,7 @@ public class CommandDataStore {
     }
 
     public CommandData getNextElement(CommandData data) {
-        sort(items);
+        sort();
         for(int i = 0 ; i < items.size() ; i++) {
             CommandData item = (CommandData)items.get(i);
             if(item.equals(data)) {
@@ -99,7 +99,7 @@ public class CommandDataStore {
     }
 
     public CommandData getLastElement() {
-        sort(items);
+        sort();
     	int index = items.size() - 1;
     	if(index < 0) {
     		return null;
@@ -115,12 +115,17 @@ public class CommandDataStore {
         }
         data.setPosition(position);
         items.add(data);
-        sort(items);
+        sort();
+    }
+
+    public void replace(CommandData data) {
+        items.set(data.getPosition(), data);
+        //sort();
     }
 
     public void delete(CommandData data) {
         items.remove(data);
-        sort(items);
+        sort();
     }
 
     public void save() {
@@ -144,7 +149,7 @@ public class CommandDataStore {
         for(int i = 0 ; i < arrayUser.length ; i++) {
             this.items.add(arrayUser[i]);
         }
-        sort(items);
+        sort();
     }
 
     public void removeAll() {
@@ -164,7 +169,7 @@ public class CommandDataStore {
         return items.get(position);
     }
 
-    private void sort(List<CommandData> items) {
+    private void sort() {
         if(comparator == null) {
             comparator = new DataObjectComparator();
         }

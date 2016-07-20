@@ -122,13 +122,13 @@ public class MenuDataStore {
         sort();
     }
 
-    public void delete(MenuData data) {
-        items.remove(data);
-        sort();
-    }
-
     public void replace(MenuData data) {
         items.set(data.getPosition(), data);
+        //sort();
+    }
+
+    public void delete(MenuData data) {
+        items.remove(data);
         sort();
     }
 

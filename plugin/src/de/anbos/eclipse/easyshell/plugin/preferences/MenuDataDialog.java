@@ -250,6 +250,13 @@ public class MenuDataDialog extends StatusDialog {
         commandCombo.select(names.length-1);
     }
 
+    private void replaceCommand(int index, CommandData data) {
+        cmdStore.replace(data);
+        cmdStore.save();
+        commandCombo.setItem(index, getCommandAsComboName(data));
+        commandCombo.select(index);
+    }
+
     private void removeCommand(int index, CommandData data) {
         cmdStore.delete(data);
         cmdStore.save();
@@ -299,10 +306,6 @@ public class MenuDataDialog extends StatusDialog {
             removeCommand(index, data);
             refreshCommandCombo();
         }
-    }
-
-    private void replaceCommand(int index, CommandData data) {
-        commandCombo.setItem(index, getCommandAsComboName(data));
     }
 
     private void refreshCommandCombo() {
