@@ -63,8 +63,8 @@ public class Initializer extends AbstractPreferenceInitializer {
             int migrateState = -1; // -1 = old store not found, 0 (Yes) = migrated, 1 (No) = no migration wanted by user, 2 (Cancel) = try to migrate again
             for (int i=Version.values().length-2;i>0;i--) {
                 Version version = Version.values()[i];
-                String versionName = version.name();
-                if (versionName.startsWith("v1_")) {
+                String versionName = version.getName();
+                if (version.toString().startsWith("v1_")) {
                     migrateState = migrate_from_v1(store, version, migrateState);
                 } else {
                     migrateState = migrate_from_v2(store, version, migrateState);
@@ -128,7 +128,7 @@ public class Initializer extends AbstractPreferenceInitializer {
                 String title = Activator.getResourceString("easyshell.plugin.name");
                 String question = MessageFormat.format(
                         Activator.getResourceString("easyshell.question.migrate"),
-                        version);
+                        version.getName());
                 MessageDialog dialog = new MessageDialog(
                         null, title, null, question,
                         MessageDialog.QUESTION,
