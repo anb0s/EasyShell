@@ -221,7 +221,7 @@ public class CommandDataDefaultCollection {
         List<CommandData> listOut = new ArrayList<CommandData>();
         int position = 0;
         for (CommandData entry : list) {
-            if (entry.getOS() == os) {
+            if (entry.getOs() == os) {
                 CommandData newData = new CommandData(entry, false);
                 if (sorted) {
                     newData.setPosition(position);

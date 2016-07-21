@@ -18,21 +18,25 @@ import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class CommandData {
 
     // internal
     private int position = 0;
     private String id = null;
+
     // command
     private PresetType presetType = PresetType.presetUnknown;
     private OS os = OS.osUnknown;
-    private String name = null;
-    private ResourceType resType = ResourceType.resourceTypeUnknown;
-    private CommandType cmdType = CommandType.commandTypeUnknown;
-    private String command = null;
+    private String name = "";
+    private ResourceType resourceType = ResourceType.resourceTypeUnknown;
+    private boolean useWorkingDirectory = false;
+    private String workingDirectory = "";
+    private CommandType commandType = CommandType.commandTypeUnknown;
+    private String command = "";
 
-    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, CommandType cmdType, String command) {
+    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, CommandType cmdType, String command) {
         if (id == null || id.isEmpty()) {
             this.id = UUID.randomUUID().toString();
         } else {
@@ -41,19 +45,19 @@ public class CommandData {
         this.presetType = presetType;
         this.os = os;
         this.name = name;
-        this.resType = resType;
-        this.cmdType = cmdType;
+        this.resourceType = resType;
+        this.useWorkingDirectory = useWorkingDirectory;
+        this.workingDirectory = workingDirectory;
+        this.commandType = cmdType;
         this.command = command;
     }
 
+    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, CommandType cmdType, String command) {
+        this(id, presetType, os, name, resType, false, "${easyshell:container_loc}", cmdType, command);
+    }
+
     public CommandData(CommandData commandData, String newId) {
-        this.id = newId;
-        this.presetType = commandData.getPresetType();
-        this.os = commandData.getOS();
-        this.name = commandData.getName();
-        this.resType = commandData.getResourceType();
-        this.cmdType = commandData.getCommandType();
-        this.command = commandData.getCommand();
+        this(newId, commandData.getPresetType(), commandData.getOs(), commandData.getName(), commandData.getResourceType(), commandData.isUseWorkingDirectory(), commandData.getWorkingDirectory(), commandData.getCommandType(), commandData.getCommand());
     }
 
     public CommandData(CommandData commandData, boolean generateNewId) {
@@ -75,7 +79,7 @@ public class CommandData {
         return name;
     }
 
-    public OS getOS() {
+    public OS getOs() {
         return os;
     }
 
@@ -84,11 +88,19 @@ public class CommandData {
     }
 
     public ResourceType getResourceType() {
-        return resType;
+        return resourceType;
+    }
+
+    public boolean isUseWorkingDirectory() {
+        return useWorkingDirectory;
+    }
+
+    public String getWorkingDirectory() {
+        return workingDirectory;
     }
 
     public CommandType getCommandType() {
-        return cmdType;
+        return commandType;
     }
 
     public String getCommand() {
@@ -116,11 +128,19 @@ public class CommandData {
     }
 
     public void setResourceType(ResourceType resType) {
-        this.resType = resType;
+        this.resourceType = resType;
+    }
+
+    public void setUseWorkingDirectory(boolean useWorkingDirectory) {
+        this.useWorkingDirectory = useWorkingDirectory;
+    }
+
+    public void setWorkingDirectory(String workingDirectory) {
+        this.workingDirectory = workingDirectory;
     }
 
     public void setCommandType(CommandType cmdType) {
-        this.cmdType = cmdType;
+        this.commandType = cmdType;
     }
 
 	public void setCommand(String command) {
@@ -147,7 +167,7 @@ public class CommandData {
     	return false;
     }
 
-	public boolean deserialize(String value, StringTokenizer tokenizer, String delimiter) {
+	public boolean deserialize(Version version, String value, StringTokenizer tokenizer, String delimiter) {
         if((value == null || value.length() <= 0) && tokenizer == null) {
             return false;
         }
@@ -162,25 +182,42 @@ public class CommandData {
         setOs(OS.getFromEnum(tokenizer.nextToken()));
 		setName(tokenizer.nextToken());
 		setResourceType(ResourceType.getFromEnum(tokenizer.nextToken()));
+		// handling of working directory
+		if (version.getId() >= Version.v2_0_003.getId()) {
+		    setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
+		    setWorkingDirectory(tokenizer.nextToken());
+		} else {
+		    setUseWorkingDirectory(false);
+		    setWorkingDirectory("${easyshell:container_loc}");
+		}
+		// go on compatible
 		setCommandType(CommandType.getFromEnum(tokenizer.nextToken()));
 		setCommand(tokenizer.nextToken());
 		return true;
 	}
 
-    public boolean deserialize_v2_0_001(String value, StringTokenizer tokenizer, String delimiter) {
-        return deserialize(value, tokenizer, delimiter);
+    public boolean deserialize(String value, StringTokenizer tokenizer, String delimiter) {
+        return deserialize(Version.actual, value, tokenizer, delimiter);
+    }
+
+    public String serialize(Version version, String delimiter) {
+        String ret = Integer.toString(getPosition()) + delimiter;
+        ret += getId() + delimiter;
+        ret += getPresetType().toString() + delimiter;
+        ret += getOs().toString() + delimiter;
+        ret += getName() + delimiter;
+        ret += getResourceType().toString() + delimiter;
+        if (version.getId() >= Version.v2_0_003.getId()) {
+            ret += Boolean.toString(isUseWorkingDirectory()) + delimiter;
+            ret += getWorkingDirectory() + delimiter;
+        }
+        ret += getCommandType().toString() + delimiter;
+        ret += getCommand() + delimiter;
+        return ret;
     }
 
     public String serialize(String delimiter) {
-        return Integer.toString(getPosition()) + delimiter + getId() + delimiter + getPresetType().toString() + delimiter + getOS().toString() + delimiter + getName() + delimiter + getResourceType().toString() + delimiter + getCommandType().toString() + delimiter + getCommand() + delimiter;
-    }
-
-    public String getTypeIcon() {
-        return getCommandType().getIcon();
-    }
-
-    public String getTypeAction() {
-        return getCommandType().getAction();
+        return serialize(Version.actual, delimiter);
     }
 
 }

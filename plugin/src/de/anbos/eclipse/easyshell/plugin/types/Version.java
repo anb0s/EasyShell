@@ -14,16 +14,18 @@ package de.anbos.eclipse.easyshell.plugin.types;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum OS {
-    osUnknown(-1, "Unknown"),
-    osWindows(0, "Windows"),
-    osLinux(1, "Linux"),
-    osMacOSX(2, "MAC OS X");
+public enum Version {
+    vUnknown(-1, "Unknown"),
+    v1_4(0, "v1.4.x"),
+    v2_0_001(1, "v2.0.x"),
+    v2_0_002(2, "v2.0.x"),
+    v2_0_003(3, "v2.0.x");
+    public static Version actual =  v2_0_003;
     // attributes
     private final int id;
     private final String name;
     // construct
-    OS(int id, String name) {
+    Version(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -33,33 +35,33 @@ public enum OS {
     public String getName() {
         return name;
     }
-    public static OS getFromId(int id) {
-        OS ret = osUnknown;
-        for(int i = 0; i < OS.values().length; i++) {
-            if (OS.values()[i].getId() == id) {
-                ret = OS.values()[i];
+    public static Version getFromId(int id) {
+        Version ret = vUnknown;
+        for(int i = 0; i < Version.values().length; i++) {
+            if (Version.values()[i].getId() == id) {
+                ret = Version.values()[i];
                 break;
             }
         }
         return ret;
     }
-    public static OS getFromName(String name) {
-        OS ret = osUnknown;
-        for(int i = 0; i < OS.values().length; i++) {
-            if (OS.values()[i].getName().equals(name)) {
-                ret = OS.values()[i];
+    public static Version getFromName(String name) {
+        Version ret = vUnknown;
+        for(int i = 0; i < Version.values().length; i++) {
+            if (Version.values()[i].getName().equals(name)) {
+                ret = Version.values()[i];
                 break;
             }
         }
         return ret;
     }
-    public static OS getFromEnum(String name) {
-        return OS.valueOf(name);
+    public static Version getFromEnum(String name) {
+        return Version.valueOf(name);
     }
     public static List<String> getNamesAsList() {
         List<String> list = new ArrayList<String>();
-        for(int i = 0; i < OS.values().length; i++) {
-            list.add(OS.values()[i].getName());
+        for(int i = 0; i < Version.values().length; i++) {
+            list.add(Version.values()[i].getName());
         }
         return list;
     }

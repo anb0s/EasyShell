@@ -53,13 +53,6 @@ public enum Debug {
         return ret;
     }
     public static Debug getFromEnum(String name) {
-        Debug ret = debugUnknown;
-        for(int i = 0; i < Debug.values().length; i++) {
-            if (Debug.values()[i].toString().equals(name)) {
-                ret = Debug.values()[i];
-                break;
-            }
-        }
-        return ret;
+        return Debug.valueOf(name);
     }
 }

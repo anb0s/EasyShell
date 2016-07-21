@@ -55,13 +55,6 @@ public enum LinuxDesktop {
         return ret;
     }
     public static LinuxDesktop getFromEnum(String name) {
-        LinuxDesktop ret = desktopUnknown;
-        for(int i = 0; i < LinuxDesktop.values().length; i++) {
-            if (LinuxDesktop.values()[i].toString().equals(name)) {
-                ret = LinuxDesktop.values()[i];
-                break;
-            }
-        }
-        return ret;
+        return LinuxDesktop.valueOf(name);
     }
 }

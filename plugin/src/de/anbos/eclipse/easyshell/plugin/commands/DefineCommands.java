@@ -44,22 +44,25 @@ public class DefineCommands extends ExtensionContributionFactory {
                     item.getNameExpanded(),
                     "de.anbos.eclipse.easyshell.plugin.commands.execute",
                     "de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
-                    item.getCommandData().getTypeAction(),
+                    item.getCommandData().getCommandType().getAction(),
                     "de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
                     item.getCommandData().getCommand(),
-                    item.getCommandData().getTypeIcon());
+                    "de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
+                    item.getCommandData().isUseWorkingDirectory() ? item.getCommandData().getWorkingDirectory() : "",
+                    item.getCommandData().getCommandType().getIcon());
         }
 	}
 
     private void addItem(IServiceLocator serviceLocator, IContributionRoot additions,
     					 String commandLabel, String commandId,
-    					 String paramId1, String paramValue1, String paramId2, String paramValue2, String commandImageId) {
+    					 String paramId1, String paramValue1, String paramId2, String paramValue2, String paramId3, String paramValue3, String commandImageId) {
 		CommandContributionItemParameter param = new CommandContributionItemParameter(serviceLocator, "", commandId, SWT.PUSH);
 		param.label = commandLabel;
 		param.icon = Activator.getImageDescriptor(commandImageId);
 		Map<String, Object> commandParamametersMap = new HashMap<String, Object>();
 		commandParamametersMap.put(paramId1,  paramValue1);
 		commandParamametersMap.put(paramId2,  paramValue2);
+		commandParamametersMap.put(paramId3,  paramValue3);
 		param.parameters = commandParamametersMap;
 	    CommandContributionItem item = new CommandContributionItem(param);
 	    item.setVisible(true);

@@ -54,14 +54,7 @@ public enum ResourceType {
         return ret;
     }
     public static ResourceType getFromEnum(String name) {
-        ResourceType ret = resourceTypeUnknown;
-        for(int i = 0; i < ResourceType.values().length; i++) {
-            if (ResourceType.values()[i].toString().equals(name)) {
-                ret = ResourceType.values()[i];
-                break;
-            }
-        }
-        return ret;
+        return ResourceType.valueOf(name);
     }
     public static List<String> getNamesAsList() {
         List<String> list = new ArrayList<String>();

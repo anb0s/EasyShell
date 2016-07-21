@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
+import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class PreferenceValueConverter {
 
@@ -81,10 +82,11 @@ public class PreferenceValueConverter {
         return data;
     }
 
-    public static CommandData migrateCommandData(String version, String value) {
+    public static CommandData migrateCommandData(Version version, String value) {
         CommandData data = new CommandData();
-        if (version.equals("v2_0_001")) {
-            data.deserialize_v2_0_001(value, null, VALUE_DELIMITER);
+        data.deserialize(version, value, null, VALUE_DELIMITER);
+        // special handling
+        if (version == Version.v2_0_001) {
             // skip commands from preset
             if (data.getPresetType() == PresetType.presetPlugin) {
                 data = null;
@@ -93,15 +95,13 @@ public class PreferenceValueConverter {
         return data;
     }
 
-    public static MenuData migrateMenuData(String version, String value) {
+    public static MenuData migrateMenuData(Version version, String value) {
         MenuData data = new MenuData();
-        if (version.equals("v2_0_001")) {
-            data.deserialize_v2_0_001(value, null, VALUE_DELIMITER);
-        }
+        data.deserialize(version, value, null, VALUE_DELIMITER);
         return data;
     }
 
-    public static String migrateCommandDataList(String version, String value) {
+    public static String migrateCommandDataList(Version version, String value) {
         StringBuffer buffer = new StringBuffer();
         StringTokenizer tokenizer = new StringTokenizer(value, ITEM_DELIMITER);
         int num = tokenizer.countTokens();
@@ -115,7 +115,7 @@ public class PreferenceValueConverter {
         return buffer.toString();
     }
 
-    public static String migrateMenuDataList(String version, String value) {
+    public static String migrateMenuDataList(Version version, String value) {
         StringBuffer buffer = new StringBuffer();
         StringTokenizer tokenizer = new StringTokenizer(value, ITEM_DELIMITER);
         int num = tokenizer.countTokens();

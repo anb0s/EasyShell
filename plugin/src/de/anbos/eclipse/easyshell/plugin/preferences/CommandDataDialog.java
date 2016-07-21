@@ -21,6 +21,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -42,6 +43,8 @@ public class CommandDataDialog extends StatusDialog {
     private Combo  resourceTypeCombo;
     private Combo  commandTypeCombo;
     private Text    nameText;
+    private Button  dirCheckBox;
+    private Text    dirText;
     private Text    valueText;
 
     public CommandDataDialog(Shell parent, CommandData data, boolean edit) {
@@ -81,7 +84,7 @@ public class CommandDataDialog extends StatusDialog {
     	pageGroup1.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group1"));
     	pageGroup1.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group1"));
         GridLayout layout1 = new GridLayout();
-        layout1.numColumns = 2;
+        layout1.numColumns = 3;
         layout1.makeColumnsEqualWidth = false;
         layout1.marginWidth = 5;
         layout1.marginHeight = 4;
@@ -94,9 +97,12 @@ public class CommandDataDialog extends StatusDialog {
         // create command type combo
         createCommandTypeCombo(pageGroup1);
         //create input nameText field
-        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), data.getName());
+        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), data.getName(), true);
+        // create directory checkbox
+        createDirCheckBox(pageGroup1);
+        dirText = createTextField(pageGroup1, null, data.getWorkingDirectory(), false);
         // create input valueText field
-        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), data.getCommand());
+        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), data.getCommand(), true);
 
         // ------------------------------------ Description ------------------------------------------
         // define group2
@@ -113,21 +119,53 @@ public class CommandDataDialog extends StatusDialog {
         pageGroup2.setLayoutData(data2);
         pageGroup2.setFont(parent.getFont());
 
-        createLabel(pageGroup2, "${easyshell:drive}", "is the drive letter on Win32");
-        createLabel(pageGroup2, "${easyshell:container_loc}", "is the parent path*");
-        createLabel(pageGroup2, "${easyshell:resource_loc}", "is the full path*");
-        createLabel(pageGroup2, "${easyshell:resource_name}", "is the file name*");
-        createLabel(pageGroup2, "${easyshell:project_name}", "is the project name");
-        createLabel(pageGroup2, "${easyshell:line_separator}", "is the line separator");
+        createVariableLabel(pageGroup2, "${easyshell:drive}", "is the drive letter on Win32");
+        createVariableLabel(pageGroup2, "${easyshell:container_loc}", "is the parent path*");
+        createVariableLabel(pageGroup2, "${easyshell:resource_loc}", "is the full path*");
+        createVariableLabel(pageGroup2, "${easyshell:resource_name}", "is the file name*");
+        createVariableLabel(pageGroup2, "${easyshell:project_name}", "is the project name");
+        createVariableLabel(pageGroup2, "${easyshell:line_separator}", "is the line separator");
 
         refreshResourceTypeCombo();
+
+        refreshDirCheckBox();
 
         refreshCommandTypeCombo();
 
         return pageComponent;
     }
 
-    private void createLabel(Composite parent, String varText, String labelText) {
+    private void createLabel(Composite parent, String name) {
+        Label label = new Label(parent, SWT.LEFT);
+        label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+        label.setText(name);
+    }
+
+    private void createDirCheckBox(Composite parent) {
+        // draw label
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.useworkdir"));
+        // draw checkbox
+        dirCheckBox = new Button(parent,SWT.CHECK);
+        dirCheckBox.setSelection(this.data.isUseWorkingDirectory());
+        dirCheckBox.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                //Button button = (Button)e.getSource();
+                dirText.setEnabled(dirCheckBox.getSelection());
+                if (!dirText.getEnabled() && dirText.getText().isEmpty()) {
+                    dirText.setText(data.getWorkingDirectory());
+                }
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+        dirCheckBox.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.button.tooltip.useworkdir"));
+    }
+
+    private void createVariableLabel(Composite parent, String varText, String labelText) {
         StyledText styledTextWidget = new StyledText(parent, SWT.NONE);
         styledTextWidget.setText(varText);
         styledTextWidget.setBackground(parent.getBackground());
@@ -177,6 +215,13 @@ public class CommandDataDialog extends StatusDialog {
         commandTypeCombo.notifyListeners(SWT.Selection, event);
     }
 
+    private void refreshDirCheckBox() {
+        // send event to refresh
+        Event event = new Event();
+        event.item = null;
+        dirCheckBox.notifyListeners(SWT.Selection, event);
+    }
+
     protected void okPressed() {
         if (!validateValues()) {
             return;
@@ -184,6 +229,8 @@ public class CommandDataDialog extends StatusDialog {
         data.setResourceType(ResourceType.getFromName(resourceTypeCombo.getText()));
         data.setCommandType(CommandType.getFromName(commandTypeCombo.getText()));
         data.setName(nameText.getText());
+        data.setUseWorkingDirectory(dirCheckBox.getSelection());
+        data.setWorkingDirectory(dirText.getText());
         data.setCommand(valueText.getText());
         super.okPressed();
     }
@@ -212,6 +259,14 @@ public class CommandDataDialog extends StatusDialog {
             valid = false;
         }
 
+        // check working dir
+        if (valid) {
+            text  = Activator.getResourceString("easyshell.command.editor.dialog.error.text.workingdir");
+            if ( (dirText.getText() == null) || (dirText.getText().length() <= 0)) {
+                valid = false;
+            }
+        }
+
         // check value
         if (valid) {
         	text  = Activator.getResourceString("easyshell.command.editor.dialog.error.text.value");
@@ -229,9 +284,8 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createResourceTypeCombo(Composite parent) {
         // draw label
-        Label comboLabel = new Label(parent,SWT.LEFT);
-        comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.label.combo2"));
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo2"));
+        createLabel(parent, "");
         // draw combo
         resourceTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         resourceTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -259,9 +313,8 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createCommandTypeCombo(Composite parent) {
         // draw label
-        Label comboLabel = new Label(parent,SWT.LEFT);
-        comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.command.editor.dialog.label.combo1"));
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo1"));
+        createLabel(parent, "");
         // draw combo
         commandTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         commandTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -287,11 +340,14 @@ public class CommandDataDialog extends StatusDialog {
         }
     }
 
-    private Text createTextField(Composite parent, String labelText, String editValue) {
+    private Text createTextField(Composite parent, String labelText, String editValue, boolean emptyLabel) {
         // draw label
-        Label label = new Label(parent,SWT.LEFT);
-        label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        label.setText(labelText);    //$NON-NLS-1$
+        if (labelText != null) {
+            createLabel(parent, labelText);
+        }
+        if (emptyLabel) {
+            createLabel(parent, "");
+        }
         // draw textfield
         Text text = new Text(parent,SWT.BORDER);
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

@@ -50,13 +50,6 @@ public enum Tokenizer {
         return ret;
     }
     public static Tokenizer getFromEnum(String name) {
-        Tokenizer ret = tokenizerUnknown;
-        for(int i = 0; i < Tokenizer.values().length; i++) {
-            if (Tokenizer.values()[i].toString().equals(name)) {
-                ret = Tokenizer.values()[i];
-                break;
-            }
-        }
-        return ret;
+        return Tokenizer.valueOf(name);
     }
 };

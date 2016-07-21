@@ -68,14 +68,7 @@ public enum CommandType {
         return ret;
     }
     public static CommandType getFromEnum(String name) {
-        CommandType ret = commandTypeUnknown;
-        for(int i = 0; i < CommandType.values().length; i++) {
-            if (CommandType.values()[i].toString().equals(name)) {
-                ret = CommandType.values()[i];
-                break;
-            }
-        }
-        return ret;
+        return CommandType.valueOf(name);
     }
     public static CommandType getFromAction(String action) {
         CommandType ret = commandTypeUnknown;

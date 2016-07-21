@@ -31,9 +31,11 @@ public class CommandHandler extends AbstractHandler {
         if (action != null) {
         	String commandID  = event.getCommand().getId();
         	String commandType = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.type");
-        	String commanValue = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.value");
+        	String commandValue = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.value");
+        	String commandWorkingDir = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir");
         	action.setCommandType(CommandType.getFromAction(commandType));
-        	action.setCommandValue(commanValue);
+        	action.setCommandValue(commandValue);
+        	action.setCommandWorkingDir(commandWorkingDir);
             Action act = new Action(commandID);
             action.run((IAction)act);
         }

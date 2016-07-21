@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 import java.util.UUID;
 
 import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
+import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class MenuData {
 
@@ -24,8 +25,8 @@ public class MenuData {
 
     // menu
     private boolean enabled = true;
-    private MenuNameType nameType;
-    private String namePattern = null;
+    private MenuNameType nameType = MenuNameType.menuNameTypeUnknown;
+    private String namePattern = "";
     // copy of or reference to command
     private CommandData commandData = null;
 
@@ -85,7 +86,7 @@ public class MenuData {
     }
 
     public String getNameExpanded() {
-        return namePattern.replace("${easyshell:command_type}", getCommandData().getCommandType().getName()).replace("${easyshell:command_name}", getCommandData().getName()).replace("${easyshell:command_os}", getCommandData().getOS().getName());
+        return namePattern.replace("${easyshell:command_type}", getCommandData().getCommandType().getName()).replace("${easyshell:command_name}", getCommandData().getName()).replace("${easyshell:command_os}", getCommandData().getOs().getName());
     }
 
 	public CommandData getCommandData() {
@@ -108,7 +109,7 @@ public class MenuData {
     	return false;
     }
 
-    public boolean deserialize(String value, StringTokenizer tokenizer, String delimiter) {
+    public boolean deserialize(Version version, String value, StringTokenizer tokenizer, String delimiter) {
         if((value == null || value.length() <= 0) && tokenizer == null) {
             return false;
         }
@@ -120,55 +121,56 @@ public class MenuData {
         setId(tokenizer.nextToken());
         // set menu data members
         setEnabled(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
-        setNameType(MenuNameType.getFromEnum(tokenizer.nextToken()));
-        setNamePattern(tokenizer.nextToken());
-        // set command data members
-        setCommandData(new CommandData());
-        getCommandData().deserialize(null, tokenizer, delimiter);
-        return true;
-    }
-
-    public boolean deserialize_v2_0_001(String value, StringTokenizer tokenizer, String delimiter) {
-        if((value == null || value.length() <= 0) && tokenizer == null) {
-            return false;
-        }
-        if (tokenizer == null) {
-            tokenizer = new StringTokenizer(value,delimiter);
-        }
-        // set internal members
-        setPosition(Integer.parseInt(tokenizer.nextToken()));
-        setId(tokenizer.nextToken());
-        // set menu data members
-        setEnabled(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
-        // -------------------------------------------------
-        // convert handling
+        // menu name type handling
         MenuNameType nameType = MenuNameType.menuNameTypeUser;
+        if (version.getId() >= Version.v2_0_002.getId()) {
+            nameType = MenuNameType.getFromEnum(tokenizer.nextToken());
+        }
         String namePatternReaded = tokenizer.nextToken();
         // -------------------------------------------------
         // set command data members
         setCommandData(new CommandData());
-        getCommandData().deserialize(null, tokenizer, delimiter);
-        // -------------------------------------------------
-        // convert handling
-        // check if readed name is the same, like expanded from patterns
-        for (MenuNameType type : MenuNameType.getAsList()) {
-            setNamePattern(type.getPattern()); // set temporary
-            if (getNameExpanded().equals(namePatternReaded)) {
-                nameType = type;
-                break;
+        getCommandData().deserialize(version, null, tokenizer, delimiter);
+        // menu name type handling
+        if (version.getId() < Version.v2_0_002.getId()) {
+            // check if readed name is the same, like expanded from patterns
+            for (MenuNameType type : MenuNameType.getAsList()) {
+                setNamePattern(type.getPattern()); // set temporary
+                if (getNameExpanded().equals(namePatternReaded)) {
+                    nameType = type;
+                    break;
+                }
             }
-        }
-        setNameType(nameType);
-        // if not found set the readed value
-        if (nameType == MenuNameType.menuNameTypeUser) {
+            setNameType(nameType);
+            // if not found set the readed value
+            if (nameType == MenuNameType.menuNameTypeUser) {
+                setNamePattern(namePatternReaded);
+            }
+        } else {
+            setNameType(nameType);
             setNamePattern(namePatternReaded);
         }
-        // -------------------------------------------------
         return true;
     }
 
+    public boolean deserialize(String value, StringTokenizer tokenizer, String delimiter) {
+        return deserialize(Version.actual, value, tokenizer, delimiter);
+    }
+
+    public String serialize(Version version, String delimiter) {
+        String ret = Integer.toString(getPosition()) + delimiter;
+        ret += getId() + delimiter;
+        ret += Boolean.toString(isEnabled()) + delimiter;
+        if (version.getId() >= Version.v2_0_002.getId()) {
+            ret += getNameType().toString() + delimiter;
+        }
+        ret += getNamePattern() + delimiter;
+        ret += commandData.serialize(version, delimiter);
+        return ret;
+    }
+
     public String serialize(String delimiter) {
-        return Integer.toString(getPosition()) + delimiter + getId() + delimiter + Boolean.toString(isEnabled()) + delimiter + getNameType().toString() + delimiter + getNamePattern() + delimiter + commandData.serialize(delimiter);
+        return serialize(Version.actual, delimiter);
     }
 
     public void setPosition(int position) {

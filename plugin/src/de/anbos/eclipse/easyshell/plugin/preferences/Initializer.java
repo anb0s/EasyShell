@@ -24,6 +24,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
 import de.anbos.eclipse.easyshell.plugin.Utils;
+import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class Initializer extends AbstractPreferenceInitializer {
 
@@ -60,27 +61,29 @@ public class Initializer extends AbstractPreferenceInitializer {
     private void migrate(IPreferenceStore store) {
         if (!store.getBoolean(Constants.PREF_MIGRATED)) {
             int migrateState = -1; // -1 = old store not found, 0 (Yes) = migrated, 1 (No) = no migration wanted by user, 2 (Cancel) = try to migrate again
-            for (int i=1;i<Constants.PREF_VERSIONS.length;i++) {
-                if (Constants.PREF_VERSIONS[i].startsWith("v1_")) {
-                    migrateState = migrate_from_v1(store, Constants.PREF_VERSIONS[i], migrateState);
+            for (int i=Version.values().length-2;i>0;i--) {
+                Version version = Version.values()[i];
+                String versionName = version.name();
+                if (versionName.startsWith("v1_")) {
+                    migrateState = migrate_from_v1(store, version, migrateState);
                 } else {
-                    migrateState = migrate_from_v2(store, Constants.PREF_VERSIONS[i], migrateState);
+                    migrateState = migrate_from_v2(store, version, migrateState);
                 }
                 // if no old store for this version found continue, else break
                 if (migrateState != -1) {
                     switch(migrateState) {
                         case 0: Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), MessageFormat.format(
                                      Activator.getResourceString("easyshell.message.warning.migrated.yes"),
-                                     Constants.PREF_VERSIONS[i]));
+                                     versionName));
 
                         break;
                         case 1: Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), MessageFormat.format(
                                     Activator.getResourceString("easyshell.message.warning.migrated.no"),
-                                    Constants.PREF_VERSIONS[i]));
+                                    versionName));
                         break;
                         case 2: Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), MessageFormat.format(
                                     Activator.getResourceString("easyshell.message.warning.migrated.cancel"),
-                                    Constants.PREF_VERSIONS[i]));
+                                    versionName));
                         break;
 
                     }
@@ -98,9 +101,9 @@ public class Initializer extends AbstractPreferenceInitializer {
         }
     }
 
-    private int migrate_from_v2(IPreferenceStore store, String version, int migrateState) {
+    private int migrate_from_v2(IPreferenceStore store, Version version, int migrateState) {
         // get the old v2 store
-        IPreferenceStore oldStore = Activator.getDefault().getNewPreferenceStoreByVersion(version);
+        IPreferenceStore oldStore = Activator.getDefault().getNewPreferenceStoreByVersion(version.name());
         // check preferences for default values
         migrateState = migrate_check_pref_and_ask_user(oldStore, version, Constants.PREF_COMMANDS, migrateState);
         if (migrateState == 0) {
@@ -113,7 +116,7 @@ public class Initializer extends AbstractPreferenceInitializer {
         return migrateState;
     }
 
-    private int migrate_check_pref_and_ask_user(IPreferenceStore store, String version, String pref, int migrateState) {
+    private int migrate_check_pref_and_ask_user(IPreferenceStore store, Version version, String pref, int migrateState) {
         // if cancel or no just skip this time
         if (migrateState == 1 || migrateState == 2) {
             return migrateState;
@@ -137,7 +140,7 @@ public class Initializer extends AbstractPreferenceInitializer {
         return migrateState;
     }
 
-    private int migrate_from_v1(IPreferenceStore store, String version, int migrateState) {
+    private int migrate_from_v1(IPreferenceStore store, Version version, int migrateState) {
         // TODO:
         return -1;
     }

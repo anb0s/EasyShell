@@ -60,14 +60,7 @@ public enum MenuNameType {
         return ret;
     }
     public static MenuNameType getFromEnum(String name) {
-        MenuNameType ret = menuNameTypeUnknown;
-        for(int i = 0; i < MenuNameType.values().length; i++) {
-            if (MenuNameType.values()[i].toString().equals(name)) {
-                ret = MenuNameType.values()[i];
-                break;
-            }
-        }
-        return ret;
+        return MenuNameType.valueOf(name);
     }
     public static MenuNameType getFromPattern(String pattern) {
         MenuNameType ret = menuNameTypeUnknown;

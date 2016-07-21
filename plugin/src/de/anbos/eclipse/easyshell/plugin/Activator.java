@@ -33,6 +33,7 @@ import org.osgi.framework.BundleContext;
 
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Debug;
+import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -225,7 +226,7 @@ public class Activator extends AbstractUIPlugin {
     public IPreferenceStore getPreferenceStore() {
         // Create the preference store lazily.
         if (myPreferenceStore == null) {
-            myPreferenceStore = getNewPreferenceStoreByVersion(Constants.PREF_VERSIONS[0]);
+            myPreferenceStore = getNewPreferenceStoreByVersion(Version.actual.name());
         }
         return myPreferenceStore;
     }

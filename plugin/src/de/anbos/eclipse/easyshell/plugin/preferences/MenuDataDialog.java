@@ -356,7 +356,7 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private String getCommandAsComboName(CommandData data) {
-        return data.getPresetType().getName() + " - " + data.getOS().getName() + " - " + data.getCommandType().getName() + " - " + data.getName();
+        return data.getPresetType().getName() + " - " + data.getOs().getName() + " - " + data.getCommandType().getName() + " - " + data.getName();
     }
 
     private String[] getAllCommandsAsComboNames(List<CommandData> list) {

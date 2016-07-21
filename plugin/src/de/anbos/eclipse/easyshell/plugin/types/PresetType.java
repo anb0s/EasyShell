@@ -53,14 +53,7 @@ public enum PresetType {
         return ret;
     }
     public static PresetType getFromEnum(String name) {
-        PresetType ret = presetUnknown;
-        for(int i = 0; i < PresetType.values().length; i++) {
-            if (PresetType.values()[i].toString().equals(name)) {
-                ret = PresetType.values()[i];
-                break;
-            }
-        }
-        return ret;
+        return PresetType.valueOf(name);
     }
     public static List<String> getNamesAsList() {
         List<String> list = new ArrayList<String>();

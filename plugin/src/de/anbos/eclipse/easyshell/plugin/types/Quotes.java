@@ -57,13 +57,6 @@ public enum Quotes {
         return ret;
     }
     public static Quotes getFromEnum(String name) {
-        Quotes ret = quotesUnknown;
-        for(int i = 0; i < Quotes.values().length; i++) {
-            if (Quotes.values()[i].toString().equals(name)) {
-                ret = Quotes.values()[i];
-                break;
-            }
-        }
-        return ret;
+        return Quotes.valueOf(name);
     }
 }
