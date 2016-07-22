@@ -20,11 +20,7 @@ import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
-public class CommandData {
-
-    // internal
-    private int position = 0;
-    private String id = null;
+public class CommandData extends Data {
 
     // command
     private PresetType presetType = PresetType.presetUnknown;
@@ -37,11 +33,7 @@ public class CommandData {
     private String command = "";
 
     public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, CommandType cmdType, String command) {
-        if (id == null || id.isEmpty()) {
-            this.id = UUID.randomUUID().toString();
-        } else {
-            this.id = id;
-        }
+        super(id);
         this.presetType = presetType;
         this.os = os;
         this.name = name;
@@ -66,14 +58,6 @@ public class CommandData {
 
     public CommandData() {
     }
-
-    public int getPosition() {
-        return position;
-    }
-
-	public String getId() {
-		return id;
-	}
 
     public String getName() {
         return name;
@@ -105,14 +89,6 @@ public class CommandData {
 
     public String getCommand() {
         return command;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
 	public void setName(String name) {

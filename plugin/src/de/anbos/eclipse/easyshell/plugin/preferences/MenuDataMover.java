@@ -16,45 +16,14 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-public class MenuDataMover implements SelectionListener {
+public class MenuDataMover extends DataMover implements SelectionListener {
 
-	private Table table;
-	private MenuDataStore store;
+    private Table table;
 
-	private MenuData currentSelection;
-
-	public MenuDataMover(Table table, MenuDataStore store) {
-		this.table = table;
-		this.store = store;
-		table.addSelectionListener(this);
-	}
-
-	public void moveCurrentSelectionUp() {
-		if(currentSelection == null) {
-			return;
-		}
-		MenuData previousElement = store.getPreviousElement(currentSelection);
-		if(previousElement == null) {
-			return;
-		}
-		int newPosition = previousElement.getPosition();
-		int oldPosition = currentSelection.getPosition();
-		previousElement.setPosition(oldPosition);
-		currentSelection.setPosition(newPosition);
-	}
-
-	public void moveCurrentSelectionDown() {
-		if(currentSelection == null) {
-			return;
-		}
-		MenuData nextElement = store.getNextElement(currentSelection);
-		if(nextElement == null) {
-			return;
-		}
-		int newPosition = nextElement.getPosition();
-		int oldPosition = currentSelection.getPosition();
-		nextElement.setPosition(oldPosition);
-		currentSelection.setPosition(newPosition);
+	public MenuDataMover(Table table, IDataStore store) {
+	    super(store);
+	    this.table = table;
+	    this.table.addSelectionListener(this);
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {
@@ -65,13 +34,13 @@ public class MenuDataMover implements SelectionListener {
 		try {
 			item = table.getSelection()[0];
 		} catch(Throwable t) {
-			currentSelection = null;
+		    setData(null);
 			return;
 		}
 		if(item == null || !(item.getData() instanceof MenuData)) {
-			currentSelection = null;
+		    setData(null);
 			return;
 		}
-		currentSelection = (MenuData)item.getData();
+		setData((IData)item.getData());
 	}
 }

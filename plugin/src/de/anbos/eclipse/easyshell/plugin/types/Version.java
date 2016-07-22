@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Version {
+    // do not delete any versions and append new versions!
     vUnknown(-1, "Unknown"),
     v1_4(0, "v1.4.x"),
     v2_0_001(1, "v2.0 beta 1"),
     v2_0_002(2, "v2.0 beta 2"),
     v2_0_003(3, "v2.0 beta 3");
-    public static Version actual =  v2_0_003;
+    // actual version is always the last one!
+    public static Version actual =  Version.values()[Version.values().length-1];
     // attributes
     private final int id;
     private final String name;

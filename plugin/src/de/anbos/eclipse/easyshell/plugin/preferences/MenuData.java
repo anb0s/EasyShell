@@ -17,11 +17,7 @@ import java.util.UUID;
 import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
-public class MenuData {
-
-	// internal
-    private int position = 0;
-    private String id = null;
+public class MenuData extends Data {
 
     // menu
     private boolean enabled = true;
@@ -31,11 +27,7 @@ public class MenuData {
     private CommandData commandData = null;
 
     public MenuData(String id, boolean enabled, MenuNameType nameType, String namePattern, CommandData commandData) {
-        if (id == null || id.isEmpty()) {
-            this.id = UUID.randomUUID().toString();
-        } else {
-            this.id = id;
-        }
+        super(id);
         this.enabled = enabled;
         this.nameType = nameType;
         this.namePattern = namePattern;
@@ -43,7 +35,7 @@ public class MenuData {
     }
 
     public MenuData(String newId, CommandData commandData) {
-        this.id = newId;
+        super(newId);
         setNameType(MenuNameType.menuNameTypeGeneric1);
         setCommandData(commandData);
     }
@@ -65,17 +57,9 @@ public class MenuData {
     public MenuData() {
     }
 
-    public int getPosition() {
-		return position;
-	}
-
 	public boolean isEnabled() {
 		return enabled;
 	}
-
-    public String getId() {
-        return id;
-    }
 
     public MenuNameType getNameType() {
         return nameType;
@@ -173,16 +157,8 @@ public class MenuData {
         return serialize(Version.actual, delimiter);
     }
 
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public void setNameType(MenuNameType nameType) {

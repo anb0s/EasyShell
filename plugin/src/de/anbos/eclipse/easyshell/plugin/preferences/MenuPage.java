@@ -14,7 +14,6 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -25,12 +24,14 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
@@ -40,23 +41,24 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 
-public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
+public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         implements IWorkbenchPreferencePage {
 
-    private static final int TABLE_WIDTH = 400;
-
-    private Table table;
-    private MenuDataMover itemMover;
-    private CommandDataStore cmdStore;
-    List<CommandData> cmdList;
+    private CommandDataStore commandStore;
+    List<CommandData> commandList;
     private MenuDataStore menuStore;
+    private MenuDataMover itemMover;
+    private Text searchText;
+    private MenuTableFilter filter;
     private CheckboxTableViewer tableViewer;
     private Button addNewButton;
     private Button addCopyButton;
@@ -73,8 +75,8 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
     public boolean performOk() {
         boolean save = true;
         if (!menuStore.isMigrated()) {
-            String title = Activator.getResourceString("easyshell.page.table.dialog.migration.title");
-            String question = Activator.getResourceString("easyshell.page.table.dialog.migration.question");
+            String title = Activator.getResourceString("easyshell.menu.page.dialog.migration.title");
+            String question = Activator.getResourceString("easyshell.menu.page.dialog.migration.question");
             MessageDialog dialog = new MessageDialog(
                     null, title, null, question,
                     MessageDialog.WARNING,
@@ -95,8 +97,8 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     @Override
     protected void performDefaults() {
-        String title = Activator.getResourceString("easyshell.page.table.dialog.defaults.title");
-        String question = Activator.getResourceString("easyshell.page.table.dialog.defaults.question");
+        String title = Activator.getResourceString("easyshell.menu.page.dialog.defaults.title");
+        String question = Activator.getResourceString("easyshell.menu.page.dialog.defaults.question");
         MessageDialog dialog = new MessageDialog(
                 null, title, null, question,
                 MessageDialog.WARNING,
@@ -106,7 +108,7 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         if (result == 0) {
             menuStore.loadDefaults();
             tableViewer.refresh();
-            for (MenuData item : menuStore.getCommandMenuDataList()) {
+            for (MenuData item : menuStore.getDataList()) {
                 tableViewer.setChecked(item, true);
             }
         }
@@ -119,53 +121,126 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     @Override
     protected Control createContents(Composite parent) {
-        Font font = parent.getFont();
-        // define default grid
+        // main page composite
         Composite pageComponent = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
+        GridLayout layout = new GridLayout(3, false);
         pageComponent.setLayout(layout);
+        //parent.setLayout(layout);
 
-        // list
-        GridData gridData = new GridData(GridData.FILL_BOTH);
-        // create table
-        table = new Table(pageComponent, SWT.MULTI | SWT.CHECK | SWT.FULL_SELECTION);
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
-        table.setFont(parent.getFont());
-
-        TableColumn column1 = new TableColumn(table, SWT.LEFT);
-        column1.setText(Activator.getResourceString("easyshell.page.table.header.title.column0")); //$NON-NLS-1$
-        column1.setResizable(false);
-
-        TableColumn column2 = new TableColumn(table, SWT.LEFT);
-        column2.setText(Activator.getResourceString("easyshell.page.table.header.title.column1")); //$NON-NLS-1$
-        column2.setResizable(false);
-
-        int availableRows = availableRows(pageComponent);
-        gridData.heightHint = table.getItemHeight() * (availableRows / 8);
-        gridData.widthHint = TABLE_WIDTH;
-        table.setLayoutData(gridData);
-
-        tableViewer = new CheckboxTableViewer(table);
-        tableViewer.setLabelProvider(new MenuDataLabelProvider());
-        tableViewer.setContentProvider(new MenuDataContentProvider());
+        // search
+        createSearchField(pageComponent);
 
         // command store
-        cmdStore = new CommandDataStore(Activator.getDefault().getPreferenceStore());
-        cmdStore.load();
+        commandStore = new CommandDataStore(Activator.getDefault().getPreferenceStore());
+        commandStore.load();
 
         // get the native commands list
-        cmdList = CommandDataDefaultCollection.getCommandsNative(cmdStore.getAllCommands(), true);
+        commandList = CommandDataDefaultCollection.getCommandsNative(commandStore.getDataList(), true);
 
         // menu store
         menuStore = new MenuDataStore(Activator.getDefault().getPreferenceStore());
         menuStore.load();
+
+        // table viewer
+        createTableViewer(pageComponent);
+
+        // buttons
+        createButtons(pageComponent);
+
+        // send event to refresh tableViewer
+        Event event = new Event();
+        event.item = null;
+        tableViewer.refresh();
+        tableViewer.getTable().notifyListeners(SWT.Selection, event);
+
+        return pageComponent;
+    }
+
+    private void createSearchField(Composite parent) {
+        /*
+        Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
+        group.setText(Activator.getResourceString("easyshell.command.page.text.text.search"));
+        group.setToolTipText(Activator.getResourceString("easyshell.command.page.text.tooltip.search"));
+        GridLayout layout2 = new GridLayout();
+        layout2.numColumns = 1;
+        layout2.makeColumnsEqualWidth = false;
+        layout2.marginWidth = 5;
+        layout2.marginHeight = 4;
+        group.setLayout(layout2);
+        GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
+        group.setLayoutData(data2);
+        group.setFont(parent.getFont());*/
+
+        //Label searchLabel = new Label(parent, SWT.NONE);
+        //searchLabel.setText("Search: ");
+        filter = new MenuTableFilter();
+        searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
+        searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+            | GridData.HORIZONTAL_ALIGN_FILL));
+        searchText.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent ke) {
+              filter.setSearchText(searchText.getText());
+              tableViewer.refresh();
+            }
+
+        });
+        searchText.setToolTipText(Activator.getResourceString("easyshell.command.page.text.tooltip.search"));
+        // fake
+        Label label = new Label(parent, SWT.NONE);
+        label.setText("");
+    }
+
+    private void createButtons(Composite pageComponent) {
+        Font font = pageComponent.getFont();
+        // button pageComponent
+        Composite groupComponent = new Composite(pageComponent, SWT.NULL);
+        GridLayout groupLayout = new GridLayout();
+        groupLayout.marginWidth = 0;
+        groupLayout.marginHeight = 0;
+        groupComponent.setLayout(groupLayout);
+        GridData gridData = new GridData();
+        gridData.verticalAlignment = GridData.FILL;
+        gridData.horizontalAlignment = GridData.FILL;
+        groupComponent.setLayoutData(gridData);
+        groupComponent.setFont(font);
+
+        // buttons
+        createNewButton(font, gridData, groupComponent);
+        createCopyButton(font, gridData, groupComponent);
+        createEditButton(font, gridData, groupComponent);
+        createRemoveButton(font, gridData, groupComponent);
+        createUpButton(font, gridData, groupComponent);
+        createDownButton(font, gridData, groupComponent);
+    }
+
+    private void createTableViewer(Composite parent) {
+        tableViewer = CheckboxTableViewer.newCheckList(parent, SWT.MULTI | SWT.H_SCROLL
+            | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        createColumns(parent, tableViewer);
+        final Table table = tableViewer.getTable();
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+
+        tableViewer.setLabelProvider(new MenuDataLabelProvider());
+        tableViewer.setContentProvider(new MenuDataContentProvider());
+        tableViewer.addFilter(filter);
+
+        // Get the content for the viewer, setInput will call getElements in the
+        // contentProvider
         tableViewer.setInput(menuStore);
+
+        // update/set checked elements
         tableViewer.setAllChecked(false);
         tableViewer.setCheckedElements(menuStore.getEnabledCommandMenuDataArray());
+
+        // Layout the viewer
+        GridData gridData = new GridData();
+        gridData.verticalAlignment = GridData.FILL;
+        gridData.horizontalSpan = 2;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.grabExcessVerticalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
+        tableViewer.getControl().setLayoutData(gridData);
 
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             @Override
@@ -220,52 +295,30 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         });
 
         itemMover = new MenuDataMover(table, menuStore);
+      }
 
-        // button pageComponent
-        Composite groupComponent = new Composite(pageComponent, SWT.NULL);
-        GridLayout groupLayout = new GridLayout();
-        groupLayout.marginWidth = 0;
-        groupLayout.marginHeight = 0;
-        groupComponent.setLayout(groupLayout);
-        gridData = new GridData();
-        gridData.verticalAlignment = GridData.FILL;
-        gridData.horizontalAlignment = GridData.FILL;
-        groupComponent.setLayoutData(gridData);
-        groupComponent.setFont(font);
+    private void createColumns(final Composite parent, final TableViewer viewer) {
+        TableViewerColumn viewerColumn1 = new TableViewerColumn(viewer,
+                SWT.NONE);
+        TableColumn column1 = viewerColumn1.getColumn();
+        column1.setText(Activator.getResourceString("easyshell.menu.page.header.title.column0"));
+        column1.setWidth(200);
+        column1.setResizable(true);
+        column1.setMoveable(true);
 
-        // buttons
-        createNewButton(font, gridData, groupComponent);
-
-        createCopyButton(font, gridData, groupComponent);
-
-        createEditButton(font, gridData, groupComponent);
-
-        createRemoveButton(font, gridData, groupComponent);
-
-        createUpButton(font, gridData, groupComponent);
-
-        createDownButton(font, gridData, groupComponent);
-
-        configureTableResizing(table);
-
-        Dialog.applyDialogFont(pageComponent);
-        // trigger the resize
-        table.getHorizontalBar().setVisible(true);
-
-        // send event to refresh tableViewer
-        Event event = new Event();
-        event.item = null;
-        tableViewer.refresh();
-        tableViewer.getTable().notifyListeners(SWT.Selection, event);
-        //tableViewer.getControl().setEnabled(true);
-
-        return pageComponent;
+        TableViewerColumn viewerColumn2 = new TableViewerColumn(viewer,
+                SWT.NONE);
+        TableColumn column2 = viewerColumn2.getColumn();
+        column2.setText(Activator.getResourceString("easyshell.menu.page.header.title.column1"));
+        column2.setWidth(400);
+        column2.setResizable(true);
+        column2.setMoveable(true);
     }
 
     private void createDownButton(Font font, GridData gridData, Composite groupComponent) {
         downButton = new Button(groupComponent, SWT.PUSH);
-        downButton.setText(Activator.getResourceString("easyshell.page.table.button.text.down"));
-        downButton.setToolTipText(Activator.getResourceString("easyshell.page.table.button.tooltip.down"));
+        downButton.setText(Activator.getResourceString("easyshell.menu.page.button.text.down"));
+        downButton.setToolTipText(Activator.getResourceString("easyshell.menu.page.button.tooltip.down"));
         downButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -279,8 +332,8 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     private void createUpButton(Font font, GridData gridData, Composite groupComponent) {
         upButton = new Button(groupComponent, SWT.PUSH);
-        upButton.setText(Activator.getResourceString("easyshell.page.table.button.text.up"));
-        upButton.setToolTipText(Activator.getResourceString("easyshell.page.table.button.tooltip.up"));
+        upButton.setText(Activator.getResourceString("easyshell.menu.page.button.text.up"));
+        upButton.setToolTipText(Activator.getResourceString("easyshell.menu.page.button.tooltip.up"));
         upButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -294,8 +347,8 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     private void createRemoveButton(Font font, GridData gridData, Composite groupComponent) {
         removeButton = new Button(groupComponent, SWT.PUSH);
-        removeButton.setText(Activator.getResourceString("easyshell.page.table.button.text.remove"));
-        removeButton.setToolTipText(Activator.getResourceString("easyshell.page.table.button.tooltip.remove"));
+        removeButton.setText(Activator.getResourceString("easyshell.menu.page.button.text.remove"));
+        removeButton.setToolTipText(Activator.getResourceString("easyshell.menu.page.button.tooltip.remove"));
         removeButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -309,8 +362,8 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     private void createEditButton(Font font, GridData gridData, Composite groupComponent) {
         editButton = new Button(groupComponent, SWT.PUSH);
-        editButton.setText(Activator.getResourceString("easyshell.page.table.button.text.edit"));
-        editButton.setToolTipText(Activator.getResourceString("easyshell.page.table.button.tooltip.edit"));
+        editButton.setText(Activator.getResourceString("easyshell.menu.page.button.text.edit"));
+        editButton.setToolTipText(Activator.getResourceString("easyshell.menu.page.button.tooltip.edit"));
         editButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -324,8 +377,8 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     private void createCopyButton(Font font, GridData gridData, Composite groupComponent) {
         addCopyButton = new Button(groupComponent, SWT.PUSH);
-        addCopyButton.setText(Activator.getResourceString("easyshell.page.table.button.text.copy"));
-        addCopyButton.setToolTipText(Activator.getResourceString("easyshell.page.table.button.tooltip.copy"));
+        addCopyButton.setText(Activator.getResourceString("easyshell.menu.page.button.text.copy"));
+        addCopyButton.setToolTipText(Activator.getResourceString("easyshell.menu.page.button.tooltip.copy"));
         addCopyButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -339,8 +392,8 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
 
     private void createNewButton(Font font, GridData gridData, Composite groupComponent) {
         addNewButton = new Button(groupComponent, SWT.PUSH);
-        addNewButton.setText(Activator.getResourceString("easyshell.page.table.button.text.new"));
-        addNewButton.setToolTipText(Activator.getResourceString("easyshell.page.table.button.tooltip.new"));
+        addNewButton.setText(Activator.getResourceString("easyshell.menu.page.button.text.new"));
+        addNewButton.setToolTipText(Activator.getResourceString("easyshell.menu.page.button.tooltip.new"));
         addNewButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
@@ -352,119 +405,26 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         setButtonLayoutData(addNewButton);
     }
 
-    private int availableRows(Composite parent) {
-        int fontHeight = (parent.getFont().getFontData())[0].getHeight();
-        int displayHeight = parent.getDisplay().getClientArea().height;
-        return displayHeight / fontHeight;
-    }
-
-    /**
-     * Correctly resizes the table so no phantom columns appear
-     *
-     * @param table the table
-     * @since 3.1
-     */
-    private void configureTableResizing(final Table table) {
-        ControlAdapter resizer = new ControlAdapter() {
-            private boolean fIsResizing = false;
-            //                private final int[] fWidths= {100, 70, 70, 130, 45};
-            private final int[] fWidths = { 120, 280};
-            private int fSum = TABLE_WIDTH;
-
-            public void controlResized(ControlEvent e) {
-                if (fIsResizing)
-                    return;
-                try {
-                    fIsResizing = true;
-                    int clientAreaWidth = table.getClientArea().width;
-                    TableColumn[] columns = table.getColumns();
-                    int calculatedtableWidth = 0;
-
-                    if (e.widget == table) {
-                        int initial[] = { 120, 280 };
-                        int minimums[] = new int[columns.length];
-                        int minSum = 0;
-                        for (int i = 0; i < columns.length; i++) {
-                            // don't make a column narrower than the minimum,
-                            // or than what it is currently if less than the minimum
-                            minimums[i] = Math.min(fWidths[i], initial[i]);
-                            minSum += minimums[i];
-                        }
-
-                        int newWidth = fSum < clientAreaWidth ? clientAreaWidth : Math.max(clientAreaWidth, minSum);
-                        final int toDistribute = newWidth - fSum;
-                        int lastPart = toDistribute;
-                        if (toDistribute != 0) {
-                            int[] iteration = { 0, 1 }; // give the description column all the rest
-                            for (int i = 0; i < iteration.length; i++) {
-                                int c = iteration[i];
-                                int width;
-                                if (fSum > 0) {
-                                    int part;
-                                    if (i == iteration.length - 1)
-                                        part = lastPart;
-                                    else
-                                        // current width is the weight for the distribution of the extra space
-                                        part = toDistribute * fWidths[c] / fSum;
-                                    lastPart -= part;
-                                    width = Math.max(minimums[c], fWidths[c] + part);
-                                } else {
-                                    width = toDistribute * initial[c] / TABLE_WIDTH;
-                                }
-                                columns[c].setWidth(width);
-                                fWidths[c] = width;
-                                calculatedtableWidth += width;
-                            }
-                            fSum = calculatedtableWidth;
-                        }
-                    } else {
-                        // column being resized
-                        // on GTK, the last column gets auto-adapted - ignore this
-                        if (e.widget == columns[2])
-                            return;
-                        for (int i = 0; i < columns.length; i++) {
-                            fWidths[i] = columns[i].getWidth();
-                            calculatedtableWidth += fWidths[i];
-                        }
-                        fSum = calculatedtableWidth;
-                    }
-
-                    // set scroll bar visible
-                    table.getHorizontalBar().setVisible(calculatedtableWidth > clientAreaWidth);
-                } finally {
-                    fIsResizing = false;
-                }
-            }
-        };
-        table.addControlListener(resizer);
-        TableColumn[] columns = table.getColumns();
-        for (int i = 0; i < columns.length; i++) {
-            columns[i].addControlListener(resizer);
+    private void addDialog(MenuData data) {
+        MenuDataDialog dialog = new MenuDataDialog(getShell(), data, commandStore, commandList, false);
+        if (dialog.open() == Window.OK) {
+            menuStore.add(data);
+            refreshTableViewer(data);
+        } else {
+            data = null;
         }
     }
 
     private void addNewDialog() {
-        MenuData dataNew = new MenuData(cmdList.get(0), true);
-        MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, cmdStore, cmdList, false);
-        if (dialog.open() == Window.OK) {
-            menuStore.add(dataNew);
-            refreshTableViewer(dataNew);
-        } else {
-            dataNew = null;
-        }
+        MenuData dataNew = new MenuData(commandList.get(0), true);
+        addDialog(dataNew);
     }
 
     private void addCopyDialog() {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
         MenuData dataSelected = (MenuData)selection.getFirstElement();
         MenuData dataNew = new MenuData(dataSelected, true);
-        MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, cmdStore, cmdList, false);
-        if (dialog.open() == Window.OK) {
-            menuStore.add(dataNew);
-            refreshTableViewer(dataNew);
-        } else {
-            dataNew = null;
-        }
+        addDialog(dataNew);
     }
 
     private void editDialog() {
@@ -472,19 +432,18 @@ public class CommandsPage extends org.eclipse.jface.preference.PreferencePage
         MenuData dataSelected = (MenuData)selection.getFirstElement();
         MenuData dataNew = new MenuData(dataSelected, false);
         dataNew.setPosition(dataSelected.getPosition());
-        MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, cmdStore, cmdList, true);
+        MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, commandStore, commandList, true);
         if (dialog.open() == Window.OK) {
             menuStore.replace(dataNew);
             refreshTableViewer(dataNew);
         } else {
             dataNew = null;
         }
-
     }
 
     private void removeDialog() {
-        String title = Activator.getResourceString("easyshell.page.table.dialog.remove.title");
-        String question = Activator.getResourceString("easyshell.page.table.dialog.remove.question");
+        String title = Activator.getResourceString("easyshell.menu.page.dialog.remove.title");
+        String question = Activator.getResourceString("easyshell.menu.page.dialog.remove.question");
         MessageDialog dialog = new MessageDialog(
                 null, title, null, question,
                 MessageDialog.QUESTION,
