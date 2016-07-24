@@ -104,6 +104,9 @@ public class CommandDataDefaultCollection {
 
     private void addLinuxCommands() {
         // Linux KDE Konsole
+        list.add(new CommandData("51ed300a-35d0-4e67-a5f8-6ebd7012a564", PresetType.presetPlugin, OS.osLinux, "XDG Open", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeDefault,
+                "xdg-open ${easyshell:resource_loc}"));
+        // Linux KDE Konsole
         list.add(new CommandData("c2b1612b-9037-484a-a763-d013679bdbe7", PresetType.presetPlugin, OS.osLinux, "KDE Konsole", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "konsole --workdir ${easyshell:container_loc}"));
         list.add(new CommandData("e634b20a-cf57-47f0-aa27-b8fc95917f35", PresetType.presetPlugin, OS.osLinux, "KDE Konsole", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,

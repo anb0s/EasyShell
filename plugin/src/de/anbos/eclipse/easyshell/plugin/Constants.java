@@ -19,11 +19,12 @@ public interface Constants {
     // Images
     public static final String IMAGE_PATH        = "icons/";
     public static final String IMAGE_UNKNOWN     = "sample.gif";
+    public static final String IMAGE_DEFAULT     = "editor.gif";
     public static final String IMAGE_OPEN        = "prompt.gif";
     public static final String IMAGE_RUN         = "run_exc.gif";
     public static final String IMAGE_EXPLORE     = "fldr_obj.gif";
     public static final String IMAGE_CLIPBOARD   = "copy.gif";
-    public static final String IMAGE_OTHER       = "editor.gif";
+    public static final String IMAGE_OTHER       = "environment_obj.gif";
 
 	// Preferences
     public static final String PREF_COMMANDS_PRESET = "COMMANDS_PRESET";
@@ -33,6 +34,7 @@ public interface Constants {
 
 	// Actions
 	public static final String ACTION_UNKNOWN    = "de.anbos.eclipse.easyshell.plugin.commands.Unknown";
+	public static final String ACTION_DEFAULT    = "de.anbos.eclipse.easyshell.plugin.commands.Default";
 	public static final String ACTION_OPEN       = "de.anbos.eclipse.easyshell.plugin.commands.Open";
 	public static final String ACTION_RUN        = "de.anbos.eclipse.easyshell.plugin.commands.Run";
 	public static final String ACTION_EXPLORE    = "de.anbos.eclipse.easyshell.plugin.commands.Explore";

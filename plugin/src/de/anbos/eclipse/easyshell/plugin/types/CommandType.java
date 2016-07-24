@@ -18,11 +18,12 @@ import de.anbos.eclipse.easyshell.plugin.Constants;
 
 public enum CommandType {
     commandTypeUnknown(-1, "Unknown", Constants.IMAGE_UNKNOWN, Constants.ACTION_UNKNOWN),
-    commandTypeOpen(0, "Open", Constants.IMAGE_OPEN, Constants.ACTION_OPEN),
-    commandTypeRun(1, "Run", Constants.IMAGE_RUN, Constants.ACTION_RUN),
-    commandTypeExplore(2, "Explore", Constants.IMAGE_EXPLORE, Constants.ACTION_EXPLORE),
-    commandTypeClipboard(3, "Clipboard", Constants.IMAGE_CLIPBOARD, Constants.ACTION_CLIPBOARD),
-    commandTypeOther(4, "Other", Constants.IMAGE_OTHER, Constants.ACTION_OTHER);
+    commandTypeDefault(0, "Default", Constants.IMAGE_DEFAULT, Constants.ACTION_DEFAULT),
+    commandTypeOpen(1, "Open", Constants.IMAGE_OPEN, Constants.ACTION_OPEN),
+    commandTypeRun(2, "Run", Constants.IMAGE_RUN, Constants.ACTION_RUN),
+    commandTypeExplore(3, "Explore", Constants.IMAGE_EXPLORE, Constants.ACTION_EXPLORE),
+    commandTypeClipboard(4, "Clipboard", Constants.IMAGE_CLIPBOARD, Constants.ACTION_CLIPBOARD),
+    commandTypeOther(5, "Other", Constants.IMAGE_OTHER, Constants.ACTION_OTHER);
     // attributes
     private final int id;
     private final String name;
