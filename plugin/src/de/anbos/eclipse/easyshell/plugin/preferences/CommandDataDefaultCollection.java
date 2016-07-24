@@ -129,6 +129,11 @@ public class CommandDataDefaultCollection {
                 "pantheon-terminal --working-directory=${easyshell:container_loc}"));
         list.add(new CommandData("22ec69ee-e39e-4fa6-a241-4e950d3235af", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "pantheon-terminal --working-directory=${easyshell:container_loc} --execute=./''${easyshell:resource_name}''"));
+        // Linux Sakura Terminal
+        list.add(new CommandData("8e366a34-5ce2-4430-bc21-20e176e0128c", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", CommandType.commandTypeOpen,
+                "sakura"));
+        list.add(new CommandData("2a979af5-86a7-440e-b4f0-8442e85412e4", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", CommandType.commandTypeRun,
+                "sakura --execute=./''${easyshell:resource_name}'' --hold"));
         // Linux Pantheon Filebrowser
         list.add(new CommandData("025e2f56-3d2e-47e1-8daa-c2c74049b150", PresetType.presetPlugin, OS.osLinux, "Pantheon", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "pantheon-files ${easyshell:resource_loc}"));
