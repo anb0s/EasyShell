@@ -124,19 +124,22 @@ public class CommandDataDefaultCollection {
                 "xfce4-terminal --working-directory=${easyshell:container_loc}"));
         list.add(new CommandData("adf40e10-0ee9-4abe-8282-aff7d51bb68d", PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "xfce4-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}'' --hold"));
-        // Linux Pantheon Terminal
-        list.add(new CommandData("e5b3b0f6-e27c-4a2d-aa1a-caef784dd3da", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
-                "pantheon-terminal --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData("22ec69ee-e39e-4fa6-a241-4e950d3235af", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
-                "pantheon-terminal --working-directory=${easyshell:container_loc} --execute=./''${easyshell:resource_name}''"));
         // Linux Sakura Terminal
         list.add(new CommandData("8e366a34-5ce2-4430-bc21-20e176e0128c", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", CommandType.commandTypeOpen,
                 "sakura"));
         list.add(new CommandData("2a979af5-86a7-440e-b4f0-8442e85412e4", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", CommandType.commandTypeRun,
                 "sakura --execute=./''${easyshell:resource_name}'' --hold"));
+        // Linux Pantheon Terminal
+        list.add(new CommandData("e5b3b0f6-e27c-4a2d-aa1a-caef784dd3da", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
+                "pantheon-terminal --working-directory=${easyshell:container_loc}"));
+        list.add(new CommandData("22ec69ee-e39e-4fa6-a241-4e950d3235af", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
+                "pantheon-terminal --working-directory=${easyshell:container_loc} --execute=./''${easyshell:resource_name}''"));
         // Linux Pantheon Filebrowser
         list.add(new CommandData("025e2f56-3d2e-47e1-8daa-c2c74049b150", PresetType.presetPlugin, OS.osLinux, "Pantheon", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "pantheon-files ${easyshell:resource_loc}"));
+        // Linux PCManFM
+        list.add(new CommandData("cb9a8c00-89bc-453c-aeff-ae94c0d9e44a", PresetType.presetPlugin, OS.osLinux, "PCManFM", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
+                "pcmanfm ${easyshell:container_loc}"));
         // Linux Nautilus
         list.add(new CommandData("1747b189-ed7f-4546-8c98-f99a3c1fb13b", PresetType.presetPlugin, OS.osLinux, "Nautilus", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "nautilus ${easyshell:resource_loc}"));
