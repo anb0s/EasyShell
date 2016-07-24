@@ -129,6 +129,11 @@ public class CommandDataDefaultCollection {
                 "sakura"));
         list.add(new CommandData("2a979af5-86a7-440e-b4f0-8442e85412e4", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", CommandType.commandTypeRun,
                 "sakura --execute=./''${easyshell:resource_name}'' --hold"));
+        // Linux ROXTerm
+        list.add(new CommandData("f573a4de-22fa-467f-a433-042d0992ab28", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", CommandType.commandTypeOpen,
+                "roxterm --title=${easyshell:project_name} --directory=${easyshell:container_loc}"));
+        list.add(new CommandData("1cc39e61-8d8d-4493-8baa-7a11ff01c06c", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", CommandType.commandTypeRun,
+                "roxterm --title=${easyshell:project_name} --directory=${easyshell:container_loc} --execute ./''${easyshell:resource_name}''"));
         // Linux Pantheon Terminal
         list.add(new CommandData("e5b3b0f6-e27c-4a2d-aa1a-caef784dd3da", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "pantheon-terminal --working-directory=${easyshell:container_loc}"));
