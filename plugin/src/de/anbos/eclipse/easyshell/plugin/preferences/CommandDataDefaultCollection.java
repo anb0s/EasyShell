@@ -12,8 +12,11 @@
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.LinuxDesktop;
@@ -118,6 +121,14 @@ public class CommandDataDefaultCollection {
                 "xfce4-terminal --working-directory=${easyshell:container_loc}"));
         list.add(new CommandData("adf40e10-0ee9-4abe-8282-aff7d51bb68d", PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "xfce4-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}'' --hold"));
+        // Linux Pantheon Terminal
+        list.add(new CommandData("e5b3b0f6-e27c-4a2d-aa1a-caef784dd3da", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
+                "pantheon-terminal --working-directory=${easyshell:container_loc}"));
+        list.add(new CommandData("22ec69ee-e39e-4fa6-a241-4e950d3235af", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
+                "pantheon-terminal --working-directory=${easyshell:container_loc} --execute=./''${easyshell:resource_name}''"));
+        // Linux Pantheon Filebrowser
+        list.add(new CommandData("025e2f56-3d2e-47e1-8daa-c2c74049b150", PresetType.presetPlugin, OS.osLinux, "Pantheon", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
+                "pantheon-files ${easyshell:resource_loc}"));
         // Linux Nautilus
         list.add(new CommandData("1747b189-ed7f-4546-8c98-f99a3c1fb13b", PresetType.presetPlugin, OS.osLinux, "Nautilus", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
                 "nautilus ${easyshell:resource_loc}"));
@@ -173,48 +184,62 @@ public class CommandDataDefaultCollection {
             case osUnknown:
                 break;
             case osWindows:
-                listDefault.add(getCommandData(listOS, "DOS-Shell", CommandType.commandTypeOpen));
-                listDefault.add(getCommandData(listOS, "DOS-Shell", CommandType.commandTypeRun));
-                listDefault.add(getCommandData(listOS, "Explorer", CommandType.commandTypeExplore));
+            	addNotNull(listDefault, getCommandData(listOS, "DOS-Shell", CommandType.commandTypeOpen));
+            	addNotNull(listDefault, getCommandData(listOS, "DOS-Shell", CommandType.commandTypeRun));
+                addNotNull(listDefault, getCommandData(listOS, "Explorer", CommandType.commandTypeExplore));
                 break;
             case osLinux:
                 // try to detect the desktop
                 LinuxDesktop desktop = Utils.detectLinuxDesktop();
                 //Activator.getDefault().sysout(true, "Detected linux (Unix) desktop: >" + desktop.getName() + "<");
                 switch (desktop) {
-                    case desktopKde:    listDefault.add(getCommandData(listOS, "KDE", CommandType.commandTypeOpen));
-                                        listDefault.add(getCommandData(listOS, "KDE", CommandType.commandTypeRun));
-                                        listDefault.add(getCommandData(listOS, "Dolphin", CommandType.commandTypeExplore));
+                    case desktopKde:    addNotNull(listDefault, getCommandData(listOS, ".*KDE.*", CommandType.commandTypeOpen));
+                                        addNotNull(listDefault, getCommandData(listOS, ".*KDE.*", CommandType.commandTypeRun));
+                                        //addNotNull(listDefault, getCommandData(listOS, "Dolphin", CommandType.commandTypeExplore));
                     break;
-                    case desktopCinnamon:   listDefault.add(getCommandData(listOS, "Gnome", CommandType.commandTypeOpen));
-                                            listDefault.add(getCommandData(listOS, "Gnome", CommandType.commandTypeRun));
-                                            listDefault.add(getCommandData(listOS, "Nemo", CommandType.commandTypeExplore));
+                    case desktopCinnamon:   addNotNull(listDefault, getCommandData(listOS, ".*Gnome.*", CommandType.commandTypeOpen));
+                                            addNotNull(listDefault, getCommandData(listOS, ".*Gnome.*", CommandType.commandTypeRun));
+                                            //addNotNull(listDefault, getCommandData(listOS, "Nemo", CommandType.commandTypeExplore));
                     break;
-                    case desktopGnome:  listDefault.add(getCommandData(listOS, "Gnome", CommandType.commandTypeOpen));
-                                        listDefault.add(getCommandData(listOS, "Gnome", CommandType.commandTypeRun));
-                                        listDefault.add(getCommandData(listOS, "Nautilus", CommandType.commandTypeExplore));
+                    case desktopGnome:  addNotNull(listDefault, getCommandData(listOS, ".*Gnome.*", CommandType.commandTypeOpen));
+                                        addNotNull(listDefault, getCommandData(listOS, ".*Gnome.*", CommandType.commandTypeRun));
+                                        //addNotNull(listDefault, getCommandData(listOS, "Nautilus", CommandType.commandTypeExplore));
                     break;
-                    case desktopXfce:   listDefault.add(getCommandData(listOS, "Xfce", CommandType.commandTypeOpen));
-                                        listDefault.add(getCommandData(listOS, "Xfce", CommandType.commandTypeRun));
-                                        listDefault.add(getCommandData(listOS, "Thunar", CommandType.commandTypeExplore));
+                    case desktopXfce:   addNotNull(listDefault, getCommandData(listOS, ".*Xfce.*", CommandType.commandTypeOpen));
+                                        addNotNull(listDefault, getCommandData(listOS, ".*Xfce.*", CommandType.commandTypeRun));
+                                        //addNotNull(listDefault, getCommandData(listOS, "Thunar", CommandType.commandTypeExplore));
                     break;
                     default:;
                 }
                 // try to detect the default file browser
                 if (desktop != LinuxDesktop.desktopUnknown) {
-                    String fileBrowser = Utils.detectLinuxDefaultFileBrowser();
-                    //Activator.getDefault().sysout(true, "Detected linux (Unix) default file browser: >" + fileBrowser + "<");
+                    Map<String, Object> fileBrowsers = new HashMap<String, Object>();
+                    for (CommandData data : getCommandDataList(listOS, CommandType.commandTypeExplore)) {
+                    	fileBrowsers.put("(?i).*" + data.getName() + ".*", data);
+                    }
+                    Object fileBrowser = Utils.detectLinuxDefaultFileBrowser(fileBrowsers);
+                    if (fileBrowser != null) {
+                    	CommandData data = (CommandData)fileBrowser;
+                    	Activator.logInfo("Detected linux (Unix) default file browser: >" + data.getName() + "<", null);
+                    	addNotNull(listDefault, data);
+                    }
                 }
                 break;
             case osMacOSX:
-                listDefault.add(getCommandData(listOS, "Terminal", CommandType.commandTypeOpen));
-                listDefault.add(getCommandData(listOS, "Terminal", CommandType.commandTypeRun));
-                listDefault.add(getCommandData(listOS, "Finder", CommandType.commandTypeExplore));
+                addNotNull(listDefault, getCommandData(listOS, "Terminal", CommandType.commandTypeOpen));
+                addNotNull(listDefault, getCommandData(listOS, "Terminal", CommandType.commandTypeRun));
+                addNotNull(listDefault, getCommandData(listOS, "Finder", CommandType.commandTypeExplore));
                 break;
         }
         // add clipboard
-        listDefault.add(getCommandData(listOS, ".*path", CommandType.commandTypeClipboard));
+        addNotNull(listDefault, getCommandData(listOS, ".*path", CommandType.commandTypeClipboard));
         return listDefault;
+    }
+
+    private static void addNotNull(List<CommandData> list, CommandData data) {
+    	if (data != null) {
+    		list.add(data);
+    	}
     }
 
     public static List<CommandData> getCommandData(List<CommandData> list, OS os, boolean sorted) {
@@ -240,6 +265,17 @@ public class CommandDataDefaultCollection {
             }
         }
         return null;
+    }
+
+    private static List<CommandData> getCommandDataList(List<CommandData> list, CommandType type) {
+    	List<CommandData> listOut = new ArrayList<CommandData>();
+        for (CommandData entry : list) {
+            if (entry.getCommandType() == type) {
+            	CommandData newData = new CommandData(entry, false);
+            	listOut.add(newData);
+            }
+        }
+        return listOut;
     }
 
 }

@@ -103,9 +103,9 @@ public class Utils {
         desktops.put("cinnamon", LinuxDesktop.desktopCinnamon);
         desktops.put("xfce", LinuxDesktop.desktopXfce);
         // execute
-        String desktop = Utils.isExpectedCommandOutput(command, desktops, true);
-        if (desktop != null && !desktop.isEmpty()) {
-            return (LinuxDesktop)desktops.get(desktop);
+        Object desktop = Utils.isExpectedCommandOutput(command, desktops);
+        if (desktop != null) {
+            return (LinuxDesktop)desktop;
         }
         return LinuxDesktop.desktopUnknown;
     }
@@ -113,32 +113,23 @@ public class Utils {
     /**
      * detects programs from $DESKTOP_SESSION
      */
-    public static String detectLinuxDefaultFileBrowser() {
+    public static Object detectLinuxDefaultFileBrowser(Map<String, Object> fileBrowsers) {
         ArrayList<String> command = new ArrayList<String>();
         command.add("xdg-mime");
         command.add("query");
         command.add("default");
         command.add("inode/directory");
         // fill the map
-        Map<String, Object> fileBrowsers = new HashMap<String, Object>();
-        fileBrowsers.put("nemo.desktop", "nemo");
-        // execute
-        String fileBrowser = Utils.isExpectedCommandOutput(command, fileBrowsers, true);
-        if (fileBrowser != null && !fileBrowser.isEmpty()) {
-            return (String)fileBrowsers.get(fileBrowser);
+        if (fileBrowsers == null) {
+        	fileBrowsers = new HashMap<String, Object>();
+        	fileBrowsers.put(".*", "*");
         }
-        return null;
+        // execute
+        return Utils.isExpectedCommandOutput(command, fileBrowsers);
     }
 
-    /**
-     * Detects which desktop is used on a unix / linux system.
-     *
-     * @todo use regex
-     *
-     * @return The type of desktop.
-     * @see detectDesktop
-     */
-    private static String isExpectedCommandOutput(ArrayList<String> command, Map<String, Object> expectedOutput, boolean toLowerCase) {
+    private static Object isExpectedCommandOutput(ArrayList<String> command, Map<String, Object> expectedOutput) {
+    	Object obj = null;
         boolean found = false;
         String expectedLine = null;
         try {
@@ -147,46 +138,35 @@ public class Utils {
             String line = null;
             while((line = in.readLine()) != null && !found) {
                 for(String key: expectedOutput.keySet()) {
-                    // in case of * just something should be returned
-                    if (key.indexOf("*") != -1)
-                    {
-                        if (line.isEmpty()) {
-                            found = false;
-                            break;
-                        } else {
-                            found = true;
-                        }
-                    } else {
-                        if (toLowerCase)
-                            line = line.toLowerCase();
-                        if(line.indexOf(key) != -1) {
-                            found = true;
-                        }
-                    }
-                    if (found) {
-                        expectedLine = line;
-                        break;
-                    }
+                	if (line.matches(key)) {
+                		obj = expectedOutput.get(key);
+                		if (obj instanceof String && ((String) obj).indexOf("*") == 0) {
+                			obj = line;
+                		}
+                		expectedLine = line;
+                		break;
+                	}
                 }
             }
+            Activator.logInfo("isExpectedCommandOutput: answer: >" + expectedLine + "<", null);
             line = null;
             BufferedReader err = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
             // If there is any error output, print it to
             // stdout for debugging purposes
             while((line = err.readLine()) != null) {
-                //Activator.getDefault().sysout(true, "detectDesktop stderr >" + line + "<");
+            	Activator.logError("isExpectedCommandOutput: stderr: >" + line + "<", null);
             }
 
             int result = proc.waitFor();
             if(result != 0) {
                 // If there is any error code, print it to
                 // stdout for debugging purposes
-                //Activator.getDefault().sysout(true, "detectDesktop return code: " + result);
+            	Activator.logError("isExpectedCommandOutput: return code: " + result, null);
             }
         } catch(Exception e) {
-            e.printStackTrace();
+        	Activator.logError("isExpectedCommandOutput: exception", e);
         }
-        return expectedLine;
+        return obj;
     }
 
     public static void copyToClipboard(String cmdAll) {
