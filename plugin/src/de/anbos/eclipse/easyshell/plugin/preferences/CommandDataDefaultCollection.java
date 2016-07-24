@@ -143,7 +143,7 @@ public class CommandDataDefaultCollection {
                 "nemo ${easyshell:resource_loc}"));
         // Linux Thunar
         list.add(new CommandData("cf8d4d60-10f4-4a31-a423-676d02d974e0", PresetType.presetPlugin, OS.osLinux, "Thunar", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
-                "thunar ${easyshell:resource_loc}"));
+                "thunar ${easyshell:container_loc}"));
         // Linux Clipboard
         list.add(new CommandData("33043fe3-1a5f-46d7-b94e-9a02ef204e7d", PresetType.presetPlugin, OS.osLinux, "Full path", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeClipboard,
                 "${easyshell:resource_loc}${easyshell:line_separator}"));
@@ -192,7 +192,9 @@ public class CommandDataDefaultCollection {
                 addNotNull(listDefault, getCommandData(listOS, "Explorer", CommandType.commandTypeExplore));
                 break;
             case osLinux:
-                // try to detect the desktop
+                // add default preset for all desktops (XDG-open)
+            	addNotNull(listDefault, getCommandData(listOS, ".*", CommandType.commandTypeDefault));
+            	// try to detect the desktop
                 LinuxDesktop desktop = Utils.detectLinuxDesktop();
                 //Activator.getDefault().sysout(true, "Detected linux (Unix) desktop: >" + desktop.getName() + "<");
                 switch (desktop) {
