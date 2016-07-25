@@ -233,8 +233,12 @@ public class MenuDataDialog extends StatusDialog {
         super.okPressed();
     }
 
-    private void addDialog(CommandData data) {
-        CommandDataDialog dialog = new CommandDataDialog(getShell(), data, false);
+    private void addDialog(CommandData data, boolean copy) {
+        String title = Activator.getResourceString("easyshell.command.editor.dialog.title.new");
+        if (copy) {
+            title = Activator.getResourceString("easyshell.command.editor.dialog.title.copy");
+        }
+        CommandDataDialog dialog = new CommandDataDialog(getShell(), data, title, true);
         if (dialog.open() == Window.OK) {
             addCommand(data);
             refreshCommandCombo();
@@ -269,23 +273,32 @@ public class MenuDataDialog extends StatusDialog {
 
     private void addNewDialog() {
         CommandData data = new CommandData(null, PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOther, "my_new_command");
-        addDialog(data);
+        addDialog(data, false);
     }
 
     private void addCopyDialog() {
         int index = commandCombo.getSelectionIndex();
         CommandData data = new CommandData(cmdList.get(index), true);
         data.setPresetType(PresetType.presetUser);
-        addDialog(data);
+        addDialog(data, true);
     }
 
     private void editDialog() {
         int index = commandCombo.getSelectionIndex();
-        CommandData data = cmdList.get(index);
-        CommandDataDialog dialog = new CommandDataDialog(getShell(), data, true);
-        if (dialog.open() == Window.OK) {
-            replaceCommand(index, data);
-            refreshCommandCombo();
+        CommandData dataSelected = cmdList.get(index);
+        if (dataSelected.getPresetType() == PresetType.presetUser) {
+            CommandData dataNew = new CommandData(dataSelected, false);
+            dataNew.setPosition(dataSelected.getPosition());
+            CommandDataDialog dialog = new CommandDataDialog(getShell(), dataNew, Activator.getResourceString("easyshell.command.editor.dialog.title.edit"), true);
+            if (dialog.open() == Window.OK) {
+                replaceCommand(index, dataNew);
+                refreshCommandCombo();
+            } else {
+                dataNew = null;
+            }
+        } else {
+            CommandDataDialog dialog = new CommandDataDialog(getShell(), dataSelected, Activator.getResourceString("easyshell.command.editor.dialog.title.show"), false);
+            dialog.open();
         }
     }
 
@@ -392,7 +405,7 @@ public class MenuDataDialog extends StatusDialog {
 				data.setCommandData(cmdList.get(index));
 				commandText.setText(data.getCommandData().getCommand());
 				boolean isUserDefined = data.getCommandData().getPresetType() == PresetType.presetUser;
-				editButton.setEnabled(isUserDefined);
+				//editButton.setEnabled(isUserDefined);
 				removeButton.setEnabled(isUserDefined);
 				refreshNameTypeCombo();
 			}

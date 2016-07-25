@@ -244,7 +244,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
                     }
                 }
                 addCopyButton.setEnabled(selected);
-                editButton.setEnabled(selected && !presetSelected);
+                editButton.setEnabled(selected);
                 removeButton.setEnabled(selected && !presetSelected);
             }
         });
@@ -274,21 +274,23 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
       }
 
     private void createColumns(final Composite parent, final TableViewer viewer) {
-        TableViewerColumn viewerColumn1 = new TableViewerColumn(viewer,
-                SWT.NONE);
-        TableColumn column1 = viewerColumn1.getColumn();
-        column1.setText(Activator.getResourceString("easyshell.command.page.header.title.column0"));
-        column1.setWidth(200);
-        column1.setResizable(true);
-        column1.setMoveable(true);
-
-        TableViewerColumn viewerColumn2 = new TableViewerColumn(viewer,
-                SWT.NONE);
-        TableColumn column2 = viewerColumn2.getColumn();
-        column2.setText(Activator.getResourceString("easyshell.command.page.header.title.column1"));
-        column2.setWidth(400);
-        column2.setResizable(true);
-        column2.setMoveable(true);
+        String[] titles = {
+                Activator.getResourceString("easyshell.command.page.header.title.column0"),
+                Activator.getResourceString("easyshell.command.page.header.title.column1"),
+                Activator.getResourceString("easyshell.command.page.header.title.column2"),
+                Activator.getResourceString("easyshell.command.page.header.title.column3")
+        };
+        int[] bounds = { 100, 100, 80, 400 };
+        // create
+        for (int i=0;i<titles.length;i++) {
+            TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
+                    SWT.NONE);
+            TableColumn column = viewerColumn.getColumn();
+            column.setText(titles[i]);
+            column.setWidth(bounds[i]);
+            column.setResizable(true);
+            column.setMoveable(true);
+        }
     }
 
     private void createRemoveButton(Font font, GridData gridData, Composite groupComponent) {
@@ -351,8 +353,12 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         setButtonLayoutData(addNewButton);
     }
 
-    private void addDialog(CommandData data) {
-        CommandDataDialog dialog = new CommandDataDialog(getShell(), data, false);
+    private void addDialog(CommandData data, boolean copy) {
+        String title = Activator.getResourceString("easyshell.command.editor.dialog.title.new");
+        if (copy) {
+            title = Activator.getResourceString("easyshell.command.editor.dialog.title.copy");
+        }
+        CommandDataDialog dialog = new CommandDataDialog(getShell(), data, title, true);
         if (dialog.open() == Window.OK) {
             commandStore.add(data);
             refreshTableViewer(data);
@@ -363,7 +369,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
 
     private void addNewDialog() {
         CommandData dataNew = new CommandData(null, PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOther, "my_new_command");
-        addDialog(dataNew);
+        addDialog(dataNew, false);
     }
 
     private void addCopyDialog() {
@@ -371,7 +377,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         CommandData dataSelected = (CommandData)selection.getFirstElement();
         CommandData dataNew = new CommandData(dataSelected, true);
         dataNew.setPresetType(PresetType.presetUser);
-        addDialog(dataNew);
+        addDialog(dataNew, true);
     }
 
     private void editDialog() {
@@ -380,13 +386,16 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         if (dataSelected.getPresetType() == PresetType.presetUser) {
             CommandData dataNew = new CommandData(dataSelected, false);
             dataNew.setPosition(dataSelected.getPosition());
-            CommandDataDialog dialog = new CommandDataDialog(getShell(), dataNew, true);
+            CommandDataDialog dialog = new CommandDataDialog(getShell(), dataNew, Activator.getResourceString("easyshell.command.editor.dialog.title.edit"), true);
             if (dialog.open() == Window.OK) {
                 commandStore.replace(dataNew);
                 refreshTableViewer(dataNew);
             } else {
                 dataNew = null;
             }
+        } else {
+            CommandDataDialog dialog = new CommandDataDialog(getShell(), dataSelected, Activator.getResourceString("easyshell.command.editor.dialog.title.show"), false);
+            dialog.open();
         }
     }
 

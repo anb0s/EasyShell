@@ -11,6 +11,7 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.swt.SWT;
@@ -39,7 +40,7 @@ import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 public class CommandDataDialog extends StatusDialog {
 
     private CommandData data;
-
+    private boolean edit;
     private Combo  resourceTypeCombo;
     private Combo  commandTypeCombo;
     private Text    nameText;
@@ -47,18 +48,19 @@ public class CommandDataDialog extends StatusDialog {
     private Text    dirText;
     private Text    valueText;
 
-    public CommandDataDialog(Shell parent, CommandData data, boolean edit) {
+    @Override
+    public void create() {
+        super.create();
+        getButton(IDialogConstants.OK_ID).setEnabled(edit);
+    }
+
+    public CommandDataDialog(Shell parent, CommandData data, String title, boolean edit) {
         super(parent);
         this.data = data;
+        this.edit = edit;
         // do layout and title
         setShellStyle(getShellStyle() | SWT.MAX);
         // set title
-        String title = null;
-        if(edit) {
-            title = Activator.getResourceString("easyshell.command.editor.dialog.title.edit");
-        } else {
-            title = Activator.getResourceString("easyshell.command.editor.dialog.title.new");
-        }
         setTitle(title);
     }
 
@@ -151,7 +153,7 @@ public class CommandDataDialog extends StatusDialog {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 //Button button = (Button)e.getSource();
-                dirText.setEnabled(dirCheckBox.getSelection());
+                dirText.setEditable(dirCheckBox.getSelection());
                 if (!dirText.getEnabled() && dirText.getText().isEmpty()) {
                     dirText.setText(data.getWorkingDirectory());
                 }
@@ -163,6 +165,7 @@ public class CommandDataDialog extends StatusDialog {
             }
         });
         dirCheckBox.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.button.tooltip.useworkdir"));
+        dirCheckBox.setEnabled(edit);
     }
 
     private void createVariableLabel(Composite parent, String varText, String labelText) {
@@ -172,19 +175,16 @@ public class CommandDataDialog extends StatusDialog {
         styledTextWidget.setEditable(false);
         styledTextWidget.setCaret(null); //Set caret null this will hide caret
         styledTextWidget.addMouseListener(new MouseListener() {
-
             @Override
             public void mouseUp(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
-
             @Override
             public void mouseDown(MouseEvent e) {
                 // TODO Auto-generated method stub
 
             }
-
             @Override
             public void mouseDoubleClick(MouseEvent e) {
                 StyledText text = (StyledText)(e.getSource());
@@ -223,15 +223,17 @@ public class CommandDataDialog extends StatusDialog {
     }
 
     protected void okPressed() {
-        if (!validateValues()) {
-            return;
+        if (edit) {
+            if (!validateValues()) {
+                return;
+            }
+            data.setResourceType(ResourceType.getFromName(resourceTypeCombo.getText()));
+            data.setCommandType(CommandType.getFromName(commandTypeCombo.getText()));
+            data.setName(nameText.getText());
+            data.setUseWorkingDirectory(dirCheckBox.getSelection());
+            data.setWorkingDirectory(dirText.getText());
+            data.setCommand(valueText.getText());
         }
-        data.setResourceType(ResourceType.getFromName(resourceTypeCombo.getText()));
-        data.setCommandType(CommandType.getFromName(commandTypeCombo.getText()));
-        data.setName(nameText.getText());
-        data.setUseWorkingDirectory(dirCheckBox.getSelection());
-        data.setWorkingDirectory(dirText.getText());
-        data.setCommand(valueText.getText());
         super.okPressed();
     }
 
@@ -309,6 +311,7 @@ public class CommandDataDialog extends StatusDialog {
                 return;
             }
         }
+        resourceTypeCombo.setEnabled(edit);
     }
 
     private void createCommandTypeCombo(Composite parent) {
@@ -338,6 +341,7 @@ public class CommandDataDialog extends StatusDialog {
                 return;
             }
         }
+        commandTypeCombo.setEnabled(edit);
     }
 
     private Text createTextField(Composite parent, String labelText, String editValue, boolean emptyLabel) {
@@ -352,6 +356,7 @@ public class CommandDataDialog extends StatusDialog {
         Text text = new Text(parent,SWT.BORDER);
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         text.setText(editValue);
+        text.setEditable(edit);
         return text;
     }
 
