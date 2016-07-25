@@ -29,7 +29,13 @@ public class CommandTableFilter extends ViewerFilter {
             return true;
         }
         CommandData data = (CommandData) element;
+        if (data.getCommandType().getName().matches(searchString)) {
+            return true;
+        }
         if (data.getName().matches(searchString)) {
+            return true;
+        }
+        if (data.getPresetType().getName().matches(searchString)) {
             return true;
         }
         if (data.getCommand().matches(searchString)) {

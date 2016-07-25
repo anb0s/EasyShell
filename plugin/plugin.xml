@@ -68,7 +68,7 @@
             category="de.anbos.eclipse.easyshell.plugin.preferences.MainPage"
             class="de.anbos.eclipse.easyshell.plugin.preferences.MenuPage"
             id="de.anbos.eclipse.easyshell.plugin.preferences.MenuPage"
-            name="Menu">
+            name="(1) Menu">
       </page>
       <page
             class="de.anbos.eclipse.easyshell.plugin.preferences.MainPage"
@@ -79,7 +79,7 @@
             category="de.anbos.eclipse.easyshell.plugin.preferences.MainPage"
             class="de.anbos.eclipse.easyshell.plugin.preferences.CommandPage"
             id="de.anbos.eclipse.easyshell.plugin.preferences.CommandPage"
-            name="Command">
+            name="(2) Command">
       </page>
    </extension>
    <extension

@@ -82,17 +82,17 @@ public class CommandDataDefaultCollection {
         // Windows Console
         list.add(new CommandData("60fd43d2-d837-41d1-aaa3-3f5cab6bf0fb", PresetType.presetPlugin, OS.osWindows, "Console", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "console.exe -w \"${easyshell:project_name}\" -d ${easyshell:container_loc}"));
-        list.add(new CommandData("af6d97f2-f0a8-46e2-8234-74c0ee3e6007", PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
+        list.add(new CommandData("af6d97f2-f0a8-46e2-8234-74c0ee3e6007", PresetType.presetPlugin, OS.osWindows, "Console", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "console.exe -w \"${easyshell:project_name}\" -d ${easyshell:container_loc} -r \"/k\\\"${easyshell:resource_name}\\\"\""));
         // Windows Git-Bash
         list.add(new CommandData("24419204-c8e5-4d79-a7b8-b14e93077cf0", PresetType.presetPlugin, OS.osWindows, "Git-Bash", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i"));
-        list.add(new CommandData("ee790c7f-9c6d-40f9-84f6-51a948a59d45", PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
+        list.add(new CommandData("ee790c7f-9c6d-40f9-84f6-51a948a59d45", PresetType.presetPlugin, OS.osWindows, "Git-Bash", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''${easyshell:resource_name}''"));
         // Windows ConEmu
         list.add(new CommandData("1bd62e22-cd93-4136-b643-1cbb9579c195", PresetType.presetPlugin, OS.osWindows, "ConEmu", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOpen,
                 "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd cmd"));
-        list.add(new CommandData("c2b73077-ffd9-4fb7-9793-189be9f13ebb", PresetType.presetPlugin, OS.osWindows, "Cygwin (Bash)", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
+        list.add(new CommandData("c2b73077-ffd9-4fb7-9793-189be9f13ebb", PresetType.presetPlugin, OS.osWindows, "ConEmu", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeRun,
                 "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd \"${easyshell:resource_name}\""));
         // Windows TotalCommander
         list.add(new CommandData("e487327c-dfdb-42e7-bf16-3b81a34e5703", PresetType.presetPlugin, OS.osWindows, "TotalCommander", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeExplore,
