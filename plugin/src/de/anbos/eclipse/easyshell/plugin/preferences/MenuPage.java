@@ -107,10 +107,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         int result = dialog.open();
         if (result == 0) {
             menuStore.loadDefaults();
-            tableViewer.refresh();
-            for (MenuData item : menuStore.getDataList()) {
-                tableViewer.setChecked(item, true);
-            }
+            refreshTableViewer();
         }
     }
 
@@ -147,10 +144,12 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         // buttons
         createButtons(pageComponent);
 
-        // send event to refresh tableViewer
+        // refresh the viewer
+        refreshTableViewer();
+
+        // send event to refresh tableViewer selection
         Event event = new Event();
         event.item = null;
-        tableViewer.refresh();
         tableViewer.getTable().notifyListeners(SWT.Selection, event);
 
         return pageComponent;
@@ -180,7 +179,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         searchText.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent ke) {
               filter.setSearchText(searchText.getText());
-              tableViewer.refresh();
+              refreshTableViewer();
             }
 
         });
@@ -223,15 +222,13 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
 
         tableViewer.setLabelProvider(new MenuDataLabelProvider());
         tableViewer.setContentProvider(new MenuDataContentProvider());
-        tableViewer.addFilter(filter);
+        if (filter != null) {
+            tableViewer.addFilter(filter);
+        }
 
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
         tableViewer.setInput(menuStore);
-
-        // update/set checked elements
-        tableViewer.setAllChecked(false);
-        tableViewer.setCheckedElements(menuStore.getEnabledCommandMenuDataArray());
 
         // Layout the viewer
         GridData gridData = new GridData();
@@ -457,7 +454,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
                 MenuData data = (MenuData) elements.next();
                 menuStore.delete(data);
             }
-            tableViewer.refresh();
+            refreshTableViewer();
         }
     }
 
@@ -475,6 +472,13 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         tableViewer.refresh();
         tableViewer.setChecked(data, data.isEnabled());
         tableViewer.setSelection(new StructuredSelection(data));
+    }
+
+    private void refreshTableViewer() {
+        tableViewer.refresh();
+        // update/set checked elements
+        tableViewer.setAllChecked(false);
+        tableViewer.setCheckedElements(menuStore.getEnabledCommandMenuDataArray());
     }
 
 }

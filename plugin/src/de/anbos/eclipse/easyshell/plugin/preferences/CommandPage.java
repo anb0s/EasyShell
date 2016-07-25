@@ -205,7 +205,9 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
 
         tableViewer.setLabelProvider(new CommandDataLabelProvider());
         tableViewer.setContentProvider(new CommandDataContentProvider());
-        tableViewer.addFilter(filter);
+        if (filter != null) {
+            tableViewer.addFilter(filter);
+        }
 
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
