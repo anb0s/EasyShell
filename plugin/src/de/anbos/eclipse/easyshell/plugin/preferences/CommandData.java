@@ -14,6 +14,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
+import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
@@ -29,10 +30,11 @@ public class CommandData extends Data {
     private ResourceType resourceType = ResourceType.resourceTypeUnknown;
     private boolean useWorkingDirectory = false;
     private String workingDirectory = "";
+    private Category category = Category.categoryUnknown;
     private CommandType commandType = CommandType.commandTypeUnknown;
     private String command = "";
 
-    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, CommandType cmdType, String command) {
+    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, Category category, CommandType cmdType, String command) {
         super(id);
         this.presetType = presetType;
         this.os = os;
@@ -40,16 +42,17 @@ public class CommandData extends Data {
         this.resourceType = resType;
         this.useWorkingDirectory = useWorkingDirectory;
         this.workingDirectory = workingDirectory;
+        this.category = category;
         this.commandType = cmdType;
         this.command = command;
     }
 
-    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, CommandType cmdType, String command) {
-        this(id, presetType, os, name, resType, false, "${easyshell:container_loc}", cmdType, command);
+    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, Category category, CommandType cmdType, String command) {
+        this(id, presetType, os, name, resType, false, "${easyshell:container_loc}", category, cmdType, command);
     }
 
     public CommandData(CommandData commandData, String newId) {
-        this(newId, commandData.getPresetType(), commandData.getOs(), commandData.getName(), commandData.getResourceType(), commandData.isUseWorkingDirectory(), commandData.getWorkingDirectory(), commandData.getCommandType(), commandData.getCommand());
+        this(newId, commandData.getPresetType(), commandData.getOs(), commandData.getName(), commandData.getResourceType(), commandData.isUseWorkingDirectory(), commandData.getWorkingDirectory(), commandData.getCategory(), commandData.getCommandType(), commandData.getCommand());
     }
 
     public CommandData(CommandData commandData, boolean generateNewId) {
@@ -83,6 +86,10 @@ public class CommandData extends Data {
         return workingDirectory;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
     public CommandType getCommandType() {
         return commandType;
     }
@@ -113,6 +120,10 @@ public class CommandData extends Data {
 
     public void setWorkingDirectory(String workingDirectory) {
         this.workingDirectory = workingDirectory;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public void setCommandType(CommandType cmdType) {
@@ -162,12 +173,16 @@ public class CommandData extends Data {
 		if (version.getId() >= Version.v2_0_003.getId()) {
 		    setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
 		    setWorkingDirectory(tokenizer.nextToken());
+		    setCategory(Category.getFromEnum(tokenizer.nextToken()));
+		    setCommandType(CommandType.getFromEnum(tokenizer.nextToken()));
 		} else {
 		    setUseWorkingDirectory(false);
 		    setWorkingDirectory("${easyshell:container_loc}");
+		    String commandTypeStr = tokenizer.nextToken();
+		    setCategory(Category.getFromDeprecatedCommandTypeEnum(commandTypeStr));
+		    setCommandType(CommandType.getFromDeprecatedCommandTypeEnum(commandTypeStr));
 		}
 		// go on compatible
-		setCommandType(CommandType.getFromEnum(tokenizer.nextToken()));
 		setCommand(tokenizer.nextToken());
 		return true;
 	}
@@ -186,6 +201,7 @@ public class CommandData extends Data {
         if (version.getId() >= Version.v2_0_003.getId()) {
             ret += Boolean.toString(isUseWorkingDirectory()) + delimiter;
             ret += getWorkingDirectory() + delimiter;
+            ret += getCategory().toString() + delimiter;
         }
         ret += getCommandType().toString() + delimiter;
         ret += getCommand() + delimiter;

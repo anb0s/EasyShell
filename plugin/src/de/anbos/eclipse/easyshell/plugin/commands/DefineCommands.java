@@ -49,7 +49,7 @@ public class DefineCommands extends ExtensionContributionFactory {
                     item.getCommandData().getCommand(),
                     "de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
                     item.getCommandData().isUseWorkingDirectory() ? item.getCommandData().getWorkingDirectory() : "",
-                    item.getCommandData().getCommandType().getIcon());
+                    item.getCommandData().getCategory().getIcon());
         }
 	}
 

@@ -26,7 +26,7 @@ public class MenuDataLabelProvider extends LabelProvider implements ITableLabelP
         MenuData data = (MenuData)element;
         switch(columnIndex) {
             case 0:
-                return new Image(null, Activator.getImageDescriptor(data.getCommandData().getCommandType().getIcon()).getImageData());
+                return new Image(null, Activator.getImageDescriptor(data.getCommandData().getCategory().getIcon()).getImageData());
             default:
                 return null;
         }

@@ -26,7 +26,7 @@ public class CommandDataLabelProvider extends LabelProvider implements ITableLab
         CommandData data = (CommandData)element;
         switch(columnIndex) {
             case 0:
-                return new Image(null, Activator.getImageDescriptor(data.getCommandType().getIcon()).getImageData());
+                return new Image(null, Activator.getImageDescriptor(data.getCategory().getIcon()).getImageData());
             default:
                 return null;
         }
@@ -39,7 +39,7 @@ public class CommandDataLabelProvider extends LabelProvider implements ITableLab
         CommandData data = (CommandData)element;
         switch(columnIndex) {
             case 0:
-                return data.getCommandType().getName();
+                return data.getCategory().getName();
             case 1:
                 return data.getName();
             case 2:

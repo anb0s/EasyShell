@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Text;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Utils;
+import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
@@ -272,7 +273,7 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void addNewDialog() {
-        CommandData data = new CommandData(null, PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, CommandType.commandTypeOther, "my_new_command");
+        CommandData data = new CommandData(null, PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, Category.categoryOther, CommandType.commandTypeExecute, "my_new_command");
         addDialog(data, false);
     }
 
@@ -369,7 +370,7 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private String getCommandAsComboName(CommandData data) {
-        return data.getPresetType().getName() + " - " + data.getOs().getName() + " - " + data.getCommandType().getName() + " - " + data.getName();
+        return data.getPresetType().getName() + " - " + data.getOs().getName() + " - " + data.getCategory().getName() + " - " + data.getName();
     }
 
     private String[] getAllCommandsAsComboNames(List<CommandData> list) {

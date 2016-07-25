@@ -12,28 +12,24 @@
 package de.anbos.eclipse.easyshell.plugin.types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.anbos.eclipse.easyshell.plugin.Constants;
 
 public enum CommandType {
-    commandTypeUnknown(-1, "Unknown", Constants.IMAGE_UNKNOWN, Constants.ACTION_UNKNOWN),
-    commandTypeDefault(0, "Default", Constants.IMAGE_DEFAULT, Constants.ACTION_DEFAULT),
-    commandTypeOpen(1, "Open", Constants.IMAGE_OPEN, Constants.ACTION_OPEN),
-    commandTypeRun(2, "Run", Constants.IMAGE_RUN, Constants.ACTION_RUN),
-    commandTypeExplore(3, "Explore", Constants.IMAGE_EXPLORE, Constants.ACTION_EXPLORE),
-    commandTypeClipboard(4, "Clipboard", Constants.IMAGE_CLIPBOARD, Constants.ACTION_CLIPBOARD),
-    commandTypeOther(5, "Other", Constants.IMAGE_OTHER, Constants.ACTION_OTHER);
+    commandTypeUnknown(-1, "Unknown", Constants.ACTION_UNKNOWN),
+    commandTypeExecute(0, "Execute", Constants.ACTION_EXECUTE),
+    commandTypeClipboard(1, "Clipboard", Constants.ACTION_CLIPBOARD);
     // attributes
     private final int id;
     private final String name;
-    private final String icon;
     private final String action;
     // construct
-    CommandType(int id, String name, String icon, String action) {
+    CommandType(int id, String name, String action) {
         this.id = id;
         this.name = name;
-        this.icon = icon;
         this.action = action;
     }
     public int getId() {
@@ -41,9 +37,6 @@ public enum CommandType {
     }
     public String getName() {
         return name;
-    }
-    public String getIcon() {
-        return icon;
     }
     public String getAction() {
         return action;
@@ -71,6 +64,22 @@ public enum CommandType {
     public static CommandType getFromEnum(String name) {
         return CommandType.valueOf(name);
     }
+    public static CommandType getFromDeprecatedCommandTypeEnum(String name) {
+        // set mapping
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("commandTypeOpen", commandTypeExecute);
+        map.put("commandTypeRun", commandTypeExecute);
+        map.put("commandTypeExplore", commandTypeExecute);
+        map.put("commandTypeClipboard", commandTypeClipboard);
+        map.put("commandTypeOther", commandTypeExecute);
+        // find the key
+        for(String key: map.keySet()) {
+            if (name.equals(key)) {
+                return (CommandType)map.get(key);
+            }
+        }
+        return commandTypeUnknown;
+    }
     public static CommandType getFromAction(String action) {
         CommandType ret = commandTypeUnknown;
         for(int i = 0; i < CommandType.values().length; i++) {
@@ -97,15 +106,6 @@ public enum CommandType {
             arr[i] = list.get(i);
         }
         return arr;
-    }
-    public static List<String> getIconsAsList() {
-        List<String> list = new ArrayList<String>();
-        for(int i = 0; i < CommandType.values().length; i++) {
-            if (CommandType.values()[i] != commandTypeUnknown) {
-                list.add(CommandType.values()[i].getIcon());
-            }
-        }
-        return list;
     }
     public static List<String> getActionsAsList() {
         List<String> list = new ArrayList<String>();

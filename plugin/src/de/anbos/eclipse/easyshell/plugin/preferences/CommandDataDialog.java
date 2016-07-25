@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Text;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Utils;
+import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 
@@ -41,8 +42,9 @@ public class CommandDataDialog extends StatusDialog {
 
     private CommandData data;
     private boolean edit;
-    private Combo  resourceTypeCombo;
-    private Combo  commandTypeCombo;
+    private Combo   resourceTypeCombo;
+    private Combo   categoryCombo;
+    private Combo   commandTypeCombo;
     private Text    nameText;
     private Button  dirCheckBox;
     private Text    dirText;
@@ -96,6 +98,8 @@ public class CommandDataDialog extends StatusDialog {
         pageGroup1.setFont(parent.getFont());
         // create resource type combo
         createResourceTypeCombo(pageGroup1);
+        // create category combo
+        createCategoryCombo(pageGroup1);
         // create command type combo
         createCommandTypeCombo(pageGroup1);
         //create input nameText field
@@ -131,6 +135,8 @@ public class CommandDataDialog extends StatusDialog {
         refreshResourceTypeCombo();
 
         refreshDirCheckBox();
+
+        refreshCategoryCombo();
 
         refreshCommandTypeCombo();
 
@@ -208,6 +214,13 @@ public class CommandDataDialog extends StatusDialog {
         resourceTypeCombo.notifyListeners(SWT.Selection, event);
     }
 
+    private void refreshCategoryCombo() {
+        // send event to refresh
+        Event event = new Event();
+        event.item = null;
+        categoryCombo.notifyListeners(SWT.Selection, event);
+    }
+
     private void refreshCommandTypeCombo() {
         // send event to refresh
         Event event = new Event();
@@ -227,11 +240,12 @@ public class CommandDataDialog extends StatusDialog {
             if (!validateValues()) {
                 return;
             }
-            data.setResourceType(ResourceType.getFromName(resourceTypeCombo.getText()));
-            data.setCommandType(CommandType.getFromName(commandTypeCombo.getText()));
             data.setName(nameText.getText());
+            data.setResourceType(ResourceType.getFromName(resourceTypeCombo.getText()));
             data.setUseWorkingDirectory(dirCheckBox.getSelection());
             data.setWorkingDirectory(dirText.getText());
+            data.setCategory(Category.getFromName(categoryCombo.getText()));
+            data.setCommandType(CommandType.getFromName(commandTypeCombo.getText()));
             data.setCommand(valueText.getText());
         }
         super.okPressed();
@@ -247,7 +261,13 @@ public class CommandDataDialog extends StatusDialog {
             return false;
         }
 
-    	// check type
+        // check command type
+        if ( (categoryCombo.getText() == null) || (categoryCombo.getText().length() <= 0)) {
+            MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.command.editor.dialog.error.text.category"));
+            return false;
+        }
+
+    	// check command type
         if ( (commandTypeCombo.getText() == null) || (commandTypeCombo.getText().length() <= 0)) {
         	MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.command.editor.dialog.error.text.type"));
         	return false;
@@ -286,7 +306,7 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createResourceTypeCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo2"));
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.resource"));
         createLabel(parent, "");
         // draw combo
         resourceTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
@@ -314,9 +334,38 @@ public class CommandDataDialog extends StatusDialog {
         resourceTypeCombo.setEnabled(edit);
     }
 
+    private void createCategoryCombo(Composite parent) {
+        // draw label
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.category"));
+        createLabel(parent, "");
+        // draw combo
+        categoryCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
+        categoryCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        categoryCombo.setItems(Category.getNamesAsArray());
+        categoryCombo.select(0);
+        categoryCombo.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                //String text = typeCombo.getItem(typeCombo.getSelectionIndex());
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // TODO Auto-generated method stub
+            }
+        });
+        String[] items = categoryCombo.getItems();
+        for(int i = 0 ; i < items.length ; i++) {
+            if(items[i].equals(this.data.getCategory().getName())) {
+                categoryCombo.select(i);
+                return;
+            }
+        }
+        categoryCombo.setEnabled(edit);
+    }
+
     private void createCommandTypeCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo1"));
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.type"));
         createLabel(parent, "");
         // draw combo
         commandTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);

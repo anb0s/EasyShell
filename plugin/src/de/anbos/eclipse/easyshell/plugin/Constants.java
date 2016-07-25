@@ -34,10 +34,6 @@ public interface Constants {
 
 	// Actions
 	public static final String ACTION_UNKNOWN    = "de.anbos.eclipse.easyshell.plugin.commands.Unknown";
-	public static final String ACTION_DEFAULT    = "de.anbos.eclipse.easyshell.plugin.commands.Default";
-	public static final String ACTION_OPEN       = "de.anbos.eclipse.easyshell.plugin.commands.Open";
-	public static final String ACTION_RUN        = "de.anbos.eclipse.easyshell.plugin.commands.Run";
-	public static final String ACTION_EXPLORE    = "de.anbos.eclipse.easyshell.plugin.commands.Explore";
+	public static final String ACTION_EXECUTE    = "de.anbos.eclipse.easyshell.plugin.commands.Execute";
 	public static final String ACTION_CLIPBOARD  = "de.anbos.eclipse.easyshell.plugin.commands.Clipboard";
-	public static final String ACTION_OTHER      = "de.anbos.eclipse.easyshell.plugin.commands.Other";
 }

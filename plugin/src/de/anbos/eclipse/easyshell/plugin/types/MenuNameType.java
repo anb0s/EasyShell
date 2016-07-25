@@ -17,9 +17,9 @@ import java.util.List;
 public enum MenuNameType {
     menuNameTypeUnknown(-1, "Unknown", ""),
     menuNameTypeUser(0, "User defined", "${easyshell:command_name}"),
-    menuNameTypeGeneric1(1, "<type>: <name>", "${easyshell:command_type}: ${easyshell:command_name}"),
-    menuNameTypeGeneric2(2, "<type> with <name>", "${easyshell:command_type} with ${easyshell:command_name}"),
-    menuNameTypeGeneric3(3, "<type> with <os> <name>", "${easyshell:command_type} with ${easyshell:command_os} ${easyshell:command_name}");
+    menuNameTypeGeneric1(1, "<category>: <name>", "${easyshell:command_category}: ${easyshell:command_name}"),
+    menuNameTypeGeneric2(2, "<category> with <name>", "${easyshell:command_category} with ${easyshell:command_name}"),
+    menuNameTypeGeneric3(3, "<category> with <os> <name>", "${easyshell:command_category} with ${easyshell:command_os} ${easyshell:command_name}");
     // attributes
     private final int id;
     private final String name;

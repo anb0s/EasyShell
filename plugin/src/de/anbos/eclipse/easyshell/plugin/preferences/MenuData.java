@@ -70,7 +70,12 @@ public class MenuData extends Data {
     }
 
     public String getNameExpanded() {
-        return namePattern.replace("${easyshell:command_type}", getCommandData().getCommandType().getName()).replace("${easyshell:command_name}", getCommandData().getName()).replace("${easyshell:command_os}", getCommandData().getOs().getName());
+        String expanded = namePattern;
+        expanded = expanded.replace("${easyshell:command_category}", getCommandData().getCategory().getName());
+        expanded = expanded.replace("${easyshell:command_type}", getCommandData().getCommandType().getName());
+        expanded = expanded.replace("${easyshell:command_name}", getCommandData().getName());
+        expanded = expanded.replace("${easyshell:command_os}", getCommandData().getOs().getName());
+        return expanded;
     }
 
 	public CommandData getCommandData() {
@@ -129,6 +134,13 @@ public class MenuData extends Data {
             // if not found set the readed value
             if (nameType == MenuNameType.menuNameTypeUser) {
                 setNamePattern(namePatternReaded);
+            }
+        } else if (version.getId() < Version.v2_0_003.getId()) {
+            setNameType(nameType);
+            if (nameType == MenuNameType.menuNameTypeUser) {
+                setNamePattern(namePatternReaded);
+            } else {
+                setNamePattern(nameType.getPattern());
             }
         } else {
             setNameType(nameType);
