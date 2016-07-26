@@ -132,6 +132,9 @@ public class CommandDataDialog extends StatusDialog {
         createVariableLabel(pageGroup2, "${easyshell:project_name}", "is the project name");
         createVariableLabel(pageGroup2, "${easyshell:line_separator}", "is the line separator");
 
+        // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61
+        setHelpAvailable(false);
+
         refreshResourceTypeCombo();
 
         refreshDirCheckBox();

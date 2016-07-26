@@ -13,12 +13,10 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -152,6 +150,9 @@ public class MenuDataDialog extends StatusDialog {
         createEditButton(font, pageGroup2, gridData2);
         createLabel(pageGroup2, "");createLabel(pageGroup2, "");
         createRemoveButton(font, pageGroup2, gridData2);
+
+        // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61
+        setHelpAvailable(false);
 
         refreshCommandCombo();
 
