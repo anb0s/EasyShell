@@ -14,6 +14,9 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
+import org.eclipse.swt.graphics.Image;
+
+import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
@@ -98,6 +101,9 @@ public class CommandData extends Data {
         return command;
     }
 
+    public Image getCategoryImage() {
+        return new Image(null, Activator.getImageDescriptor(getCategory().getIcon()).getImageData());
+    }
     public String getCommandAsComboName() {
         return getCategory().getName() + " - " + getName() + " (" + getPresetType().getName() + ")" /*+ getOs().getName() + " - "*/;
     }

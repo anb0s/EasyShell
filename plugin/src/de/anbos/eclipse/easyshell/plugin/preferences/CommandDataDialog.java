@@ -20,6 +20,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -43,6 +44,7 @@ public class CommandDataDialog extends StatusDialog {
     private CommandData data;
     private boolean edit;
     private Combo   resourceTypeCombo;
+    private Label   categoryImage;
     private Combo   categoryCombo;
     private Combo   commandTypeCombo;
     private Text    nameText;
@@ -150,6 +152,13 @@ public class CommandDataDialog extends StatusDialog {
         Label label = new Label(parent, SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
         label.setText(name);
+    }
+
+    private Label createImageLabel(Composite parent, String image) {
+        Label label = new Label(parent, SWT.LEFT);
+        label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+        label.setImage(new Image(null, Activator.getImageDescriptor(image).getImageData()));
+        return label;
     }
 
     private void createDirCheckBox(Composite parent) {
@@ -340,7 +349,7 @@ public class CommandDataDialog extends StatusDialog {
     private void createCategoryCombo(Composite parent) {
         // draw label
         createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.category"));
-        createLabel(parent, "");
+        categoryImage = createImageLabel(parent, Category.categoryDefault.getIcon());
         // draw combo
         categoryCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         categoryCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -349,7 +358,8 @@ public class CommandDataDialog extends StatusDialog {
         categoryCombo.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                //String text = typeCombo.getItem(typeCombo.getSelectionIndex());
+                String text = categoryCombo.getItem(categoryCombo.getSelectionIndex());
+                categoryImage.setImage(new Image(null, Activator.getImageDescriptor(Category.getFromName(text).getIcon()).getImageData()));
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
