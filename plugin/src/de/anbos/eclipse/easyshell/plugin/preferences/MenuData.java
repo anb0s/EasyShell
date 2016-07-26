@@ -46,6 +46,7 @@ public class MenuData extends Data {
 
     public MenuData(String newId, MenuData data) {
         this(newId, data.getCommandData());
+        this.enabled = data.isEnabled();
         this.nameType = data.getNameType();
         this.namePattern = data.getNamePattern();
     }

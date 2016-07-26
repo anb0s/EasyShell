@@ -16,10 +16,20 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 
 public class CommandDataStore extends DataStore<CommandData> {
+
+    private static CommandDataStore instance = null;
+
+    public static CommandDataStore instance() {
+        if (instance == null) {
+            instance = new CommandDataStore(Activator.getDefault().getPreferenceStore());
+        }
+        return instance;
+    }
 
     public CommandDataStore(IPreferenceStore store) {
         super(store);

@@ -12,10 +12,13 @@
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -47,7 +50,6 @@ import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
 public class MenuDataDialog extends StatusDialog {
 
     private MenuData data;
-    private CommandDataStore cmdStore;
     private List<CommandData> cmdList;
 
     private Button  enabledCheckBox;
@@ -62,10 +64,9 @@ public class MenuDataDialog extends StatusDialog {
     private Button editButton;
     private Button removeButton;
 
-    public MenuDataDialog(Shell parent, MenuData data, CommandDataStore cmdStore, List<CommandData> cmdList, boolean edit) {
+    public MenuDataDialog(Shell parent, MenuData data, List<CommandData> cmdList, boolean edit) {
         super(parent);
         this.data = data;
-        this.cmdStore = cmdStore;
         this.cmdList = cmdList;
         // do layout and title
         setShellStyle(getShellStyle() | SWT.MAX);
@@ -247,8 +248,8 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void addCommand(CommandData data) {
-        cmdStore.add(data);
-        cmdStore.save();
+        CommandDataStore.instance().add(data);
+        CommandDataStore.instance().save();
         cmdList.add(data);
         String[] names = getAllCommandsAsComboNames(cmdList);
         commandCombo.setItems(names);
@@ -256,15 +257,15 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void replaceCommand(int index, CommandData data) {
-        cmdStore.replace(data);
-        cmdStore.save();
-        commandCombo.setItem(index, getCommandAsComboName(data));
+        CommandDataStore.instance().replace(data);
+        CommandDataStore.instance().save();
+        commandCombo.setItem(index, data.getCommandAsComboName());
         commandCombo.select(index);
     }
 
     private void removeCommand(int index, CommandData data) {
-        cmdStore.delete(data);
-        cmdStore.save();
+        CommandDataStore.instance().delete(data);
+        CommandDataStore.instance().save();
         //cmdList.remove(data); // no need to search for data, use index instead:
         cmdList.remove(index);
         String[] names = getAllCommandsAsComboNames(cmdList);
@@ -304,19 +305,43 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void removeDialog() {
+        // get the selected commands and referenced menus as lists
+        List<CommandData> commands = new ArrayList<CommandData>();
+        List<MenuData> menus = new ArrayList<MenuData>();
+        // get the selected
         int index = commandCombo.getSelectionIndex();
+        CommandData data = cmdList.get(index);
+        commands.add(data);
+        // get referenced menus and remove the the actual menus
+        menus.addAll(MenuDataStore.instance().getRefencedBy(data.getId()));
+        menus.remove(this.data);
+        // ask user
+        String commandNames = commandCombo.getItem(index);
         String title = Activator.getResourceString("easyshell.menu.editor.dialog.title.remove");
         String question = MessageFormat.format(
                 Activator.getResourceString("easyshell.menu.editor.dialog.question.remove"),
-                commandCombo.getItem(index));
+                commandNames);
+        int dialogImageType = MessageDialog.QUESTION;
+        if (menus.size() > 0) {
+            dialogImageType = MessageDialog.WARNING;
+            title = Activator.getResourceString("easyshell.menu.editor.dialog.title.remove.menu");
+            String menuNames = "";
+            for (MenuData menu : menus) {
+                menuNames += menu.getNameExpanded() + "\n";
+            }
+            question = MessageFormat.format(Activator.getResourceString("easyshell.menu.editor.dialog.question.remove.menu"),
+                    commandNames, menuNames);
+        }
         MessageDialog dialog = new MessageDialog(
                 null, title, null, question,
-                MessageDialog.QUESTION,
+                dialogImageType,
                 new String[] {"Yes", "No"},
                 1); // no is the default
         int result = dialog.open();
         if (result == 0) {
-            CommandData data = cmdList.get(index);
+            for (MenuData menu : menus) {
+                MenuDataStore.instance().delete(menu);
+            }
             removeCommand(index, data);
             refreshCommandCombo();
         }
@@ -338,7 +363,7 @@ public class MenuDataDialog extends StatusDialog {
 
     private boolean validateValues() {
 
-    	final String title = Activator.getResourceString("easyshell.menu.editor.dialog.error.incompletedata.title");
+    	String title = Activator.getResourceString("easyshell.menu.editor.dialog.error.incompletedata.title");
 
     	// check type
         if ( (commandCombo.getText() == null) || (commandCombo.getText().length() <= 0)) {
@@ -357,7 +382,32 @@ public class MenuDataDialog extends StatusDialog {
         // show error message
         if (!valid) {
             MessageDialog.openError(getShell(), title, text);
+        } else {
+            int index = commandCombo.getSelectionIndex();
+            CommandData data = cmdList.get(index);
+            List<MenuData> menus = MenuDataStore.instance().getRefencedBy(data.getId());
+            menus.remove(this.data);
+            if (menus.size() >0) {
+                title = Activator.getResourceString("easyshell.menu.editor.dialog.title.duplicate");
+                String commandNames = commandCombo.getItem(index);
+                String menuNames = "";
+                for (MenuData menu : menus) {
+                    menuNames += menu.getNameExpanded() + "\n";
+                }
+                String question = MessageFormat.format(Activator.getResourceString("easyshell.menu.editor.dialog.question.duplicate"),
+                        commandNames, menuNames);
+                MessageDialog dialog = new MessageDialog(
+                        null, title, null, question,
+                        MessageDialog.WARNING,
+                        new String[] {"Yes", "No"},
+                        1); // no is the default
+                int result = dialog.open();
+                if (result != 0) {
+                    valid = false;
+                }
+            }
         }
+
         return valid;
     }
 
@@ -369,14 +419,10 @@ public class MenuDataDialog extends StatusDialog {
         enabledCheckBox.setSelection(this.data.isEnabled());
     }
 
-    private String getCommandAsComboName(CommandData data) {
-        return data.getPresetType().getName() + " - " + data.getOs().getName() + " - " + data.getCategory().getName() + " - " + data.getName();
-    }
-
     private String[] getAllCommandsAsComboNames(List<CommandData> list) {
         String[] arr = new String[list.size()];
         for (int i=0;i<list.size();i++) {
-            arr[i] = getCommandAsComboName(list.get(i));
+            arr[i] = list.get(i).getCommandAsComboName();
         }
         return arr;
     }

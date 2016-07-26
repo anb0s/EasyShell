@@ -17,9 +17,19 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
 
 public class MenuDataStore extends DataStore<MenuData> {
+
+    private static MenuDataStore instance = null;
+
+    public static MenuDataStore instance() {
+        if (instance == null) {
+            instance = new MenuDataStore(Activator.getDefault().getPreferenceStore());
+        }
+        return instance;
+    }
 
     public MenuDataStore(IPreferenceStore store) {
         super(store);
@@ -77,6 +87,18 @@ public class MenuDataStore extends DataStore<MenuData> {
             addItem(items[i]);
         }
         sort();
+    }
+
+    public List<MenuData> getRefencedBy(String id) {
+        List<MenuData> ref = new ArrayList<MenuData>();
+        Iterator<MenuData> dataIterator = getDataList().iterator();
+        while(dataIterator.hasNext()) {
+            MenuData data = (MenuData)dataIterator.next();
+            if(data.getCommandData().getId().equals(id)) {
+                ref.add(data);
+            }
+        }
+        return ref;
     }
 
 }

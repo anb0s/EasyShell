@@ -11,6 +11,8 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,9 +55,7 @@ import de.anbos.eclipse.easyshell.plugin.Activator;
 public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         implements IWorkbenchPreferencePage {
 
-    private CommandDataStore commandStore;
     List<CommandData> commandList;
-    private MenuDataStore menuStore;
     private MenuDataMover itemMover;
     private Text searchText;
     private MenuTableFilter filter;
@@ -74,7 +74,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
     @Override
     public boolean performOk() {
         boolean save = true;
-        if (!menuStore.isMigrated()) {
+        if (!MenuDataStore.instance().isMigrated()) {
             String title = Activator.getResourceString("easyshell.menu.page.dialog.migration.title");
             String question = Activator.getResourceString("easyshell.menu.page.dialog.migration.question");
             MessageDialog dialog = new MessageDialog(
@@ -84,13 +84,13 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
                     1); // no is the default
             int result = dialog.open();
             if (result == 0) {
-                menuStore.setMigrated(true);
+                MenuDataStore.instance().setMigrated(true);
             } else {
                 save = false;
             }
         }
         if (save) {
-            menuStore.save();
+            MenuDataStore.instance().save();
         }
         return save;
     }
@@ -106,7 +106,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
                 1); // no is the default
         int result = dialog.open();
         if (result == 0) {
-            menuStore.loadDefaults();
+            MenuDataStore.instance().loadDefaults();
             refreshTableViewer();
         }
     }
@@ -128,15 +128,13 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         createSearchField(pageComponent);
 
         // command store
-        commandStore = new CommandDataStore(Activator.getDefault().getPreferenceStore());
-        commandStore.load();
+        CommandDataStore.instance().load();
 
         // get the native commands list
-        commandList = CommandDataDefaultCollection.getCommandsNative(commandStore.getDataList(), true);
+        commandList = CommandDataDefaultCollection.getCommandsNative(CommandDataStore.instance().getDataList(), true);
 
         // menu store
-        menuStore = new MenuDataStore(Activator.getDefault().getPreferenceStore());
-        menuStore.load();
+        MenuDataStore.instance().load();
 
         // table viewer
         createTableViewer(pageComponent);
@@ -228,7 +226,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
 
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
-        tableViewer.setInput(menuStore);
+        tableViewer.setInput(MenuDataStore.instance());
 
         // Layout the viewer
         GridData gridData = new GridData();
@@ -291,7 +289,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
             }
         });
 
-        itemMover = new MenuDataMover(table, menuStore);
+        itemMover = new MenuDataMover(table, MenuDataStore.instance());
       }
 
     private void createColumns(final Composite parent, final TableViewer viewer) {
@@ -403,10 +401,10 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void addDialog(MenuData data) {
-        MenuDataDialog dialog = new MenuDataDialog(getShell(), data, commandStore, commandList, false);
+        MenuDataDialog dialog = new MenuDataDialog(getShell(), data, commandList, false);
         if (dialog.open() == Window.OK) {
-            menuStore.add(data);
-            refreshTableViewer(data);
+            MenuDataStore.instance().add(data);
+            refreshTableViewer();
         } else {
             data = null;
         }
@@ -429,32 +427,44 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         MenuData dataSelected = (MenuData)selection.getFirstElement();
         MenuData dataNew = new MenuData(dataSelected, false);
         dataNew.setPosition(dataSelected.getPosition());
-        MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, commandStore, commandList, true);
+        MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, commandList, true);
         if (dialog.open() == Window.OK) {
-            menuStore.replace(dataNew);
-            refreshTableViewer(dataNew);
+            MenuDataStore.instance().replace(dataNew);
+            refreshTableViewer();
         } else {
             dataNew = null;
         }
     }
 
     private void removeDialog() {
-        String title = Activator.getResourceString("easyshell.menu.page.dialog.remove.title");
-        String question = Activator.getResourceString("easyshell.menu.page.dialog.remove.question");
-        MessageDialog dialog = new MessageDialog(
-                null, title, null, question,
-                MessageDialog.QUESTION,
-                new String[] {"Yes", "No"},
-                1); // no is the default
-        int result = dialog.open();
-        if (result == 0) {
-            IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-            Iterator<?> elements = selection.iterator();
-            while (elements.hasNext()) {
-                MenuData data = (MenuData) elements.next();
-                menuStore.delete(data);
+        // get the selected menus as lists
+        List<MenuData> menus = new ArrayList<MenuData>();
+        IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
+        Iterator<?> elements = selection.iterator();
+        while (elements.hasNext()) {
+            MenuData data = (MenuData) elements.next();
+            menus.add(data);
+        }
+        if (menus.size() > 0) {
+            String title = Activator.getResourceString("easyshell.menu.page.dialog.remove.title");
+            String menuNames = "";
+            for (MenuData menu : menus) {
+                menuNames += menu.getNameExpanded() + "\n";
             }
-            refreshTableViewer();
+            String question = MessageFormat.format(Activator.getResourceString("easyshell.menu.page.dialog.remove.question"),
+                    menuNames);
+            MessageDialog dialog = new MessageDialog(
+                    null, title, null, question,
+                    MessageDialog.QUESTION,
+                    new String[] {"Yes", "No"},
+                    1); // no is the default
+            int result = dialog.open();
+            if (result == 0) {
+                for (MenuData menu : menus) {
+                    MenuDataStore.instance().delete(menu);
+                }
+                refreshTableViewer();
+            }
         }
     }
 
@@ -468,17 +478,19 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         tableViewer.refresh();
     }
 
+    /*
     private void refreshTableViewer(MenuData data) {
         tableViewer.refresh();
         tableViewer.setChecked(data, data.isEnabled());
         tableViewer.setSelection(new StructuredSelection(data));
     }
+    */
 
     private void refreshTableViewer() {
         tableViewer.refresh();
         // update/set checked elements
         tableViewer.setAllChecked(false);
-        tableViewer.setCheckedElements(menuStore.getEnabledCommandMenuDataArray());
+        tableViewer.setCheckedElements(MenuDataStore.instance().getEnabledCommandMenuDataArray());
     }
 
 }

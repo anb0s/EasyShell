@@ -11,7 +11,11 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -53,7 +57,6 @@ import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         implements IWorkbenchPreferencePage {
 
-    private CommandDataStore commandStore;
     private Text searchText;
     private CommandTableFilter filter;
     private TableViewer tableViewer;
@@ -69,7 +72,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
     @Override
     public boolean performOk() {
         boolean save = true;
-        if (!commandStore.isMigrated()) {
+        if (!CommandDataStore.instance().isMigrated()) {
             String title = Activator.getResourceString("easyshell.command.page.dialog.migration.title");
             String question = Activator.getResourceString("easyshell.command.page.dialog.migration.question");
             MessageDialog dialog = new MessageDialog(
@@ -79,13 +82,13 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
                     1); // no is the default
             int result = dialog.open();
             if (result == 0) {
-                commandStore.setMigrated(true);
+                CommandDataStore.instance().setMigrated(true);
             } else {
                 save = false;
             }
         }
         if (save) {
-            commandStore.save();
+            CommandDataStore.instance().save();
         }
         return save;
     }
@@ -101,7 +104,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
                 1); // no is the default
         int result = dialog.open();
         if (result == 0) {
-            commandStore.loadDefaults();
+            CommandDataStore.instance().loadDefaults();
             tableViewer.refresh();
         }
     }
@@ -123,8 +126,10 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         createSearchField(pageComponent);
 
         // command store
-        commandStore = new CommandDataStore(Activator.getDefault().getPreferenceStore());
-        commandStore.load();
+        CommandDataStore.instance().load();
+
+        // menu store
+        MenuDataStore.instance().load();
 
         // table viewer
         createTableViewer(pageComponent);
@@ -212,7 +217,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
 
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
-        tableViewer.setInput(commandStore);
+        tableViewer.setInput(CommandDataStore.instance());
 
         // Layout the viewer
         GridData gridData = new GridData();
@@ -361,7 +366,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         }
         CommandDataDialog dialog = new CommandDataDialog(getShell(), data, title, true);
         if (dialog.open() == Window.OK) {
-            commandStore.add(data);
+            CommandDataStore.instance().add(data);
             refreshTableViewer(data);
         } else {
             data = null;
@@ -389,7 +394,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
             dataNew.setPosition(dataSelected.getPosition());
             CommandDataDialog dialog = new CommandDataDialog(getShell(), dataNew, Activator.getResourceString("easyshell.command.editor.dialog.title.edit"), true);
             if (dialog.open() == Window.OK) {
-                commandStore.replace(dataNew);
+                CommandDataStore.instance().replace(dataNew);
                 refreshTableViewer(dataNew);
             } else {
                 dataNew = null;
@@ -401,20 +406,48 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void removeDialog() {
+        // get the selected commands and referenced menus as lists
+        List<CommandData> commands = new ArrayList<CommandData>();
+        List<MenuData> menus = new ArrayList<MenuData>();
+        IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
+        Iterator<?> elements = selection.iterator();
+        while (elements.hasNext()) {
+            CommandData data = (CommandData) elements.next();
+            commands.add(data);
+            List<MenuData> menusForOne = MenuDataStore.instance().getRefencedBy(data.getId());
+            menus.addAll(menusForOne);
+        }
+        // ask user
+        String commandNames = "";
+        for (CommandData command : commands) {
+            commandNames += command.getCommandAsComboName() + "\n";
+        }
         String title = Activator.getResourceString("easyshell.command.page.dialog.remove.title");
-        String question = Activator.getResourceString("easyshell.command.page.dialog.remove.question");
+        String question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.remove.question"),
+                commandNames);
+        int dialogImageType = MessageDialog.QUESTION;
+        if (menus.size() > 0) {
+            dialogImageType = MessageDialog.WARNING;
+            title = Activator.getResourceString("easyshell.command.page.dialog.remove.menu.title");
+            String menuNames = "";
+            for (MenuData menu : menus) {
+                menuNames += menu.getNameExpanded() + "\n";
+            }
+            question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.remove.menu.question"),
+                    commandNames, menuNames);
+        }
         MessageDialog dialog = new MessageDialog(
                 null, title, null, question,
-                MessageDialog.QUESTION,
+                dialogImageType,
                 new String[] {"Yes", "No"},
                 1); // no is the default
         int result = dialog.open();
         if (result == 0) {
-            IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-            Iterator<?> elements = selection.iterator();
-            while (elements.hasNext()) {
-                CommandData data = (CommandData) elements.next();
-                commandStore.delete(data);
+            for (MenuData menu : menus) {
+                MenuDataStore.instance().delete(menu);
+            }
+            for (CommandData command : commands) {
+                CommandDataStore.instance().delete(command);
             }
             tableViewer.refresh();
         }

@@ -36,9 +36,8 @@ public class DefineCommands extends ExtensionContributionFactory {
 			IContributionRoot additions) {
 
 	    // load the preferences
-	    MenuDataStore store = new MenuDataStore(Activator.getDefault().getPreferenceStore());
-	    store.load();
-	    List<MenuData> items = store.getEnabledCommandMenuDataList();
+	    MenuDataStore.instance().load();
+	    List<MenuData> items = MenuDataStore.instance().getEnabledCommandMenuDataList();
         for (MenuData item : items) {
             addItem(serviceLocator, additions,
                     item.getNameExpanded(),

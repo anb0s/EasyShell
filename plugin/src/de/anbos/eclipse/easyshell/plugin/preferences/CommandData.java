@@ -98,6 +98,10 @@ public class CommandData extends Data {
         return command;
     }
 
+    public String getCommandAsComboName() {
+        return getCategory().getName() + " - " + getName() + " (" + getPresetType().getName() + ")" /*+ getOs().getName() + " - "*/;
+    }
+
 	public void setName(String name) {
 	    this.name = name;
 	}
