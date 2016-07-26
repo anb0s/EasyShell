@@ -23,6 +23,7 @@ import org.eclipse.ui.menus.IContributionRoot;
 import org.eclipse.ui.services.IServiceLocator;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataStore;
 
@@ -36,6 +37,7 @@ public class DefineCommands extends ExtensionContributionFactory {
 			IContributionRoot additions) {
 
 	    // load the preferences
+	    CommandDataStore.instance().load();
 	    MenuDataStore.instance().load();
 	    List<MenuData> items = MenuDataStore.instance().getEnabledCommandMenuDataList();
         for (MenuData item : items) {
