@@ -232,7 +232,7 @@ public class MenuDataDialog extends StatusDialog {
         data.setEnabled(enabledCheckBox.getSelection());
         data.setNameType(getAllNameTypes()[nameTypeCombo.getSelectionIndex()]);
         data.setNamePattern(namePatternText.getText());
-        data.setCommandData(cmdList.get(commandCombo.getSelectionIndex()));
+        data.setCommandId(cmdList.get(commandCombo.getSelectionIndex()).getId());
         super.okPressed();
     }
 
@@ -250,7 +250,7 @@ public class MenuDataDialog extends StatusDialog {
 
     private void addCommand(CommandData data) {
         CommandDataStore.instance().add(data);
-        CommandDataStore.instance().save();
+        //CommandDataStore.instance().save();
         cmdList.add(data);
         String[] names = getAllCommandsAsComboNames(cmdList);
         commandCombo.setItems(names);
@@ -259,14 +259,14 @@ public class MenuDataDialog extends StatusDialog {
 
     private void replaceCommand(int index, CommandData data) {
         CommandDataStore.instance().replace(data);
-        CommandDataStore.instance().save();
+        //CommandDataStore.instance().save();
         commandCombo.setItem(index, data.getCommandAsComboName());
         commandCombo.select(index);
     }
 
     private void removeCommand(int index, CommandData data) {
         CommandDataStore.instance().delete(data);
-        CommandDataStore.instance().save();
+        //CommandDataStore.instance().save();
         //cmdList.remove(data); // no need to search for data, use index instead:
         cmdList.remove(index);
         String[] names = getAllCommandsAsComboNames(cmdList);
@@ -450,7 +450,7 @@ public class MenuDataDialog extends StatusDialog {
 			public void widgetSelected(SelectionEvent e) {
                 int index = commandCombo.getSelectionIndex();
 				//String text = commandCombo.getItem(index);
-				data.setCommandData(cmdList.get(index));
+				data.setCommandId(cmdList.get(index).getId());
 				commandText.setText(data.getCommandData().getCommand());
 				boolean isUserDefined = data.getCommandData().getPresetType() == PresetType.presetUser;
 				//editButton.setEnabled(isUserDefined);

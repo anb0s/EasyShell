@@ -89,29 +89,55 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         }
         if (save) {
             CommandDataStore.instance().save();
+            MenuDataStore.instance().save();
         }
         return save;
     }
 
     @Override
+    protected void performApply() {
+        performOk();
+    }
+
+    @Override
     protected void performDefaults() {
+        // get the selected commands and referenced menus as lists
+        List<CommandData> commands = CommandDataStore.instance().getDataList();
+        List<MenuData> menus = new ArrayList<MenuData>();
+        for(CommandData command : commands) {
+            if (command.getPresetType() == PresetType.presetUser) {
+                List<MenuData> menusForOne = MenuDataStore.instance().getRefencedBy(command.getId());
+                menus.addAll(menusForOne);
+            }
+        }
         String title = Activator.getResourceString("easyshell.command.page.dialog.defaults.title");
         String question = Activator.getResourceString("easyshell.command.page.dialog.defaults.question");
+        int dialogImageType = MessageDialog.QUESTION;
+        if (menus.size() >= 0) {
+            dialogImageType = MessageDialog.WARNING;
+            String menuNames = "";
+            for (MenuData menu : menus) {
+                menuNames += menu.getNameExpanded() + "\n";
+            }
+            question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.defaults.menu.question"),
+                    menuNames);
+        }
         MessageDialog dialog = new MessageDialog(
                 null, title, null, question,
-                MessageDialog.WARNING,
+                dialogImageType,
                 new String[] {"Yes", "No"},
                 1); // no is the default
         int result = dialog.open();
         if (result == 0) {
+            if (menus.size() >= 0) {
+                for (MenuData menu : menus) {
+                    MenuDataStore.instance().delete(menu);
+                }
+                //MenuDataStore.instance().save();
+            }
             CommandDataStore.instance().loadDefaults();
             tableViewer.refresh();
         }
-    }
-
-    @Override
-    protected void performApply() {
-        performOk();
     }
 
     @Override
@@ -443,8 +469,11 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
                 1); // no is the default
         int result = dialog.open();
         if (result == 0) {
-            for (MenuData menu : menus) {
-                MenuDataStore.instance().delete(menu);
+            if (menus.size() >= 0) {
+                for (MenuData menu : menus) {
+                    MenuDataStore.instance().delete(menu);
+                }
+                //MenuDataStore.instance().save();
             }
             for (CommandData command : commands) {
                 CommandDataStore.instance().delete(command);

@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
@@ -33,6 +35,14 @@ public class CommandDataStore extends DataStore<CommandData> {
 
     public CommandDataStore(IPreferenceStore store) {
         super(store);
+        store.addPropertyChangeListener(new IPropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                if (event.getProperty().equals(Constants.PREF_COMMANDS) || event.getProperty().equals(Constants.PREF_COMMANDS_PRESET)) {
+                    load();
+                }
+            }
+        });
     }
 
     private List<CommandData> getUserCommands() {
@@ -67,17 +77,20 @@ public class CommandDataStore extends DataStore<CommandData> {
         return allArray;
     }
 
+    @Override
     public void save() {
         getStore().setValue(Constants.PREF_COMMANDS_PRESET,PreferenceValueConverter.asCommandDataString(getPresetCommands()));
         getStore().setValue(Constants.PREF_COMMANDS,PreferenceValueConverter.asCommandDataString(getUserCommands()));
     }
 
+    @Override
     public void loadDefaults() {
         getStore().setToDefault(Constants.PREF_COMMANDS_PRESET);
         getStore().setToDefault(Constants.PREF_COMMANDS);
         load();
     }
 
+    @Override
     public void load() {
         CommandData[] arrayPreset = PreferenceValueConverter.asCommandDataArray(getStore().getString(Constants.PREF_COMMANDS_PRESET));
         CommandData[] arrayUser   = PreferenceValueConverter.asCommandDataArray(getStore().getString(Constants.PREF_COMMANDS));

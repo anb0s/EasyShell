@@ -24,28 +24,28 @@ public class MenuData extends Data {
     private MenuNameType nameType = MenuNameType.menuNameTypeUnknown;
     private String namePattern = "";
     // copy of or reference to command
-    private CommandData commandData = null;
+    private String commandId = null;
 
-    public MenuData(String id, boolean enabled, MenuNameType nameType, String namePattern, CommandData commandData) {
+    public MenuData(String id, boolean enabled, MenuNameType nameType, String namePattern, String commandId) {
         super(id);
         this.enabled = enabled;
         this.nameType = nameType;
         this.namePattern = namePattern;
-        setCommandData(commandData);
+        this.commandId = commandId;
     }
 
-    public MenuData(String newId, CommandData commandData) {
+    public MenuData(String newId, String commandId) {
         super(newId);
         setNameType(MenuNameType.menuNameTypeGeneric1);
-        setCommandData(commandData);
+        setCommandId(commandId);
     }
 
-    public MenuData(CommandData commandData, boolean generateNewId) {
-        this(generateNewId ? UUID.randomUUID().toString() : commandData.getId(), commandData);
+    public MenuData(String commandId, boolean generateNewId) {
+        this(generateNewId ? UUID.randomUUID().toString() : commandId, commandId);
     }
 
     public MenuData(String newId, MenuData data) {
-        this(newId, data.getCommandData());
+        this(newId, data.getCommandId());
         this.enabled = data.isEnabled();
         this.nameType = data.getNameType();
         this.namePattern = data.getNamePattern();
@@ -79,9 +79,9 @@ public class MenuData extends Data {
         return expanded;
     }
 
-	public CommandData getCommandData() {
-		return commandData;
-	}
+    public String getCommandId() {
+        return commandId;
+    }
 
 	public boolean equals(Object object) {
     	if(!(object instanceof MenuData)) {
@@ -118,34 +118,41 @@ public class MenuData extends Data {
         }
         String namePatternReaded = tokenizer.nextToken();
         // -------------------------------------------------
-        // set command data members
-        setCommandData(new CommandData());
-        getCommandData().deserialize(version, null, tokenizer, delimiter);
-        // menu name type handling
-        if (version.getId() < Version.v2_0_002.getId()) {
-            // check if readed name is the same, like expanded from patterns
-            for (MenuNameType type : MenuNameType.getAsList()) {
-                setNamePattern(type.getPattern()); // set temporary
-                if (getNameExpanded().equals(namePatternReaded)) {
-                    nameType = type;
-                    break;
-                }
-            }
-            setNameType(nameType);
-            // if not found set the readed value
-            if (nameType == MenuNameType.menuNameTypeUser) {
-                setNamePattern(namePatternReaded);
-            }
-        } else if (version.getId() < Version.v2_0_003.getId()) {
-            setNameType(nameType);
-            if (nameType == MenuNameType.menuNameTypeUser) {
-                setNamePattern(namePatternReaded);
-            } else {
-                setNamePattern(nameType.getPattern());
-            }
-        } else {
+        // read new id
+        if (version.getId() >= Version.v2_0_003.getId()) {
+            // read the new one
+            setCommandId(tokenizer.nextToken());
             setNameType(nameType);
             setNamePattern(namePatternReaded);
+        } else {
+            // read previous command data members
+            CommandData oldData = new CommandData();
+            oldData.deserialize(version, null, tokenizer, delimiter);
+            setCommandId(oldData.getId());
+            // menu name type handling
+            // set name type and read the old name as pattern and convert to new
+            if (version.getId() >= Version.v2_0_002.getId()) {
+                setNameType(nameType);
+                if (nameType == MenuNameType.menuNameTypeUser) {
+                    setNamePattern(namePatternReaded);
+                } else {
+                    setNamePattern(nameType.getPattern());
+                }
+            } else {
+                // check if readed name is the same, like expanded from patterns
+                for (MenuNameType type : MenuNameType.getAsList()) {
+                    setNamePattern(type.getPattern()); // set temporary
+                    if (getNameExpanded().equals(namePatternReaded)) {
+                        nameType = type;
+                        break;
+                    }
+                }
+                setNameType(nameType);
+                // if not found set the readed value
+                if (nameType == MenuNameType.menuNameTypeUser) {
+                    setNamePattern(namePatternReaded);
+                }
+            }
         }
         return true;
     }
@@ -162,7 +169,11 @@ public class MenuData extends Data {
             ret += getNameType().toString() + delimiter;
         }
         ret += getNamePattern() + delimiter;
-        ret += commandData.serialize(version, delimiter);
+        if (version.getId() >= Version.v2_0_003.getId()) {
+            ret += getCommandId() + delimiter;
+        } else {
+            ret += getCommandData().serialize(version, delimiter);
+        }
         return ret;
     }
 
@@ -185,8 +196,12 @@ public class MenuData extends Data {
         this.namePattern = namePattern;
     }
 
-    public void setCommandData(CommandData commandData) {
-        this.commandData = commandData;
+    public void setCommandId(String commandId) {
+        this.commandId = commandId;
+    }
+
+    public CommandData getCommandData() {
+        return CommandDataStore.instance().getById(getCommandId());
     }
 
 }

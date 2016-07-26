@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
@@ -33,6 +35,14 @@ public class MenuDataStore extends DataStore<MenuData> {
 
     public MenuDataStore(IPreferenceStore store) {
         super(store);
+        store.addPropertyChangeListener(new IPropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                if (event.getProperty().equals(Constants.PREF_MENU)) {
+                    load((String)event.getNewValue());
+                }
+            }
+        });
     }
 
     public MenuData[] getCommandMenuDataArray() {
@@ -71,17 +81,22 @@ public class MenuDataStore extends DataStore<MenuData> {
         return checked;
     }
 
+    @Override
     public void save() {
         getStore().setValue(Constants.PREF_MENU,PreferenceValueConverter.asMenuDataString(getDataList()));
     }
 
+    @Override
     public void loadDefaults() {
         getStore().setToDefault(Constants.PREF_MENU);
         load();
     }
 
-    public void load() {
-        MenuData[] items = PreferenceValueConverter.asMenuDataArray(getStore().getString(Constants.PREF_MENU));
+    public void load(String prefMenu) {
+        if (prefMenu == null) {
+            prefMenu = getStore().getString(Constants.PREF_MENU);
+        }
+        MenuData[] items = PreferenceValueConverter.asMenuDataArray(prefMenu);
         removeAll();
         for(int i = 0 ; i < items.length ; i++) {
             addItem(items[i]);
@@ -89,12 +104,17 @@ public class MenuDataStore extends DataStore<MenuData> {
         sort();
     }
 
+    @Override
+    public void load() {
+        load(null);
+    }
+
     public List<MenuData> getRefencedBy(String id) {
         List<MenuData> ref = new ArrayList<MenuData>();
         Iterator<MenuData> dataIterator = getDataList().iterator();
         while(dataIterator.hasNext()) {
             MenuData data = (MenuData)dataIterator.next();
-            if(data.getCommandData().getId().equals(id)) {
+            if(data.getCommandId().equals(id)) {
                 ref.add(data);
             }
         }

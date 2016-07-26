@@ -45,7 +45,8 @@ public class CommandDataDefaultCollection {
         List<MenuData> ret = new ArrayList<MenuData>();
         for (int i=0;i<list.size();i++) {
             CommandData cmdData = list.get(i);
-            MenuData newData = new MenuData(cmdData.getId(), cmdData); // use the same id like the default command to have same defaults
+            // use the same id like the default command to have same defaults
+            MenuData newData = new MenuData(cmdData.getId(), cmdData.getId());
             if (sorted) {
                 newData.setPosition(i);
             }
@@ -97,7 +98,7 @@ public class CommandDataDefaultCollection {
                 "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd \"${easyshell:resource_name}\""));
         // Windows TotalCommander
         list.add(new CommandData("e487327c-dfdb-42e7-bf16-3b81a34e5703", PresetType.presetPlugin, OS.osWindows, "TotalCommander", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
-                "totalcmd.exe /O /T ${easyshell:container_loc}"));
+                "cmd.exe /C totalcmd64.exe /O /T ${easyshell:container_loc}"));
         // Windows Clipboard
         list.add(new CommandData("67aa9dff-6bbb-4b47-8b43-8a82a7a279fa", PresetType.presetPlugin, OS.osWindows, "Full path", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
                 "\"${easyshell:resource_loc}\"${easyshell:line_separator}"));

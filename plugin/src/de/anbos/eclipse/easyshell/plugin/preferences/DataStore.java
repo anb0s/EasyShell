@@ -158,6 +158,15 @@ public class DataStore<T extends Data> implements IDataStore {
         return items.get(position);
     }
 
+    public T getById(String id) {
+        for (T data : getDataList()) {
+            if (data.getId().equals(id)) {
+                return data;
+            }
+        }
+        return null;
+    }
+
     protected IPreferenceStore getStore() {
         return store;
     }

@@ -89,9 +89,15 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
             }
         }
         if (save) {
+            CommandDataStore.instance().save();
             MenuDataStore.instance().save();
         }
         return save;
+    }
+
+    @Override
+    protected void performApply() {
+        performOk();
     }
 
     @Override
@@ -108,11 +114,6 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
             MenuDataStore.instance().loadDefaults();
             refreshTableViewer();
         }
-    }
-
-    @Override
-    protected void performApply() {
-        performOk();
     }
 
     @Override
@@ -410,7 +411,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void addNewDialog() {
-        MenuData dataNew = new MenuData(commandList.get(0), true);
+        MenuData dataNew = new MenuData(commandList.get(0).getId(), true);
         addDialog(dataNew);
     }
 
