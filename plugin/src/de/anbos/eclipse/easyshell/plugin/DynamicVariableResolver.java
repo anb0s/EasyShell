@@ -15,9 +15,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IDynamicVariable;
 import org.eclipse.core.variables.IDynamicVariableResolver;
 
+import de.anbos.eclipse.easyshell.plugin.types.Quotes;
+
 public class DynamicVariableResolver implements IDynamicVariableResolver {
 
-	private static String[] args = new String[6];
+    static private Resource resource = null;
+    static Quotes quotes = Quotes.quotesNo;
 
 	@Override
 	public String resolveValue(IDynamicVariable variable, String argument)
@@ -33,9 +36,9 @@ public class DynamicVariableResolver implements IDynamicVariableResolver {
 
     private String handleOwnVariable(String argument) {
         if (argument.equals("drive")) {
-            return args[0];
+            return resource.getWindowsDrive();   // {0} == ${easyshell:drive}
         } else if (argument.equals("line_separator")) {
-        	return args[5];
+        	return resource.getLineSeparator();  // {5} == ${easyshell:line_separator}
         }
         // here we have eclipse variables embedded in easyshell variable as parameter
         return handleEclipseVariable(argument, null);
@@ -43,23 +46,51 @@ public class DynamicVariableResolver implements IDynamicVariableResolver {
 
     private String handleEclipseVariable(String variable, String argument) {
         if (variable.equals("container_loc")) {
-            return args[1];
+            return autoQuotes(resource.getParentPath());    // {1} == ${easyshell:container_loc}
         } else if (variable.equals("resource_loc")) {
-            return args[2];
+            return autoQuotes(resource.getFullPath());      // {2} == ${easyshell:resource_loc}
         } else if (variable.equals("resource_name")) {
-            return args[3];
+            return autoQuotes(resource.getFileName());      // {3} == ${easyshell:resource_name}
         } else if (variable.equals("project_name")) {
-            return args[4];
+            return resource.getProjectName();               // {4} == ${easyshell:project_name}
+        } else if (variable.equals("qualified_name")) {
+            return resource.getFullQualifiedName();         // {6} == ${easyshell:qualified_name} == qualified name
         }
         return null;
     }
 
-	public String[] getArgs() {
-		return args;
-	}
+    public static Resource getResource() {
+        return resource;
+    }
 
-	public static void setArgs(String[] args) {
-		DynamicVariableResolver.args = args;
-	}
+    public static void setResource(Resource resource) {
+        DynamicVariableResolver.resource = resource;
+    }
+
+    public static void setQuotes(Quotes quotes) {
+        DynamicVariableResolver.quotes = quotes;
+    }
+
+    private String autoQuotes(String str) {
+        String ret = str;
+        if (quotes == Quotes.quotesSingle) {
+            ret = "'" + str + "'";
+        }
+        else if (quotes == Quotes.quotesDouble) {
+            ret = "\"" + str + "\"";
+        }
+        else if (quotes == Quotes.quotesEscape) {
+            ret = str.replaceAll("\\s", "\\\\ ");
+        }
+        else if ( ((quotes == Quotes.quotesAuto) || (quotes == Quotes.quotesAutoSingle))
+                    && (str.indexOf(" ") != -1) ) { // if space there
+            if ((quotes == Quotes.quotesAutoSingle) && str.indexOf("\"") == -1) { // if no single quotes
+                ret = "'" + str + "'";
+            } else if (str.indexOf("'") == -1){ // if no double quotes
+                ret = "\"" + str + "\"";
+            }
+        }
+        return ret;
+    }
 
 }

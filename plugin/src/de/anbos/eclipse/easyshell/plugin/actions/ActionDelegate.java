@@ -87,17 +87,17 @@ public class ActionDelegate implements IObjectActionDelegate {
             // TODO: get from preferences store
             //Quotes quotes = Activator.getQuotes(InstanceIDNum);
             Quotes quotes = Quotes.quotesNo;
-            String[] args = fillArguments(resource[i], variableManager, quotes);
-            if (args != null) {
+            if (resource[i].resolve()) {
                 try {
                     // set arguments for resolving
-                    DynamicVariableResolver.setArgs(args);
+                    DynamicVariableResolver.setResource(resource[i]);
+                    DynamicVariableResolver.setQuotes(quotes);
                     // validate the command
                     variableManager.validateStringVariables(commandValue);
                     Activator.logDebug(commandValue);
                     // handling copy to clipboard
                     if (commandType == CommandType.commandTypeClipboard) {
-                    	String cmd = fixQuotes(variableManager.performStringSubstitution(commandValue, false), quotes);
+                    	String cmd = variableManager.performStringSubstitution(commandValue, false);
                     	Activator.logDebug("--- clp: >");
                         cmdAll += cmd;
                         Activator.logDebug(cmd);
@@ -105,7 +105,7 @@ public class ActionDelegate implements IObjectActionDelegate {
                     }
                     // handling command line
                     else {
-                        handleExec(variableManager, quotes);
+                        handleExec(variableManager);
                     }
                 } catch (CoreException e) {
                     Activator.logError(Activator.getResourceString("easyshell.message.error.validation"), commandValue, e, true);
@@ -123,46 +123,7 @@ public class ActionDelegate implements IObjectActionDelegate {
         }
     }
 
-    private String[] fillArguments(Resource res, IStringVariableManager variableManager, Quotes quotes) {
-        String[] args = null;
-        String drive = null;
-        String full_path = null;
-        String parent_path = null;
-        String file_name = null;
-        full_path = res.getFile().toString();
-        if (res.getFile().isDirectory()) {
-            parent_path = res.getFile().getPath();
-            //file_name = "dir"; // dummy cmd
-        } else {
-            parent_path = res.getFile().getParent();
-            file_name = res.getFile().getName();
-        }
-        if (full_path != null) {
-            Activator.logDebug("full_path  : >" + full_path + "<");
-            Activator.logDebug("parent_path: >" + parent_path + "<");
-            Activator.logDebug("file_name  : >" + file_name + "<");
-            // Try to extract drive on Win32
-            if (full_path.indexOf(":") != -1) {
-                drive = full_path.substring(0, full_path.indexOf(":"));
-            }
-            String project_name = res.getProjectName();
-            if (project_name == null || project_name.isEmpty()) {
-                project_name = Activator.getResourceString("easyshell.plugin.name");
-            }
-            String line_separator = System.getProperty("line.separator");
-            // args format
-            args = new String[6];
-            args[0] = drive;                            // {0} == ${easyshell:drive}
-            args[1] = autoQuotes(parent_path, quotes);  // {1} == ${easyshell:container_loc}
-            args[2] = autoQuotes(full_path, quotes);    // {2} == ${easyshell:resource_loc}
-            args[3] = autoQuotes(file_name, quotes);    // {3} == ${easyshell:resource_name}
-            args[4] = project_name;                     // {4} == ${easyshell:project_name}
-            args[5] = line_separator; // {5} == ${easyshell:line_separator}
-        }
-        return args;
-    }
-
-    private void handleExec(IStringVariableManager variableManager, Quotes quotes) throws CoreException, IOException {
+    private void handleExec(IStringVariableManager variableManager) throws CoreException, IOException {
         String[] cmds = null;
         // working directory
         if (commandWorkingDir != null && !commandWorkingDir.isEmpty()) {
@@ -179,14 +140,14 @@ public class ActionDelegate implements IObjectActionDelegate {
         	cmds = new String[st.countTokens()];
         	int i = 0;
         	while (st.hasMoreElements()) {
-        		cmds[i] = fixQuotes(variableManager.performStringSubstitution(st.nextToken(), false), quotes);
+        		cmds[i] = variableManager.performStringSubstitution(st.nextToken(), false);
         		i++;
         	}
         }
         // the old command line passing without string tokenizer
         else {
             cmds = new String[1];
-        	cmds[0] = fixQuotes(variableManager.performStringSubstitution(commandValue, false), quotes);
+        	cmds[0] = variableManager.performStringSubstitution(commandValue, false);
         }
         // log out
         for (int i=0;i<cmds.length;i++) {
@@ -219,51 +180,20 @@ public class ActionDelegate implements IObjectActionDelegate {
         boolean enabled = false;
         if (currentSelection != null)
         {
+            String projectName = Activator.getResourceString("easyshell.plugin.name");
             Object[] selectedObjects = currentSelection.toArray();
             if (selectedObjects.length >= 1)
             {
                 resource = new Resource[selectedObjects.length];
                 for (int i=0;i<selectedObjects.length;i++) {
-                    resource[i] = ResourceUtils.getResource(selectedObjects[i]);
-                    if (resource[i] != null)
+                    resource[i] = ResourceUtils.getResource(selectedObjects[i], projectName);
+                    if (resource[i] != null) {
                         enabled=true;
+                    }
                 }
             }
         }
         return enabled;
-    }
-
-    private String autoQuotes(String str, Quotes quotes) {
-        String ret = str;
-        if (quotes == Quotes.quotesSingle) {
-            ret = "'" + str + "'";
-        }
-        else if (quotes == Quotes.quotesDouble) {
-            ret = "\"" + str + "\"";
-        }
-        else if (quotes == Quotes.quotesEscape) {
-            ret = str.replaceAll("\\s", "\\\\ ");
-        }
-        else if ( ((quotes == Quotes.quotesAuto) || (quotes == Quotes.quotesAutoSingle))
-                    && (str.indexOf(" ") != -1) ) { // if space there
-            if ((quotes == Quotes.quotesAutoSingle) && str.indexOf("\"") == -1) { // if no single quotes
-                ret = "'" + str + "'";
-            } else if (str.indexOf("'") == -1){ // if no double quotes
-                ret = "\"" + str + "\"";
-            }
-        }
-        return ret;
-    }
-
-    private String fixQuotes(String str, Quotes quotes) {
-        String ret = str;
-        /*if ( (quotes == EasyShellQuotes.quotesYes) ||
-             (quotes == EasyShellQuotes.quotesAuto) ) {
-            // try to replace known combinations
-            //ret = Matcher.quoteReplacement(str).replaceAll("./\"", "\"./");
-            ret = str.replaceAll("./\"", "\"./");
-        }*/
-        return ret;
     }
 
 }

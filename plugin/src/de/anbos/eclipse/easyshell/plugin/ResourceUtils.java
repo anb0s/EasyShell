@@ -34,7 +34,7 @@ public class ResourceUtils {
         ISelection selection = null;
         if (part != null) {
             if (part instanceof IEditorPart) {
-                Resource file = getResource((IEditorPart)part);
+                Resource file = getResource((IEditorPart)part, null);
                 if (file != null) {
                     selection = new StructuredSelection(file);
                 }
@@ -49,9 +49,8 @@ public class ResourceUtils {
         return selection;
     }
 
-    static public Resource getResource(Object myObj) {
+    static public Resource getResource(Object myObj, String projectName) {
         Object object = null;
-
         if (myObj instanceof IEditorPart) {
             IEditorPart editorPart = (IEditorPart)myObj;
             IEditorInput input = editorPart.getEditorInput();
@@ -74,30 +73,23 @@ public class ResourceUtils {
             return new Resource((Resource)object);
         }
 
-        String projectName = null;
         if (object instanceof IFile) {
-            projectName = ((IFile) object).getProject().getName();
-            return new Resource(((IFile) object).getLocation().toFile(),projectName);
+            return new Resource(((IFile) object));
         }
         if (object instanceof File) {
-            return new Resource((File) object,projectName);
+            return new Resource((File) object, projectName);
         }
         if (object instanceof IAdaptable) {
             IAdaptable adaptable = (IAdaptable) object;
-            IFile ifile = (IFile) adaptable.getAdapter(IFile.class);
-            if (ifile != null) {
-                projectName = ifile.getProject().getName();
-                return new Resource(ifile.getLocation().toFile(),projectName);
+            IFile iFile = (IFile) adaptable.getAdapter(IFile.class);
+            if (iFile != null) {
+                return new Resource(iFile);
             }
             IResource ires = (IResource) adaptable.getAdapter(IResource.class);
             if (ires != null) {
-                projectName = ires.getProject().getName();
-                // virtual (not present in file system) folder has no location
-                // there for cannot be handled with EasyShell
-                // see https://sourceforge.net/tracker/?func=detail&aid=3521852&group_id=99802&atid=630351
                 IPath path = ires.getLocation();
                 if (path != null) {
-                    return new Resource(path.toFile(),projectName);
+                    return new Resource(ires);
                 }
             }
             /*
@@ -114,7 +106,7 @@ public class ResourceUtils {
             */
             File file = (File) adaptable.getAdapter(File.class);
             if (file != null) {
-                return  new Resource(file,projectName);
+                return  new Resource(file, projectName);
             }
         }
         return null;
