@@ -180,13 +180,12 @@ public class ActionDelegate implements IObjectActionDelegate {
         boolean enabled = false;
         if (currentSelection != null)
         {
-            String projectName = Activator.getResourceString("easyshell.plugin.name");
             Object[] selectedObjects = currentSelection.toArray();
             if (selectedObjects.length >= 1)
             {
                 resource = new Resource[selectedObjects.length];
                 for (int i=0;i<selectedObjects.length;i++) {
-                    resource[i] = ResourceUtils.getResource(selectedObjects[i], projectName);
+                    resource[i] = ResourceUtils.getResource(selectedObjects[i]);
                     if (resource[i] != null) {
                         enabled=true;
                     }

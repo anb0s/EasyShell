@@ -49,12 +49,12 @@ f6bcdd71-4687-46d8-bf34-2780bafd762a
 All
 33043fe3-1a5f-46d7-b94e-9a02ef204e7d
 88989d78-cf17-4750-91fc-6260055743ae
+e6de32cc-342a-46a0-a766-ac74e7e4000d
 
 Do not use
 cd32fa5a-34d7-4551-8bd0-3aae0dc444d0 // was MAC OS X clipboard before
 
 Free
-e6de32cc-342a-46a0-a766-ac74e7e4000d
 d2726c3f-6da3-46b5-8029-1c63d0ff6bd2
 03e6678b-f67f-42ed-b65f-6b6f06ec0e8f
 c57a5d9f-491a-4b21-8a8b-9941b01cc049

@@ -127,12 +127,17 @@ public class CommandDataDialog extends StatusDialog {
         pageGroup2.setLayoutData(data2);
         pageGroup2.setFont(parent.getFont());
 
-        createVariableLabel(pageGroup2, "${easyshell:drive}", "is the drive letter on Win32");
-        createVariableLabel(pageGroup2, "${easyshell:container_loc}", "is the parent path*");
-        createVariableLabel(pageGroup2, "${easyshell:resource_loc}", "is the full path*");
-        createVariableLabel(pageGroup2, "${easyshell:resource_name}", "is the file name*");
-        createVariableLabel(pageGroup2, "${easyshell:project_name}", "is the project name");
-        createVariableLabel(pageGroup2, "${easyshell:line_separator}", "is the line separator");
+        createVariableLabel(pageGroup2, "${easyshell:resource_loc}",    "absolute path of file or directory");
+        createVariableLabel(pageGroup2, "${easyshell:resource_name}",   "name of file or directory");
+        createVariableLabel(pageGroup2, "${easyshell:resource_path}",   "relative path to workspace of file or directory");
+        createVariableLabel(pageGroup2, "${easyshell:container_loc}",   "absolute path of file directory or directory itself");
+        createVariableLabel(pageGroup2, "${easyshell:container_name}",  "name of file directory or directory itself");
+        createVariableLabel(pageGroup2, "${easyshell:container_path}",  "relative path to workspace of file directory or directory itself");
+        createVariableLabel(pageGroup2, "${easyshell:project_loc}",     "absolute path of project");
+        createVariableLabel(pageGroup2, "${easyshell:project_name}",    "name of project");
+        createVariableLabel(pageGroup2, "${easyshell:project_path}",    "relative path to workspace of project");
+        createVariableLabel(pageGroup2, "${easyshell:line_separator}",  "iline separator");
+        createVariableLabel(pageGroup2, "${easyshell:windows_drive}",   "drive letter of file or directory on Windows");
 
         // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61
         setHelpAvailable(false);

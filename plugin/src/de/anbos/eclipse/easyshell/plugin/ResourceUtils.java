@@ -34,7 +34,7 @@ public class ResourceUtils {
         ISelection selection = null;
         if (part != null) {
             if (part instanceof IEditorPart) {
-                Resource file = getResource((IEditorPart)part, null);
+                Resource file = getResource((IEditorPart)part);
                 if (file != null) {
                     selection = new StructuredSelection(file);
                 }
@@ -49,7 +49,7 @@ public class ResourceUtils {
         return selection;
     }
 
-    static public Resource getResource(Object myObj, String projectName) {
+    static public Resource getResource(Object myObj) {
         Object object = null;
         if (myObj instanceof IEditorPart) {
             IEditorPart editorPart = (IEditorPart)myObj;
@@ -77,7 +77,7 @@ public class ResourceUtils {
             return new Resource(((IFile) object));
         }
         if (object instanceof File) {
-            return new Resource((File) object, projectName);
+            return new Resource((File) object);
         }
         if (object instanceof IAdaptable) {
             IAdaptable adaptable = (IAdaptable) object;
@@ -106,7 +106,7 @@ public class ResourceUtils {
             */
             File file = (File) adaptable.getAdapter(File.class);
             if (file != null) {
-                return  new Resource(file, projectName);
+                return  new Resource(file);
             }
         }
         return null;

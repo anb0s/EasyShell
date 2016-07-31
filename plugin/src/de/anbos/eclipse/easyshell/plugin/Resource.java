@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.osgi.framework.Bundle;
 
@@ -25,14 +26,14 @@ public class Resource {
 
     // internal
     private File file = null;
-    private IResource iRes = null;
+    private IResource resource = null;
 
     // resolved
     private String windowsDrive = null;
-    private String fullPath = null;
-    private String parentPath = null;
-    private String fileName = null;
-    private String projectName = null;
+    private String resourceLocation = null;
+    private String containerLocation = null;
+    private String resourceName = null;
+    private String projectName = Activator.getResourceString("easyshell.plugin.name");
     static private String lineSeparator = null;
 
     //Activator.logDebug("full_path  : >" + fullPath + "<");
@@ -41,37 +42,35 @@ public class Resource {
 
     public Resource(Resource myRes) {
         file = myRes.getFile();
-        projectName = myRes.getProjectName();
     }
 
-    public Resource(File file, IResource iRes, String projectName) {
+    public Resource(File file, IResource resource) {
         this.file = file;
-        this.iRes = iRes;
-        this.projectName = projectName;
+        this.resource = resource;
     }
 
-    public Resource(File file, String projectName) {
-        this(file, null, projectName);
+    public Resource(File file) {
+        this(file, null);
     }
 
-    public Resource(IResource iRes) {
-        this(iRes.getLocation().toFile(), iRes, iRes.getProject().getName());
+    public Resource(IResource resource) {
+        this(resource.getLocation().toFile(), resource);
     }
 
     public File getFile() {
         return file;
     }
 
-    public IResource getIResource() {
-        return iRes;
+    public IResource getResource() {
+        return resource;
     }
 
     public String getWindowsDrive() {
         if (windowsDrive == null) {
-            getFullPath();
+            getResourceLocation();
             // Try to extract drive on Win32
-            if (fullPath.indexOf(":") != -1) {
-                windowsDrive = fullPath.substring(0, fullPath.indexOf(":"));
+            if (resourceLocation.indexOf(":") != -1) {
+                windowsDrive = resourceLocation.substring(0, resourceLocation.indexOf(":"));
             } else {
                 windowsDrive = "";
             }
@@ -79,45 +78,92 @@ public class Resource {
         return windowsDrive;
     }
 
-    public String getFullPath() {
-        if (fullPath == null) {
-            fullPath = file.toString();
-        }
-        return fullPath;
-    }
-
-    public String getParentPath() {
-        if (parentPath == null) {
+    public String getContainerLocation() {
+        if (containerLocation == null) {
             if (file.isDirectory()) {
-                parentPath = getFile().getPath();
+                containerLocation = file.getPath();
             } else {
-                parentPath = file.getParent();
-                fileName = file.getName();
+                containerLocation = file.getParent();
             }
         }
-        return parentPath;
+        return containerLocation;
     }
 
-    public String getParentName() {
-        if (iRes != null) {
-            return iRes.getParent().getName();
-        }
-        return file.getParentFile().getName();
-    }
-
-    public String getFileName() {
-        if (fileName == null) {
-            if (file.isDirectory()) {
-                fileName = "";
+    public String getContainerName() {
+        if (resource != null) {
+            if (resource.getType() == IResource.FILE) {
+                return resource.getParent().getName();
             } else {
-                fileName = file.getName();
+                return resource.getName();
+            }
+        } else {
+            if (file.isFile()) {
+                return file.getParentFile().getName();
+            } else {
+                return file.getName();
             }            
+        } 
+    }
+
+    public String getContainerPath() {
+        if (resource != null) {
+            if (resource.getType() == IResource.FILE) {
+                return resource.getParent().getFullPath().toString();
+            } else {
+                return resource.getFullPath().toString();
+            }
         }
-        return fileName;
+        return "";
+    }
+
+    public String getResourceLocation() {
+        if (resourceLocation == null) {
+            resourceLocation = file.getPath();
+        }
+        return resourceLocation;
+    }
+
+    public String getResourceName() {
+        if (resourceName == null) {
+            if (resource != null) {
+                resourceName = resource.getName();
+            } else {
+                /*if (file.isDirectory()) {
+                    resourceName = "";
+                } else {*/
+                    resourceName = file.getName();
+                //}                            
+            }
+        }
+        return resourceName;
+    }
+
+    public String getResourcePath() {
+        if (resource != null) {
+            return resource.getFullPath().toString();
+        }
+        return "";
+    }
+
+    public String getProjectLocation() {
+        if (resource != null) {
+            return resource.getProject().getLocation().toFile().toString();
+        }
+        return "";
     }
 
     public String getProjectName() {
+        if (resource != null) {
+            return resource.getProject().getName();
+        }
         return projectName;
+    }
+
+    public String getProjectPath() {
+        if (resource != null) {
+            return resource.getProject().getFullPath().toString();
+        }
+        return "";
     }
 
     public String getLineSeparator() {
@@ -128,14 +174,17 @@ public class Resource {
     }
 
     public String getFullQualifiedName() {        
-        if (iRes != null) {
+        if (resource != null) {
             Bundle bundle = Platform.getBundle("org.eclipse.jdt.core");
             if (bundle != null) {
-                IJavaElement element = JavaCore.create(iRes);
+                IJavaElement element = JavaCore.create(resource);
                 if (element instanceof IPackageFragment) {
                     return ((IPackageFragment)element).getElementName();
                 } else if (element instanceof ICompilationUnit) {
-                    return ((ICompilationUnit)element).findPrimaryType().getFullyQualifiedName();
+                    IType type = ((ICompilationUnit)element).findPrimaryType();
+                    if (type != null) {
+                        return type.getFullyQualifiedName();
+                    }
                 }
             }
         }
@@ -144,8 +193,8 @@ public class Resource {
 
     public String getFullQualifiedPathName() {
         String fqcn = "";
-        if (iRes != null) {
-            return iRes.getFullPath().toString();
+        if (resource != null) {
+            return resource.getFullPath().toString();
             /*
             String[] segments = iRes.getProjectRelativePath().segments();
             for (int i=0;i<segments.length-1;i++) {
@@ -159,6 +208,7 @@ public class Resource {
     }
 
     public boolean resolve() {
-        return getFullPath() != null ? true : false;
+        return getResourceLocation() != null ? true : false;
     }
+
 }

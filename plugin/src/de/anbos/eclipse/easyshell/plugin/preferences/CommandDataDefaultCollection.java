@@ -180,6 +180,9 @@ public class CommandDataDefaultCollection {
         // Clipboard - Qualified name
         list.add(new CommandData("88989d78-cf17-4750-91fc-6260055743ae", PresetType.presetPlugin, Utils.getOS(), "Qualified Name", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
                 "${easyshell:qualified_name}${easyshell:line_separator}"));
+        // Clipboard - Variables Test
+        list.add(new CommandData("e6de32cc-342a-46a0-a766-ac74e7e4000d", PresetType.presetPlugin, Utils.getOS(), "Variables Test", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
+                "easyshell:windows_drive=${easyshell:windows_drive}${easyshell:line_separator}easyshell:resource_loc=${easyshell:resource_loc}${easyshell:line_separator}easyshell:resource_name=${easyshell:resource_name}${easyshell:line_separator}easyshell:resource_path=${easyshell:resource_path}${easyshell:line_separator}easyshell:container_loc=${easyshell:container_loc}${easyshell:line_separator}easyshell:container_name=${easyshell:container_name}${easyshell:line_separator}easyshell:container_path=${easyshell:container_path}${easyshell:line_separator}easyshell:project_loc=${easyshell:project_loc}${easyshell:line_separator}easyshell:project_name=${easyshell:project_name}${easyshell:line_separator}easyshell:project_path=${easyshell:project_path}${easyshell:line_separator}"));
     }
 
     public List<CommandData> getCommands() {

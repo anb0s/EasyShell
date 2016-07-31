@@ -35,26 +35,36 @@ public class DynamicVariableResolver implements IDynamicVariableResolver {
 	}
 
     private String handleOwnVariable(String argument) {
-        if (argument.equals("drive")) {
-            return resource.getWindowsDrive();   // {0} == ${easyshell:drive}
+        if (argument.equals("windows_drive")) {
+            return resource.getWindowsDrive();             // ${easyshell:windows_drive} == {0}
         } else if (argument.equals("line_separator")) {
-        	return resource.getLineSeparator();  // {5} == ${easyshell:line_separator}
+        	return resource.getLineSeparator();            // ${easyshell:line_separator} == {5}
+        } else if (argument.equals("qualified_name")) {
+            return resource.getFullQualifiedName();        // ${easyshell:qualified_name}
         }
-        // here we have eclipse variables embedded in easyshell variable as parameter
+        // here we have a eclipse variable embedded in easyshell variable as parameter
         return handleEclipseVariable(argument, null);
     }
 
     private String handleEclipseVariable(String variable, String argument) {
         if (variable.equals("container_loc")) {
-            return autoQuotes(resource.getParentPath());    // {1} == ${easyshell:container_loc}
+            return autoQuotes(resource.getContainerLocation());     // ${easyshell:container_loc} == {1}
+        } else if (variable.equals("container_name")) {
+            return autoQuotes(resource.getContainerName());         // ${easyshell:container_name}
+        } else if (variable.equals("container_path")) {
+            return autoQuotes(resource.getContainerPath());         // ${easyshell:container_path}
         } else if (variable.equals("resource_loc")) {
-            return autoQuotes(resource.getFullPath());      // {2} == ${easyshell:resource_loc}
+            return autoQuotes(resource.getResourceLocation());      // ${easyshell:resource_loc} == {2}
         } else if (variable.equals("resource_name")) {
-            return autoQuotes(resource.getFileName());      // {3} == ${easyshell:resource_name}
+            return autoQuotes(resource.getResourceName());          // ${easyshell:resource_name} == {3}
+        } else if (variable.equals("resource_path")) {
+            return autoQuotes(resource.getResourcePath());          // ${easyshell:resource_path}
+        } else if (variable.equals("project_loc")) {
+            return autoQuotes(resource.getProjectLocation());       // ${easyshell:project_loc_loc}
         } else if (variable.equals("project_name")) {
-            return resource.getProjectName();               // {4} == ${easyshell:project_name}
-        } else if (variable.equals("qualified_name")) {
-            return resource.getFullQualifiedName();         // {6} == ${easyshell:qualified_name} == qualified name
+            return resource.getProjectName();                       // ${easyshell:project_name} == {4}
+        } else if (variable.equals("project_path")) {
+            return autoQuotes(resource.getProjectPath());           // ${easyshell:project_path}
         }
         return null;
     }
