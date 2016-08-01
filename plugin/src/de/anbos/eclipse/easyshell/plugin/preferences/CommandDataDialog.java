@@ -38,6 +38,7 @@ import de.anbos.eclipse.easyshell.plugin.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.Variable;
 
 public class CommandDataDialog extends StatusDialog {
 
@@ -127,17 +128,10 @@ public class CommandDataDialog extends StatusDialog {
         pageGroup2.setLayoutData(data2);
         pageGroup2.setFont(parent.getFont());
 
-        createVariableLabel(pageGroup2, "${easyshell:resource_loc}",    "absolute path of file or directory");
-        createVariableLabel(pageGroup2, "${easyshell:resource_name}",   "name of file or directory");
-        createVariableLabel(pageGroup2, "${easyshell:resource_path}",   "relative path to workspace of file or directory");
-        createVariableLabel(pageGroup2, "${easyshell:container_loc}",   "absolute path of file directory or directory itself");
-        createVariableLabel(pageGroup2, "${easyshell:container_name}",  "name of file directory or directory itself");
-        createVariableLabel(pageGroup2, "${easyshell:container_path}",  "relative path to workspace of file directory or directory itself");
-        createVariableLabel(pageGroup2, "${easyshell:project_loc}",     "absolute path of project");
-        createVariableLabel(pageGroup2, "${easyshell:project_name}",    "name of project");
-        createVariableLabel(pageGroup2, "${easyshell:project_path}",    "relative path to workspace of project");
-        createVariableLabel(pageGroup2, "${easyshell:line_separator}",  "iline separator");
-        createVariableLabel(pageGroup2, "${easyshell:windows_drive}",   "drive letter of file or directory on Windows");
+        // create variable labels
+        for(int i=1;i<Variable.values().length;i++) {
+            createVariableLabel(pageGroup2, Variable.values()[i].getFullVariableName(), Variable.values()[i].getDescription());
+        }
 
         // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61
         setHelpAvailable(false);

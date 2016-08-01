@@ -29,10 +29,6 @@ public class Resource {
     private IResource resource = null;
 
     // resolved
-    private String windowsDrive = null;
-    private String resourceLocation = null;
-    private String containerLocation = null;
-    private String resourceName = null;
     private String projectName = Activator.getResourceString("easyshell.plugin.name");
     static private String lineSeparator = null;
 
@@ -66,27 +62,21 @@ public class Resource {
     }
 
     public String getWindowsDrive() {
-        if (windowsDrive == null) {
-            getResourceLocation();
-            // Try to extract drive on Win32
-            if (resourceLocation.indexOf(":") != -1) {
-                windowsDrive = resourceLocation.substring(0, resourceLocation.indexOf(":"));
-            } else {
-                windowsDrive = "";
+        String loc = getResourceLocation();
+        if (loc != null) {
+            int index = loc.indexOf(":");
+            if (index != -1) {
+                return loc.substring(0, index);
             }
         }
-        return windowsDrive;
+        return "";
     }
 
     public String getContainerLocation() {
-        if (containerLocation == null) {
-            if (file.isDirectory()) {
-                containerLocation = file.getPath();
-            } else {
-                containerLocation = file.getParent();
-            }
+        if (file.isDirectory()) {
+            return file.getPath();
         }
-        return containerLocation;
+        return file.getParent();
     }
 
     public String getContainerName() {
@@ -117,25 +107,19 @@ public class Resource {
     }
 
     public String getResourceLocation() {
-        if (resourceLocation == null) {
-            resourceLocation = file.getPath();
-        }
-        return resourceLocation;
+        return file.getPath();
     }
 
     public String getResourceName() {
-        if (resourceName == null) {
-            if (resource != null) {
-                resourceName = resource.getName();
-            } else {
-                /*if (file.isDirectory()) {
-                    resourceName = "";
-                } else {*/
-                    resourceName = file.getName();
-                //}                            
-            }
+        if (resource != null) {
+            return resource.getName();
+        } else {
+            /*if (file.isDirectory()) {
+                resourceName = "";
+            } else {*/
+            return file.getName();
+            //}                            
         }
-        return resourceName;
     }
 
     public String getResourcePath() {
@@ -171,6 +155,14 @@ public class Resource {
             lineSeparator = System.getProperty("line.separator");
         }
         return lineSeparator;
+    }
+
+    public String getFileSeparator() {
+        return System.getProperty("file.separator");
+    }
+
+    public String getPathSeparator() {
+        return System.getProperty("path.separator");
     }
 
     public String getFullQualifiedName() {        
