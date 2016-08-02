@@ -130,7 +130,7 @@ public class CommandDataDialog extends StatusDialog {
 
         // create variable labels
         for(int i=1;i<Variable.values().length;i++) {
-            createVariableLabel(pageGroup2, Variable.values()[i].getFullVariableName(), Variable.values()[i].getDescription());
+            createVariableLabel(pageGroup2, Variable.values()[i].getFullVariableName(), ": " + Variable.values()[i].getDescription());
         }
 
         // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61

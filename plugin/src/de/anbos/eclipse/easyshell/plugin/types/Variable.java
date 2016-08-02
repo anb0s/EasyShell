@@ -14,28 +14,103 @@ package de.anbos.eclipse.easyshell.plugin.types;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.anbos.eclipse.easyshell.plugin.Resource;
+
 public enum Variable {
-    varUnknown(        -1, "Unknown",          "Unknown"),
-    varResourceLoc(     0, "resource_loc",     "absolute path of file or directory"),
-    varResourceName(    1, "resource_name",    "name of file or directory"),
-    varResourcePath(    2, "resource_path",    "relative path to workspace of file or directory"),
-    varContainerLoc(    3, "container_loc",    "absolute path of file directory or directory itself"),
-    varContainerName(   4, "container_name",   "name of file directory or directory itself"),
-    varContainerPath(   5, "container_path",   "relative path to workspace of file directory or directory itself"),
-    varProjectLoc(      6, "project_loc",      "absolute path of project"),
-    varProjectName(     7, "project_name",     "name of project"),
-    varProjectPath(     8, "project_path",     "relative path to workspace of project"),
-    varLineSeparator(   9, "line_separator",   "line separator"),
-    varWindowsDrive(   10, "windows_drive",    "drive letter of file or directory on Windows");
+    // ${easyshell:resource_loc} == {2}
+    varResourceLoc(     0, "resource_loc",     "absolute path of file or directory", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getResourceLocation();
+        };
+    }),
+    // ${easyshell:resource_name} == {3}
+    varResourceName(    1, "resource_name",    "name of file or directory", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getResourceName();
+        };
+    }),
+    // ${easyshell:resource_path}
+    varResourcePath(    2, "resource_path",    "relative path to workspace of file or directory", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getResourcePath();
+        };
+    }),
+    // ${easyshell:container_loc} == {1}
+    varContainerLoc(    3, "container_loc",    "absolute path of file directory or directory itself", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getContainerLocation();
+        };
+    }),
+    // ${easyshell:container_name}
+    varContainerName(   4, "container_name",   "name of file directory or directory itself", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getContainerName();
+        };
+    }),
+    // ${easyshell:container_path}
+    varContainerPath(   5, "container_path",   "relative path to workspace of file directory or directory itself", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getContainerPath();
+        };
+    }),
+    // ${easyshell:project_loc_loc}
+    varProjectLoc(      6, "project_loc",      "absolute path of project", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getProjectLocation();
+        };
+    }),
+    // ${easyshell:project_name} == {4}
+    varProjectName(     7, "project_name",     "name of project", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getProjectName();
+        };
+    }),
+    // ${easyshell:project_path}
+    varProjectPath(     8, "project_path",     "relative path to workspace of project", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getProjectPath();
+        };
+    }),
+    // ${easyshell:windows_drive} == {0}
+    varWindowsDrive(    9, "windows_drive",    "drive letter of file or directory on Windows", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getWindowsDrive();
+        };
+    }),
+    // ${easyshell:qualified_name}
+    varQualifiedName(  10, "qualified_name",   "full qualified (class) name", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getFullQualifiedName();
+        };
+    }),
+    // ${easyshell:line_separator} == {5}
+    varLineSeparator(  11, "line_separator",   "line separator, e.g. '\\n' or '\\r\\n'", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getLineSeparator();
+        };
+    }),
+    varPathSeparator(  12, "path_separator",   "path separator, e.g. ';'", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getPathSeparator();
+        };
+    }),
+    varFileSeparator(  13, "file_separator",   "file separator, e.g. '/' on Unix or '\\' on Windows", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getFileSeparator();
+        };
+    });
     // attributes
     private final int id;
     private final String name;
     private final String description;
+    private final IVariableResolver resolver;
+    private final String prefix = "easyshell";
     // construct
-    Variable(int id, String name, String description) {
+    Variable(int id, String name, String description, IVariableResolver resolver) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.resolver = resolver;
     }
     public int getId() {
         return id;
@@ -44,7 +119,7 @@ public enum Variable {
         return name;
     }
     public String getFullVariableName() {
-        return "${easyshell:" + name + "}";
+        return "${" + prefix + ":" + name + "}";
 
     }
     public String getEclipseVariableName() {
@@ -54,7 +129,7 @@ public enum Variable {
         return description;
     }
     public static Variable getFromId(int id) {
-        Variable ret = varUnknown;
+        Variable ret = null;
         for(int i = 0; i < Variable.values().length; i++) {
             if (Variable.values()[i].getId() == id) {
                 ret = Variable.values()[i];
@@ -64,7 +139,7 @@ public enum Variable {
         return ret;
     }
     public static Variable getFromName(String name) {
-        Variable ret = varUnknown;
+        Variable ret = null;
         for(int i = 0; i < Variable.values().length; i++) {
             if (Variable.values()[i].getName().equals(name)) {
                 ret = Variable.values()[i];
@@ -82,5 +157,8 @@ public enum Variable {
             list.add(Variable.values()[i].getName());
         }
         return list;
+    }
+    public IVariableResolver getResolver() {
+        return resolver;
     }
 }
