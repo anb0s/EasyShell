@@ -24,6 +24,7 @@ import de.anbos.eclipse.easyshell.plugin.types.LinuxDesktop;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.Variable;
 
 public class CommandDataDefaultCollection {
 
@@ -47,6 +48,7 @@ public class CommandDataDefaultCollection {
             CommandData cmdData = list.get(i);
             // use the same id like the default command to have same defaults
             MenuData newData = new MenuData(cmdData.getId(), cmdData.getId());
+            newData.setNameTypeFromCategory(cmdData.getCategory());
             if (sorted) {
                 newData.setPosition(i);
             }
@@ -181,8 +183,12 @@ public class CommandDataDefaultCollection {
         list.add(new CommandData("88989d78-cf17-4750-91fc-6260055743ae", PresetType.presetPlugin, Utils.getOS(), "Qualified Name", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
                 "${easyshell:qualified_name}${easyshell:line_separator}"));
         // Clipboard - Variables Test
+        String varTestString = "";
+        for(int i=1;i<Variable.values().length;i++) {
+            varTestString += "easyshell:" + Variable.values()[i].getName() + "=" + Variable.values()[i].getFullVariableName() + "${easyshell:line_separator}";
+        }
         list.add(new CommandData("e6de32cc-342a-46a0-a766-ac74e7e4000d", PresetType.presetPlugin, Utils.getOS(), "Variables Test", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
-                "easyshell:windows_drive=${easyshell:windows_drive}${easyshell:line_separator}easyshell:resource_loc=${easyshell:resource_loc}${easyshell:line_separator}easyshell:resource_name=${easyshell:resource_name}${easyshell:line_separator}easyshell:resource_path=${easyshell:resource_path}${easyshell:line_separator}easyshell:container_loc=${easyshell:container_loc}${easyshell:line_separator}easyshell:container_name=${easyshell:container_name}${easyshell:line_separator}easyshell:container_path=${easyshell:container_path}${easyshell:line_separator}easyshell:project_loc=${easyshell:project_loc}${easyshell:line_separator}easyshell:project_name=${easyshell:project_name}${easyshell:line_separator}easyshell:project_path=${easyshell:project_path}${easyshell:line_separator}"));
+                varTestString));
     }
 
     public List<CommandData> getCommands() {

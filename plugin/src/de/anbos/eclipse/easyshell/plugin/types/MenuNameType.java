@@ -15,11 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum MenuNameType {
-    menuNameTypeUnknown(-1, "Unknown", ""),
-    menuNameTypeUser(0, "User defined", "${easyshell:command_name}"),
-    menuNameTypeGeneric1(1, "<category>: <name>", "${easyshell:command_category}: ${easyshell:command_name}"),
-    menuNameTypeGeneric2(2, "<category> with <name>", "${easyshell:command_category} with ${easyshell:command_name}"),
-    menuNameTypeGeneric3(3, "<category> with <os> <name>", "${easyshell:command_category} with ${easyshell:command_os} ${easyshell:command_name}");
+    menuNameTypeUnknown(           -1, "Unknown", ""),
+    menuNameTypeUser(               0, "User defined", "${easyshell:command_name}"),
+    menuNameTypeDefaultApplication( 1, "Open with default application", "Open with default Application"),
+    menuNameTypeOpenHere(           2, "Open <name> Here", "Open ${easyshell:command_name} Here"),
+    menuNameTypeShowIn(             3, "Show in <name>", "Show in ${easyshell:command_name}"),
+    menuNameTypeCopyToClipboard(    4, "Copy <name> to Clipboard", "Copy ${easyshell:command_name} to Clipboard"),
+    menuNameTypeGeneric1(           5, "<category>: <name>", "${easyshell:command_category}: ${easyshell:command_name}"),
+    menuNameTypeGeneric2(           6, "<category> with <name>", "${easyshell:command_category} with ${easyshell:command_name}"),
+    menuNameTypeGeneric3(           7, "<category> with <os> <name>", "${easyshell:command_category} with ${easyshell:command_os} ${easyshell:command_name}");
     // attributes
     private final int id;
     private final String name;

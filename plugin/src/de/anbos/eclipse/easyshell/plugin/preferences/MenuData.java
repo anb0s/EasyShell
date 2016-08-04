@@ -14,6 +14,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
+import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
@@ -123,7 +124,6 @@ public class MenuData extends Data {
             // read the new one
             setCommandId(tokenizer.nextToken());
             setNameType(nameType);
-            setNamePattern(namePatternReaded);
         } else {
             // read previous command data members
             CommandData oldData = new CommandData();
@@ -133,11 +133,6 @@ public class MenuData extends Data {
             // set name type and read the old name as pattern and convert to new
             if (version.getId() >= Version.v2_0_002.getId()) {
                 setNameType(nameType);
-                if (nameType == MenuNameType.menuNameTypeUser) {
-                    setNamePattern(namePatternReaded);
-                } else {
-                    setNamePattern(nameType.getPattern());
-                }
             } else {
                 // check if readed name is the same, like expanded from patterns
                 for (MenuNameType type : MenuNameType.getAsList()) {
@@ -148,10 +143,14 @@ public class MenuData extends Data {
                     }
                 }
                 setNameType(nameType);
-                // if not found set the readed value
-                if (nameType == MenuNameType.menuNameTypeUser) {
-                    setNamePattern(namePatternReaded);
-                }
+            }
+        }
+        if (nameType == MenuNameType.menuNameTypeUser) {
+            setNamePattern(namePatternReaded);
+        } else if (version.getId() < Version.v2_0_004.getId()) {
+            // convert to new names types
+            if (nameType == MenuNameType.menuNameTypeGeneric1) {
+                setNameTypeFromCategory();
             }
         }
         return true;
@@ -202,6 +201,29 @@ public class MenuData extends Data {
 
     public CommandData getCommandData() {
         return CommandDataStore.instance().getById(getCommandId());
+    }
+
+    public void setNameTypeFromCategory() {
+        CommandData newData = getCommandData();
+        if (newData != null) {
+            setNameTypeFromCategory(newData.getCategory());
+        }
+    }
+
+    public void setNameTypeFromCategory(Category category) {
+        switch(category) {
+            case categoryDefault: setNameType(MenuNameType.menuNameTypeDefaultApplication);
+            break;
+            case categoryOpen: setNameType(MenuNameType.menuNameTypeOpenHere);
+            break;
+            case categoryRun: setNameType(MenuNameType.menuNameTypeGeneric2);
+            break;
+            case categoryExplore: setNameType(MenuNameType.menuNameTypeShowIn);
+            break;
+            case categoryClipboard: setNameType(MenuNameType.menuNameTypeCopyToClipboard);
+            break;
+        }
+        
     }
 
 }

@@ -47,7 +47,7 @@ import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
 
 public class MenuDataDialog extends StatusDialog {
 
-    private MenuData data;
+    private MenuData menuData;
     private List<CommandData> cmdList;
 
     private Button  enabledCheckBox;
@@ -62,9 +62,9 @@ public class MenuDataDialog extends StatusDialog {
     private Button editButton;
     private Button removeButton;
 
-    public MenuDataDialog(Shell parent, MenuData data, List<CommandData> cmdList, boolean edit) {
+    public MenuDataDialog(Shell parent, MenuData menuData, List<CommandData> cmdList, boolean edit) {
         super(parent);
-        this.data = data;
+        this.menuData = menuData;
         this.cmdList = cmdList;
         // do layout and title
         setShellStyle(getShellStyle() | SWT.MAX);
@@ -113,20 +113,20 @@ public class MenuDataDialog extends StatusDialog {
         // type combo
         createNameTypeCombo(pageGroup1);
         // create input nameText field
-        namePatternText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.pattern"), data.getNamePattern(), true);
+        namePatternText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.pattern"), menuData.getNamePattern(), true);
         namePatternText.addModifyListener(new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
-                boolean isUserDefined = data.getNameType() == MenuNameType.menuNameTypeUser;
+                boolean isUserDefined = menuData.getNameType() == MenuNameType.menuNameTypeUser;
                 if (isUserDefined) {
                     Text text = (Text)e.widget;
-                    data.setNamePattern(text.getText());
-                    menuNameText.setText(data.getNameExpanded());
+                    menuData.setNamePattern(text.getText());
+                    menuNameText.setText(menuData.getNameExpanded());
                 }
             }
         });
 
-        menuNameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), data.getNameExpanded(), false);
+        menuNameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), menuData.getNameExpanded(), false);
 
         // define group2
         Group pageGroup2 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
@@ -144,7 +144,7 @@ public class MenuDataDialog extends StatusDialog {
         // create selected command combo
         createCommandCombo(pageGroup2); createNewButton(font, pageGroup2, gridData2);
         // create input commandText field
-        commandText = createTextField(pageGroup2, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), data.getCommandData().getCommand(), false);
+        commandText = createTextField(pageGroup2, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), menuData.getCommandData().getCommand(), false);
         createCopyButton(font, pageGroup2, gridData2);
         createLabel(pageGroup2, "");createLabel(pageGroup2, "");
         createEditButton(font, pageGroup2, gridData2);
@@ -229,10 +229,10 @@ public class MenuDataDialog extends StatusDialog {
         if (!validateValues()) {
             return;
         }
-        data.setEnabled(enabledCheckBox.getSelection());
-        data.setNameType(getAllNameTypes()[nameTypeCombo.getSelectionIndex()]);
-        data.setNamePattern(namePatternText.getText());
-        data.setCommandId(cmdList.get(commandCombo.getSelectionIndex()).getId());
+        menuData.setEnabled(enabledCheckBox.getSelection());
+        menuData.setNameType(getAllNameTypes()[nameTypeCombo.getSelectionIndex()]);
+        menuData.setNamePattern(namePatternText.getText());
+        menuData.setCommandId(cmdList.get(commandCombo.getSelectionIndex()).getId());
         super.okPressed();
     }
 
@@ -315,7 +315,7 @@ public class MenuDataDialog extends StatusDialog {
         commands.add(data);
         // get referenced menus and remove the the actual menus
         menus.addAll(MenuDataStore.instance().getRefencedBy(data.getId()));
-        menus.remove(this.data);
+        menus.remove(this.menuData);
         // ask user
         String commandNames = commandCombo.getItem(index);
         String title = Activator.getResourceString("easyshell.menu.editor.dialog.title.remove");
@@ -387,7 +387,7 @@ public class MenuDataDialog extends StatusDialog {
             int index = commandCombo.getSelectionIndex();
             CommandData data = cmdList.get(index);
             List<MenuData> menus = MenuDataStore.instance().getRefencedBy(data.getId());
-            menus.remove(this.data);
+            menus.remove(this.menuData);
             if (menus.size() >0) {
                 title = Activator.getResourceString("easyshell.menu.editor.dialog.title.duplicate");
                 String commandNames = commandCombo.getItem(index);
@@ -417,7 +417,7 @@ public class MenuDataDialog extends StatusDialog {
         createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.active"));
         // draw checkbox
         enabledCheckBox = new Button(parent,SWT.CHECK);
-        enabledCheckBox.setSelection(this.data.isEnabled());
+        enabledCheckBox.setSelection(this.menuData.isEnabled());
     }
 
     private String[] getAllCommandsAsComboNames(List<CommandData> list) {
@@ -450,11 +450,17 @@ public class MenuDataDialog extends StatusDialog {
 			public void widgetSelected(SelectionEvent e) {
                 int index = commandCombo.getSelectionIndex();
 				//String text = commandCombo.getItem(index);
-				data.setCommandId(cmdList.get(index).getId());
-				commandText.setText(data.getCommandData().getCommand());
-				boolean isUserDefined = data.getCommandData().getPresetType() == PresetType.presetUser;
+                CommandData cmdData = cmdList.get(index); 
+				menuData.setCommandId(cmdData.getId());
+				if (menuData.getNameType() != MenuNameType.menuNameTypeUser) {
+				    menuData.setNameTypeFromCategory(cmdData.getCategory());
+				}
+				commandText.setText(menuData.getCommandData().getCommand());
+				boolean isUserDefined = menuData.getCommandData().getPresetType() == PresetType.presetUser;
 				//editButton.setEnabled(isUserDefined);
 				removeButton.setEnabled(isUserDefined);
+				// updates & refreshes
+				updateTypeComboSelection();
 				refreshNameTypeCombo();
 			}
             @Override
@@ -463,7 +469,7 @@ public class MenuDataDialog extends StatusDialog {
             }
 		});
         for(int i = 0 ; i < cmdList.size() ; i++) {
-            if (cmdList.get(i).equals(this.data.getCommandData())) {
+            if (cmdList.get(i).equals(this.menuData.getCommandData())) {
                 commandCombo.select(i);
                 return;
             }
@@ -485,10 +491,10 @@ public class MenuDataDialog extends StatusDialog {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int index = nameTypeCombo.getSelectionIndex();
-                data.setNameType(MenuNameType.getAsArray()[index]);
-                namePatternText.setText(data.getNamePattern());
-                menuNameText.setText(data.getNameExpanded());
-                boolean isUserDefined = data.getNameType() == MenuNameType.menuNameTypeUser;
+                menuData.setNameType(MenuNameType.getAsArray()[index]);
+                namePatternText.setText(menuData.getNamePattern());
+                menuNameText.setText(menuData.getNameExpanded());
+                boolean isUserDefined = menuData.getNameType() == MenuNameType.menuNameTypeUser;
                 namePatternText.setEditable(isUserDefined);
             }
             @Override
@@ -496,9 +502,12 @@ public class MenuDataDialog extends StatusDialog {
                 // TODO Auto-generated method stub
             }
         });
+        updateTypeComboSelection();
+    }
 
+    private void updateTypeComboSelection() {
         for(int i = 0 ; i < MenuNameType.values().length ; i++) {
-            if (MenuNameType.values()[i].equals(this.data.getNameType())) {
+            if (MenuNameType.values()[i].equals(this.menuData.getNameType())) {
                 nameTypeCombo.select(MenuNameType.values()[i].getId());
                 return;
             }
