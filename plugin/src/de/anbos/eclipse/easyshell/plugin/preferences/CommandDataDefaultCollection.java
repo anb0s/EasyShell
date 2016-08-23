@@ -103,6 +103,8 @@ public class CommandDataDefaultCollection {
                 "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd cmd"));
         list.add(new CommandData("c2b73077-ffd9-4fb7-9793-189be9f13ebb", PresetType.presetPlugin, OS.osWindows, "ConEmu", ResourceType.resourceTypeFileOrDirectory, Category.categoryRun, CommandType.commandTypeExecute,
                 "ConEmu.exe /Title \"${easyshell:project_name}\" /Dir \"${easyshell:container_loc}\" /Single /cmd \"${easyshell:resource_name}\""));
+        list.add(new CommandData("c57a5d9f-491a-4b21-8a8b-9941b01cc049", PresetType.presetPlugin, OS.osWindows, "Cmder", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
+                "cmder.exe /START \"${easyshell:container_loc}\""));
         // Windows TotalCommander
         list.add(new CommandData("e487327c-dfdb-42e7-bf16-3b81a34e5703", PresetType.presetPlugin, OS.osWindows, "TotalCommander", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "cmd.exe /C totalcmd64.exe /O /T ${easyshell:container_loc}"));
