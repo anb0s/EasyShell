@@ -20,7 +20,7 @@ public interface Constants {
     public static final String IMAGE_PATH        = "icons/";
     public static final String IMAGE_UNKNOWN     = "sample.gif";
     public static final String IMAGE_DEFAULT     = "editor.gif";
-    public static final String IMAGE_OPEN        = "prompt.gif";
+    public static final String IMAGE_OPEN        = "terminal_16x16.png";
     public static final String IMAGE_RUN         = "run_exc.gif";
     public static final String IMAGE_EXPLORE     = "fldr_obj.gif";
     public static final String IMAGE_CLIPBOARD   = "copy.gif";
