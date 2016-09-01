@@ -226,14 +226,19 @@ public class Activator extends AbstractUIPlugin {
     public IPreferenceStore getPreferenceStore() {
         // Create the preference store lazily.
         if (myPreferenceStore == null) {
-            myPreferenceStore = getNewPreferenceStoreByVersion(Version.actual.name());
+            myPreferenceStore = getPreferenceStoreByVersion(Version.actual.name());
         }
         return myPreferenceStore;
     }
 
-    public IPreferenceStore getNewPreferenceStoreByVersion(String version) {
+    public IPreferenceStore getPreferenceStoreByVersion(String version) {
         String pluginNodeName = getBundle().getSymbolicName();
         return new ScopedPreferenceStore(InstanceScope.INSTANCE, pluginNodeName + "/" + version, pluginNodeName);
+    }
+
+    public IPreferenceStore getLegacyPreferenceStore() {
+        String pluginNodeName = "com.tetrade.eclipse.plugins.easyshell";
+        return new ScopedPreferenceStore(InstanceScope.INSTANCE, pluginNodeName, pluginNodeName);
     }
 
 }

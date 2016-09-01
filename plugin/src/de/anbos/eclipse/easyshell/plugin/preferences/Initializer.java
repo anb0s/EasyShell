@@ -12,18 +12,19 @@
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.dialogs.MessageDialog;
-//import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-//import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
-//import org.osgi.service.prefs.BackingStoreException;
-//import org.osgi.service.prefs.Preferences;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
 import de.anbos.eclipse.easyshell.plugin.Utils;
+import de.anbos.eclipse.easyshell.plugin.legacy.PrefsV1_4;
+import de.anbos.eclipse.easyshell.plugin.legacy.PrefsV1_5;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class Initializer extends AbstractPreferenceInitializer {
@@ -35,17 +36,6 @@ public class Initializer extends AbstractPreferenceInitializer {
 		setDefaults(store);
 		// migrate from old store
         migrate(store);
-        /*
-        IEclipsePreferences instanceNode = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-        Preferences preferences = instanceNode.node(Constants.PREF_VERSIONS[0]);
-        preferences.put("test", "value");
-        try {
-            preferences.flush();
-        } catch (BackingStoreException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        */
 	}
 
     private void setDefaults(IPreferenceStore store) {
@@ -103,25 +93,31 @@ public class Initializer extends AbstractPreferenceInitializer {
 
     private int migrate_from_v2(IPreferenceStore store, Version version, int migrateState) {
         // get the old v2 store
-        IPreferenceStore oldStore = Activator.getDefault().getNewPreferenceStoreByVersion(version.name());
+        IPreferenceStore oldStore = Activator.getDefault().getPreferenceStoreByVersion(version.name());
         // check preferences for default values
-        migrateState = migrate_check_pref_and_ask_user(oldStore, version, Constants.PREF_COMMANDS, migrateState);
+        migrateState = migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS)), migrateState);
         if (migrateState == 0) {
             store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.migrateCommandDataList(version, oldStore.getString(Constants.PREF_COMMANDS)));
         }
-        migrateState = migrate_check_pref_and_ask_user(oldStore, version, Constants.PREF_MENU, migrateState);
+        migrateState = migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_MENU)), migrateState);
         if (migrateState == 0) {
             store.setValue(Constants.PREF_MENU, PreferenceValueConverter.migrateMenuDataList(version, oldStore.getString(Constants.PREF_MENU)));
         }
         return migrateState;
     }
 
-    private int migrate_check_pref_and_ask_user(IPreferenceStore store, Version version, String pref, int migrateState) {
+    private int migrate_check_pref_and_ask_user(IPreferenceStore store, Version version, List<String> prefList, int migrateState) {
         // if cancel or no just skip this time
         if (migrateState == 1 || migrateState == 2) {
             return migrateState;
         }
-        boolean migrationPossible = !store.isDefault(pref);
+        boolean migrationPossible = false;
+        for (String pref : prefList) {
+            if (!store.isDefault(pref)) {
+                migrationPossible = true;
+                break;
+            }
+        }
         if (migrationPossible) {
             // ask user if not already asked and said yes
             if (migrateState != 0) {
@@ -141,8 +137,31 @@ public class Initializer extends AbstractPreferenceInitializer {
     }
 
     private int migrate_from_v1(IPreferenceStore store, Version version, int migrateState) {
-        // TODO:
-        return -1;
+        // get the old v1_5 store
+        IPreferenceStore oldStore = Activator.getDefault().getLegacyPreferenceStore();
+        // check if we want version 1.5 or 1.4
+        if (version == Version.v1_5) {
+            // check preferences for default values
+            migrateState = migrate_check_pref_and_ask_user(oldStore, version, PrefsV1_5.getPreferenceList(), migrateState);
+            if (migrateState == 0) {
+                List<CommandData> cmdDataList = new ArrayList<CommandData>();
+                List<MenuData> menuDataList = new ArrayList<MenuData>();
+                if (PrefsV1_5.loadStore(oldStore, cmdDataList, menuDataList)) {
+                    store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.asCommandDataString(cmdDataList));
+                    store.setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
+                }
+            }
+        } else if (version == Version.v1_4) {
+            // check preferences for default values
+            migrateState = migrate_check_pref_and_ask_user(oldStore, version, PrefsV1_4.getPreferenceList(), migrateState);
+            List<CommandData> cmdDataList = new ArrayList<CommandData>();
+            List<MenuData> menuDataList = new ArrayList<MenuData>();
+            if (PrefsV1_4.loadStore(oldStore, cmdDataList, menuDataList)) {
+                store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.asCommandDataString(cmdDataList));
+                store.setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
+            }
+        }
+        return migrateState;
     }
 
 }
