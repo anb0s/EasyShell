@@ -172,6 +172,7 @@ public class DataStore<T extends Data> implements IDataStore {
     }
 
     protected void addItem(T data) {
+        data.setPosition(items.size());
         items.add(data);
     }
 

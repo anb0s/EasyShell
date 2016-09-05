@@ -11,9 +11,7 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
@@ -28,22 +26,16 @@ import de.anbos.eclipse.easyshell.plugin.types.Variable;
 
 public class CommandDataDefaultCollection {
 
-    private List<CommandData> list = new ArrayList<CommandData>();
+    private CommandDataList list = new CommandDataList();
     private static CommandDataDefaultCollection instance = new CommandDataDefaultCollection();
 
-    public static List<CommandData> getAllCommandsStatic(boolean sorted) {
-        List<CommandData> ret = instance.getCommands();
-        if (sorted) {
-            for (int i=0;i<ret.size();i++) {
-                ret.get(i).setPosition(i);
-            }
-        }
-        return ret;
+    public static CommandDataList getAllCommandsStatic() {
+        return instance.getCommands();
     }
 
-    public static List<MenuData> getCommandsNativeAsMenu(boolean sorted) {
-        List<CommandData> list = getDefaultCommands();
-        List<MenuData> ret = new ArrayList<MenuData>();
+    public static MenuDataList getCommandsNativeAsMenu(boolean sorted) {
+        CommandDataList list = getDefaultCommands();
+        MenuDataList ret = new MenuDataList();
         for (int i=0;i<list.size();i++) {
             CommandData cmdData = list.get(i);
             // use the same id like the default command to have same defaults
@@ -197,24 +189,24 @@ public class CommandDataDefaultCollection {
                 varTestString));
     }
 
-    public List<CommandData> getCommands() {
+    public CommandDataList getCommands() {
         return list;
     }
 
-    public static List<CommandData> getCommandsNative(List<CommandData> list, boolean sorted) {
+    public static CommandDataList getCommandsNative(CommandDataList list) {
         if (list == null) {
-            list = getAllCommandsStatic(false);
+            list = getAllCommandsStatic();
         }
-        return getCommandData(list, Utils.getOS(), sorted);
+        return getCommandData(list, Utils.getOS());
     }
 
-    private static List<CommandData> getDefaultCommands() {
-        List<CommandData> listAll = getAllCommandsStatic(false);
-        List<CommandData> listOS = new ArrayList<CommandData>();
-        List<CommandData> listDefault = new ArrayList<CommandData>();
+    private static CommandDataList getDefaultCommands() {
+        CommandDataList listAll = getAllCommandsStatic();
+        CommandDataList listOS = new CommandDataList();
+        CommandDataList listDefault = new CommandDataList();
         OS os = Utils.getOS();
         // now get all data by OS
-        listOS = getCommandData(listAll, os, true);
+        listOS = getCommandData(listAll, os);
         // now get by name
         switch(os)
         {
@@ -276,29 +268,24 @@ public class CommandDataDefaultCollection {
         return listDefault;
     }
 
-    private static void addNotNull(List<CommandData> list, CommandData data) {
+    private static void addNotNull(CommandDataList list, CommandData data) {
     	if (data != null) {
     		list.add(data);
     	}
     }
 
-    public static List<CommandData> getCommandData(List<CommandData> list, OS os, boolean sorted) {
-        List<CommandData> listOut = new ArrayList<CommandData>();
-        int position = 0;
+    public static CommandDataList getCommandData(CommandDataList list, OS os) {
+        CommandDataList listOut = new CommandDataList();
         for (CommandData entry : list) {
             if (entry.getOs() == os) {
                 CommandData newData = new CommandData(entry, false);
-                if (sorted) {
-                    newData.setPosition(position);
-                }
                 listOut.add(newData);
-                position++;
             }
         }
         return listOut;
     }
 
-    private static CommandData getCommandData(List<CommandData> list, String name, Category category) {
+    private static CommandData getCommandData(CommandDataList list, String name, Category category) {
         for (CommandData entry : list) {
             if (entry.getCategory() == category && entry.getName().matches(name)) {
                 return entry;
@@ -307,8 +294,8 @@ public class CommandDataDefaultCollection {
         return null;
     }
 
-    private static List<CommandData> getCommandDataList(List<CommandData> list, Category category) {
-    	List<CommandData> listOut = new ArrayList<CommandData>();
+    private static CommandDataList getCommandDataList(CommandDataList list, Category category) {
+    	CommandDataList listOut = new CommandDataList();
         for (CommandData entry : list) {
             if (entry.getCategory() == category) {
             	CommandData newData = new CommandData(entry, false);

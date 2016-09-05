@@ -27,12 +27,12 @@ public class MenuData extends Data {
     // copy of or reference to command
     private String commandId = null;
 
-    public MenuData(String id, boolean enabled, MenuNameType nameType, String namePattern, String commandId) {
+    public MenuData(String id, boolean enabled, MenuNameType nameType, String namePattern,String commandId) {
         super(id);
-        this.enabled = enabled;
-        this.nameType = nameType;
-        this.namePattern = namePattern;
-        this.commandId = commandId;
+        setEnabled(enabled);
+        setNameType(nameType);
+        setNamePattern(namePattern);
+        setCommandId(commandId);
     }
 
     public MenuData(String newId, String commandId) {
@@ -192,7 +192,9 @@ public class MenuData extends Data {
     }
 
     public void setNamePattern(String namePattern) {
-        this.namePattern = namePattern;
+        if (namePattern != null) {
+            this.namePattern = namePattern;
+        }
     }
 
     public void setCommandId(String commandId) {
@@ -223,7 +225,7 @@ public class MenuData extends Data {
             case categoryClipboard: setNameType(MenuNameType.menuNameTypeCopyToClipboard);
             break;
         }
-        
+
     }
 
 }

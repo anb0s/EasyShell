@@ -131,7 +131,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         CommandDataStore.instance().load();
 
         // get the native commands list
-        commandList = CommandDataDefaultCollection.getCommandsNative(CommandDataStore.instance().getDataList(), true);
+        commandList = CommandDataDefaultCollection.getCommandsNative(new CommandDataList(CommandDataStore.instance().getDataList()));
 
         // menu store
         MenuDataStore.instance().load();

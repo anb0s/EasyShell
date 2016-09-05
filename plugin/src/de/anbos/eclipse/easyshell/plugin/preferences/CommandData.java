@@ -39,19 +39,19 @@ public class CommandData extends Data {
 
     public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, Category category, CommandType cmdType, String command) {
         super(id);
-        this.presetType = presetType;
-        this.os = os;
-        this.name = name;
-        this.resourceType = resType;
-        this.useWorkingDirectory = useWorkingDirectory;
-        this.workingDirectory = workingDirectory;
-        this.category = category;
-        this.commandType = cmdType;
-        this.command = command;
+        setPresetType(presetType);
+        setOs(os);
+        setName(name);
+        setResourceType(resType);
+        setUseWorkingDirectory(useWorkingDirectory);
+        setWorkingDirectory(workingDirectory);
+        setCategory(category);
+        setCommandType(cmdType);
+        setCommand(command);
     }
 
     public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, Category category, CommandType cmdType, String command) {
-        this(id, presetType, os, name, resType, false, "${easyshell:container_loc}", category, cmdType, command);
+        this(id, presetType, os, name, resType, false, null, category, cmdType, command);
     }
 
     public CommandData(CommandData commandData, String newId) {
@@ -129,7 +129,11 @@ public class CommandData extends Data {
     }
 
     public void setWorkingDirectory(String workingDirectory) {
-        this.workingDirectory = workingDirectory;
+        if (workingDirectory != null) {
+            this.workingDirectory = workingDirectory;
+        } else {
+            this.workingDirectory = "${easyshell:container_loc}";
+        }
     }
 
     public void setCategory(Category category) {

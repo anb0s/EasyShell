@@ -39,7 +39,7 @@ public class Initializer extends AbstractPreferenceInitializer {
 	}
 
     private void setDefaults(IPreferenceStore store) {
-        String defaultCommandsPreset = PreferenceValueConverter.asCommandDataString(CommandDataDefaultCollection.getCommandsNative(null, true));
+        String defaultCommandsPreset = PreferenceValueConverter.asCommandDataString(CommandDataDefaultCollection.getCommandsNative(null));
         String defaultCommands = "";
         String defaultMenu    = PreferenceValueConverter.asMenuDataString(CommandDataDefaultCollection.getCommandsNativeAsMenu(true));
         store.setDefault(Constants.PREF_COMMANDS_PRESET, defaultCommandsPreset);
@@ -144,9 +144,9 @@ public class Initializer extends AbstractPreferenceInitializer {
             // check preferences for default values
             migrateState = migrate_check_pref_and_ask_user(oldStore, version, PrefsV1_5.getPreferenceList(), migrateState);
             if (migrateState == 0) {
-                List<CommandData> cmdDataList = new ArrayList<CommandData>();
-                List<MenuData> menuDataList = new ArrayList<MenuData>();
-                if (PrefsV1_5.loadStore(oldStore, cmdDataList, menuDataList)) {
+                CommandDataList cmdDataList = new CommandDataList();
+                MenuDataList menuDataList = CommandDataDefaultCollection.getCommandsNativeAsMenu(true);
+                if (PrefsV1_5.loadStore(oldStore, Utils.getOS(), cmdDataList, menuDataList)) {
                     store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.asCommandDataString(cmdDataList));
                     store.setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
                 }
@@ -154,9 +154,9 @@ public class Initializer extends AbstractPreferenceInitializer {
         } else if (version == Version.v1_4) {
             // check preferences for default values
             migrateState = migrate_check_pref_and_ask_user(oldStore, version, PrefsV1_4.getPreferenceList(), migrateState);
-            List<CommandData> cmdDataList = new ArrayList<CommandData>();
-            List<MenuData> menuDataList = new ArrayList<MenuData>();
-            if (PrefsV1_4.loadStore(oldStore, cmdDataList, menuDataList)) {
+            CommandDataList cmdDataList = new CommandDataList();
+            MenuDataList menuDataList = CommandDataDefaultCollection.getCommandsNativeAsMenu(true);
+            if (PrefsV1_4.loadStore(oldStore, Utils.getOS(), cmdDataList, menuDataList)) {
                 store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.asCommandDataString(cmdDataList));
                 store.setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
             }

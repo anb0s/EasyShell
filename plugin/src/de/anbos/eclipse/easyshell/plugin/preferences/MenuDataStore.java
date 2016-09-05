@@ -11,9 +11,7 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -46,7 +44,7 @@ public class MenuDataStore extends DataStore<MenuData> {
     }
 
     public MenuData[] getCommandMenuDataArray() {
-        List<MenuData> allItems = getDataList();
+        MenuDataList allItems = new MenuDataList(getDataList());
         if(allItems.size() <= 0) {
             return new MenuData[0];
         }
@@ -57,8 +55,8 @@ public class MenuDataStore extends DataStore<MenuData> {
         return allArray;
     }
 
-    public List<MenuData> getEnabledCommandMenuDataList() {
-        List<MenuData> checkedItems = new ArrayList<MenuData>();
+    public MenuDataList getEnabledCommandMenuDataList() {
+        MenuDataList checkedItems = new MenuDataList();
         Iterator<MenuData> dataIterator = getDataList().iterator();
         while(dataIterator.hasNext()) {
             MenuData data = (MenuData)dataIterator.next();
@@ -70,7 +68,7 @@ public class MenuDataStore extends DataStore<MenuData> {
     }
 
     public MenuData[] getEnabledCommandMenuDataArray() {
-        List<MenuData> checkedItems = getEnabledCommandMenuDataList();
+        MenuDataList checkedItems = getEnabledCommandMenuDataList();
         if(checkedItems.size() <= 0) {
         	return new MenuData[0];
         }
@@ -109,8 +107,8 @@ public class MenuDataStore extends DataStore<MenuData> {
         load(null);
     }
 
-    public List<MenuData> getRefencedBy(String id) {
-        List<MenuData> ref = new ArrayList<MenuData>();
+    public MenuDataList getRefencedBy(String id) {
+        MenuDataList ref = new MenuDataList();
         Iterator<MenuData> dataIterator = getDataList().iterator();
         while(dataIterator.hasNext()) {
             MenuData data = (MenuData)dataIterator.next();

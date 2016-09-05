@@ -11,9 +11,6 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -45,8 +42,8 @@ public class CommandDataStore extends DataStore<CommandData> {
         });
     }
 
-    private List<CommandData> getUserCommands() {
-        List<CommandData> userItems = new ArrayList<CommandData>();
+    private CommandDataList getUserCommands() {
+        CommandDataList userItems = new CommandDataList();
         for (CommandData data : getDataList()) {
             if (data.getPresetType() == PresetType.presetUser) {
                 userItems.add(data);
@@ -55,8 +52,8 @@ public class CommandDataStore extends DataStore<CommandData> {
         return userItems;
     }
 
-    private List<CommandData> getPresetCommands() {
-        List<CommandData> presetItems = new ArrayList<CommandData>();
+    private CommandDataList getPresetCommands() {
+        CommandDataList presetItems = new CommandDataList();
         for (CommandData data : getDataList()) {
             if (data.getPresetType() == PresetType.presetPlugin) {
                 presetItems.add(data);
@@ -66,7 +63,7 @@ public class CommandDataStore extends DataStore<CommandData> {
     }
 
     public CommandData[] getAllCommandsArray() {
-        List<CommandData> allItems = getDataList();
+        CommandDataList allItems = new CommandDataList(getDataList());
         if(allItems.size() <= 0) {
             return new CommandData[0];
         }

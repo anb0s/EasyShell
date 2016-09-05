@@ -27,18 +27,21 @@ public class Data implements IData {
         }
     }
 
-    public Data(String newId, IData data) {
-        this(newId);
+    public Data(String id, int position) {
+        this(id);
+        setPosition(position);
     }
 
     public Data(IData data, boolean generateNewId) {
-        this(generateNewId ? UUID.randomUUID().toString() : data.getId(), data);
+        this(generateNewId ? null : data.getId());
     }
 
     public Data(IData data) {
+        this(data.getId());
     }
 
     public Data() {
+        this(null, true);
     }
 
     /* (non-Javadoc)

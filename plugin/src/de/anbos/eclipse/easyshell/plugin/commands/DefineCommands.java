@@ -25,6 +25,7 @@ import org.eclipse.ui.services.IServiceLocator;
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
+import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataStore;
 
 public class DefineCommands extends ExtensionContributionFactory {
@@ -39,7 +40,7 @@ public class DefineCommands extends ExtensionContributionFactory {
 	    // load the preferences
 	    CommandDataStore.instance().load();
 	    MenuDataStore.instance().load();
-	    List<MenuData> items = MenuDataStore.instance().getEnabledCommandMenuDataList();
+	    MenuDataList items = MenuDataStore.instance().getEnabledCommandMenuDataList();
         for (MenuData item : items) {
             addItem(serviceLocator, additions,
                     item.getNameExpanded(),

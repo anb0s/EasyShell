@@ -18,9 +18,17 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import de.anbos.eclipse.easyshell.plugin.legacy.PrefsV1_5.Command;
 import de.anbos.eclipse.easyshell.plugin.preferences.CommandData;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataList;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
+import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
+import de.anbos.eclipse.easyshell.plugin.types.Category;
+import de.anbos.eclipse.easyshell.plugin.types.CommandType;
+import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
+import de.anbos.eclipse.easyshell.plugin.types.OS;
+import de.anbos.eclipse.easyshell.plugin.types.PresetType;
+import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class PrefsV1_4 {
 
@@ -28,79 +36,79 @@ public class PrefsV1_4 {
      * Commands.
      */
     private enum Command {
-        cmdUnknown(0, 	"Unknown shell / file browser",
+        cmdUnknown(0, 	"Unknown", "shell", "file browser", null,
                         "open {1}",
                         "cd {1} && run ./''{3}''",
                         "explore {2}",
                         "{2}{5}"
         ),
-        cmdWinDOS(1, 	"Windows DOS-Shell / Explorer",
+        cmdWinDOS(1, 	"Windows", "DOS-Shell", "Explorer", null,
                         "cmd.exe /C start \"{4}\" /D {1} cmd.exe /K",
                         "cmd.exe /C start \"{4}\" /D {1} {3}",
                         "explorer.exe /select, {2}",
                         "{2}{5}"
         ),
-        cmdWinPower(2,	"Windows PowerShell / Explorer",
+        cmdWinPower(2,	"Windows", "PowerShell", "Explorer", null,
                         "cmd.exe /C start \"{4}\" /D {1} powershell.exe",
                         "cmd.exe /C start \"{4}\" /D {1} powershell.exe -command ./''{3}''",
                         "explorer.exe /select, {2}",
                         "{2}{5}"
         ),
-        cmdWinCyg(3,	"Windows Cygwin (Bash) / Explorer",
+        cmdWinCyg(3,	"Windows", "Cygwin (Bash)", "Explorer", null,
                         "cmd.exe /C start \"{4}\" /D {1} \"C:\\Cygwin\\bin\\bash.exe\"",
                         "cmd.exe /C start \"{4}\" /D {1} \"C:\\Cygwin\\bin\\bash.exe\" -c ./''{3}''",
                         "explorer.exe /select, {2} ",
                         "{2}{5}"
         ),
-        cmdKonsoleKDEKonqueror(4, "KDE Konsole / Konqueror",
+        cmdKonsoleKDEKonqueror(4, "Linux", "KDE Konsole", "Konqueror", null,
                         "konsole --noclose --workdir {1}",
                         "konsole --noclose --workdir {1} -e ./''{3}''",
                         "konqueror file:\"{2}\"",
                         "{2}{5}"
         ),
-        cmdKonsoleGnome(5, "Gnome Terminal / Nautilus",
+        cmdKonsoleGnome(5, "Linux", "Gnome Terminal", "Nautilus", null,
                         "gnome-terminal --working-directory=\"{1}\"",
                         "gnome-terminal --working-directory=\"{1}\" --command=./''{3}''",
                         "nautilus {2}",
                         "{2}{5}"
         ),
-        cmdXtermDtfile(6, "CDE Xterm / Dtfile",
+        cmdXtermDtfile(6, "Linux", "CDE Xterm", "Dtfile", null,
                         "cd {1} && xterm",
                         "cd {1} && xterm -e ./''{3}''",
                         "cd {1} && dtfile",
                         "{2}{5}"
         ),
-        cmdTerminalFinder(7, "MAC OS X Terminal / Finder",
+        cmdTerminalFinder(7, "MAC OS X", "Terminal", "Finder", null,
                         "open -a Terminal {1}",
                         "open -a Terminal {2}",
                         "open -R {2}",
                         "{2}{5}"
         ),
-        cmdKonsoleKDEDolphin(8, "KDE Konsole / Dolphin",
+        cmdKonsoleKDEDolphin(8, "Linux", "KDE Konsole", "Dolphin", null,
 		                "konsole --workdir {1}",
 		                "konsole --workdir {1} --noclose -e {2}",
 		                "dolphin --select {2}",
 		                "{2}{5}"
         ),
-        cmdWinConsole(9, 	"Windows Console / Explorer",
+        cmdWinConsole(9, 	"Windows", "Console", "Explorer", null,
 		                "console.exe -w \"{4}\" -d {1}",
 		                "console.exe -w \"{4}\" -d {1} -r \"/k\\\"{3}\\\"\"",
 		                "explorer.exe /select, {2}",
 		                "{2}{5}"
         ),
-        cmdWinTotalCommander(10, 	"Windows DOS-Shell / TotalCommander",
+        cmdWinTotalCommander(10, 	"Windows", "DOS-Shell", "TotalCommander", null,
 		                "cmd.exe /C start \"{4}\" /D {1} cmd.exe /K",
 		                "cmd.exe /C start \"{4}\" /D {1} {3}",
 		                "totalcmd.exe /O /T {1}",
 		                "{2}{5}"
         ),
-        cmdWinGitBash(11,	"Windows Git-Bash / Explorer",
+        cmdWinGitBash(11,	"Windows", "Git-Bash", "Explorer", null,
 		                "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i",
 		                "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''{3}''",
 		                "explorer.exe /select, {2} ",
 		                "{2}{5}"
         ),
-        cmdWinConEmu(12,	"Windows ConEmu / Explorer",
+        cmdWinConEmu(12,	"Windows", "ConEmu", "Explorer", null,
                 "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd cmd",
                 "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd \"{3}\"",
                 "explorer.exe /select, {2} ",
@@ -108,15 +116,25 @@ public class PrefsV1_4 {
         );
         // attributes
         private final int id;
+        private final String os;
+        private final String console;
+        private final String explorer;
         private final String label;
         private final String openCmd;
         private final String runCmd;
         private final String exploreCmd;
         private final String copyPathCmd;
         // construct
-        Command(int id, String label, String openCmd, String runCmd, String exploreCmd, String copyPathCmd) {
+        Command(int id, String os, String console, String explorer, String label, String openCmd, String runCmd, String exploreCmd, String copyPathCmd) {
             this.id = id;
-            this.label = label;
+            this.os = os;
+            this.console  = console;
+            this.explorer = explorer;
+            if (label != null) {
+                this.label = label;
+            } else {
+                this.label = os + " " + console + " / " + explorer;
+            }
             this.openCmd = openCmd;
             this.runCmd = runCmd;
             this.exploreCmd = exploreCmd;
@@ -124,6 +142,15 @@ public class PrefsV1_4 {
         }
         public int getId() {
             return id;
+        }
+        public String getOS() {
+            return os;
+        }
+        public String getConsole() {
+            return console;
+        }
+        public String getExplorer() {
+            return explorer;
         }
         public String getLabel() {
             return label;
@@ -157,9 +184,7 @@ public class PrefsV1_4 {
     /**
      * Sets the default values of the preferences.
      */
-    private static void initializeDefaults(IPreferenceStore store) {
-        // get proper command (detect)
-        Command cmd = getProperCommand();
+    private static void initializeDefaults(IPreferenceStore store, Command cmd) {
         // set default commands
         store.setDefault(PreferenceEntry.preferenceTargetOpen.getString(), cmd.getOpenCmd());
         store.setDefault(PreferenceEntry.preferenceTargetRun.getString(), cmd.getRunCmd());
@@ -193,23 +218,80 @@ public class PrefsV1_4 {
      *
      * @return store loaded.
      */
-    public static boolean loadStore(IPreferenceStore store, List<CommandData> cmdDataList, List<MenuData> menuDataList) {
+    public static boolean loadStore(IPreferenceStore store, OS os, CommandDataList cmdDataList, MenuDataList menuDataList) {
+        // get proper command (detect)
+        Command cmdProper = getProperCommand();
         // set defaults first
-        initializeDefaults(store);
+        initializeDefaults(store, cmdProper);
         // get the properties now
+        final String postfix = " (" + Version.v1_4.getName() + ")";
         String IdStr = store.getString(PreferenceEntry.preferenceListString.getString());
         Command command = Command.valueOf(IdStr);
+        int position = menuDataList.size();
+        // open
         String openCmd = store.getString(PreferenceEntry.preferenceTargetOpen.getString());
+        CommandData cmdDataOpen = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, migrateCommandVariables(openCmd));
+        cmdDataList.add(cmdDataOpen);
+        MenuData menuDataOpen = new MenuData(cmdDataOpen.getId(), true, MenuNameType.menuNameTypeOpenHere, null, cmdDataOpen.getId());
+        menuDataOpen.setPosition(position++);
+        menuDataOpen.setNamePattern(menuDataOpen.getNamePattern() + postfix);
+        menuDataOpen.setNameType(MenuNameType.menuNameTypeUser);
+        menuDataList.add(menuDataOpen);
+        // run
         String runCmd = store.getString(PreferenceEntry.preferenceTargetRun.getString());
+        CommandData cmdDataRun = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryRun, CommandType.commandTypeExecute, migrateCommandVariables(runCmd));
+        cmdDataList.add(cmdDataRun);
+        MenuData menuDataRun = new MenuData(cmdDataRun.getId(), true, MenuNameType.menuNameTypeRunWith, null, cmdDataRun.getId());
+        menuDataRun.setPosition(position++);
+        menuDataRun.setNamePattern(menuDataRun.getNamePattern() + postfix);
+        menuDataRun.setNameType(MenuNameType.menuNameTypeUser);
+        menuDataList.add(menuDataRun);
+        // explore
         String exploreCmd = store.getString(PreferenceEntry.preferenceTargetExplore.getString());
+        CommandData cmdDataExplore = new CommandData(null, PresetType.presetUser, os, command.getExplorer(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, migrateCommandVariables(exploreCmd));
+        cmdDataList.add(cmdDataExplore);
+        MenuData menuDataExplore = new MenuData(cmdDataExplore.getId(), true, MenuNameType.menuNameTypeShowIn, null, cmdDataExplore.getId());
+        menuDataExplore.setPosition(position++);
+        menuDataExplore.setNamePattern(menuDataExplore.getNamePattern() + postfix);
+        menuDataExplore.setNameType(MenuNameType.menuNameTypeUser);
+        menuDataList.add(menuDataExplore);
+        // copy to clipboard
         String copyPathCmd = store.getString(PreferenceEntry.preferenceTargetCopyPath.getString());
+        CommandData cmdDataCopyPath = new CommandData(null, PresetType.presetUser, os, "Full Path", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, migrateCommandVariables(copyPathCmd));
+        cmdDataList.add(cmdDataCopyPath);
+        MenuData menuDataCopyPath = new MenuData(cmdDataCopyPath.getId(), true, MenuNameType.menuNameTypeCopyToClipboard, null, cmdDataCopyPath.getId());
+        menuDataCopyPath.setPosition(position++);
+        menuDataCopyPath.setNamePattern(menuDataCopyPath.getNamePattern() + postfix);
+        menuDataCopyPath.setNameType(MenuNameType.menuNameTypeUser);
+        menuDataList.add(menuDataCopyPath);
+        /*
         String QuotesStr = store.getString(PreferenceEntry.preferenceQuotes.getString());
         Quotes quotes = Quotes.valueOf(QuotesStr);
         String DebugStr = store.getString(PreferenceEntry.preferenceDebug.getString());
         Debug debug = Debug.valueOf(DebugStr);
         String TokenizerStr = store.getString(PreferenceEntry.preferenceTokenizer.getString());
         Tokenizer tokenizer = Tokenizer.valueOf(TokenizerStr);
+        */
         return true;
+    }
+
+    public static String migrateCommandVariables(String cmdString) {
+        /*
+        {0} == ${easyshell:drive}
+        {1} == ${easyshell:container_loc}
+        {2} == ${easyshell:resource_loc}
+        {3} == ${easyshell:resource_name}
+        {4} == ${easyshell:project_name}
+        {5} == ${easyshell:line_separator}
+        */
+        String migratedString = cmdString;
+        migratedString = migratedString.replace("{0}", "${easyshell:drive}");
+        migratedString = migratedString.replace("{1}", "${easyshell:container_loc}");
+        migratedString = migratedString.replace("{2}", "${easyshell:resource_loc}");
+        migratedString = migratedString.replace("{3}", "${easyshell:resource_name}");
+        migratedString = migratedString.replace("{4}", "${easyshell:project_name}");
+        migratedString = migratedString.replace("{5}", "${easyshell:line_separator}");
+        return migratedString;
     }
 
     private static Command getProperCommand() {

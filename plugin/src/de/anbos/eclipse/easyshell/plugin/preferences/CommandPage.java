@@ -102,7 +102,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
     @Override
     protected void performDefaults() {
         // get the selected commands and referenced menus as lists
-        List<CommandData> commands = CommandDataStore.instance().getDataList();
+        CommandDataList commands = new CommandDataList(CommandDataStore.instance().getDataList());
         List<MenuData> menus = new ArrayList<MenuData>();
         for(CommandData command : commands) {
             if (command.getPresetType() == PresetType.presetUser) {
