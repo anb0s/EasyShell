@@ -100,9 +100,6 @@ public class CommandDataDefaultCollection {
         // Windows TotalCommander
         list.add(new CommandData("e487327c-dfdb-42e7-bf16-3b81a34e5703", PresetType.presetPlugin, OS.osWindows, "TotalCommander", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "cmd.exe /C totalcmd64.exe /O /T ${easyshell:container_loc}"));
-        // Windows Clipboard - Full Path
-        list.add(new CommandData("67aa9dff-6bbb-4b47-8b43-8a82a7a279fa", PresetType.presetPlugin, OS.osWindows, "Full Path", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
-                "\"${easyshell:resource_loc}\"${easyshell:line_separator}"));
     }
 
     private void addLinuxCommands() {
@@ -175,11 +172,17 @@ public class CommandDataDefaultCollection {
 
     private void addAllOSCommands() {
         // Clipboard - Full Path
-        list.add(new CommandData("33043fe3-1a5f-46d7-b94e-9a02ef204e7d", PresetType.presetPlugin, OS.osLinux, "Full Path", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
+        list.add(new CommandData("33043fe3-1a5f-46d7-b94e-9a02ef204e7d", PresetType.presetPlugin, Utils.getOS(), "Full Path", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
                 "${easyshell:resource_loc}${easyshell:line_separator}"));
-        // Clipboard - Qualified name
+        // Clipboard - Full Path with quotes
+        list.add(new CommandData("67aa9dff-6bbb-4b47-8b43-8a82a7a279fa", PresetType.presetPlugin, Utils.getOS(), "\"Full Path\"", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
+                "\"${easyshell:resource_loc}\"${easyshell:line_separator}"));
+        // Clipboard - Qualified Name
         list.add(new CommandData("88989d78-cf17-4750-91fc-6260055743ae", PresetType.presetPlugin, Utils.getOS(), "Qualified Name", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
                 "${easyshell:qualified_name}${easyshell:line_separator}"));
+        // Clipboard - Qualified Name with quotes
+        list.add(new CommandData("cd32fa5a-34d7-4551-8bd0-3aae0dc444d0", PresetType.presetPlugin, Utils.getOS(), "\"Qualified Name\"", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
+                "\"${easyshell:qualified_name}\"${easyshell:line_separator}"));
         // Clipboard - Variables Test
         String varTestString = "";
         for(int i=1;i<Variable.values().length;i++) {
