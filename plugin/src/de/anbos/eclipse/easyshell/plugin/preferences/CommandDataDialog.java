@@ -129,7 +129,7 @@ public class CommandDataDialog extends StatusDialog {
         pageGroup2.setFont(parent.getFont());
 
         // create variable labels
-        for(int i=1;i<Variable.values().length;i++) {
+        for(int i=0;i<Variable.values().length;i++) {
             createVariableLabel(pageGroup2, Variable.values()[i].getFullVariableName(), ": " + Variable.values()[i].getDescription());
         }
 
