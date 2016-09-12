@@ -222,8 +222,8 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
 
         // buttons
         createNewButton(font, gridData, groupComponent);
-        createCopyButton(font, gridData, groupComponent);
         createEditButton(font, gridData, groupComponent);
+        createCopyButton(font, gridData, groupComponent);
         createRemoveButton(font, gridData, groupComponent);
     }
 
@@ -266,18 +266,22 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
             public void selectionChanged(SelectionChangedEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
                 boolean selected = !selection.isEmpty();
-                boolean presetSelected = false;
+                boolean presetSelectedOrNotEqualType = false;
                 Iterator<?> elements = selection.iterator();
+                PresetType type = PresetType.presetUnknown;
                 while (elements.hasNext()) {
                     CommandData data = (CommandData) elements.next();
-                    if (data.getPresetType() == PresetType.presetPlugin) {
-                        presetSelected = true;
+                    if (type == PresetType.presetUnknown) {
+                        type = data.getPresetType();
+                    }
+                    if (data.getPresetType() == PresetType.presetPlugin || type != data.getPresetType()) {
+                        presetSelectedOrNotEqualType = true;
                         break;
                     }
                 }
-                addCopyButton.setEnabled(selected);
                 editButton.setEnabled(selected);
-                removeButton.setEnabled(selected && !presetSelected);
+                addCopyButton.setEnabled(selected);
+                removeButton.setEnabled(selected && !presetSelectedOrNotEqualType);
             }
         });
 
@@ -390,7 +394,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         if (copy) {
             title = Activator.getResourceString("easyshell.command.editor.dialog.title.copy");
         }
-        CommandDataDialog dialog = new CommandDataDialog(getShell(), data, title, true);
+        CommandDataDialog dialog = new CommandDataDialog(getShell(), data, title);
         if (dialog.open() == Window.OK) {
             CommandDataStore.instance().add(data);
             refreshTableViewer(data);
@@ -415,19 +419,15 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
     private void editDialog() {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
         CommandData dataSelected = (CommandData)selection.getFirstElement();
-        if (dataSelected.getPresetType() == PresetType.presetUser) {
-            CommandData dataNew = new CommandData(dataSelected, false);
-            dataNew.setPosition(dataSelected.getPosition());
-            CommandDataDialog dialog = new CommandDataDialog(getShell(), dataNew, Activator.getResourceString("easyshell.command.editor.dialog.title.edit"), true);
-            if (dialog.open() == Window.OK) {
-                CommandDataStore.instance().replace(dataNew);
-                refreshTableViewer(dataNew);
-            } else {
-                dataNew = null;
-            }
+        CommandData dataNew = new CommandData(dataSelected, false);
+        dataNew.setPosition(dataSelected.getPosition());
+        String title = MessageFormat.format(Activator.getResourceString("easyshell.command.editor.dialog.title.edit"), dataNew.getPresetType().getName());
+        CommandDataDialog dialog = new CommandDataDialog(getShell(), dataNew, title);
+        if (dialog.open() == Window.OK) {
+            CommandDataStore.instance().replace(dataNew);
+            refreshTableViewer(dataNew);
         } else {
-            CommandDataDialog dialog = new CommandDataDialog(getShell(), dataSelected, Activator.getResourceString("easyshell.command.editor.dialog.title.show"), false);
-            dialog.open();
+            dataNew = null;
         }
     }
 
@@ -445,22 +445,42 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         }
         // ask user
         String commandNames = "";
+        PresetType type = PresetType.presetUnknown;
         for (CommandData command : commands) {
+            if (type == PresetType.presetUnknown) {
+                type = command.getPresetType();
+            }
             commandNames += command.getCommandAsComboName() + "\n";
         }
-        String title = Activator.getResourceString("easyshell.command.page.dialog.remove.title");
-        String question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.remove.question"),
-                commandNames);
+        String title = null;
+        String question = null;
+        if (type == PresetType.presetPluginAndUser) {
+            title = Activator.getResourceString("easyshell.command.page.dialog.remove.user.title");
+            question = MessageFormat.format(
+                    Activator.getResourceString("easyshell.command.page.dialog.remove.user.question"),
+                    commandNames);
+        } else {
+            title = Activator.getResourceString("easyshell.command.page.dialog.remove.title");
+            question = MessageFormat.format(
+                    Activator.getResourceString("easyshell.command.page.dialog.remove.question"),
+                    commandNames);
+        }
         int dialogImageType = MessageDialog.QUESTION;
         if (menus.size() > 0) {
             dialogImageType = MessageDialog.WARNING;
-            title = Activator.getResourceString("easyshell.command.page.dialog.remove.menu.title");
             String menuNames = "";
             for (MenuData menu : menus) {
                 menuNames += menu.getNameExpanded() + "\n";
             }
-            question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.remove.menu.question"),
-                    commandNames, menuNames);
+            if (type == PresetType.presetPluginAndUser) {
+                title = Activator.getResourceString("easyshell.command.page.dialog.remove.menu.user.title");
+                question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.remove.menu.user.question"),
+                        commandNames, menuNames);
+            } else {
+                title = Activator.getResourceString("easyshell.command.page.dialog.remove.menu.title");
+                question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.remove.menu.question"),
+                        commandNames, menuNames);
+            }
         }
         MessageDialog dialog = new MessageDialog(
                 null, title, null, question,
@@ -469,14 +489,19 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
                 1); // no is the default
         int result = dialog.open();
         if (result == 0) {
-            if (menus.size() >= 0) {
+            if (menus.size() >= 0 && type == PresetType.presetUser) {
                 for (MenuData menu : menus) {
                     MenuDataStore.instance().delete(menu);
                 }
                 //MenuDataStore.instance().save();
             }
             for (CommandData command : commands) {
-                CommandDataStore.instance().delete(command);
+                if (command.getPresetType() == PresetType.presetUser) {
+                    CommandDataStore.instance().delete(command);
+                } else if (command.getPresetType() == PresetType.presetPluginAndUser) {
+                    command.removeUserData();
+                    CommandDataStore.instance().replace(command);
+                }
             }
             tableViewer.refresh();
         }

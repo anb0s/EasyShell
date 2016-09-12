@@ -203,8 +203,8 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
 
         // buttons
         createNewButton(font, gridData, groupComponent);
-        createCopyButton(font, gridData, groupComponent);
         createEditButton(font, gridData, groupComponent);
+        createCopyButton(font, gridData, groupComponent);
         createRemoveButton(font, gridData, groupComponent);
         createUpButton(font, gridData, groupComponent);
         createDownButton(font, gridData, groupComponent);

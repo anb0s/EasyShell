@@ -17,7 +17,8 @@ import java.util.List;
 public enum PresetType {
     presetUnknown(-1, "Unknown"),
     presetPlugin(0, "Plugin"),
-    presetUser(1, "User");
+    presetUser(1, "User"),
+    presetPluginAndUser(2, "Plugin+User");
     // attributes
     private final int id;
     private final String name;

@@ -55,7 +55,7 @@ public class CommandDataStore extends DataStore<CommandData> {
     private CommandDataList getPresetCommands() {
         CommandDataList presetItems = new CommandDataList();
         for (CommandData data : getDataList()) {
-            if (data.getPresetType() == PresetType.presetPlugin) {
+            if (data.getPresetType() == PresetType.presetPlugin || data.getPresetType() == PresetType.presetPluginAndUser) {
                 presetItems.add(data);
             }
         }

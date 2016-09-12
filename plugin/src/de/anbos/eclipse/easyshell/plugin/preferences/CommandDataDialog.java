@@ -37,13 +37,13 @@ import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
+import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 import de.anbos.eclipse.easyshell.plugin.types.Variable;
 
 public class CommandDataDialog extends StatusDialog {
 
     private CommandData data;
-    private boolean edit;
     private Combo   resourceTypeCombo;
     private Label   categoryImage;
     private Combo   categoryCombo;
@@ -56,13 +56,12 @@ public class CommandDataDialog extends StatusDialog {
     @Override
     public void create() {
         super.create();
-        getButton(IDialogConstants.OK_ID).setEnabled(edit);
+        getButton(IDialogConstants.OK_ID).setEnabled(true);
     }
 
-    public CommandDataDialog(Shell parent, CommandData data, String title, boolean edit) {
+    public CommandDataDialog(Shell parent, CommandData data, String title) {
         super(parent);
         this.data = data;
-        this.edit = edit;
         // do layout and title
         setShellStyle(getShellStyle() | SWT.MAX);
         // set title
@@ -182,7 +181,7 @@ public class CommandDataDialog extends StatusDialog {
             }
         });
         dirCheckBox.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.button.tooltip.useworkdir"));
-        dirCheckBox.setEnabled(edit);
+        dirCheckBox.setEnabled(true);
     }
 
     private void createVariableLabel(Composite parent, String varText, String labelText) {
@@ -247,17 +246,30 @@ public class CommandDataDialog extends StatusDialog {
     }
 
     protected void okPressed() {
-        if (edit) {
-            if (!validateValues()) {
-                return;
-            }
-            data.setName(nameText.getText());
-            data.setResourceType(ResourceType.getFromName(resourceTypeCombo.getText()));
-            data.setUseWorkingDirectory(dirCheckBox.getSelection());
-            data.setWorkingDirectory(dirText.getText());
-            data.setCategory(Category.getFromName(categoryCombo.getText()));
-            data.setCommandType(CommandType.getFromName(commandTypeCombo.getText()));
-            data.setCommand(valueText.getText());
+        if (!validateValues()) {
+            return;
+        }
+        CommandDataBasic cmdDataBasic = new CommandDataBasic(nameText.getText(), ResourceType.getFromName(resourceTypeCombo.getText()), dirCheckBox.getSelection(), dirText.getText(), valueText.getText());
+        switch(data.getPresetType()) {
+            case presetUser:
+                data.setBasicData(cmdDataBasic);
+                data.setCategory(Category.getFromName(categoryCombo.getText()));
+                data.setCommandType(CommandType.getFromName(commandTypeCombo.getText()));
+                break;
+            case presetPlugin:
+                if (data.checkIfUserDataOverridesPreset(cmdDataBasic)) {
+                    data.addUserData(cmdDataBasic);
+                }
+                break;
+            case presetPluginAndUser:
+                if (data.checkIfUserDataOverridesPreset(cmdDataBasic)) {
+                    data.setUserData(cmdDataBasic);
+                } else {
+                    data.removeUserData();
+                }
+                break;
+            default:
+                break;
         }
         super.okPressed();
     }
@@ -339,10 +351,10 @@ public class CommandDataDialog extends StatusDialog {
         for(int i = 0 ; i < items.length ; i++) {
             if(items[i].equals(this.data.getResourceType().getName())) {
                 resourceTypeCombo.select(i);
-                return;
+                break;
             }
         }
-        resourceTypeCombo.setEnabled(edit);
+        resourceTypeCombo.setEnabled(true);
     }
 
     private void createCategoryCombo(Composite parent) {
@@ -369,10 +381,10 @@ public class CommandDataDialog extends StatusDialog {
         for(int i = 0 ; i < items.length ; i++) {
             if(items[i].equals(this.data.getCategory().getName())) {
                 categoryCombo.select(i);
-                return;
+                break;
             }
         }
-        categoryCombo.setEnabled(edit);
+        categoryCombo.setEnabled(data.getPresetType() == PresetType.presetUser);
     }
 
     private void createCommandTypeCombo(Composite parent) {
@@ -399,10 +411,10 @@ public class CommandDataDialog extends StatusDialog {
         for(int i = 0 ; i < items.length ; i++) {
             if(items[i].equals(this.data.getCommandType().getName())) {
                 commandTypeCombo.select(i);
-                return;
+                break;
             }
         }
-        commandTypeCombo.setEnabled(edit);
+        commandTypeCombo.setEnabled(data.getPresetType() == PresetType.presetUser);
     }
 
     private Text createTextField(Composite parent, String labelText, String editValue, boolean emptyLabel) {
@@ -417,7 +429,7 @@ public class CommandDataDialog extends StatusDialog {
         Text text = new Text(parent,SWT.BORDER);
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         text.setText(editValue);
-        text.setEditable(edit);
+        text.setEditable(true);
         return text;
     }
 
