@@ -23,7 +23,7 @@ public class Action implements IAction {
     private String id;
 
     public Action(String myId) {
-        id = myId;
+        setId(myId);
     }
 
     @Override
@@ -70,8 +70,7 @@ public class Action implements IAction {
 
     @Override
     public String getId() {
-        // TODO Auto-generated method stub
-        return null;
+        return id;
     }
 
     @Override
@@ -184,8 +183,7 @@ public class Action implements IAction {
 
     @Override
     public void setId(String id) {
-        // TODO Auto-generated method stub
-
+        this.id = id;
     }
 
     @Override

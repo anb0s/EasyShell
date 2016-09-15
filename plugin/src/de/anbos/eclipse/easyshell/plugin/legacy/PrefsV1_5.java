@@ -408,11 +408,6 @@ public class PrefsV1_5 {
                 case desktopXfce: cmd = Command.cmdXfceTermThunar; break;
                 default: cmd = Command.cmdUnknown;
             }
-            // try to detect the default file browser
-            if (desktop != LinuxDesktop.desktopUnknown) {
-                String fileBrowser = detectLinuxDefaultFileBrowser();
-                //Activator.getDefault().sysout(true, "Detected linux (Unix) default file browser: >" + fileBrowser + "<");
-            }
         }
         return cmd;
     }
@@ -454,26 +449,6 @@ public class PrefsV1_5 {
      */
     private static boolean isCde() {
         return false;
-    }
-
-    /**
-     * detects programs from $DESKTOP_SESSION
-     */
-    private static String detectLinuxDefaultFileBrowser() {
-        ArrayList<String> command = new ArrayList<String>();
-        command.add("xdg-mime");
-        command.add("query");
-        command.add("default");
-        command.add("inode/directory");
-        // fill the map
-        Map<String, Object> fileBrowsers = new HashMap<String, Object>();
-        fileBrowsers.put("nemo.desktop", "nemo");
-        // execute
-        String fileBrowser = isExpectedCommandOutput(command, fileBrowsers, true);
-        if (fileBrowser != null && !fileBrowser.isEmpty()) {
-            return (String)fileBrowsers.get(fileBrowser);
-        }
-        return null;
     }
 
     /**

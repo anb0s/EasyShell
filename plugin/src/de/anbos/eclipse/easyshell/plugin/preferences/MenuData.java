@@ -213,19 +213,32 @@ public class MenuData extends Data {
     }
 
     public void setNameTypeFromCategory(Category category) {
-        switch(category) {
-            case categoryDefault: setNameType(MenuNameType.menuNameTypeDefaultApplication);
+        switch (category) {
+        case categoryDefault:
+            setNameType(MenuNameType.menuNameTypeDefaultApplication);
             break;
-            case categoryOpen: setNameType(MenuNameType.menuNameTypeOpenHere);
+        case categoryOpen:
+            setNameType(MenuNameType.menuNameTypeOpenHere);
             break;
-            case categoryRun: setNameType(MenuNameType.menuNameTypeGeneric2);
+        case categoryRun:
+            setNameType(MenuNameType.menuNameTypeGeneric2);
             break;
-            case categoryExplore: setNameType(MenuNameType.menuNameTypeShowIn);
+        case categoryExplore:
+            setNameType(MenuNameType.menuNameTypeShowIn);
             break;
-            case categoryClipboard: setNameType(MenuNameType.menuNameTypeCopyToClipboard);
+        case categoryClipboard:
+            setNameType(MenuNameType.menuNameTypeCopyToClipboard);
+            break;
+        case categoryOther:
+            setNameType(MenuNameType.menuNameTypeGeneric1);
+            break;
+        case categoryUnknown:
+            setNameType(MenuNameType.menuNameTypeGeneric1);
+            break;
+        default:
+            setNameType(MenuNameType.menuNameTypeGeneric1);
             break;
         }
-
     }
 
 }

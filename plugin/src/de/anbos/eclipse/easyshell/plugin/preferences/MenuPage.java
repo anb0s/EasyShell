@@ -28,7 +28,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -265,7 +265,8 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
             }
         });
 
-        tableViewer.setSorter(new ViewerSorter() {
+        tableViewer.setComparator(new ViewerComparator() {
+            @Override
             public int compare(Viewer viewer, Object object1, Object object2) {
                 if (!(object1 instanceof MenuData) || !(object2 instanceof MenuData)) {
                     return super.compare(viewer, object1, object2);
@@ -283,7 +284,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
                 }
                 return super.compare(viewer, object1, object2);
             }
-
+            @Override
             public boolean isSorterProperty(Object element, String property) {
                 return true;
             }

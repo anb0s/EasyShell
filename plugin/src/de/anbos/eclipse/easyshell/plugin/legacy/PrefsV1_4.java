@@ -143,6 +143,7 @@ public class PrefsV1_4 {
         public int getId() {
             return id;
         }
+        @SuppressWarnings("unused")
         public String getOS() {
             return os;
         }
@@ -152,6 +153,7 @@ public class PrefsV1_4 {
         public String getExplorer() {
             return explorer;
         }
+        @SuppressWarnings("unused")
         public String getLabel() {
             return label;
         }
@@ -167,6 +169,7 @@ public class PrefsV1_4 {
         public String getCopyPathCmd() {
             return copyPathCmd;
         }
+        @SuppressWarnings("unused")
         static Command getFromId(int id) {
             Command ret = cmdUnknown;
             for(int i = 0; i < Command.values().length; i++) {
