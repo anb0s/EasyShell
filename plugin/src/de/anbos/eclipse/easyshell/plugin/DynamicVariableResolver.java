@@ -15,7 +15,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IDynamicVariable;
 import org.eclipse.core.variables.IDynamicVariableResolver;
 
+import de.anbos.eclipse.easyshell.plugin.types.Converter;
+import de.anbos.eclipse.easyshell.plugin.types.Converters;
+import de.anbos.eclipse.easyshell.plugin.types.IConverter;
+import de.anbos.eclipse.easyshell.plugin.types.IVariableResolver;
 import de.anbos.eclipse.easyshell.plugin.types.Quotes;
+import de.anbos.eclipse.easyshell.plugin.types.Variable;
 import de.anbos.eclipse.easyshell.plugin.types.Variables;
 
 public class DynamicVariableResolver implements IDynamicVariableResolver {
@@ -35,7 +40,30 @@ public class DynamicVariableResolver implements IDynamicVariableResolver {
 	}
 
     private String handleOwnVariable(String argument) {
-        return autoQuotes(Variables.getMap().get(argument).resolve(resource));
+        String variableArg = argument;
+        String converterName = "Unknown";
+        int converterIndex = argument.indexOf(":");
+        if (converterIndex != -1) {
+            // first try to find a variable that has same pattern
+            // e.g. var:conv = var_conv
+            String variableSubs = variableArg.replace(":", "_");
+            IVariableResolver variableSubsResolver = Variables.getMap().get(variableSubs);
+            if (variableSubsResolver != null) {
+                variableArg   = variableSubs;
+            } else {
+                variableArg   = argument.substring(0, converterIndex);
+                converterName = argument.substring(converterIndex + 1);
+            }
+        }
+        IConverter converter = Converters.getMap().get(converterName);
+        if (converter == null) {
+            converter = Converter.converterUnknown.getConverterImpl();
+        }
+        IVariableResolver resolver = Variables.getMap().get(variableArg);
+        if (resolver == null) {
+            resolver = Variable.varUnknown.getResolver();
+        }
+        return autoQuotes(converter.convert(resolver.resolve(resource)));
     }
 
     private String handleEclipseVariable(String variable, String argument) {

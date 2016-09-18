@@ -22,6 +22,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.osgi.framework.Bundle;
 
+import de.anbos.eclipse.easyshell.plugin.types.OS;
+
 public class Resource {
 
     // internal
@@ -30,7 +32,6 @@ public class Resource {
 
     // resolved
     private String projectName = Activator.getResourceString("easyshell.plugin.name");
-    static private String lineSeparator = null;
 
     //Activator.logDebug("full_path  : >" + fullPath + "<");
     //Activator.logDebug("parent_path: >" + parentPath + "<");
@@ -91,8 +92,8 @@ public class Resource {
                 return file.getParentFile().getName();
             } else {
                 return file.getName();
-            }            
-        } 
+            }
+        }
     }
 
     public String getContainerPath() {
@@ -118,7 +119,7 @@ public class Resource {
                 resourceName = "";
             } else {*/
             return file.getName();
-            //}                            
+            //}
         }
     }
 
@@ -150,22 +151,46 @@ public class Resource {
         return "";
     }
 
-    public String getLineSeparator() {
-        if (lineSeparator == null) {
-            lineSeparator = System.getProperty("line.separator");
+    public String getLineSeparator(OS os) {
+        switch(os) {
+        case osUnix:
+        case osLinux:
+        case osMacOSX:
+            return new String ("\n");
+        case osWindows:
+            return new String ("\r\n");
+        default:
+            return System.getProperty("line.separator");
         }
-        return lineSeparator;
     }
 
-    public String getFileSeparator() {
-        return System.getProperty("file.separator");
+    public String getPathSeparator(OS os) {
+        switch(os) {
+        case osUnix:
+        case osLinux:
+        case osMacOSX:
+            return new String (":");
+        case osWindows:
+            return new String (";");
+        default:
+            return File.pathSeparator; //System.getProperty("path.separator");
+        }
     }
 
-    public String getPathSeparator() {
-        return System.getProperty("path.separator");
+    public String getFileSeparator(OS os) {
+        switch(os) {
+        case osUnix:
+        case osLinux:
+        case osMacOSX:
+            return new String ("/");
+        case osWindows:
+            return new String ("\\");
+        default:
+            return File.separator; //System.getProperty("file.separator");
+        }
     }
 
-    public String getFullQualifiedName() {        
+    public String getFullQualifiedName() {
         if (resource != null) {
             Bundle bundle = Platform.getBundle("org.eclipse.jdt.core");
             if (bundle != null) {
@@ -186,6 +211,7 @@ public class Resource {
     public String getFullQualifiedPathName() {
         String fqcn = "";
         if (resource != null) {
+
             return resource.getFullPath().toString();
             /*
             String[] segments = iRes.getProjectRelativePath().segments();

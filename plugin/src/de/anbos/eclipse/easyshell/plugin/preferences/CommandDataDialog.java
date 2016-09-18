@@ -37,6 +37,7 @@ import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
+import de.anbos.eclipse.easyshell.plugin.types.Converter;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 import de.anbos.eclipse.easyshell.plugin.types.Variable;
@@ -85,52 +86,12 @@ public class CommandDataDialog extends StatusDialog {
         data0.widthHint = 640;
         pageComponent.setLayoutData(data0);
         pageComponent.setFont(parent.getFont());
-    	// define group1
-    	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup1.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group1"));
-    	pageGroup1.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group1"));
-        GridLayout layout1 = new GridLayout();
-        layout1.numColumns = 3;
-        layout1.makeColumnsEqualWidth = false;
-        layout1.marginWidth = 5;
-        layout1.marginHeight = 4;
-        pageGroup1.setLayout(layout1);
-        GridData data1 = new GridData(GridData.FILL_HORIZONTAL);
-        pageGroup1.setLayoutData(data1);
-        pageGroup1.setFont(parent.getFont());
-        // create resource type combo
-        createResourceTypeCombo(pageGroup1);
-        // create category combo
-        createCategoryCombo(pageGroup1);
-        // create command type combo
-        createCommandTypeCombo(pageGroup1);
-        //create input nameText field
-        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), data.getName(), true);
-        // create directory checkbox
-        createDirCheckBox(pageGroup1);
-        dirText = createTextField(pageGroup1, null, data.getWorkingDirectory(), false);
-        // create input valueText field
-        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), data.getCommand(), true);
 
-        // ------------------------------------ Description ------------------------------------------
-        // define group2
-        Group pageGroup2 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-        pageGroup2.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group2"));
-        pageGroup2.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group2"));
-        GridLayout layout2 = new GridLayout();
-        layout2.numColumns = 2;
-        layout2.makeColumnsEqualWidth = false;
-        layout2.marginWidth = 5;
-        layout2.marginHeight = 4;
-        pageGroup2.setLayout(layout2);
-        GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
-        pageGroup2.setLayoutData(data2);
-        pageGroup2.setFont(parent.getFont());
+    	createCommandGroup(pageComponent);
 
-        // create variable labels
-        for(int i=0;i<Variable.values().length;i++) {
-            createVariableLabel(pageGroup2, Variable.values()[i].getFullVariableName(), ": " + Variable.values()[i].getDescription());
-        }
+        createVariablesOverview(pageComponent);
+
+        createConvertersOverview(pageComponent);
 
         // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61
         setHelpAvailable(false);
@@ -144,6 +105,81 @@ public class CommandDataDialog extends StatusDialog {
         refreshCommandTypeCombo();
 
         return pageComponent;
+    }
+
+    private void createCommandGroup(Composite pageComponent) {
+        // define group1
+    	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
+    	pageGroup1.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group1"));
+    	pageGroup1.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group1"));
+        GridLayout layout1 = new GridLayout();
+        layout1.numColumns = 3;
+        layout1.makeColumnsEqualWidth = false;
+        layout1.marginWidth = 5;
+        layout1.marginHeight = 4;
+        pageGroup1.setLayout(layout1);
+        GridData data1 = new GridData(GridData.FILL_HORIZONTAL);
+        pageGroup1.setLayoutData(data1);
+        pageGroup1.setFont(pageComponent.getFont());
+        // create resource type combo
+        createResourceTypeCombo(pageGroup1);
+        // create category combo
+        createCategoryCombo(pageGroup1);
+        // create command type combo
+        createCommandTypeCombo(pageGroup1);
+        //create input nameText field
+        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), data.getName(), true);
+        // create directory checkbox
+        createDirCheckBox(pageGroup1);
+        dirText = createTextField(pageGroup1, null, data.getWorkingDirectory(), false);
+        // create input valueText field
+        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), data.getCommand(), true);
+    }
+
+    private void createConvertersOverview(Composite pageComponent) {
+        // define group3
+        Group pageGroup3 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
+        pageGroup3.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group3"));
+        pageGroup3.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group3"));
+        GridLayout layout3 = new GridLayout();
+        layout3.numColumns = 2;
+        layout3.makeColumnsEqualWidth = false;
+        layout3.marginWidth = 5;
+        layout3.marginHeight = 4;
+        pageGroup3.setLayout(layout3);
+        GridData data3 = new GridData(GridData.FILL_HORIZONTAL);
+        pageGroup3.setLayoutData(data3);
+        pageGroup3.setFont(pageComponent.getFont());
+        // create converters labels
+        for(int i=Converter.getFirstIndex();i<Converter.values().length;i++) {
+            Converter conv = Converter.values()[i];
+            if (conv.isVisible()) {
+                createVariableLabel(pageGroup3, conv.getName(), ": " + conv.getDescription());
+            }
+        }
+    }
+
+    private void createVariablesOverview(Composite pageComponent) {
+        // define group2
+        Group pageGroup2 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
+        pageGroup2.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group2"));
+        pageGroup2.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group2"));
+        GridLayout layout2 = new GridLayout();
+        layout2.numColumns = 2;
+        layout2.makeColumnsEqualWidth = false;
+        layout2.marginWidth = 5;
+        layout2.marginHeight = 4;
+        pageGroup2.setLayout(layout2);
+        GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
+        pageGroup2.setLayoutData(data2);
+        pageGroup2.setFont(pageComponent.getFont());
+        // create variable labels
+        for(int i=Variable.getFirstIndex();i<Variable.values().length;i++) {
+            Variable var = Variable.values()[i];
+            if (var.isVisible()) {
+                createVariableLabel(pageGroup2, var.getFullVariableName(), ": " + var.getDescription());
+            }
+        }
     }
 
     private void createLabel(Composite parent, String name) {

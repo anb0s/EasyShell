@@ -18,6 +18,11 @@ import de.anbos.eclipse.easyshell.plugin.Resource;
 
 public enum Variable {
     // ${easyshell:resource_loc} == {2}
+    varUnknown(        -1, false, "unknown",          "unknown", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return "unknown";
+        };
+    }),
     varResourceLoc(     0, "resource_loc",     "absolute path of file or directory", new IVariableResolver() {
         public String resolve(Resource resource) {
             return resource.getResourceLocation();
@@ -84,36 +89,74 @@ public enum Variable {
         };
     }),
     // ${easyshell:line_separator} == {5}
-    varLineSeparator(  11, "line_separator",   "line separator, e.g. '\\n' or '\\r\\n'", new IVariableResolver() {
+    varLineSeparator(  11, "line_separator",   "line separator, e.g. '\\n' (Unix) or '\\r\\n' (Windows)", new IVariableResolver() {
         public String resolve(Resource resource) {
-            return resource.getLineSeparator();
+            return resource.getLineSeparator(OS.osUnknown);
         };
     }),
-    varPathSeparator(  12, "path_separator",   "path separator, e.g. ';'", new IVariableResolver() {
+    varLineSeparatorUnix(  12, false, "line_separator_unix",   "line separator '\\n' (Unix)", new IVariableResolver() {
         public String resolve(Resource resource) {
-            return resource.getPathSeparator();
+            return resource.getLineSeparator(OS.osUnix);
         };
     }),
-    varFileSeparator(  13, "file_separator",   "file separator, e.g. '/' on Unix or '\\' on Windows", new IVariableResolver() {
+    varLineSeparatorWindows(  13, false, "line_separator_windows",   "line separator '\\r\\n' (Windows)", new IVariableResolver() {
         public String resolve(Resource resource) {
-            return resource.getFileSeparator();
+            return resource.getLineSeparator(OS.osWindows);
+        };
+    }),
+    varPathSeparator(  14, "path_separator",   "path separator, e.g. ':' (Unix) or ';' (Windows)", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getPathSeparator(OS.osUnknown);
+        };
+    }),
+    varPathSeparatorUnix(  15, false, "path_separator_unix",   "path separator ':' (Unix)", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getPathSeparator(OS.osUnix);
+        };
+    }),
+    varPathSeparatorWindows(  16, false, "path_separator_windows",   "path separator, e.g. ':' (Unix) or ';' (Windows)", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getPathSeparator(OS.osWindows);
+        };
+    }),
+    varFileSeparator(  17, "file_separator",   "file separator, e.g. '/' (Unix) or '\\' (Windows)", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getFileSeparator(OS.osUnknown);
+        };
+    }),
+    varFileSeparatorUnix(  18, false, "file_separator_unix",   "file separator '/' (Unix)", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getFileSeparator(OS.osUnix);
+        };
+    }),
+    varFileSeparatorWindows(  19, false, "file_separator_windows",   "file separator '\\' (Windows)", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getFileSeparator(OS.osWindows);
         };
     });
     // attributes
     private final int id;
+    private final boolean visible;
     private final String name;
     private final String description;
     private final IVariableResolver resolver;
     private final String prefix = "easyshell";
     // construct
-    Variable(int id, String name, String description, IVariableResolver resolver) {
+    Variable(int id, boolean visible, String name, String description, IVariableResolver resolver) {
         this.id = id;
+        this.visible = visible;
         this.name = name;
         this.description = description;
         this.resolver = resolver;
     }
+    Variable(int id, String name, String description, IVariableResolver resolver) {
+        this(id, true, name, description, resolver);
+    }
     public int getId() {
         return id;
+    }
+    public boolean isVisible() {
+        return visible;
     }
     public String getName() {
         return name;
@@ -127,6 +170,9 @@ public enum Variable {
     }
     public String getDescription() {
         return description;
+    }
+    public IVariableResolver getResolver() {
+        return resolver;
     }
     public static Variable getFromId(int id) {
         Variable ret = null;
@@ -158,7 +204,7 @@ public enum Variable {
         }
         return list;
     }
-    public IVariableResolver getResolver() {
-        return resolver;
+    public static int getFirstIndex() {
+        return 0;
     }
 }

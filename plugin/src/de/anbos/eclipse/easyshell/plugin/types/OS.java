@@ -18,7 +18,8 @@ public enum OS {
     osUnknown(-1, "Unknown"),
     osWindows(0, "Windows"),
     osLinux(1, "Linux"),
-    osMacOSX(2, "MAC OS X");
+    osMacOSX(2, "MAC OS X"),
+    osUnix(3, "Unix"); // all Unix based, e.g. Linux and Max OS X etc.
     // attributes
     private final int id;
     private final String name;

@@ -185,7 +185,7 @@ public class CommandDataDefaultCollection {
                 "\"${easyshell:qualified_name}\"${easyshell:line_separator}"));
         // Clipboard - Variables Test
         String varTestString = "";
-        for(int i=1;i<Variable.values().length;i++) {
+        for(int i=Variable.getFirstIndex();i<Variable.values().length;i++) {
             varTestString += "easyshell:" + Variable.values()[i].getName() + "=" + Variable.values()[i].getFullVariableName() + "${easyshell:line_separator}";
         }
         list.add(new CommandData("e6de32cc-342a-46a0-a766-ac74e7e4000d", PresetType.presetPlugin, Utils.getOS(), "Variables Test", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
@@ -263,6 +263,11 @@ public class CommandDataDefaultCollection {
                 addNotNull(listDefault, getCommandData(listOS, "Terminal", Category.categoryOpen));
                 addNotNull(listDefault, getCommandData(listOS, "Terminal", Category.categoryRun));
                 addNotNull(listDefault, getCommandData(listOS, "Finder", Category.categoryExplore));
+                break;
+            case osUnix:
+                // no op
+                break;
+            default:
                 break;
         }
         // add clipboard
