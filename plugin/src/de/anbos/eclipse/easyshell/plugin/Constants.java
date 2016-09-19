@@ -24,7 +24,7 @@ public interface Constants {
     public static final String IMAGE_RUN         = "run_exc.gif";
     public static final String IMAGE_EXPLORE     = "fldr_obj.gif";
     public static final String IMAGE_CLIPBOARD   = "copy.gif";
-    public static final String IMAGE_OTHER       = "environment_obj.gif";
+    public static final String IMAGE_USER        = "environment_obj.gif";
 
 	// Preferences
     public static final String PREF_COMMANDS_PRESET = "COMMANDS_PRESET";

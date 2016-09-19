@@ -25,7 +25,7 @@ public enum Category {
     categoryRun(2, "Run", Constants.IMAGE_RUN),
     categoryExplore(3, "Explore", Constants.IMAGE_EXPLORE),
     categoryClipboard(4, "Clipboard", Constants.IMAGE_CLIPBOARD),
-    categoryOther(5, "Other", Constants.IMAGE_OTHER);
+    categoryUser(5, "User", Constants.IMAGE_USER);
     // attributes
     private final int id;
     private final String name;
@@ -75,7 +75,7 @@ public enum Category {
         map.put("commandTypeRun", categoryRun);
         map.put("commandTypeExplore", categoryExplore);
         map.put("commandTypeClipboard", categoryClipboard);
-        map.put("commandTypeOther", categoryOther);
+        map.put("commandTypeOther", categoryUser);
         // find the key
         for(String key: map.keySet()) {
             if (name.equals(key)) {

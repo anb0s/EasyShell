@@ -28,12 +28,80 @@
                optional="false">
          </commandParameter>
       </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.open"
+            name="EasyShell Open">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.run"
+            name="EasyShell Run">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.explore"
+            name="EasyShell Explore">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.default"
+            name="EasyShell Default">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.clipboard"
+            name="EasyShell Clipboard">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.clipboard"
+            name="EasyShell Run">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.user"
+            name="EasyShell User">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.all"
+            name="EasyShell All">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="de.anbos.eclipse.easyshell.plugin.handlers.CommandHandler"
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Execute"
             commandId="de.anbos.eclipse.easyshell.plugin.commands.execute">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Open"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.open">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Run"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.run">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Clipboard"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.clipboard">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Explore"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.explore">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.All"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.all">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.User"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.user">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Default"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.default">
       </handler>
    </extension>
    <extension
@@ -106,6 +174,44 @@
             resolver="de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver"
             supportsArgument="true">
       </variable>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.open"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+O">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.run"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+R">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.explore"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+X">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.clipboard"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+C">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.all"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+E">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.default"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+D">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.user"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+U">
+      </key>
    </extension>
 
 </plugin>

@@ -259,7 +259,11 @@ public class CommandData extends Data {
 		if (version.getId() >= Version.v2_0_003.getId()) {
 		    basicData.setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
 		    basicData.setWorkingDirectory(tokenizer.nextToken());
-		    setCategory(Category.getFromEnum(tokenizer.nextToken()));
+		    String categoryStr = tokenizer.nextToken();
+		    if (version.getId() < Version.v2_0_005.getId() && categoryStr.equals("categoryOther")) {
+		        categoryStr = "categoryUser";
+		    }
+		    setCategory(Category.getFromEnum(categoryStr));
 		    setCommandType(CommandType.getFromEnum(tokenizer.nextToken()));
 		} else {
 		    basicData.setUseWorkingDirectory(false);

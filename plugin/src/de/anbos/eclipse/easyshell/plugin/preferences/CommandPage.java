@@ -406,7 +406,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void addNewDialog() {
-        CommandData dataNew = new CommandData(null, PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, Category.categoryOther, CommandType.commandTypeExecute, "my_new_command");
+        CommandData dataNew = new CommandData(null, PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, Category.categoryUser, CommandType.commandTypeExecute, "my_new_command");
         addDialog(dataNew, false);
     }
 

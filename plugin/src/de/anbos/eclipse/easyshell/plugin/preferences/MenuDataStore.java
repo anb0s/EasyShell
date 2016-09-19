@@ -19,6 +19,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
+import de.anbos.eclipse.easyshell.plugin.types.Category;
 
 public class MenuDataStore extends DataStore<MenuData> {
 
@@ -55,16 +56,20 @@ public class MenuDataStore extends DataStore<MenuData> {
         return allArray;
     }
 
-    public MenuDataList getEnabledCommandMenuDataList() {
+    public MenuDataList getEnabledCommandMenuDataListByCategory(Category category) {
         MenuDataList checkedItems = new MenuDataList();
         Iterator<MenuData> dataIterator = getDataList().iterator();
         while(dataIterator.hasNext()) {
             MenuData data = (MenuData)dataIterator.next();
-            if(data.isEnabled()) {
+            if(data.isEnabled() && (category == Category.categoryUnknown || data.getCommandData().getCategory() == category)) {
                 checkedItems.add(data);
             }
         }
         return checkedItems;
+    }
+
+    public MenuDataList getEnabledCommandMenuDataList() {
+        return getEnabledCommandMenuDataListByCategory(Category.categoryUnknown);
     }
 
     public MenuData[] getEnabledCommandMenuDataArray() {

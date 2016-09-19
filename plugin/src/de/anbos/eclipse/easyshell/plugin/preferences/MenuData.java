@@ -229,7 +229,7 @@ public class MenuData extends Data {
         case categoryClipboard:
             setNameType(MenuNameType.menuNameTypeCopyToClipboard);
             break;
-        case categoryOther:
+        case categoryUser:
             setNameType(MenuNameType.menuNameTypeGeneric1);
             break;
         case categoryUnknown:

@@ -35,7 +35,6 @@ public class DefineCommands extends ExtensionContributionFactory {
 	@Override
 	public void createContributionItems(IServiceLocator  serviceLocator,
 			IContributionRoot additions) {
-
 	    // load the preferences
 	    CommandDataStore.instance().load();
 	    MenuDataStore.instance().load();
@@ -68,5 +67,6 @@ public class DefineCommands extends ExtensionContributionFactory {
 	    CommandContributionItem item = new CommandContributionItem(param);
 	    item.setVisible(true);
 	    additions.addContributionItem(item, null);
+
     }
 }

@@ -277,7 +277,7 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void addNewDialog() {
-        CommandData data = new CommandData(null, PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, Category.categoryOther, CommandType.commandTypeExecute, "my_new_command");
+        CommandData data = new CommandData(null, PresetType.presetUser, Utils.getOS(), "MyNewCommand", ResourceType.resourceTypeFileOrDirectory, Category.categoryUser, CommandType.commandTypeExecute, "my_new_command");
         addDialog(data, false);
     }
 
