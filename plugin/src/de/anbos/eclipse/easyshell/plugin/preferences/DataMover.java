@@ -36,6 +36,7 @@ public class DataMover {
 		int oldPosition = data.getPosition();
 		previousElement.setPosition(oldPosition);
 		data.setPosition(newPosition);
+		store.sort();
 	}
 
 	public void moveCurrentSelectionDown() {
@@ -50,5 +51,6 @@ public class DataMover {
 		int oldPosition = data.getPosition();
 		nextElement.setPosition(oldPosition);
 		data.setPosition(newPosition);
+		store.sort();
 	}
 }

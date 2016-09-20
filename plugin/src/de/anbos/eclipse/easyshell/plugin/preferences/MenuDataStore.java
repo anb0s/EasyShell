@@ -86,6 +86,7 @@ public class MenuDataStore extends DataStore<MenuData> {
 
     @Override
     public void save() {
+        super.save();
         getStore().setValue(Constants.PREF_MENU,PreferenceValueConverter.asMenuDataString(getDataList()));
     }
 
@@ -102,9 +103,9 @@ public class MenuDataStore extends DataStore<MenuData> {
         MenuData[] items = PreferenceValueConverter.asMenuDataArray(prefMenu);
         removeAll();
         for(int i = 0 ; i < items.length ; i++) {
-            addItem(items[i]);
+            addInternal(items[i]);
         }
-        sort();
+        super.load();
     }
 
     @Override

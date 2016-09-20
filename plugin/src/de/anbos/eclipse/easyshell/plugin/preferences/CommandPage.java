@@ -265,7 +265,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-                boolean selected = !selection.isEmpty();
+                int selected = selection.size();
                 boolean presetSelectedOrNotEqualType = false;
                 Iterator<?> elements = selection.iterator();
                 PresetType type = PresetType.presetUnknown;
@@ -279,9 +279,9 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
                         break;
                     }
                 }
-                editButton.setEnabled(selected);
-                addCopyButton.setEnabled(selected);
-                removeButton.setEnabled(selected && !presetSelectedOrNotEqualType);
+                editButton.setEnabled(selected == 1);
+                addCopyButton.setEnabled(selected == 1);
+                removeButton.setEnabled(selected > 0 && !presetSelectedOrNotEqualType);
             }
         });
 

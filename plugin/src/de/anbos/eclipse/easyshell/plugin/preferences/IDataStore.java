@@ -20,4 +20,8 @@ public interface IDataStore {
 
     void setMigrated(boolean migrated);
 
+    void renumber();
+
+    void sort();
+
 }

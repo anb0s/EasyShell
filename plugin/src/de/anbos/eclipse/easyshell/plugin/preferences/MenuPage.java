@@ -256,12 +256,12 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-                boolean selected = !selection.isEmpty();
-                addCopyButton.setEnabled(selected);
-                editButton.setEnabled(selected);
-                removeButton.setEnabled(selected);
-                upButton.setEnabled(selected);
-                downButton.setEnabled(selected);
+                int selected = selection.size();
+                addCopyButton.setEnabled(selected == 1);
+                editButton.setEnabled(selected == 1);
+                removeButton.setEnabled(selected > 0);
+                upButton.setEnabled(selected == 1);
+                downButton.setEnabled(selected == 1);
             }
         });
 

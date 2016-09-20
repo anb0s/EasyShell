@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.jface.bindings.TriggerSequence;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -30,7 +29,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
-import org.eclipse.ui.keys.IBindingService;
 
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
@@ -97,8 +95,8 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
         Command command = commandService != null ? commandService.getCommand("de.anbos.eclipse.easyshell.plugin.commands.execute") : null;
         // get handler service
         IHandlerService handlerService = (IHandlerService)activePart.getSite().getService(IHandlerService.class);
-        IBindingService bindingService = (IBindingService)activePart.getSite().getService(IBindingService.class);
-        TriggerSequence[] triggerSequenceArray = bindingService.getActiveBindingsFor("de.anbos.eclipse.easyshell.plugin.commands.open");
+        //IBindingService bindingService = (IBindingService)activePart.getSite().getService(IBindingService.class);
+        //TriggerSequence[] triggerSequenceArray = bindingService.getActiveBindingsFor("de.anbos.eclipse.easyshell.plugin.commands.open");
         if (command != null && handlerService != null) {
             Map<String, Object> commandParamametersMap = new HashMap<String, Object>();
             commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",

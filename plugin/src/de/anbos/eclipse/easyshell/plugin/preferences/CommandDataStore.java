@@ -76,6 +76,7 @@ public class CommandDataStore extends DataStore<CommandData> {
 
     @Override
     public void save() {
+        super.save();
         getStore().setValue(Constants.PREF_COMMANDS_PRESET,PreferenceValueConverter.asCommandDataString(getPresetCommands()));
         getStore().setValue(Constants.PREF_COMMANDS,PreferenceValueConverter.asCommandDataString(getUserCommands()));
     }
@@ -93,12 +94,12 @@ public class CommandDataStore extends DataStore<CommandData> {
         CommandData[] arrayUser   = PreferenceValueConverter.asCommandDataArray(getStore().getString(Constants.PREF_COMMANDS));
         removeAll();
         for(int i = 0 ; i < arrayPreset.length ; i++) {
-            addItem(arrayPreset[i]);
+            addInternal(arrayPreset[i]);
         }
         for(int i = 0 ; i < arrayUser.length ; i++) {
-            addItem(arrayUser[i]);
+            addInternal(arrayUser[i]);
         }
-        sort();
+        super.load();
     }
 
     public CommandData getCommandDataByName(String name) {

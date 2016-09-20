@@ -40,7 +40,6 @@ public class DataStore<T extends Data> implements IDataStore {
      */
     @Override
     public IData getPreviousElement(IData data) {
-    	sort();
         for(int i = 0 ; i < items.size() ; i++) {
             IData item = (IData)items.get(i);
             if(item.equals(data)) {
@@ -59,7 +58,6 @@ public class DataStore<T extends Data> implements IDataStore {
      */
     @Override
     public IData getNextElement(IData data) {
-    	sort();
         for(int i = 0 ; i < items.size() ; i++) {
             IData item = (IData)items.get(i);
             if(item.equals(data)) {
@@ -78,7 +76,6 @@ public class DataStore<T extends Data> implements IDataStore {
      */
     @Override
     public IData getLastElement() {
-    	sort();
     	int index = items.size() - 1;
     	if(index < 0) {
     		return null;
@@ -93,18 +90,15 @@ public class DataStore<T extends Data> implements IDataStore {
     		position = lastElement.getPosition() + 1;
     	}
     	data.setPosition(position);
-        items.add(data);
-        sort();
+    	addInternal(data);
     }
 
     public void replace(T data) {
-        items.set(data.getPosition(), data);
-        //sort();
+        items.set(items.indexOf(data), data);
     }
 
     public void delete(IData data) {
         items.remove(data);
-        sort();
     }
 
     /* (non-Javadoc)
@@ -112,6 +106,8 @@ public class DataStore<T extends Data> implements IDataStore {
      */
     @Override
     public void save() {
+        sort();
+        renumber();
     }
 
     /* (non-Javadoc)
@@ -128,6 +124,7 @@ public class DataStore<T extends Data> implements IDataStore {
     @Override
     public void load() {
         sort();
+        renumber();
     }
 
     /* (non-Javadoc)
@@ -171,19 +168,23 @@ public class DataStore<T extends Data> implements IDataStore {
         return store;
     }
 
-    protected void addItem(T data) {
-        data.setPosition(items.size());
-        items.add(data);
-    }
-
-    protected void sort() {
+    @Override
+    public void sort() {
     	if(comparator == null) {
     		comparator = new DataObjectComparator();
     	}
     	Collections.sort(items, comparator);
-    	for (int i=0;i<items.size();i++) {
-    		((IData)items.get(i)).setPosition(i);
-    	}
+    }
+
+    @Override
+    public void renumber() {
+        for (int i=0;i<items.size();i++) {
+            ((IData)items.get(i)).setPosition(i);
+        }
+    }
+
+    protected void addInternal(T data) {
+        items.add(data);
     }
 
     private class DataObjectComparator implements Comparator<Object> {
