@@ -38,7 +38,7 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
     private IWorkbenchPart activePart;
     private MenuDataList menuDataList;
     private org.eclipse.swt.widgets.List listView;
-    List<Character> chars;
+    private List<Character> chars;
 
     public CategoryPopupDialog(Shell parent, IWorkbenchPart activePart, MenuDataList menuDataList)
     {
@@ -74,7 +74,32 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
         return listViewComposite;
     }
 
-    void executeCommand(int index) {
+    public static void executeCommand(IWorkbenchPart activePart, MenuData menuData) {
+        // get command
+        //ICommandService service = (ICommandService)PlatformUI.getWorkbench().getService(ICommandService.class);
+        ICommandService commandService = (ICommandService)activePart.getSite().getService(ICommandService.class);
+        Command command = commandService != null ? commandService.getCommand("de.anbos.eclipse.easyshell.plugin.commands.execute") : null;
+        // get handler service
+        IHandlerService handlerService = (IHandlerService)activePart.getSite().getService(IHandlerService.class);
+        //IBindingService bindingService = (IBindingService)activePart.getSite().getService(IBindingService.class);
+        //TriggerSequence[] triggerSequenceArray = bindingService.getActiveBindingsFor("de.anbos.eclipse.easyshell.plugin.commands.open");
+        if (command != null && handlerService != null) {
+            Map<String, Object> commandParamametersMap = new HashMap<String, Object>();
+            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
+                    menuData.getCommandData().getCommandType().getAction());
+            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
+                    menuData.getCommandData().getCommand());
+            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
+                    menuData.getCommandData().isUseWorkingDirectory() ? menuData.getCommandData().getWorkingDirectory() : "");
+            ParameterizedCommand paramCommand = ParameterizedCommand.generateCommand(command, commandParamametersMap);
+            try {
+                handlerService.executeCommand(paramCommand, null);
+            } catch (Exception ex) {
+            }
+        }
+    }
+
+    private void executeCommandFromList(int index) {
         if (index == -1) {
             index = listView.getSelectionIndex();
         }
@@ -89,39 +114,19 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
         }
         MenuData item = menuDataList.get(index);
         this.close();
-        // get command
-        //ICommandService service = (ICommandService)PlatformUI.getWorkbench().getService(ICommandService.class);
-        ICommandService commandService = (ICommandService)activePart.getSite().getService(ICommandService.class);
-        Command command = commandService != null ? commandService.getCommand("de.anbos.eclipse.easyshell.plugin.commands.execute") : null;
-        // get handler service
-        IHandlerService handlerService = (IHandlerService)activePart.getSite().getService(IHandlerService.class);
-        //IBindingService bindingService = (IBindingService)activePart.getSite().getService(IBindingService.class);
-        //TriggerSequence[] triggerSequenceArray = bindingService.getActiveBindingsFor("de.anbos.eclipse.easyshell.plugin.commands.open");
-        if (command != null && handlerService != null) {
-            Map<String, Object> commandParamametersMap = new HashMap<String, Object>();
-            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
-                    item.getCommandData().getCommandType().getAction());
-            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
-                    item.getCommandData().getCommand());
-            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
-                    item.getCommandData().isUseWorkingDirectory() ? item.getCommandData().getWorkingDirectory() : "");
-            ParameterizedCommand paramCommand = ParameterizedCommand.generateCommand(command, commandParamametersMap);
-            try {
-                handlerService.executeCommand(paramCommand, null);
-            } catch (Exception ex) {
-            }
-        }
+        // execute
+        executeCommand(activePart, item);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.keyCode == SWT.CR || e.keyCode == SWT.KEYPAD_CR) {
-            executeCommand(-1);
+            executeCommandFromList(-1);
         } else if (((e.stateMask & SWT.ALT) == 0) && ((e.stateMask & SWT.CTRL) == 0) && ((e.stateMask & SWT.SHIFT) == 0)) {
             if(e.keyCode >= '0' && e.keyCode <= '9') { //check digit
-                executeCommand(e.keyCode - '0');
+                executeCommandFromList(e.keyCode - '0');
             } else if(e.keyCode >= 'a' && e.keyCode <= 'z') { //check character
-                executeCommand((e.keyCode - 'a') + ('9' - '0' + 1));
+                executeCommandFromList((e.keyCode - 'a') + ('9' - '0' + 1));
             }
         }
     }
@@ -143,7 +148,7 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
         if (e.widget != listView) {
             return;
         }
-        executeCommand(-1);
+        executeCommandFromList(-1);
     }
 
 }

@@ -31,16 +31,24 @@ public class All extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
+        // close the old dialog
         if (dialog != null)
         {
             dialog.close();
             dialog = null;
         }
-        //create and open a new dialog
-        IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
         // load the preferences
-        dialog = new CategoryPopupDialog(Display.getCurrent().getActiveShell(), activePart, getMenuDataList());
-        dialog.open();
+        MenuDataList list = getMenuDataList();
+        if (list.size() > 0) {
+            IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
+            if (list.size() == 1) {
+                CategoryPopupDialog.executeCommand(activePart, list.get(0));
+            } else {
+                //create and open a new dialog
+                dialog = new CategoryPopupDialog(Display.getCurrent().getActiveShell(), activePart, list);
+                dialog.open();
+            }
+        }
         return null;
     }
 
