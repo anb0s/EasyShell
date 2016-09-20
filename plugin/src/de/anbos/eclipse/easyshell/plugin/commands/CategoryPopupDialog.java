@@ -114,15 +114,18 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
     }
 
     private void executeCommandFromList(int index) {
-        if (index == -1) {
-            index = listView.getSelectionIndex();
+        long sleepTime = 500;
+        int selIndex = listView.getSelectionIndex();
+        if (index == -1 || index == selIndex) {
+            sleepTime = 10;
+            index = selIndex;
         }
         if (index < 0 || index >= menuDataList.size()) {
             return;
         }
         listView.setSelection(index);
         try {
-            Thread.sleep(500);
+            Thread.sleep(sleepTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

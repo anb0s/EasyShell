@@ -177,6 +177,9 @@ public class CommandDataDefaultCollection {
         // Clipboard - Full Path with quotes
         list.add(new CommandData("67aa9dff-6bbb-4b47-8b43-8a82a7a279fa", PresetType.presetPlugin, Utils.getOS(), "\"Full Path\"", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
                 "\"${easyshell:resource_loc}\"${easyshell:line_separator}"));
+        // Clipboard - Full Path Unix
+        list.add(new CommandData("95cacf98-9dfc-473f-b5d3-fe4961e66ae1", PresetType.presetPlugin, Utils.getOS(), "Full Path Unix", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
+                "${easyshell:resource_loc:unix}${easyshell:line_separator}"));
         // Clipboard - Qualified Name
         list.add(new CommandData("88989d78-cf17-4750-91fc-6260055743ae", PresetType.presetPlugin, Utils.getOS(), "Qualified Name", ResourceType.resourceTypeFileOrDirectory, Category.categoryClipboard, CommandType.commandTypeClipboard,
                 "${easyshell:qualified_name}${easyshell:line_separator}"));
