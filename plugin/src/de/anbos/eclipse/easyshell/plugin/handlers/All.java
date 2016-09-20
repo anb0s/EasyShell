@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.commands.CategoryPopupDialog;
 import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
@@ -27,6 +28,7 @@ import de.anbos.eclipse.easyshell.plugin.types.Category;
 public class All extends AbstractHandler {
 
     private CategoryPopupDialog dialog;
+    private MenuDataList list;
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
@@ -38,14 +40,14 @@ public class All extends AbstractHandler {
             dialog = null;
         }
         // load the preferences
-        MenuDataList list = getMenuDataList();
+        list = getMenuDataList();
         if (list.size() > 0) {
             IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
             if (list.size() == 1) {
                 CategoryPopupDialog.executeCommand(activePart, list.get(0));
             } else {
                 //create and open a new dialog
-                dialog = new CategoryPopupDialog(Display.getCurrent().getActiveShell(), activePart, list);
+                dialog = new CategoryPopupDialog(Display.getCurrent().getActiveShell(), activePart, list, getTitle());
                 dialog.open();
             }
         }
@@ -60,7 +62,16 @@ public class All extends AbstractHandler {
     }
 
     public MenuDataList getMenuDataList() {
-        return getMenuDataList(Category.categoryUnknown);
+        return getMenuDataList(getCategory());
+    }
+
+    public Category getCategory() {
+        return Category.categoryUnknown;
+    }
+
+    public String getTitle() {
+        String postfix = getCategory() == Category.categoryUnknown ? "" : " - " + getCategory().getName();
+        return Activator.getResourceString("easyshell.plugin.name") + postfix;
     }
 
     @Override

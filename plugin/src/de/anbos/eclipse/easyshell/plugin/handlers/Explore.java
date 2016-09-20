@@ -11,14 +11,13 @@
 
 package de.anbos.eclipse.easyshell.plugin.handlers;
 
-import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 
 public class Explore extends All {
 
     @Override
-    public MenuDataList getMenuDataList() {
-        return super.getMenuDataList(Category.categoryExplore);
+    public Category getCategory() {
+        return Category.categoryExplore;
     }
 
 }

@@ -40,9 +40,9 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
     private org.eclipse.swt.widgets.List listView;
     private List<Character> chars;
 
-    public CategoryPopupDialog(Shell parent, IWorkbenchPart activePart, MenuDataList menuDataList)
+    public CategoryPopupDialog(Shell parent, IWorkbenchPart activePart, MenuDataList menuDataList, String title)
     {
-        super(parent, INFOPOPUP_SHELLSTYLE, true, false, false, false, false, null, null);
+        super(parent, INFOPOPUP_SHELLSTYLE, true, false, false, false, false, title, "...");
         this.activePart = activePart;
         this.menuDataList = menuDataList;
         chars = new ArrayList<Character>();
@@ -52,6 +52,20 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
         for (Character ch='a';ch<='z';ch++) {
             chars.add(ch);
         }
+        int charsSize = menuDataList.size();
+        String info = "use '0'";
+        if (charsSize > 1) {
+            if( charsSize <= 10) {
+                info += " - '" + chars.get(charsSize-1) + "'";
+            } else {
+                info += " - '9' and 'a'";
+                if (charsSize > 11) {
+                    info += " - '" + chars.get(charsSize-1) + "'";
+                }
+            }
+        }
+        info += " to execute";
+        setInfoText(info);
     }
 
     void init(IWorkbenchPart activePart, MenuDataList menuDataList) {
