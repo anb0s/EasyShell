@@ -11,9 +11,18 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseEvent;
@@ -32,6 +41,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Utils;
@@ -43,6 +53,13 @@ import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 import de.anbos.eclipse.easyshell.plugin.types.Variable;
 
 public class CommandDataDialog extends StatusDialog {
+
+    // experimental features
+    boolean useExtendedContentAssists = true;
+    boolean showVariablesInfo = false;
+    boolean showConvertersInfo = false;
+    // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61
+    boolean showHelpButton = false;
 
     private CommandData data;
     private Combo   resourceTypeCombo;
@@ -89,12 +106,15 @@ public class CommandDataDialog extends StatusDialog {
 
     	createCommandGroup(pageComponent);
 
-        createVariablesOverview(pageComponent);
+    	if (showVariablesInfo) {
+    	    createVariablesOverview(pageComponent);
+    	}
 
-        createConvertersOverview(pageComponent);
+    	if (showConvertersInfo) {
+    	    createConvertersOverview(pageComponent);
+    	}
 
-        // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61
-        setHelpAvailable(false);
+        setHelpAvailable(showHelpButton);
 
         refreshResourceTypeCombo();
 
@@ -121,6 +141,7 @@ public class CommandDataDialog extends StatusDialog {
         GridData data1 = new GridData(GridData.FILL_HORIZONTAL);
         pageGroup1.setLayoutData(data1);
         pageGroup1.setFont(pageComponent.getFont());
+
         // create resource type combo
         createResourceTypeCombo(pageGroup1);
         // create category combo
@@ -134,29 +155,51 @@ public class CommandDataDialog extends StatusDialog {
         dirText = createTextField(pageGroup1, null, data.getWorkingDirectory(), false);
         // create input valueText field
         valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), data.getCommand(), true);
+
+        // add content assist to command text editor field
+        if (useExtendedContentAssists) {
+            addContentAssistExtended(valueText);
+        } else {
+            addContentAssistSimple(valueText);
+        }
     }
 
-    private void createConvertersOverview(Composite pageComponent) {
-        // define group3
-        Group pageGroup3 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-        pageGroup3.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group3"));
-        pageGroup3.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group3"));
-        GridLayout layout3 = new GridLayout();
-        layout3.numColumns = 2;
-        layout3.makeColumnsEqualWidth = false;
-        layout3.marginWidth = 5;
-        layout3.marginHeight = 4;
-        pageGroup3.setLayout(layout3);
-        GridData data3 = new GridData(GridData.FILL_HORIZONTAL);
-        pageGroup3.setLayoutData(data3);
-        pageGroup3.setFont(pageComponent.getFont());
-        // create converters labels
-        for(int i=Converter.getFirstIndex();i<Converter.values().length;i++) {
-            Converter conv = Converter.values()[i];
-            if (conv.isVisible()) {
-                createVariableLabel(pageGroup3, conv.getName(), ": " + conv.getDescription());
-            }
+    private void addContentAssistSimple(Text textControl) {
+        char[] autoActivationCharacters = new char[] { '$', '{' };
+        KeyStroke keyStroke = null;
+        try {
+            keyStroke = KeyStroke.getInstance("Ctrl+Space");
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        // assume that myTextControl has already been created in some way
+        List<Variable> variables = Variable.getVisibleVariables();
+        String[] proposals = new String [variables.size()];
+        for(int i=0;i<variables.size();i++) {
+            proposals[i] = variables.get(i).getFullVariableName();
+        }
+        ContentProposalAdapter adapter = new ContentProposalAdapter(
+                textControl , new TextContentAdapter(),
+            new SimpleContentProposalProvider(proposals),
+            keyStroke, autoActivationCharacters);
+        adapter.setPropagateKeys(false);
+        adapter.setFilterStyle(ContentProposalAdapter.FILTER_NONE);
+        //adapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+    }
+
+    private void addContentAssistExtended(Text textControl) {
+        char[] autoActivationCharacters = new char[] { '$', '{' };
+        Map<String, String> proposals = new LinkedHashMap<String, String>();
+        // add own variables
+        proposals.putAll(Variable.getVariableInfoMap());
+        // add eclipse variables
+        proposals.putAll(Variable.getEclipseVariableInfoMap());
+        ContentAssistCommandAdapter adapter = new ContentAssistCommandAdapter(textControl, new TextContentAdapter(),
+                new CommandVariableContentProposalProvider(proposals), null,
+                autoActivationCharacters, true);
+        adapter.setPropagateKeys(false);
+        adapter.setFilterStyle(ContentProposalAdapter.FILTER_NONE);
     }
 
     private void createVariablesOverview(Composite pageComponent) {
@@ -178,6 +221,29 @@ public class CommandDataDialog extends StatusDialog {
             Variable var = Variable.values()[i];
             if (var.isVisible()) {
                 createVariableLabel(pageGroup2, var.getFullVariableName(), ": " + var.getDescription());
+            }
+        }
+    }
+
+    private void createConvertersOverview(Composite pageComponent) {
+        // define group3
+        Group pageGroup3 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
+        pageGroup3.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group3"));
+        pageGroup3.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group3"));
+        GridLayout layout3 = new GridLayout();
+        layout3.numColumns = 2;
+        layout3.makeColumnsEqualWidth = false;
+        layout3.marginWidth = 5;
+        layout3.marginHeight = 4;
+        pageGroup3.setLayout(layout3);
+        GridData data3 = new GridData(GridData.FILL_HORIZONTAL);
+        pageGroup3.setLayoutData(data3);
+        pageGroup3.setFont(pageComponent.getFont());
+        // create converters labels
+        for(int i=Converter.getFirstIndex();i<Converter.values().length;i++) {
+            Converter conv = Converter.values()[i];
+            if (conv.isVisible()) {
+                createVariableLabel(pageGroup3, conv.getName(), ": " + conv.getDescription());
             }
         }
     }
@@ -230,12 +296,10 @@ public class CommandDataDialog extends StatusDialog {
             @Override
             public void mouseUp(MouseEvent e) {
                 // TODO Auto-generated method stub
-
             }
             @Override
             public void mouseDown(MouseEvent e) {
                 // TODO Auto-generated method stub
-
             }
             @Override
             public void mouseDoubleClick(MouseEvent e) {

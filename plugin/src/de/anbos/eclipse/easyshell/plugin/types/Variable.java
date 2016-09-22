@@ -12,13 +12,20 @@
 package de.anbos.eclipse.easyshell.plugin.types;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.eclipse.core.variables.IDynamicVariable;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.IValueVariable;
+import org.eclipse.core.variables.VariablesPlugin;
 
 import de.anbos.eclipse.easyshell.plugin.Resource;
 
 public enum Variable {
     // ${easyshell:resource_loc} == {2}
-    varUnknown(        -1, false, "unknown",          "unknown", new IVariableResolver() {
+    varUnknown(        -1, false, "unknown", "unknown", new IVariableResolver() {
         public String resolve(Resource resource) {
             return "unknown";
         };
@@ -137,17 +144,25 @@ public enum Variable {
     // attributes
     private final int id;
     private final boolean visible;
-    private final String name;
-    private final String description;
+    private final boolean eclipse;
+    private String name;
+    private String description;
     private final IVariableResolver resolver;
-    private final String prefix = "easyshell";
+    static private final String varBegin = "${";
+    static private final String varEnd   = "}";
+    static private final String varParamDelimiter = ":";
+    static private final String varEasyShell = "easyshell";
     // construct
-    Variable(int id, boolean visible, String name, String description, IVariableResolver resolver) {
+    Variable(int id, boolean visible, boolean eclipse, String name, String description, IVariableResolver resolver) {
         this.id = id;
         this.visible = visible;
+        this.eclipse=eclipse;
         this.name = name;
         this.description = description;
         this.resolver = resolver;
+    }
+    Variable(int id, boolean visible, String name, String description, IVariableResolver resolver) {
+        this(id, visible, false, name, description, resolver);
     }
     Variable(int id, String name, String description, IVariableResolver resolver) {
         this(id, true, name, description, resolver);
@@ -158,21 +173,35 @@ public enum Variable {
     public boolean isVisible() {
         return visible;
     }
+    public boolean isEclipse() {
+        return eclipse;
+    }
     public String getName() {
         return name;
     }
     public String getFullVariableName() {
-        return "${" + prefix + ":" + name + "}";
-
+        if (eclipse) {
+            return getEclipseVariableName();
+        } else {
+            return varBegin + varEasyShell + varParamDelimiter + name + varEnd;
+        }
     }
     public String getEclipseVariableName() {
-        return "${" + name + "}";
+        return varBegin + name + varEnd;
     }
     public String getDescription() {
         return description;
     }
     public IVariableResolver getResolver() {
         return resolver;
+    }
+    public Variable setName(String name) {
+        this.name = name;
+        return this;
+    }
+    public Variable setDescription(String description) {
+        this.description = description;
+        return this;
     }
     public static Variable getFromId(int id) {
         Variable ret = null;
@@ -203,6 +232,41 @@ public enum Variable {
             list.add(Variable.values()[i].getName());
         }
         return list;
+    }
+    public static List<Variable> getVariables(boolean visibleOnly) {
+        List<Variable> list = new ArrayList<>();
+        for(int i = 0; i < Variable.values().length; i++) {
+            if (!visibleOnly || (visibleOnly && Variable.values()[i].isVisible())) {
+                list.add(Variable.values()[i]);
+            }
+        }
+        return list;
+    }
+    public static List<Variable> getVisibleVariables() {
+        return getVariables(true);
+    }
+    public static Map<String, String> getVariableInfoMap(boolean visibleOnly) {
+        Map<String, String> map = new LinkedHashMap<String, String>();
+        for(Variable variable : getVariables(visibleOnly)) {
+            map.put(variable.getFullVariableName(), variable.getDescription());
+        }
+        return map;
+    }
+    public static Map<String, String> getVariableInfoMap() {
+        return getVariableInfoMap(true);
+    }
+    public static Map<String, String> getEclipseVariableInfoMap() {
+        Map<String, String> map = new LinkedHashMap<String, String>();
+        IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+        IValueVariable[] valueVariables = variableManager.getValueVariables();
+        for (IValueVariable variable : valueVariables) {
+            map.put(varBegin + variable.getName() + varEnd, variable.getDescription());
+        }
+        IDynamicVariable[] dynamicVariables = variableManager.getDynamicVariables();
+        for (IDynamicVariable variable : dynamicVariables) {
+            map.put(varBegin + variable.getName() + varEnd, variable.getDescription());
+        }
+        return map;
     }
     public static int getFirstIndex() {
         return 0;
