@@ -239,4 +239,24 @@ public class Utils {
         }
     }
 
+    public static String getFileExtension(String fileName) {
+        String extension = "";
+        int i = fileName.lastIndexOf('.');
+        if (i > -1 && (fileName.length() > (i + 1))) {
+            extension = fileName.substring(i+1);
+        }
+        return extension;
+    }
+
+    public static String getFileBasename(String fileName) {
+        String basename = fileName;
+        int i = fileName.lastIndexOf('.');
+        if (i > 0) {
+            basename = fileName.substring(0, i);
+        } else if (i == 0) {
+            basename = "";
+        }
+        return basename;
+    }
+
 }

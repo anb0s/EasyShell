@@ -22,6 +22,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.osgi.framework.Bundle;
 
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 
 public class Resource {
@@ -121,6 +122,14 @@ public class Resource {
             return file.getName();
             //}
         }
+    }
+
+    public String getResourceBasename() {
+        return Utils.getFileBasename(getResourceName());
+    }
+
+    public String getResourceExtension() {
+        return Utils.getFileExtension(getResourceName());
     }
 
     public String getResourcePath() {

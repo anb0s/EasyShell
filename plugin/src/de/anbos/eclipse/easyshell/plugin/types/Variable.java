@@ -41,6 +41,16 @@ public enum Variable {
             return resource.getResourceName();
         };
     }),
+    varResourceBasename(    1, "resource_basename",    "name of file without extension", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getResourceBasename();
+        };
+    }),
+    varResourceExtension(    1, "resource_extension",  "extension of file name (without '.')", new IVariableResolver() {
+        public String resolve(Resource resource) {
+            return resource.getResourceExtension();
+        };
+    }),
     // ${easyshell:resource_path}
     varResourcePath(    2, "resource_path",    "relative path to workspace of file or directory", new IVariableResolver() {
         public String resolve(Resource resource) {
