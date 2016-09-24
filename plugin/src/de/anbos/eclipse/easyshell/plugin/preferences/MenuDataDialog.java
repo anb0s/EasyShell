@@ -239,7 +239,7 @@ public class MenuDataDialog extends StatusDialog {
         Map<String, String> proposals = new LinkedHashMap<String, String>();
         // add internal variables
         proposals.putAll(Variable.getInternalVariableInfoMap());
-        ContentAssistCommandAdapter adapter = new ContentAssistCommandAdapter(textControl, new TextContentAdapter(),
+        ContentAssistCommandAdapter adapter = new ContentAssistCommandAdapter(textControl, new CommandVariableContentAdapter(),
                 new CommandVariableContentProposalProvider(proposals), null,
                 autoActivationCharacters, true);
         adapter.setPropagateKeys(false);

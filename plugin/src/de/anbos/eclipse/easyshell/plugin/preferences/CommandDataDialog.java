@@ -195,7 +195,7 @@ public class CommandDataDialog extends StatusDialog {
         proposals.putAll(Variable.getVariableInfoMap());
         // add eclipse variables
         proposals.putAll(Variable.getEclipseVariableInfoMap());
-        ContentAssistCommandAdapter adapter = new ContentAssistCommandAdapter(textControl, new TextContentAdapter(),
+        ContentAssistCommandAdapter adapter = new ContentAssistCommandAdapter(textControl, new CommandVariableContentAdapter(),
                 new CommandVariableContentProposalProvider(proposals), null,
                 autoActivationCharacters, true);
         adapter.setPropagateKeys(false);
