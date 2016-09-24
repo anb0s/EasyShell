@@ -33,6 +33,7 @@ import org.osgi.framework.BundleContext;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.Debug;
+import de.anbos.eclipse.easyshell.plugin.types.OS;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 /**
@@ -109,8 +110,14 @@ public class Activator extends AbstractUIPlugin {
 
     protected void initializeImageRegistry(ImageRegistry registry) {
         Bundle bundle = Platform.getBundle(Constants.PLUGIN_ID);
-        for (String icon : Category.getIconsAsList()) {
-            addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + icon, icon);
+        OS os = Utils.getOS();
+        for (String iconName : Category.getIconsAsList()) {
+            String iconPath = Constants.IMAGE_PATH + os.getId() + "/" + iconName;
+            URL url = bundle.getEntry(iconPath);
+            if (url == null) {
+                iconPath = Constants.IMAGE_PATH + iconName;
+            }
+            addImageToRegistry(registry, bundle, iconPath, iconName);
         }
         addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_EASYSHELL, Constants.IMAGE_EASYSHELL);
      }

@@ -19,16 +19,15 @@ public interface Constants {
     // Images
     //public static final String IMAGE_EXT         = "gif";
     public static final String IMAGE_EXT         = "png";
-    public static final String IMAGE_BASE_PATH   = "icons/";
-    public static final String IMAGE_PATH        = IMAGE_BASE_PATH + IMAGE_EXT + "/";
-    public static final String IMAGE_EASYSHELL   = "easyshell2." + IMAGE_EXT;
-    public static final String IMAGE_UNKNOWN     = "eclipse." + IMAGE_EXT;
-    public static final String IMAGE_DEFAULT     = "editor." + IMAGE_EXT;
-    public static final String IMAGE_OPEN        = "prompt." + IMAGE_EXT;
-    public static final String IMAGE_RUN         = "run_exc." + IMAGE_EXT;
-    public static final String IMAGE_EXPLORE     = "fldr_obj." + IMAGE_EXT;
-    public static final String IMAGE_CLIPBOARD   = "copy." + IMAGE_EXT;
-    public static final String IMAGE_USER        = "environment_obj." + IMAGE_EXT;
+    public static final String IMAGE_PATH        = "icons/";
+    public static final String IMAGE_EASYSHELL   = "easyshell." + IMAGE_EXT;
+    public static final String IMAGE_UNKNOWN     = "unknown." + IMAGE_EXT;
+    public static final String IMAGE_DEFAULT     = "default." + IMAGE_EXT;
+    public static final String IMAGE_OPEN        = "open." + IMAGE_EXT;
+    public static final String IMAGE_RUN         = "run." + IMAGE_EXT;
+    public static final String IMAGE_EXPLORE     = "explore." + IMAGE_EXT;
+    public static final String IMAGE_CLIPBOARD   = "clipboard." + IMAGE_EXT;
+    public static final String IMAGE_USER        = "user." + IMAGE_EXT;
 
 	// Preferences
     public static final String PREF_COMMANDS_PRESET = "COMMANDS_PRESET";

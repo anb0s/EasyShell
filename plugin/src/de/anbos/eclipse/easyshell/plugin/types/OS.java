@@ -15,29 +15,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum OS {
-    osUnknown(-1, "Unknown"),
-    osWindows(0, "Windows"),
-    osLinux(1, "Linux"),
-    osMacOSX(2, "MAC OS X"),
-    osUnix(3, "Unix"); // all Unix based, e.g. Linux and Max OS X etc.
+    osUnknown("unknown", "Unknown"),
+    osWindows("windows", "Windows"),
+    osLinux("linux", "Linux"),
+    osMacOSX("macosx", "MAC OS X"),
+    osUnix("unix", "Unix"); // all Unix based, e.g. Linux and Max OS X etc.
     // attributes
-    private final int id;
+    private final String id;
     private final String name;
     // construct
-    OS(int id, String name) {
+    OS(String id, String name) {
         this.id = id;
         this.name = name;
     }
-    public int getId() {
+    public String getId() {
         return id;
     }
     public String getName() {
         return name;
     }
-    public static OS getFromId(int id) {
+    public static OS getFromId(String id) {
         OS ret = osUnknown;
         for(int i = 0; i < OS.values().length; i++) {
-            if (OS.values()[i].getId() == id) {
+            if (OS.values()[i].getId().equals(id)) {
                 ret = OS.values()[i];
                 break;
             }
