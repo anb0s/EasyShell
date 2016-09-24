@@ -281,9 +281,10 @@ public class CommandDataDialog extends StatusDialog {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 //Button button = (Button)e.getSource();
-                dirText.setEditable(dirCheckBox.getSelection());
-                dirTextAssist.setEnabled(dirCheckBox.getSelection());
-                if (!dirText.getEnabled() && dirText.getText().isEmpty()) {
+                boolean enabled = dirCheckBox.getSelection();
+                dirText.setEditable(enabled);
+                dirTextAssist.setEnabled(enabled);
+                if (!enabled && dirText.getText().isEmpty()) {
                     dirText.setText(data.getWorkingDirectory());
                 }
             }
