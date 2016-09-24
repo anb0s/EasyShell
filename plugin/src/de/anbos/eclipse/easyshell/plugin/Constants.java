@@ -17,14 +17,18 @@ public interface Constants {
     public static final String PLUGIN_ID = "de.anbos.eclipse.easyshell.plugin";
 
     // Images
-    public static final String IMAGE_PATH        = "icons/";
-    public static final String IMAGE_UNKNOWN     = "sample.gif";
-    public static final String IMAGE_DEFAULT     = "editor.gif";
-    public static final String IMAGE_OPEN        = "terminal_16x16.png";
-    public static final String IMAGE_RUN         = "run_exc.gif";
-    public static final String IMAGE_EXPLORE     = "fldr_obj.gif";
-    public static final String IMAGE_CLIPBOARD   = "copy.gif";
-    public static final String IMAGE_USER        = "environment_obj.gif";
+    //public static final String IMAGE_EXT         = "gif";
+    public static final String IMAGE_EXT         = "png";
+    public static final String IMAGE_BASE_PATH   = "icons/";
+    public static final String IMAGE_PATH        = IMAGE_BASE_PATH + IMAGE_EXT + "/";
+    public static final String IMAGE_EASYSHELL   = "easyshell2." + IMAGE_EXT;
+    public static final String IMAGE_UNKNOWN     = "eclipse." + IMAGE_EXT;
+    public static final String IMAGE_DEFAULT     = "editor." + IMAGE_EXT;
+    public static final String IMAGE_OPEN        = "prompt." + IMAGE_EXT;
+    public static final String IMAGE_RUN         = "run_exc." + IMAGE_EXT;
+    public static final String IMAGE_EXPLORE     = "fldr_obj." + IMAGE_EXT;
+    public static final String IMAGE_CLIPBOARD   = "copy." + IMAGE_EXT;
+    public static final String IMAGE_USER        = "environment_obj." + IMAGE_EXT;
 
 	// Preferences
     public static final String PREF_COMMANDS_PRESET = "COMMANDS_PRESET";

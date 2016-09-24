@@ -11,13 +11,11 @@
 
 package de.anbos.eclipse.easyshell.plugin.handlers;
 
-import de.anbos.eclipse.easyshell.plugin.types.Category;
+public class AllSingle extends All {
 
-public class Explore extends AllSingle {
-
-    @Override
-    public Category getCategory() {
-        return Category.categoryExplore;
+    public AllSingle() {
+        super();
+        setUsePopup(true);
     }
 
 }

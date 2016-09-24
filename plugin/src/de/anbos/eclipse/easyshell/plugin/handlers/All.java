@@ -14,12 +14,14 @@ package de.anbos.eclipse.easyshell.plugin.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
-import de.anbos.eclipse.easyshell.plugin.commands.CategoryPopupDialog;
+import de.anbos.eclipse.easyshell.plugin.commands.ExecuteCommandPopup;
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
+import de.anbos.eclipse.easyshell.plugin.commands.ExecuteCommandDialog;
 import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataStore;
@@ -27,8 +29,9 @@ import de.anbos.eclipse.easyshell.plugin.types.Category;
 
 public class All extends AbstractHandler {
 
-    private CategoryPopupDialog dialog;
+    private Window dialog;
     private MenuDataList list;
+    private boolean usePopup = true;
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
@@ -44,10 +47,15 @@ public class All extends AbstractHandler {
         if (list.size() > 0) {
             IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
             if (list.size() == 1) {
-                CategoryPopupDialog.executeCommand(activePart, list.get(0));
+                Utils.executeCommand(activePart, list.get(0));
             } else {
                 //create and open a new dialog
-                dialog = new CategoryPopupDialog(Display.getCurrent().getActiveShell(), activePart, list, getTitle());
+                /*Display.getCurrent().getActiveShell()*/
+                if (usePopup) {
+                    dialog = new ExecuteCommandPopup(activePart.getSite().getShell(), activePart, list, getTitle());
+                } else {
+                    dialog = new ExecuteCommandDialog(activePart.getSite().getShell(), activePart, list, getTitle());
+                }
                 dialog.open();
             }
         }
@@ -82,6 +90,10 @@ public class All extends AbstractHandler {
     @Override
     public boolean isHandled() {
         return true;
+    }
+
+    public void setUsePopup(boolean usePopup) {
+        this.usePopup = usePopup;
     }
 
 }

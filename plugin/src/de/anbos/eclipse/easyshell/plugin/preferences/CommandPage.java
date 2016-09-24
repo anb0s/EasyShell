@@ -48,7 +48,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
-import de.anbos.eclipse.easyshell.plugin.Utils;
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;

@@ -30,7 +30,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
-
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.Debug;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
@@ -112,6 +112,7 @@ public class Activator extends AbstractUIPlugin {
         for (String icon : Category.getIconsAsList()) {
             addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + icon, icon);
         }
+        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_EASYSHELL, Constants.IMAGE_EASYSHELL);
      }
 
     protected void addImageToRegistry(ImageRegistry registry, Bundle bundle, String imagePath, String image_id) {

@@ -12,12 +12,8 @@
 package de.anbos.eclipse.easyshell.plugin.commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -27,20 +23,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.commands.ICommandService;
-import org.eclipse.ui.handlers.IHandlerService;
 
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 
-public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog implements SelectionListener, KeyListener {
+public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog implements SelectionListener, KeyListener {
 
     private IWorkbenchPart activePart;
     private MenuDataList menuDataList;
     private org.eclipse.swt.widgets.List listView;
     private List<Character> chars;
 
-    public CategoryPopupDialog(Shell parent, IWorkbenchPart activePart, MenuDataList menuDataList, String title)
+    public ExecuteCommandPopup(Shell parent, IWorkbenchPart activePart, MenuDataList menuDataList, String title)
     {
         super(parent, INFOPOPUP_SHELLSTYLE, true, false, false, false, false, title, "...");
         this.activePart = activePart;
@@ -88,30 +83,6 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
         return listViewComposite;
     }
 
-    public static void executeCommand(IWorkbenchPart activePart, MenuData menuData) {
-        // get command
-        //ICommandService service = (ICommandService)PlatformUI.getWorkbench().getService(ICommandService.class);
-        ICommandService commandService = (ICommandService)activePart.getSite().getService(ICommandService.class);
-        Command command = commandService != null ? commandService.getCommand("de.anbos.eclipse.easyshell.plugin.commands.execute") : null;
-        // get handler service
-        IHandlerService handlerService = (IHandlerService)activePart.getSite().getService(IHandlerService.class);
-        //IBindingService bindingService = (IBindingService)activePart.getSite().getService(IBindingService.class);
-        //TriggerSequence[] triggerSequenceArray = bindingService.getActiveBindingsFor("de.anbos.eclipse.easyshell.plugin.commands.open");
-        if (command != null && handlerService != null) {
-            Map<String, Object> commandParamametersMap = new HashMap<String, Object>();
-            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
-                    menuData.getCommandData().getCommandType().getAction());
-            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
-                    menuData.getCommandData().getCommand());
-            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
-                    menuData.getCommandData().isUseWorkingDirectory() ? menuData.getCommandData().getWorkingDirectory() : "");
-            ParameterizedCommand paramCommand = ParameterizedCommand.generateCommand(command, commandParamametersMap);
-            try {
-                handlerService.executeCommand(paramCommand, null);
-            } catch (Exception ex) {
-            }
-        }
-    }
 
     private void executeCommandFromList(int index) {
         long sleepTime = 500;
@@ -132,7 +103,7 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
         MenuData item = menuDataList.get(index);
         this.close();
         // execute
-        executeCommand(activePart, item);
+        Utils.executeCommand(activePart, item);
     }
 
     @Override
@@ -151,13 +122,11 @@ public class CategoryPopupDialog extends org.eclipse.jface.dialogs.PopupDialog i
     @Override
     public void keyReleased(KeyEvent e) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void widgetSelected(SelectionEvent e) {
         // TODO Auto-generated method stub
-
     }
 
     @Override

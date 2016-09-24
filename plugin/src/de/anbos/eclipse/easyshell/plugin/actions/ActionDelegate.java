@@ -28,7 +28,7 @@ import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver;
 import de.anbos.eclipse.easyshell.plugin.Resource;
 import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
-import de.anbos.eclipse.easyshell.plugin.Utils;
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Quotes;
 import de.anbos.eclipse.easyshell.plugin.types.Tokenizer;

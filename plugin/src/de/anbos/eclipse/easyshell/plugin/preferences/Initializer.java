@@ -22,9 +22,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
-import de.anbos.eclipse.easyshell.plugin.Utils;
 import de.anbos.eclipse.easyshell.plugin.legacy.PrefsV1_4;
 import de.anbos.eclipse.easyshell.plugin.legacy.PrefsV1_5;
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class Initializer extends AbstractPreferenceInitializer {

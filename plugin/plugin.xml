@@ -66,7 +66,12 @@
       <command
             categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
             id="de.anbos.eclipse.easyshell.plugin.commands.all"
-            name="EasyShell All">
+            name="EasyShell Single Selection Popup">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.allmulti"
+            name="EasyShell Multi Selection Dialog">
       </command>
    </extension>
    <extension
@@ -102,6 +107,10 @@
       <handler
             class="de.anbos.eclipse.easyshell.plugin.handlers.Default"
             commandId="de.anbos.eclipse.easyshell.plugin.commands.default">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.AllMulti"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.allmulti">
       </handler>
    </extension>
    <extension
@@ -211,6 +220,11 @@
             commandId="de.anbos.eclipse.easyshell.plugin.commands.user"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+U">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.allmulti"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+E">
       </key>
    </extension>
 

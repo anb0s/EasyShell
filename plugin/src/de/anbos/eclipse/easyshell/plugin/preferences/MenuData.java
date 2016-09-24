@@ -80,6 +80,10 @@ public class MenuData extends Data {
         return expanded;
     }
 
+    public String toString() {
+        return getNameExpanded();
+    }
+
     public String getCommandId() {
         return commandId;
     }

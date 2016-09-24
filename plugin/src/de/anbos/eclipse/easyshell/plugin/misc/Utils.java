@@ -9,7 +9,7 @@
  *    Andre Bossert - initial API and implementation and/or initial documentation
  *******************************************************************************/
 
-package de.anbos.eclipse.easyshell.plugin;
+package de.anbos.eclipse.easyshell.plugin.misc;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -24,7 +26,12 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolTip;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.handlers.IHandlerService;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.types.LinuxDesktop;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 
@@ -205,4 +212,31 @@ public class Utils {
         tooltip.setMessage(message);
         tooltip.setVisible(true);
     }
+
+    public static void executeCommand(IWorkbenchPart activePart, MenuData menuData) {
+        // get command
+        //ICommandService commandService = (ICommandService)PlatformUI.getWorkbench().getService(ICommandService.class);
+        ICommandService commandService = (ICommandService)activePart.getSite().getService(ICommandService.class);
+        Command command = commandService != null ? commandService.getCommand("de.anbos.eclipse.easyshell.plugin.commands.execute") : null;
+        // get handler service
+        IHandlerService handlerService = (IHandlerService)activePart.getSite().getService(IHandlerService.class);
+        //IBindingService bindingService = (IBindingService)activePart.getSite().getService(IBindingService.class);
+        //TriggerSequence[] triggerSequenceArray = bindingService.getActiveBindingsFor("de.anbos.eclipse.easyshell.plugin.commands.open");
+        if (command != null && handlerService != null) {
+            Map<String, Object> commandParamametersMap = new HashMap<String, Object>();
+            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
+                    menuData.getCommandData().getCommandType().getAction());
+            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
+                    menuData.getCommandData().getCommand());
+            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
+                    menuData.getCommandData().isUseWorkingDirectory() ? menuData.getCommandData().getWorkingDirectory() : "");
+            ParameterizedCommand paramCommand = ParameterizedCommand.generateCommand(command, commandParamametersMap);
+            try {
+                handlerService.executeCommand(paramCommand, null);
+            } catch (Exception e) {
+                Activator.logError(Activator.getResourceString("easyshell.message.error.handlerservice.execution"), paramCommand.toString(), e, true);
+            }
+        }
+    }
+
 }

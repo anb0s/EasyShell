@@ -13,7 +13,7 @@ package de.anbos.eclipse.easyshell.plugin.handlers;
 
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 
-public class Run extends All {
+public class Run extends AllSingle {
 
     @Override
     public Category getCategory() {
