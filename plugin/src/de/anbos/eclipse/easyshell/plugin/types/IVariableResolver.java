@@ -11,8 +11,6 @@
 
 package de.anbos.eclipse.easyshell.plugin.types;
 
-import de.anbos.eclipse.easyshell.plugin.Resource;
-
 public interface IVariableResolver {
-    String resolve(Resource resource);
+    String resolve(Object object);
 }

@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
+import de.anbos.eclipse.easyshell.plugin.types.Variable;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class MenuData extends Data {
@@ -73,10 +74,15 @@ public class MenuData extends Data {
 
     public String getNameExpanded() {
         String expanded = namePattern;
+        for (Variable variable : Variable.getInternalVariables()) {
+            expanded = expanded.replace(variable.getFullVariableName(), variable.getResolver().resolve(getCommandData()));
+        }
+        /*
         expanded = expanded.replace("${easyshell:command_category}", getCommandData().getCategory().getName());
         expanded = expanded.replace("${easyshell:command_type}", getCommandData().getCommandType().getName());
         expanded = expanded.replace("${easyshell:command_name}", getCommandData().getName());
         expanded = expanded.replace("${easyshell:command_os}", getCommandData().getOs().getName());
+        */
         return expanded;
     }
 

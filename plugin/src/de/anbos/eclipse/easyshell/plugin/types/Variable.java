@@ -22,139 +22,237 @@ import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.VariablesPlugin;
 
 import de.anbos.eclipse.easyshell.plugin.Resource;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandData;
 
 public enum Variable {
     // ${easyshell:resource_loc} == {2}
-    varUnknown(        -1, false, "unknown", "unknown", new IVariableResolver() {
-        public String resolve(Resource resource) {
+    varUnknown(false, false, "unknown", "unknown", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
             return "unknown";
         };
     }),
-    varResourceLoc(     0, "resource_loc",     "absolute path of file or directory", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getResourceLocation();
+    varResourceLoc(true, false, "resource_loc", "absolute path of file or directory", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getResourceLocation();
         };
     }),
     // ${easyshell:resource_name} == {3}
-    varResourceName(    1, "resource_name",    "name of file or directory", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getResourceName();
+    varResourceName(true, false, "resource_name", "name of file or directory", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getResourceName();
         };
     }),
-    varResourceBasename(    1, "resource_basename",    "name of file without extension", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getResourceBasename();
+    varResourceBasename(true, false, "resource_basename", "name of file without extension", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getResourceBasename();
         };
     }),
-    varResourceExtension(    1, "resource_extension",  "extension of file name (without '.')", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getResourceExtension();
+    varResourceExtension(true, false, "resource_extension", "extension of file name (without '.')", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getResourceExtension();
         };
     }),
     // ${easyshell:resource_path}
-    varResourcePath(    2, "resource_path",    "relative path to workspace of file or directory", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getResourcePath();
+    varResourcePath(true, false, "resource_path", "relative path to workspace of file or directory", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getResourcePath();
         };
     }),
     // ${easyshell:container_loc} == {1}
-    varContainerLoc(    3, "container_loc",    "absolute path of file directory or directory itself", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getContainerLocation();
+    varContainerLoc(true, false, "container_loc", "absolute path of file directory or directory itself", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getContainerLocation();
         };
     }),
     // ${easyshell:container_name}
-    varContainerName(   4, "container_name",   "name of file directory or directory itself", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getContainerName();
+    varContainerName(true, false, "container_name", "name of file directory or directory itself", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getContainerName();
         };
     }),
     // ${easyshell:container_path}
-    varContainerPath(   5, "container_path",   "relative path to workspace of file directory or directory itself", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getContainerPath();
+    varContainerPath(true, false, "container_path", "relative path to workspace of file directory or directory itself", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getContainerPath();
         };
     }),
     // ${easyshell:project_loc_loc}
-    varProjectLoc(      6, "project_loc",      "absolute path of project", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getProjectLocation();
+    varProjectLoc(true, false, "project_loc", "absolute path of project", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getProjectLocation();
         };
     }),
     // ${easyshell:project_name} == {4}
-    varProjectName(     7, "project_name",     "name of project", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getProjectName();
+    varProjectName(true, false, "project_name", "name of project", new IVariableResolver() {
+        public String resolve(Object object) {
+            return ((Resource)object).getProjectName();
         };
     }),
     // ${easyshell:project_path}
-    varProjectPath(     8, "project_path",     "relative path to workspace of project", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getProjectPath();
+    varProjectPath(true, false, "project_path", "relative path to workspace of project", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getProjectPath();
         };
     }),
     // ${easyshell:windows_drive} == {0}
-    varWindowsDrive(    9, "windows_drive",    "drive letter of file or directory on Windows", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getWindowsDrive();
+    varWindowsDrive(true, false, "windows_drive", "drive letter of file or directory on Windows", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getWindowsDrive();
         };
     }),
     // ${easyshell:qualified_name}
-    varQualifiedName(  10, "qualified_name",   "full qualified (class) name", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getFullQualifiedName();
+    varQualifiedName(true, false, "qualified_name", "full qualified (class) name", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getFullQualifiedName();
         };
     }),
     // ${easyshell:line_separator} == {5}
-    varLineSeparator(  11, "line_separator",   "line separator, e.g. '\\n' (Unix) or '\\r\\n' (Windows)", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getLineSeparator(OS.osUnknown);
+    varLineSeparator(true, false, "line_separator", "line separator, e.g. '\\n' (Unix) or '\\r\\n' (Windows)", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getLineSeparator(OS.osUnknown);
         };
     }),
-    varLineSeparatorUnix(  12, false, "line_separator_unix",   "line separator '\\n' (Unix)", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getLineSeparator(OS.osUnix);
+    varLineSeparatorUnix(false, false, "line_separator_unix", "line separator '\\n' (Unix)", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getLineSeparator(OS.osUnix);
         };
     }),
-    varLineSeparatorWindows(  13, false, "line_separator_windows",   "line separator '\\r\\n' (Windows)", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getLineSeparator(OS.osWindows);
+    varLineSeparatorWindows(false, false, "line_separator_windows", "line separator '\\r\\n' (Windows)", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getLineSeparator(OS.osWindows);
         };
     }),
-    varPathSeparator(  14, "path_separator",   "path separator, e.g. ':' (Unix) or ';' (Windows)", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getPathSeparator(OS.osUnknown);
+    varPathSeparator(true, false, "path_separator", "path separator, e.g. ':' (Unix) or ';' (Windows)", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getPathSeparator(OS.osUnknown);
         };
     }),
-    varPathSeparatorUnix(  15, false, "path_separator_unix",   "path separator ':' (Unix)", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getPathSeparator(OS.osUnix);
+    varPathSeparatorUnix(false, false, "path_separator_unix", "path separator ':' (Unix)", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getPathSeparator(OS.osUnix);
         };
     }),
-    varPathSeparatorWindows(  16, false, "path_separator_windows",   "path separator, e.g. ':' (Unix) or ';' (Windows)", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getPathSeparator(OS.osWindows);
+    varPathSeparatorWindows(false, false, "path_separator_windows", "path separator, e.g. ':' (Unix) or ';' (Windows)", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getPathSeparator(OS.osWindows);
         };
     }),
-    varFileSeparator(  17, "file_separator",   "file separator, e.g. '/' (Unix) or '\\' (Windows)", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getFileSeparator(OS.osUnknown);
+    varFileSeparator(true, false, "file_separator", "file separator, e.g. '/' (Unix) or '\\' (Windows)", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getFileSeparator(OS.osUnknown);
         };
     }),
-    varFileSeparatorUnix(  18, false, "file_separator_unix",   "file separator '/' (Unix)", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getFileSeparator(OS.osUnix);
+    varFileSeparatorUnix(false, false, "file_separator_unix", "file separator '/' (Unix)", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getFileSeparator(OS.osUnix);
         };
     }),
-    varFileSeparatorWindows(  19, false, "file_separator_windows",   "file separator '\\' (Windows)", new IVariableResolver() {
-        public String resolve(Resource resource) {
-            return resource.getFileSeparator(OS.osWindows);
+    varFileSeparatorWindows(false, false, "file_separator_windows", "file separator '\\' (Windows)", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getFileSeparator(OS.osWindows);
+        };
+    }),
+    varCommandCategory(false, true, "command_category", "command category", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof CommandData)) {
+                return "";
+            }
+            return ((CommandData)object).getCategory().getName();
+        };
+    }),
+    varCommandType(false, true, "command_type", "command type", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof CommandData)) {
+                return "";
+            }
+            return ((CommandData)object).getCommandType().getName();
+        };
+    }),
+    varCommandName(false, true, "command_name", "command name", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof CommandData)) {
+                return "";
+            }
+            return ((CommandData)object).getName();
+        };
+    }),
+    varCommandOS(false, true, "command_os", "command operating system", new IVariableResolver() {
+        public String resolve(Object object) {
+            if(!(object instanceof CommandData)) {
+                return "";
+            }
+            return ((CommandData)object).getOs().getName();
         };
     });
     // attributes
-    private final int id;
     private final boolean visible;
-    private final boolean eclipse;
+    private final boolean internal;
     private String name;
     private String description;
     private final IVariableResolver resolver;
@@ -163,38 +261,24 @@ public enum Variable {
     static private final String varParamDelimiter = ":";
     static private final String varEasyShell = "easyshell";
     // construct
-    Variable(int id, boolean visible, boolean eclipse, String name, String description, IVariableResolver resolver) {
-        this.id = id;
+    Variable(boolean visible, boolean internal, String name, String description, IVariableResolver resolver) {
         this.visible = visible;
-        this.eclipse=eclipse;
+        this.internal=internal;
         this.name = name;
         this.description = description;
         this.resolver = resolver;
     }
-    Variable(int id, boolean visible, String name, String description, IVariableResolver resolver) {
-        this(id, visible, false, name, description, resolver);
-    }
-    Variable(int id, String name, String description, IVariableResolver resolver) {
-        this(id, true, name, description, resolver);
-    }
-    public int getId() {
-        return id;
-    }
     public boolean isVisible() {
         return visible;
     }
-    public boolean isEclipse() {
-        return eclipse;
+    public boolean isInternal() {
+        return internal;
     }
     public String getName() {
         return name;
     }
     public String getFullVariableName() {
-        if (eclipse) {
-            return getEclipseVariableName();
-        } else {
-            return varBegin + varEasyShell + varParamDelimiter + name + varEnd;
-        }
+        return varBegin + varEasyShell + varParamDelimiter + name + varEnd;
     }
     public String getEclipseVariableName() {
         return varBegin + name + varEnd;
@@ -212,16 +296,6 @@ public enum Variable {
     public Variable setDescription(String description) {
         this.description = description;
         return this;
-    }
-    public static Variable getFromId(int id) {
-        Variable ret = null;
-        for(int i = 0; i < Variable.values().length; i++) {
-            if (Variable.values()[i].getId() == id) {
-                ret = Variable.values()[i];
-                break;
-            }
-        }
-        return ret;
     }
     public static Variable getFromName(String name) {
         Variable ret = null;
@@ -243,27 +317,35 @@ public enum Variable {
         }
         return list;
     }
-    public static List<Variable> getVariables(boolean visibleOnly) {
+    public static List<Variable> getVariables(boolean visibleOnly, boolean internal) {
         List<Variable> list = new ArrayList<>();
         for(int i = 0; i < Variable.values().length; i++) {
             if (!visibleOnly || (visibleOnly && Variable.values()[i].isVisible())) {
-                list.add(Variable.values()[i]);
+                if (internal == Variable.values()[i].isInternal()) {
+                    list.add(Variable.values()[i]);
+                }
             }
         }
         return list;
     }
     public static List<Variable> getVisibleVariables() {
-        return getVariables(true);
+        return getVariables(true, false);
     }
-    public static Map<String, String> getVariableInfoMap(boolean visibleOnly) {
+    public static List<Variable> getInternalVariables() {
+        return getVariables(false, true);
+    }
+    public static Map<String, String> getVariableInfoMap(boolean visibleOnly, boolean internal) {
         Map<String, String> map = new LinkedHashMap<String, String>();
-        for(Variable variable : getVariables(visibleOnly)) {
+        for(Variable variable : getVariables(visibleOnly, internal)) {
             map.put(variable.getFullVariableName(), variable.getDescription());
         }
         return map;
     }
     public static Map<String, String> getVariableInfoMap() {
-        return getVariableInfoMap(true);
+        return getVariableInfoMap(true, false);
+    }
+    public static Map<String, String> getInternalVariableInfoMap() {
+        return getVariableInfoMap(false, true);
     }
     public static Map<String, String> getEclipseVariableInfoMap() {
         Map<String, String> map = new LinkedHashMap<String, String>();

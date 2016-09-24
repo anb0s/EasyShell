@@ -13,10 +13,14 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -36,6 +40,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
@@ -43,6 +48,7 @@ import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.Variable;
 import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
 
 public class MenuDataDialog extends StatusDialog {
@@ -54,6 +60,7 @@ public class MenuDataDialog extends StatusDialog {
     private Combo   commandCombo;
     private Combo   nameTypeCombo;
     private Text    namePatternText;
+    ContentProposalAdapter namePatternTextAssist;
     private Text    menuNameText;
     private Text    commandText;
 
@@ -114,6 +121,7 @@ public class MenuDataDialog extends StatusDialog {
         createNameTypeCombo(pageGroup1);
         // create input nameText field
         namePatternText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.pattern"), menuData.getNamePattern(), true);
+        namePatternTextAssist = addContentAssistExtended(namePatternText);
         namePatternText.addModifyListener(new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
@@ -126,6 +134,7 @@ public class MenuDataDialog extends StatusDialog {
             }
         });
 
+        // create output menuNameText field
         menuNameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), menuData.getNameExpanded(), false);
 
         // define group2
@@ -223,6 +232,19 @@ public class MenuDataDialog extends StatusDialog {
         addNewButton.setLayoutData(gridData1);
         addNewButton.setFont(font);
         setButtonLayoutData(addNewButton);
+    }
+
+    private ContentProposalAdapter addContentAssistExtended(Text textControl) {
+        char[] autoActivationCharacters = new char[] { '$', '{' };
+        Map<String, String> proposals = new LinkedHashMap<String, String>();
+        // add internal variables
+        proposals.putAll(Variable.getInternalVariableInfoMap());
+        ContentAssistCommandAdapter adapter = new ContentAssistCommandAdapter(textControl, new TextContentAdapter(),
+                new CommandVariableContentProposalProvider(proposals), null,
+                autoActivationCharacters, true);
+        adapter.setPropagateKeys(false);
+        adapter.setFilterStyle(ContentProposalAdapter.FILTER_NONE);
+        return adapter;
     }
 
     protected void okPressed() {
@@ -509,6 +531,7 @@ public class MenuDataDialog extends StatusDialog {
                 menuNameText.setText(menuData.getNameExpanded());
                 boolean isUserDefined = menuData.getNameType() == MenuNameType.menuNameTypeUser;
                 namePatternText.setEditable(isUserDefined);
+                namePatternTextAssist.setEnabled(isUserDefined);
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {

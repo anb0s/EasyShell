@@ -69,7 +69,9 @@ public class CommandDataDialog extends StatusDialog {
     private Text    nameText;
     private Button  dirCheckBox;
     private Text    dirText;
+    private ContentProposalAdapter dirTextAssist;
     private Text    valueText;
+    private ContentProposalAdapter valueTextAssist;
 
     @Override
     public void create() {
@@ -152,19 +154,16 @@ public class CommandDataDialog extends StatusDialog {
         nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), data.getName(), true);
         // create directory checkbox
         createDirCheckBox(pageGroup1);
+        // create input dirText field and add content assist
         dirText = createTextField(pageGroup1, null, data.getWorkingDirectory(), false);
-        // create input valueText field
+        dirTextAssist = addContentAssist(dirText);
+        // create input valueText field and add content assist
         valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), data.getCommand(), true);
-
-        // add content assist to command text editor field
-        if (useExtendedContentAssists) {
-            addContentAssistExtended(valueText);
-        } else {
-            addContentAssistSimple(valueText);
-        }
+        valueTextAssist = addContentAssist(valueText);
+        valueTextAssist.setEnabled(true);
     }
 
-    private void addContentAssistSimple(Text textControl) {
+    private ContentProposalAdapter addContentAssistSimple(Text textControl) {
         char[] autoActivationCharacters = new char[] { '$', '{' };
         KeyStroke keyStroke = null;
         try {
@@ -186,9 +185,10 @@ public class CommandDataDialog extends StatusDialog {
         adapter.setPropagateKeys(false);
         adapter.setFilterStyle(ContentProposalAdapter.FILTER_NONE);
         //adapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+        return adapter;
     }
 
-    private void addContentAssistExtended(Text textControl) {
+    private ContentProposalAdapter addContentAssistExtended(Text textControl) {
         char[] autoActivationCharacters = new char[] { '$', '{' };
         Map<String, String> proposals = new LinkedHashMap<String, String>();
         // add own variables
@@ -200,6 +200,16 @@ public class CommandDataDialog extends StatusDialog {
                 autoActivationCharacters, true);
         adapter.setPropagateKeys(false);
         adapter.setFilterStyle(ContentProposalAdapter.FILTER_NONE);
+        return adapter;
+    }
+
+    private ContentProposalAdapter addContentAssist(Text textControl) {
+        // add content assist to command text editor field
+        if (useExtendedContentAssists) {
+            return addContentAssistExtended(textControl);
+        } else {
+            return addContentAssistSimple(textControl);
+        }
     }
 
     private void createVariablesOverview(Composite pageComponent) {
@@ -272,6 +282,7 @@ public class CommandDataDialog extends StatusDialog {
             public void widgetSelected(SelectionEvent e) {
                 //Button button = (Button)e.getSource();
                 dirText.setEditable(dirCheckBox.getSelection());
+                dirTextAssist.setEnabled(dirCheckBox.getSelection());
                 if (!dirText.getEnabled() && dirText.getText().isEmpty()) {
                     dirText.setText(data.getWorkingDirectory());
                 }
@@ -279,7 +290,6 @@ public class CommandDataDialog extends StatusDialog {
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // TODO Auto-generated method stub
-
             }
         });
         dirCheckBox.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.button.tooltip.useworkdir"));
