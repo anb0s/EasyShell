@@ -11,9 +11,12 @@
 
 package de.anbos.eclipse.easyshell.plugin.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
@@ -23,9 +26,9 @@ import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 
 public class ExecuteCommandDialog extends ElementListSelectionDialog {
 
-    private IWorkbenchPart activePart;
+    private IWorkbench workbench;
 
-    public ExecuteCommandDialog(Shell parent, IWorkbenchPart activePart, MenuDataList menuDataList, String title)
+    public ExecuteCommandDialog(Shell parent, IWorkbench workbench, MenuDataList menuDataList, String title)
     {
         super(parent, new ExecuteCommandLabelProvider());
         setTitle(title);
@@ -36,18 +39,19 @@ public class ExecuteCommandDialog extends ElementListSelectionDialog {
         setMatchEmptyString(true);
         setMultipleSelection(true);
         setImage(new Image(null, Activator.getImageDescriptor(Constants.IMAGE_EASYSHELL).getImageData()));
-        init(activePart, menuDataList);
+        init(workbench, menuDataList);
     }
 
     @Override
     protected void okPressed() {
         executeCommandFromList();
+        // close this dialog
         super.okPressed();
-        //close();
+        //this.close();
     }
 
-    void init(IWorkbenchPart activePart, MenuDataList menuDataList) {
-        this.activePart = activePart;
+    void init(IWorkbench workbench, MenuDataList menuDataList) {
+        this.workbench = workbench;
         Object[] elements = new MenuData[menuDataList.size()];
         for (int i=0;i<menuDataList.size();i++) {
             MenuData item = menuDataList.get(i);
@@ -57,10 +61,12 @@ public class ExecuteCommandDialog extends ElementListSelectionDialog {
     }
 
     private void executeCommandFromList() {
-        Object[] elements = getSelectedElements();
-        for (Object element : elements) {
-            Utils.executeCommand(activePart, (MenuData)element);
+        Object[] objects = getSelectedElements();
+        List<MenuData> menues = new ArrayList<MenuData>();
+        for (Object element : objects) {
+            menues.add((MenuData)element);
         }
+        Utils.executeCommands(workbench, menues, true);
     }
 
 }

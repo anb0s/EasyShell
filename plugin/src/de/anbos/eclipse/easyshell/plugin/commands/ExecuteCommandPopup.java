@@ -22,7 +22,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbench;
 
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
@@ -30,15 +30,15 @@ import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 
 public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog implements SelectionListener, KeyListener {
 
-    private IWorkbenchPart activePart;
+    private IWorkbench workbench;
     private MenuDataList menuDataList;
     private org.eclipse.swt.widgets.List listView;
     private List<Character> chars;
 
-    public ExecuteCommandPopup(Shell parent, IWorkbenchPart activePart, MenuDataList menuDataList, String title)
+    public ExecuteCommandPopup(Shell parent, IWorkbench workbench, MenuDataList menuDataList, String title)
     {
         super(parent, INFOPOPUP_SHELLSTYLE, true, false, false, false, false, title, "...");
-        this.activePart = activePart;
+        this.workbench = workbench;
         this.menuDataList = menuDataList;
         chars = new ArrayList<Character>();
         for (Character ch='0';ch<='9';ch++) {
@@ -63,8 +63,8 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
         setInfoText(info);
     }
 
-    void init(IWorkbenchPart activePart, MenuDataList menuDataList) {
-        this.activePart = activePart;
+    void init(IWorkbench workbench, MenuDataList menuDataList) {
+        this.workbench = workbench;
         this.menuDataList = menuDataList;
     }
 
@@ -101,9 +101,10 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
             e.printStackTrace();
         }
         MenuData item = menuDataList.get(index);
-        this.close();
         // execute
-        Utils.executeCommand(activePart, item);
+        Utils.executeCommand(workbench, item, true);
+        // close this dialog
+        this.close();
     }
 
     @Override

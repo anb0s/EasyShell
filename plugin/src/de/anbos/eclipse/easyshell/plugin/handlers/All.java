@@ -15,7 +15,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.window.Window;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
@@ -45,16 +45,15 @@ public class All extends AbstractHandler {
         // load the preferences
         list = getMenuDataList();
         if (list.size() > 0) {
-            IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
+            IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow(event);
             if (list.size() == 1) {
-                Utils.executeCommand(activePart, list.get(0));
+                Utils.executeCommand(workbenchWindow.getWorkbench(), list.get(0), false);
             } else {
                 //create and open a new dialog
-                /*Display.getCurrent().getActiveShell()*/
                 if (usePopup) {
-                    dialog = new ExecuteCommandPopup(activePart.getSite().getShell(), activePart, list, getTitle());
+                    dialog = new ExecuteCommandPopup(workbenchWindow.getShell(), workbenchWindow.getWorkbench(), list, getTitle());
                 } else {
-                    dialog = new ExecuteCommandDialog(activePart.getSite().getShell(), activePart, list, getTitle());
+                    dialog = new ExecuteCommandDialog(workbenchWindow.getShell(), workbenchWindow.getWorkbench(), list, getTitle());
                 }
                 dialog.open();
             }

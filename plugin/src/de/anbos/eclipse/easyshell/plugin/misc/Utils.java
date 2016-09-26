@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.Command;
@@ -26,7 +27,8 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolTip;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
@@ -213,24 +215,62 @@ public class Utils {
         tooltip.setVisible(true);
     }
 
-    public static void executeCommand(IWorkbenchPart activePart, MenuData menuData) {
+    public static void executeCommands(final IWorkbench workbench, final List<MenuData> menuData, boolean asynch) {
+        if (asynch) {
+            Display.getDefault().asyncExec( new Runnable(){
+                @Override
+                public void run() {
+                    for (MenuData element : menuData) {
+                        executeCommand(workbench, element, false);
+                    }
+                }
+            });
+        } else {
+            for (MenuData element : menuData) {
+                executeCommand(workbench, element, false);
+            }
+        }
+    }
+
+    public static void executeCommand(IWorkbench workbench, MenuData menuData, boolean asynch) {
         // get command
-        //ICommandService commandService = (ICommandService)PlatformUI.getWorkbench().getService(ICommandService.class);
-        ICommandService commandService = (ICommandService)activePart.getSite().getService(ICommandService.class);
-        Command command = commandService != null ? commandService.getCommand("de.anbos.eclipse.easyshell.plugin.commands.execute") : null;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
+                menuData.getCommandData().getCommandType().getAction());
+        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
+                menuData.getCommandData().getCommand());
+        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
+                menuData.getCommandData().isUseWorkingDirectory() ? menuData.getCommandData().getWorkingDirectory() : "");
+        // execute
+        executeCommand(workbench, "de.anbos.eclipse.easyshell.plugin.commands.execute", params, asynch);
+    }
+
+    public static void executeCommand(final IWorkbench workbench, final String commandName, final Map<String, Object> params, boolean asynch) {
+        if (asynch) {
+            Display.getDefault().asyncExec( new Runnable(){
+                @Override
+                public void run() {
+                    Utils.executeCommand(workbench, commandName, params);
+                }
+            });
+        } else {
+            Utils.executeCommand(workbench, commandName, params);
+        }
+    }
+
+    private static void executeCommand(IWorkbench workbench, String commandName, Map<String, Object> params) {
+        if (workbench == null) {
+            workbench = PlatformUI.getWorkbench();
+        }
+        // get command
+        ICommandService commandService = (ICommandService)workbench.getService(ICommandService.class);
+        Command command = commandService != null ? commandService.getCommand(commandName) : null;
         // get handler service
-        IHandlerService handlerService = (IHandlerService)activePart.getSite().getService(IHandlerService.class);
-        //IBindingService bindingService = (IBindingService)activePart.getSite().getService(IBindingService.class);
+        //IBindingService bindingService = (IBindingService)workbench.getService(IBindingService.class);
         //TriggerSequence[] triggerSequenceArray = bindingService.getActiveBindingsFor("de.anbos.eclipse.easyshell.plugin.commands.open");
+        IHandlerService handlerService = (IHandlerService)workbench.getService(IHandlerService.class);
         if (command != null && handlerService != null) {
-            Map<String, Object> commandParamametersMap = new HashMap<String, Object>();
-            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
-                    menuData.getCommandData().getCommandType().getAction());
-            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
-                    menuData.getCommandData().getCommand());
-            commandParamametersMap.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
-                    menuData.getCommandData().isUseWorkingDirectory() ? menuData.getCommandData().getWorkingDirectory() : "");
-            ParameterizedCommand paramCommand = ParameterizedCommand.generateCommand(command, commandParamametersMap);
+            ParameterizedCommand paramCommand = ParameterizedCommand.generateCommand(command, params);
             try {
                 handlerService.executeCommand(paramCommand, null);
             } catch (Exception e) {
