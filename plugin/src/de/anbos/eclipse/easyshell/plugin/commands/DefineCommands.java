@@ -33,7 +33,7 @@ public class DefineCommands extends ExtensionContributionFactory {
 	public DefineCommands() {
 	}
 
-    public ResourceType getSupportedResourceType() {
+    public ResourceType getWantedResourceType() {
         return ResourceType.resourceTypeFileOrDirectory;
     }
 
@@ -45,12 +45,10 @@ public class DefineCommands extends ExtensionContributionFactory {
 	    MenuDataStore.instance().load();
 	    MenuDataList items = MenuDataStore.instance().getEnabledCommandMenuDataList();
         for (MenuData item : items) {
-            //ResourceType resTypeSelected = EditorPropertyTester.getLastAggregatedResourceType();
-            ResourceType resTypeSelected = getSupportedResourceType();
-            ResourceType resTypeSuported = item.getCommandData().getResourceType();
-            if ( (resTypeSuported == ResourceType.resourceTypeFileOrDirectory) ||
-                 /*(resTypeSelected == ResourceType.resourceTypeUnknown) ||*/
-                 (resTypeSuported == resTypeSelected)
+            ResourceType resTypeWanted      = getWantedResourceType();
+            ResourceType resTypeSupported   = item.getCommandData().getResourceType();
+            if ( (resTypeSupported == ResourceType.resourceTypeFileOrDirectory) ||
+                 (resTypeSupported == resTypeWanted)
                )
             {
                 addItem(serviceLocator, additions, item.getNameExpanded(), "de.anbos.eclipse.easyshell.plugin.commands.execute", Utils.getParameterMapFromMenuData(item), item.getCommandData().getCategory().getIcon(), true);

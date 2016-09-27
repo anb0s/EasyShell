@@ -15,7 +15,7 @@ import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 
 public class DefineCommandsForDirectory extends DefineCommands {
 
-    public ResourceType getSupportedResourceType() {
+    public ResourceType getWantedResourceType() {
         return ResourceType.resourceTypeDirectory;
     }
 
