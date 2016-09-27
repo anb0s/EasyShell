@@ -13,6 +13,8 @@ package de.anbos.eclipse.easyshell.plugin.actions;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
@@ -31,15 +33,25 @@ import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Quotes;
+import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 import de.anbos.eclipse.easyshell.plugin.types.Tokenizer;
 
 public class ActionDelegate implements IObjectActionDelegate {
 
-    private Resource[] resource = null;
+    private List<Resource> resources = null;
     private IStructuredSelection currentSelection;
     private String commandValue = null;
     private String commandWorkingDir = null;
     private CommandType commandType = CommandType.commandTypeUnknown;
+    private ResourceType resourceType = ResourceType.resourceTypeUnknown;
+
+    public ResourceType getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(ResourceType resourceType) {
+        this.resourceType = resourceType;
+    }
 
     public CommandType getCommandType() {
         return commandType;
@@ -69,10 +81,6 @@ public class ActionDelegate implements IObjectActionDelegate {
     }
 
     public void run(IAction action) {
-        if (!isEnabled()) {
-            Activator.logError("Wrong Selection", null);
-            return;
-        }
         // String for all commands in case of clipboard
         String cmdAll = null;
         if (commandType == CommandType.commandTypeClipboard) {
@@ -81,16 +89,14 @@ public class ActionDelegate implements IObjectActionDelegate {
         // get the manager for variables expansion
         IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
         // iterate over the reources
-        for (int i=0;i<resource.length;i++) {
-            if (resource[i] == null)
-                continue;
+        for (Resource resource : resources) {
             // TODO: get from preferences store
             //Quotes quotes = Activator.getQuotes(InstanceIDNum);
             Quotes quotes = Quotes.quotesNo;
-            if (resource[i].resolve()) {
+            if (resource.resolve()) {
                 try {
                     // set arguments for resolving
-                    DynamicVariableResolver.setResource(resource[i]);
+                    DynamicVariableResolver.setResource(resource);
                     DynamicVariableResolver.setQuotes(quotes);
                     // validate the command
                     variableManager.validateStringVariables(commandValue);
@@ -175,24 +181,51 @@ public class ActionDelegate implements IObjectActionDelegate {
         currentSelection = selection instanceof IStructuredSelection ? (IStructuredSelection)selection : null;
     }
 
-    public boolean isEnabled()
+    public boolean isEnabled(ResourceType resType)
     {
-        boolean enabled = false;
+        resources = new ArrayList<Resource>();
         if (currentSelection != null)
         {
             Object[] selectedObjects = currentSelection.toArray();
             if (selectedObjects.length >= 1)
             {
-                resource = new Resource[selectedObjects.length];
-                for (int i=0;i<selectedObjects.length;i++) {
-                    resource[i] = ResourceUtils.getResource(selectedObjects[i]);
-                    if (resource[i] != null) {
-                        enabled=true;
+                for (Object object : selectedObjects) {
+                    Resource resource = ResourceUtils.getResource(object);
+                    if (resource != null) {
+                        boolean resourceValid = true;
+                        switch(resType) {
+                        case resourceTypeFile:
+                            resourceValid = resource.isFile();
+                            break;
+                        case resourceTypeDirectory:
+                            resourceValid = resource.isDirectory();
+                            break;
+                        default:
+                            break;
+                        }
+                        if (resourceValid) {
+                            resources.add(resource);
+                        }
                     }
                 }
             }
         }
-        return enabled;
+        return resources.size() > 0;
+    }
+
+    public ResourceType getCommonResourceType()
+    {
+        ResourceType resType = ResourceType.resourceTypeUnknown;
+        for (Resource resource : resources) {
+            ResourceType actResType = resource.isFile() ? ResourceType.resourceTypeFile : ResourceType.resourceTypeDirectory;
+            if (resType == ResourceType.resourceTypeUnknown) {
+                resType = actResType; // store the first valid type
+            } else if (resType != actResType) {
+                resType = ResourceType.resourceTypeFileOrDirectory; // if it changes then we have both types and can quit
+                break;
+            }
+        }
+        return resType;
     }
 
 }

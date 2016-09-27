@@ -17,7 +17,7 @@ import java.util.List;
 public enum ResourceType {
     resourceTypeUnknown(-1, "Unknown"),
     resourceTypeFile(0, "File"),
-    resourceTypeFolder(1, "Folder"),
+    resourceTypeDirectory(1, "Directory"),
     resourceTypeFileOrDirectory(2, "File or Directory");
     // attributes
     private final int id;

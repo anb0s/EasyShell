@@ -232,17 +232,21 @@ public class Utils {
         }
     }
 
-    public static void executeCommand(IWorkbench workbench, MenuData menuData, boolean asynch) {
-        // get command
+    public static Map<String, Object> getParameterMapFromMenuData(MenuData menuData) {
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.resource",
+                menuData.getCommandData().getResourceType().toString());
         params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
                 menuData.getCommandData().getCommandType().getAction());
         params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
                 menuData.getCommandData().getCommand());
         params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
                 menuData.getCommandData().isUseWorkingDirectory() ? menuData.getCommandData().getWorkingDirectory() : "");
-        // execute
-        executeCommand(workbench, "de.anbos.eclipse.easyshell.plugin.commands.execute", params, asynch);
+        return params;
+    }
+
+    public static void executeCommand(IWorkbench workbench, MenuData menuData, boolean asynch) {
+        executeCommand(workbench, "de.anbos.eclipse.easyshell.plugin.commands.execute", getParameterMapFromMenuData(menuData), asynch);
     }
 
     public static void executeCommand(final IWorkbench workbench, final String commandName, final Map<String, Object> params, boolean asynch) {

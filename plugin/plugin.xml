@@ -27,6 +27,11 @@
                name="workingdir"
                optional="false">
          </commandParameter>
+         <commandParameter
+               id="de.anbos.eclipse.easyshell.plugin.commands.parameter.resource"
+               name="resource"
+               optional="false">
+         </commandParameter>
       </command>
       <command
             categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
@@ -126,8 +131,44 @@
                <with
                      variable="activePart">
                   <test
+                        args="resourceType"
                         forcePluginActivation="true"
-                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection">
+                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection"
+                        value="resourceTypeFileOrDirectory">
+                  </test>
+               </with>
+            </visibleWhen>
+         </menu>
+         <menu
+               icon="icons/easyshell.png"
+               id="de.anbos.eclipse.easyshell.plugin.menu.file"
+               label="EasyShell">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <test
+                        args="resourceType"
+                        forcePluginActivation="true"
+                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection"
+                        value="resourceTypeFile">
+                  </test>
+               </with>
+            </visibleWhen>
+         </menu>
+         <menu
+               icon="icons/easyshell.png"
+               id="de.anbos.eclipse.easyshell.plugin.menu.directory"
+               label="EasyShell">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <test
+                        args="resourceType"
+                        forcePluginActivation="true"
+                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection"
+                        value="resourceTypeDirectory">
                   </test>
                </with>
             </visibleWhen>
@@ -137,6 +178,16 @@
             allPopups="true"
             class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommands"
             locationURI="popup:de.anbos.eclipse.easyshell.plugin.menu">
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommandsForFile"
+            locationURI="popup:de.anbos.eclipse.easyshell.plugin.menu.file">
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommandsForDirectory"
+            locationURI="popup:de.anbos.eclipse.easyshell.plugin.menu.directory">
       </menuContribution>
    </extension>
    <extension

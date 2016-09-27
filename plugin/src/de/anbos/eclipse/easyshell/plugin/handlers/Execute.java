@@ -22,23 +22,27 @@ import de.anbos.eclipse.easyshell.plugin.EditorPropertyTester;
 import de.anbos.eclipse.easyshell.plugin.actions.Action;
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
+import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 
 public class Execute extends AbstractHandler {
 
     public Object execute(ExecutionEvent event) throws ExecutionException {
         IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-        ActionDelegate action = EditorPropertyTester.hasResourceSelection(activePart);
+        String commandID  = event.getCommand().getId();
+        ResourceType resourceType = ResourceType.getFromEnum(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.resource"));
+        CommandType commandType = CommandType.getFromAction(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.type"));
+        String commandValue = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.value");
+        String commandWorkingDir = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir");
+        ActionDelegate action = EditorPropertyTester.getActionExactResourceType(activePart, resourceType);
         if (action != null) {
-        	String commandID  = event.getCommand().getId();
-        	String commandType = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.type");
-        	String commandValue = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.value");
-        	String commandWorkingDir = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir");
-        	action.setCommandType(CommandType.getFromAction(commandType));
+        	action.setResourceType(resourceType);
+        	action.setCommandType(commandType);
         	action.setCommandValue(commandValue);
         	action.setCommandWorkingDir(commandWorkingDir);
             Action act = new Action(commandID);
             action.run((IAction)act);
         }
+        action = null;
         return null;
     }
 }

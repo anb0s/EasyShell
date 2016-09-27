@@ -238,4 +238,36 @@ public class Resource {
         return getResourceLocation() != null ? true : false;
     }
 
+    public boolean isFile() {
+        if (resource != null) {
+            if (resource.getType() == IResource.FILE) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (file.isFile()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public boolean isDirectory() {
+        if (resource != null) {
+            if (resource.getType() == IResource.FOLDER) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (file.isDirectory()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
 }

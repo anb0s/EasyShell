@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
+import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 
 public class EditorPropertyTester extends PropertyTester {
 
@@ -25,18 +26,33 @@ public class EditorPropertyTester extends PropertyTester {
 
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         if("hasResourceSelection".equals(property) && receiver instanceof IWorkbenchPart){
-            return hasResourceSelection((IWorkbenchPart)receiver) != null;
+            if (args.length > 0 && args[0].equals("resourceType")) {
+                return getActionCommonResourceType((IWorkbenchPart)receiver, ResourceType.getFromEnum((String)expectedValue)) != null;
+            }
         }
         return false;
     }
 
-    static public ActionDelegate hasResourceSelection(IWorkbenchPart part) {
+    static public ActionDelegate getActionCommonResourceType(IWorkbenchPart part, ResourceType resType) {
         ISelection selection = ResourceUtils.getResourceSelection(part);
         if (selection != null) {
             ActionDelegate action = new ActionDelegate();
             action.selectionChanged(null, selection);
-            if (action.isEnabled())
+            if (action.isEnabled(ResourceType.resourceTypeFileOrDirectory) && resType == action.getCommonResourceType()) {
                 return action;
+            }
+        }
+        return null;
+    }
+
+    static public ActionDelegate getActionExactResourceType(IWorkbenchPart part, ResourceType resType) {
+        ISelection selection = ResourceUtils.getResourceSelection(part);
+        if (selection != null) {
+            ActionDelegate action = new ActionDelegate();
+            action.selectionChanged(null, selection);
+            if (action.isEnabled(resType)) {
+                return action;
+            }
         }
         return null;
     }

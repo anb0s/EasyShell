@@ -254,7 +254,12 @@ public class CommandData extends Data {
         presetType = PresetType.getFromEnum(tokenizer.nextToken());
         setOs(OS.getFromEnum(tokenizer.nextToken()));
         basicData.setName(tokenizer.nextToken());
-        basicData.setResourceType(ResourceType.getFromEnum(tokenizer.nextToken()));
+        // handling of resource Type
+        String resourceTypeStr = tokenizer.nextToken();
+        if (version.getId() < Version.v2_0_006.getId() && resourceTypeStr.equals("resourceTypeFolder")) {
+            resourceTypeStr = "resourceTypeDirectory";
+        }
+        basicData.setResourceType(ResourceType.getFromEnum(resourceTypeStr));
 		// handling of working directory
 		if (version.getId() >= Version.v2_0_003.getId()) {
 		    basicData.setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());

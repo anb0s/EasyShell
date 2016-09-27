@@ -11,7 +11,6 @@
 
 package de.anbos.eclipse.easyshell.plugin.commands;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -22,15 +21,21 @@ import org.eclipse.ui.menus.IContributionRoot;
 import org.eclipse.ui.services.IServiceLocator;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataStore;
+import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 
 public class DefineCommands extends ExtensionContributionFactory {
 
 	public DefineCommands() {
 	}
+
+    public ResourceType getSupportedResourceType() {
+        return ResourceType.resourceTypeFileOrDirectory;
+    }
 
 	@Override
 	public void createContributionItems(IServiceLocator  serviceLocator,
@@ -40,33 +45,28 @@ public class DefineCommands extends ExtensionContributionFactory {
 	    MenuDataStore.instance().load();
 	    MenuDataList items = MenuDataStore.instance().getEnabledCommandMenuDataList();
         for (MenuData item : items) {
-            addItem(serviceLocator, additions,
-                    item.getNameExpanded(),
-                    "de.anbos.eclipse.easyshell.plugin.commands.execute",
-                    "de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
-                    item.getCommandData().getCommandType().getAction(),
-                    "de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
-                    item.getCommandData().getCommand(),
-                    "de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
-                    item.getCommandData().isUseWorkingDirectory() ? item.getCommandData().getWorkingDirectory() : "",
-                    item.getCommandData().getCategory().getIcon());
+            //ResourceType resTypeSelected = EditorPropertyTester.getLastAggregatedResourceType();
+            ResourceType resTypeSelected = getSupportedResourceType();
+            ResourceType resTypeSuported = item.getCommandData().getResourceType();
+            if ( (resTypeSuported == ResourceType.resourceTypeFileOrDirectory) ||
+                 /*(resTypeSelected == ResourceType.resourceTypeUnknown) ||*/
+                 (resTypeSuported == resTypeSelected)
+               )
+            {
+                addItem(serviceLocator, additions, item.getNameExpanded(), "de.anbos.eclipse.easyshell.plugin.commands.execute", Utils.getParameterMapFromMenuData(item), item.getCommandData().getCategory().getIcon(), true);
+            }
         }
 	}
 
     private void addItem(IServiceLocator serviceLocator, IContributionRoot additions,
     					 String commandLabel, String commandId,
-    					 String paramId1, String paramValue1, String paramId2, String paramValue2, String paramId3, String paramValue3, String commandImageId) {
+    					 Map<String, Object> commandParamametersMap, String commandImageId, boolean visible) {
 		CommandContributionItemParameter param = new CommandContributionItemParameter(serviceLocator, "", commandId, SWT.PUSH);
 		param.label = commandLabel;
 		param.icon = Activator.getImageDescriptor(commandImageId);
-		Map<String, Object> commandParamametersMap = new HashMap<String, Object>();
-		commandParamametersMap.put(paramId1,  paramValue1);
-		commandParamametersMap.put(paramId2,  paramValue2);
-		commandParamametersMap.put(paramId3,  paramValue3);
 		param.parameters = commandParamametersMap;
 	    CommandContributionItem item = new CommandContributionItem(param);
-	    item.setVisible(true);
+	    item.setVisible(visible);
 	    additions.addContributionItem(item, null);
-
     }
 }

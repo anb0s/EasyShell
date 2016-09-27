@@ -111,7 +111,12 @@ public class CommandDataBasic {
         }
 		// set command data members
         setName(tokenizer.nextToken());
-		setResourceType(ResourceType.getFromEnum(tokenizer.nextToken()));
+        // handling of resource Type
+        String resourceTypeStr = tokenizer.nextToken();
+        if (version.getId() < Version.v2_0_006.getId() && resourceTypeStr.equals("resourceTypeFolder")) {
+            resourceTypeStr = "resourceTypeDirectory";
+        }
+		setResourceType(ResourceType.getFromEnum(resourceTypeStr));
 		// handling of working directory
 	    setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
 	    setWorkingDirectory(tokenizer.nextToken());
