@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Andre Bossert.
+ * Copyright (c) 2014 - 2016 Andre Bossert.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,7 @@ public class SamplePreferencePage
 	 * restore itself.
 	 */
 	public void createFieldEditors() {
+	    /*
 		addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH,
 				"&Directory preference:", getFieldEditorParent()));
 		addField(
@@ -64,6 +65,7 @@ public class SamplePreferencePage
 		}, getFieldEditorParent()));
 		addField(
 			new StringFieldEditor(PreferenceConstants.P_STRING, "A &text preference:", getFieldEditorParent()));
+	     */
 	}
 
 	/* (non-Javadoc)

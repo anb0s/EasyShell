@@ -5,94 +5,278 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            name="Sample Category"
+            name="EasyShell"
             id="de.anbos.eclipse.easyshell.plugin.commands.category">
       </category>
       <command
-            name="Sample Command"
+            name="EasyShell Execute"
             categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
-            id="de.anbos.eclipse.easyshell.plugin.commands.sampleCommand">
+            id="de.anbos.eclipse.easyshell.plugin.commands.execute">
+         <commandParameter
+               id="de.anbos.eclipse.easyshell.plugin.commands.parameter.type"
+               name="type"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.anbos.eclipse.easyshell.plugin.commands.parameter.value"
+               name="value"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir"
+               name="workingdir"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.anbos.eclipse.easyshell.plugin.commands.parameter.resource"
+               name="resource"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.open"
+            name="EasyShell Open">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.run"
+            name="EasyShell Run">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.explore"
+            name="EasyShell Explore">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.default"
+            name="EasyShell Default">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.clipboard"
+            name="EasyShell Clipboard">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.clipboard"
+            name="EasyShell Run">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.user"
+            name="EasyShell User">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.all"
+            name="EasyShell Single Selection Popup">
+      </command>
+      <command
+            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
+            id="de.anbos.eclipse.easyshell.plugin.commands.allmulti"
+            name="EasyShell Multi Selection Dialog">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            commandId="de.anbos.eclipse.easyshell.plugin.commands.sampleCommand"
-            class="de.anbos.eclipse.easyshell.plugin.handlers.SampleHandler">
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Execute"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.execute">
       </handler>
-   </extension>
-   <extension
-         point="org.eclipse.ui.bindings">
-      <key
-            commandId="de.anbos.eclipse.easyshell.plugin.commands.sampleCommand"
-            contextId="org.eclipse.ui.contexts.window"
-            sequence="M1+6"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </key>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Open"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.open">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Run"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.run">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Clipboard"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.clipboard">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Explore"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.explore">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.All"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.all">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.User"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.user">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.Default"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.default">
+      </handler>
+      <handler
+            class="de.anbos.eclipse.easyshell.plugin.handlers.AllMulti"
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.allmulti">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+            locationURI="popup:org.eclipse.ui.popup.any?after=group.open">
          <menu
-               label="Sample Menu"
-               mnemonic="M"
-               id="de.anbos.eclipse.easyshell.plugin.menus.sampleMenu">
-            <command
-                  commandId="de.anbos.eclipse.easyshell.plugin.commands.sampleCommand"
-                  mnemonic="S"
-                  id="de.anbos.eclipse.easyshell.plugin.menus.sampleCommand">
-            </command>
+               icon="icons/easyshell.png"
+               id="de.anbos.eclipse.easyshell.plugin.menu"
+               label="EasyShell">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <test
+                        args="resourceType"
+                        forcePluginActivation="true"
+                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection"
+                        value="resourceTypeFileOrDirectory">
+                  </test>
+               </with>
+            </visibleWhen>
+         </menu>
+         <menu
+               icon="icons/easyshell.png"
+               id="de.anbos.eclipse.easyshell.plugin.menu.file"
+               label="EasyShell">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <test
+                        args="resourceType"
+                        forcePluginActivation="true"
+                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection"
+                        value="resourceTypeFile">
+                  </test>
+               </with>
+            </visibleWhen>
+         </menu>
+         <menu
+               icon="icons/easyshell.png"
+               id="de.anbos.eclipse.easyshell.plugin.menu.directory"
+               label="EasyShell">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <test
+                        args="resourceType"
+                        forcePluginActivation="true"
+                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection"
+                        value="resourceTypeDirectory">
+                  </test>
+               </with>
+            </visibleWhen>
          </menu>
       </menuContribution>
       <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         <toolbar
-               id="de.anbos.eclipse.easyshell.plugin.toolbars.sampleToolbar">
-            <command
-                  commandId="de.anbos.eclipse.easyshell.plugin.commands.sampleCommand"
-                  icon="icons/sample.gif"
-                  tooltip="Say hello world"
-                  id="de.anbos.eclipse.easyshell.plugin.toolbars.sampleCommand">
-            </command>
-         </toolbar>
+            allPopups="true"
+            class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommands"
+            locationURI="popup:de.anbos.eclipse.easyshell.plugin.menu">
       </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            objectClass="org.eclipse.core.resources.IFile"
-            id="de.anbos.eclipse.easyshell.plugin.contribution1">
-         <menu
-               label="New Submenu"
-               path="additions"
-               id="de.anbos.eclipse.easyshell.plugin.menu1">
-            <separator
-                  name="group1">
-            </separator>
-         </menu>
-         <action
-               label="New Action"
-               class="de.anbos.eclipse.easyshell.plugin.popup.actions.NewAction"
-               menubarPath="de.anbos.eclipse.easyshell.plugin.menu1/group1"
-               enablesFor="multiple"
-               id="de.anbos.eclipse.easyshell.plugin.newAction">
-         </action>
-      </objectContribution>
+      <menuContribution
+            allPopups="true"
+            class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommandsForFile"
+            locationURI="popup:de.anbos.eclipse.easyshell.plugin.menu.file">
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommandsForDirectory"
+            locationURI="popup:de.anbos.eclipse.easyshell.plugin.menu.directory">
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            name="Sample Preferences"
-            class="de.anbos.eclipse.easyshell.plugin.preferences.SamplePreferencePage"
-            id="de.anbos.eclipse.easyshell.plugin.preferences.SamplePreferencePage">
+            category="de.anbos.eclipse.easyshell.plugin.preferences.MainPage"
+            class="de.anbos.eclipse.easyshell.plugin.preferences.MenuPage"
+            id="de.anbos.eclipse.easyshell.plugin.preferences.MenuPage"
+            name="(1) Menu">
+      </page>
+      <page
+            class="de.anbos.eclipse.easyshell.plugin.preferences.MainPage"
+            id="de.anbos.eclipse.easyshell.plugin.preferences.MainPage"
+            name="EasyShell">
+      </page>
+      <page
+            category="de.anbos.eclipse.easyshell.plugin.preferences.MainPage"
+            class="de.anbos.eclipse.easyshell.plugin.preferences.CommandPage"
+            id="de.anbos.eclipse.easyshell.plugin.preferences.CommandPage"
+            name="(2) Command">
       </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="de.anbos.eclipse.easyshell.plugin.preferences.PreferenceInitializer">
+            class="de.anbos.eclipse.easyshell.plugin.preferences.Initializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester"
+            id="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester"
+            namespace="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester"
+            properties="hasResourceSelection"
+            type="org.eclipse.ui.IWorkbenchPart">
+      </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.core.variables.dynamicVariables">
+      <variable
+            description="EasyShell Variables"
+            name="easyshell"
+            resolver="de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver"
+            supportsArgument="true">
+      </variable>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.open"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+O">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.run"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+R">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.explore"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+X">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.clipboard"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+C">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.all"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+E">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.default"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+D">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.user"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+U">
+      </key>
+      <key
+            commandId="de.anbos.eclipse.easyshell.plugin.commands.allmulti"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+E">
+      </key>
    </extension>
 
 </plugin>

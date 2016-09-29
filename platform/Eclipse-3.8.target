@@ -2,7 +2,7 @@
 <?pde version="3.8"?><target name="eclipse-3.8-Juno" sequenceNumber="8">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="3.8.2.M20130131-0800"/>
+<unit id="org.eclipse.sdk.ide" version="0.0.0"/>
 <repository location="http://download.eclipse.org/eclipse/updates/3.8"/>
 </location>
 </locations>
