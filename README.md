@@ -1,9 +1,21 @@
 # EasyShell [![Build Status](https://travis-ci.org/anb0s/EasyShell.svg)](https://travis-ci.org/anb0s/EasyShell) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
-This eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. The current directory of the opened shell is the directory which was selected with the popup menu. Additionally it is possible to run selected file in the system shell and copy file or directory path. Multiple selections are also supported.
+This Eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. Additionally it is possible to run selected file in the shell, copy file or directory path or run user defined external tools. Key shortcuts and multiple selections are also supported!
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_Menu_1.4.1.png "Menu")
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_context_menu_windows.png "Context Menu @ Windows")
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_Preferences_1.4.1.png "Preferences")
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_popup_menu_windows.png "Popup Menu @ Windows (Alt+E)")
+
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+Shift+E)")
+
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu.png "Preferences - Menu")
+
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new.png "Preferences - Menu 'New'")
+
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new_content_assist.png "Preferences - Menu 'New' with content assist")
+
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command.png "Preferences - Command")
+
+![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command_new.png "Preferences - Command 'New' with content assist")
 
 Installation:
 -------------
@@ -20,63 +32,71 @@ OR
 Features:
 ---------
 
-EasyShell does not support virtual folders, because they are not
-present in the file system!
-
-The plugin is platform-independent in principal. It just launches
-a (configurable) system command to open the shell. The following
-platform and shell combinations are supported as selections
-available from the drop-down-list in the preferences page:
+The plugin is platform independent in principal. It just launches a (configurable) system command to open the shell, file explorer or other user defined command. It also copies path etc. to clipboard. The following platform, shell combinations and tools are supported as selections available in the preferences page. The user can define own commands and menues or just adapt the predefined ones!
 
 Windows:
-- DOS-Shell / Explorer
-- PowerShell / Explorer (check path of PowerShell executable!)
-- Cygwin (Bash) / Explorer (check path of Cygwin-bash executable!)
-  http://cygwin.com
-- Console / Explorer
+- Command prompt (known as DOS shell or cmd.exe)
+- PowerShell
+- Bash (Cygwin, Git for Windows, etc.)
+  http://cygwin.com, https://git-for-windows.github.io
+- Console
   https://sourceforge.net/projects/console
-- DOS-Shell / TotalCommander
-  http://www.ghisler.com
-- Git (Bash) / Explorer (check path of Git-bash executable!)
-  http://msysgit.github.io
-- ConEmu / Explorer (check path of ConEmu executable!)
+- ConEmu 
   https://code.google.com/p/conemu-maximus5/
+- Cmder
+  https://github.com/cmderdev/cmder
+- Explorer
+- TotalCommander
+  http://www.ghisler.com  
 
-Unix / Linux:
-- KDE Konsole / Konqueror and Dolphin
-- Gnome Terminal / Nautilus
-- MAC OS X Terminal / Finder
-- CDE Xterm / Dtfile (not tested!)
+If path to your tool is not added to PATH variable, please add it or adapt the command in EasyShell!
 
-Other:
-- Default / Unknown (can be defined for all systems supported by Java)
+Unix (BSD, Mac OS X) or Linux:
+- XDG Open
+- KDE Konsole
+- Konqueror
+- Gnome Terminal
+- Xfce Terminal
+- Sakura Terminal
+- ROXTerm
+- Pantheon Terminal
+- Dolphin
+- Nautilus
+- Nemo
+- Thunar
+- Pantheon
+- PCManFM
 
-But you can configure any shell or command you like as long as you
-can figure out how to run a command to open the shell with given
-parameters. The following substitution variables are available
-for building the command:
+MAC OS X
+ - Terminal
+ - Finder
 
-{0} = The drive letter (only Windows, not used on other platforms)<br/>
-{1} = The selected directory path<br/>
-{2} = The selected file or directory path<br/>
-{3} = The selected file name<br/>
-{4} = The project name of selected directory or path (for external files it's "Easy Shell")<br/>
-{5} = The line separator<br/>
+Copy to clipboard
+ - Full Path
+ - Full Path Unix (@Windows)
+ - Qualified Name
+ - ... more configurable...
 
-Option "Enable string tokenizer" with values "Yes, No" and default value "Yes".<br/>
-The whole command line string will be splitted (tokenized) to single strings before expansion
-of parameters {0} - {4} and passing to command line. With this solution there is no need to
-surround parameters {0} - {4} with quotes when space character is possible between command
-line option and parameter, e.g.: /D {1}. Otherwise maybe quotes are still needed,
-e.g.: --working-directory="{1}".
+But you can configure any shell or command you like as long as you can figure out how to run a command to open the shell with given
+parameters or execute the tool you want. The following substitution variables are available for building the command:
 
-Option "Add quotes to {1}, {2}, {3}*" with values "No, Single, Double, Automatic" and default
-value "No". <br/>
-If changed to other values, parameters will be eclosed with quotes.
-ATTENTION: use it carefully with "string tokenizer" and remove quotes from commands.
-
-Option "Enable debug output" with values "Yes, No" and default value "No".<br/>
-If changed to "Yes", debug messages will be printed to error console.
+- ${easyshell:resource_loc} = absolute path of file or directory
+- ${easyshell:resource_name} = name of file or directory
+- ${easyshell:resource_basename} = name of file without extension
+- ${easyshell:resource_extension} = extension of file name (without '.')
+- ${easyshell:resource_path} = relative path to workspace of file or directory
+- ${easyshell:container_loc} = absolute path of file directory or directory itself
+- ${easyshell:container_name} = name of file directory or directory itself
+- ${easyshell:container_path} = relative path to workspace of file directory or directory itself
+- ${easyshell:project_loc} = absolute path of project
+- ${easyshell:project_name} = name of project
+- ${easyshell:project_path} = relative path to workspace of project
+- ${easyshell:windows_drive} = drive letter of file or directory on Windows
+- ${easyshell:qualified_name} = full qualified (class) name
+- ${easyshell:line_separator} = line separator, e.g. '\\n' (Unix) or '\\r\\n' (Windows)
+- ${easyshell:path_separator} = path separator, e.g. ':' (Unix) or ';' (Windows)
+- ${easyshell:file_separator} = file separator, e.g. '/' (Unix) or '\\' (Windows)
+- and all other available variables in Eclipse
 
 License:
 --------
