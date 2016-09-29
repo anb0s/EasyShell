@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?compositeArtifactRepository version='1.0.0'?>
+<repository name='EasyShell 2.0' type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1'>
+  <properties size='2'>
+    <property name='p2.timestamp' value='1475167327589'/>
+    <property name='p2.atomic.composite.loading' value='true'/>
+  </properties>
+  <children size='1'>
+    <child location='2.0.0.v20160929-1641'/>
+  </children>
+</repository>
