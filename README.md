@@ -18,11 +18,11 @@ Features:
 
 The plugin is platform independent in principal. It just launches a (configurable) system command to open the shell, file explorer or other user defined command. It also copies path etc. to clipboard.
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_context_menu_windows.png "Context Menu @ Windows")
+![context_menu_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_context_menu_windows.png "Context Menu @ Windows")
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_popup_menu_windows.png "Popup Menu @ Windows (Alt+E)")
+![popup_menu_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_popup_menu_windows.png "Popup Menu @ Windows (Alt+E)")
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+Shift+E)")
+![multi_selection_dialog_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+Shift+E)")
 
 The following platform, shell combinations and tools are supported as selections available in the preferences page. The user can define own commands and menues or just adapt the predefined ones!
 
@@ -69,18 +69,18 @@ Copy to clipboard
  - Qualified Name
  - ... more configurable...
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu.png "Preferences - Menu")
+![preferences_menu](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu.png "Preferences - Menu")
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new.png "Preferences - Menu 'New'")
+![preferences_menu_new](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new.png "Preferences - Menu 'New'")
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new_content_assist.png "Preferences - Menu 'New' with content assist")
+![preferences_menu_new_content_assist](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new_content_assist.png "Preferences - Menu 'New' with content assist")
 
 But you can configure any shell or command you like as long as you can figure out how to run a command to open the shell with given
 parameters or execute the tool you want.
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command.png "Preferences - Command")
+![preferences_command](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command.png "Preferences - Command")
 
-![alt text](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command_new.png "Preferences - Command 'New' with content assist")
+![preferences_command_new_content_assist](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command_new.png "Preferences - Command 'New' with content assist")
 
 The following substitution variables are available for building the command:
 
