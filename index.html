@@ -34,22 +34,6 @@
 
 <p>This Eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. Additionally it is possible to run selected file in the shell, copy file or directory path or run user defined external tools. Key shortcuts and multiple selections are also supported!</p>
 
-<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_context_menu_windows.png" alt="alt text" title="Context Menu @ Windows"></p>
-
-<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_popup_menu_windows.png" alt="alt text" title="Popup Menu @ Windows (Alt+E)"></p>
-
-<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png" alt="alt text" title="Dialog for multiple tool selection @ Windows (Alt+Shift+E)"></p>
-
-<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu.png" alt="alt text" title="Preferences - Menu"></p>
-
-<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new.png" alt="alt text" title="Preferences - Menu 'New'"></p>
-
-<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new_content_assist.png" alt="alt text" title="Preferences - Menu 'New' with content assist"></p>
-
-<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command.png" alt="alt text" title="Preferences - Command"></p>
-
-<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command_new.png" alt="alt text" title="Preferences - Command 'New' with content assist"></p>
-
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation:</h2>
 
@@ -66,7 +50,15 @@
 <h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features:</h2>
 
-<p>The plugin is platform independent in principal. It just launches a (configurable) system command to open the shell, file explorer or other user defined command. It also copies path etc. to clipboard. The following platform, shell combinations and tools are supported as selections available in the preferences page. The user can define own commands and menues or just adapt the predefined ones!</p>
+<p>The plugin is platform independent in principal. It just launches a (configurable) system command to open the shell, file explorer or other user defined command. It also copies path etc. to clipboard.</p>
+
+<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_context_menu_windows.png" alt="context_menu_windows" title="Context Menu @ Windows"></p>
+
+<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_popup_menu_windows.png" alt="popup_menu_windows" title="Popup Menu @ Windows (Alt+E)"></p>
+
+<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png" alt="multi_selection_dialog_windows" title="Dialog for multiple tool selection @ Windows (Alt+Shift+E)"></p>
+
+<p>The following platform, shell combinations and tools are supported as selections available in the preferences page. The user can define own commands and menues or just adapt the predefined ones!</p>
 
 <p>Windows:</p>
 
@@ -128,8 +120,20 @@
 <li>... more configurable...</li>
 </ul>
 
+<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu.png" alt="preferences_menu" title="Preferences - Menu"></p>
+
+<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new.png" alt="preferences_menu_new" title="Preferences - Menu 'New'"></p>
+
+<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new_content_assist.png" alt="preferences_menu_new_content_assist" title="Preferences - Menu 'New' with content assist"></p>
+
 <p>But you can configure any shell or command you like as long as you can figure out how to run a command to open the shell with given
-parameters or execute the tool you want. The following substitution variables are available for building the command:</p>
+parameters or execute the tool you want.</p>
+
+<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command.png" alt="preferences_command" title="Preferences - Command"></p>
+
+<p><img src="https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command_new.png" alt="preferences_command_new_content_assist" title="Preferences - Command 'New' with content assist"></p>
+
+<p>The following substitution variables are available for building the command:</p>
 
 <ul>
 <li>${easyshell:resource_loc} = absolute path of file or directory</li>
