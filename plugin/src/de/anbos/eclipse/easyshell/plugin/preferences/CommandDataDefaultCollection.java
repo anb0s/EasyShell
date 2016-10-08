@@ -163,12 +163,15 @@ public class CommandDataDefaultCollection {
     }
 
     private void addMacOSXCommands() {
-        // MAC OS X OPen (default application)
+        // MAC OS X Open (default application)
         list.add(new CommandData("61c4fef4-470a-45b1-98df-ccf9d7d91143", PresetType.presetPlugin, OS.osMacOSX, "Open", ResourceType.resourceTypeFileOrDirectory, Category.categoryDefault, CommandType.commandTypeExecute,
                 "open ${easyshell:resource_loc}"));
         // MAC OS X Terminal
         list.add(new CommandData("e6918fe0-38b8-450b-a4be-d9eecc0dc0b4", PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "open -a Terminal ${easyshell:container_loc}"));
+        // MAC OS X iTerm
+        list.add(new CommandData("40eee8f2-b29e-490b-8612-59c2b76a704d", PresetType.presetPlugin, OS.osMacOSX, "iTerm", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
+                "open -a iTerm ${easyshell:container_loc}"));
         //list.add(new CommandData("db61d61e-8bf4-41d0-a1d8-00379e4d1db1", PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
         //        "open -a Terminal ${easyshell:container_loc}"));
         // MAC OS X Finder
