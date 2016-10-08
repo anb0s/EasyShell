@@ -106,7 +106,7 @@ public class CommandDataDefaultCollection {
     }
 
     private void addLinuxCommands() {
-        // Linux KDE Konsole
+        // Linux XDG Open (default application)
         list.add(new CommandData("51ed300a-35d0-4e67-a5f8-6ebd7012a564", PresetType.presetPlugin, OS.osLinux, "XDG Open", ResourceType.resourceTypeFileOrDirectory, Category.categoryDefault, CommandType.commandTypeExecute,
                 "xdg-open ${easyshell:resource_loc}"));
         // Linux KDE Konsole
@@ -163,6 +163,9 @@ public class CommandDataDefaultCollection {
     }
 
     private void addMacOSXCommands() {
+        // MAC OS X OPen (default application)
+        list.add(new CommandData("61c4fef4-470a-45b1-98df-ccf9d7d91143", PresetType.presetPlugin, OS.osMacOSX, "Open", ResourceType.resourceTypeFileOrDirectory, Category.categoryDefault, CommandType.commandTypeExecute,
+                "open ${easyshell:resource_loc}"));
         // MAC OS X Terminal
         list.add(new CommandData("e6918fe0-38b8-450b-a4be-d9eecc0dc0b4", PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "open -a Terminal ${easyshell:container_loc}"));
