@@ -2,8 +2,8 @@
 !!! all versions must be same BEFORE executiong set-version !!!
 !!! e.g. in all pom.xml files: 2.0.0-SNAPSHOT and all eclipse files [MANIFEST.MF, feature.xml, category.xml]: 2.0.0.qualifier !!!
 
-1. update the version in pom.xml: e.g. <newVersion>2.0.1-SNAPSHOT</newVersion>
-2. run: mvn 'clean tycho-versions:set-version' all versions are updated now
+1. update the version in pom.xml: e.g. <newVersion>2.1.0-SNAPSHOT</newVersion>
+2. run: EasyShell-set-new-version.launch or execute: mvn 'clean tycho-versions:set-version' all versions are updated now
 3. build with 'mvn verify' or 'mvn install' or just launch config: EasyShell-Testing-Build.launch
 
 sources:
