@@ -12,7 +12,7 @@
 package de.anbos.eclipse.easyshell.plugin;
 
 import java.io.File;
-//import java.net.URI;
+import java.net.URI;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
-//import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 
 
 public class ResourceUtils {
@@ -69,6 +69,24 @@ public class ResourceUtils {
             object = myObj;
         }
 
+        /*
+		IEditorInput input  = activeEditorPart.getEditorInput();
+        if (input instanceof IFileEditorInput) {
+            ifile = ((IFileEditorInput)input).getFile();
+        } else if (input instanceof IAdaptable) {
+            IAdaptable adaptable = (IAdaptable) input;
+            ifile = (IFile) adaptable.getAdapter(IFile.class);
+            if (ifile == null) {
+                if (adaptable instanceof FileStoreEditorInput) {
+                    URI fileuri = ((FileStoreEditorInput) adaptable).getURI();
+                    file = new File(fileuri.getPath());
+                } else {
+                    file = (File) adaptable.getAdapter(File.class);
+                }
+            }
+        }
+		*/
+
         if (object instanceof Resource) {
             return new Resource((Resource)object);
         }
@@ -99,14 +117,14 @@ public class ResourceUtils {
                         .getPackageFragmentRoot()),projectName);
             } else if (adaptable instanceof JarPackageFragmentRoot) {
                 return new Resource(getJarFile(adaptable),projectName);
-            } else if (adaptable instanceof FileStoreEditorInput) {
+            }*/
+            else if (adaptable instanceof FileStoreEditorInput) {
                 URI fileuri = ((FileStoreEditorInput) adaptable).getURI();
-                return new Resource(new File(fileuri.getPath()),projectName);
+                return new Resource(new File(fileuri.getPath()));
             }
-            */
             File file = (File) adaptable.getAdapter(File.class);
             if (file != null) {
-                return  new Resource(file);
+                return new Resource(file);
             }
         }
         return null;

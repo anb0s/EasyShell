@@ -6,6 +6,7 @@ Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: de.anbos.eclipse.easyshell.plugin.Activator
 Bundle-Vendor: Andre Bossert
 Require-Bundle: org.eclipse.ui,
+ org.eclipse.ui.ide,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.core.expressions,
