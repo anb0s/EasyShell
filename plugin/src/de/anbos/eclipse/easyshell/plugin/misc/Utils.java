@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.jface.window.DefaultToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -38,6 +39,10 @@ import de.anbos.eclipse.easyshell.plugin.types.LinuxDesktop;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 
 public class Utils {
+
+    /* tooltip display parameters */
+    static boolean TOOLTIP_USE_SWT_JFACE = true; /*bug: https://github.com/anb0s/EasyShell/issues/103*/
+    static int TOOLTIP_HIDE_DELAY = 3000;
 
     public static OS getOS() {
         OS os = OS.osUnknown;
@@ -207,12 +212,31 @@ public class Utils {
         if (control == null) {
             control = Display.getDefault().getActiveShell();
         }
+        /*bug: https://github.com/anb0s/EasyShell/issues/103*/
+        if (TOOLTIP_USE_SWT_JFACE) {
+            // the SWT JFace tooltip (hide delay customization)
+            showToolTipSWTJface(control, style, title, message);
+        } else {
+            // the SWT to OS tooltip control (fixed delay)
+            showToolTipSWTwidget(control, style, title, message);
+        }
+    }
+
+    private static void showToolTipSWTwidget(Control control, int style, String title, String message) {
         ToolTip tooltip = new ToolTip(control.getShell(), /*SWT.BALLOON | */ style);
         tooltip.setAutoHide(true);
         tooltip.setLocation(control.toDisplay(control.getSize().x/2, control.getSize().y + 5));
         tooltip.setText(title);
         tooltip.setMessage(message);
         tooltip.setVisible(true);
+    }
+
+    private static void showToolTipSWTJface(Control control, int style, String title, String message) {
+        DefaultToolTip tooltip = new DefaultToolTip(control, org.eclipse.jface.window.ToolTip.NO_RECREATE, true);
+        tooltip.setHideDelay(TOOLTIP_HIDE_DELAY);
+        tooltip.setText("[" + title+ "]\n\n" + message);
+        tooltip.setImage(control.getDisplay().getSystemImage(/*SWT.ICON_INFORMATION*/ style));
+        tooltip.show(control.toDisplay(control.getSize().x/2, 5));
     }
 
     public static void executeCommands(final IWorkbench workbench, final List<MenuData> menuData, boolean asynch) {
