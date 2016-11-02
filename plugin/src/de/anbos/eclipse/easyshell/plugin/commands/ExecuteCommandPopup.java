@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
@@ -63,11 +64,6 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
         setInfoText(info);
     }
 
-    void init(IWorkbench workbench, MenuDataList menuDataList) {
-        this.workbench = workbench;
-        this.menuDataList = menuDataList;
-    }
-
     @Override
     protected Control createDialogArea(Composite parent) {
         final Composite listViewComposite = (Composite)super.createDialogArea(parent);
@@ -85,26 +81,34 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
 
 
     private void executeCommandFromList(int index) {
-        long sleepTime = 500;
+        long sleepTime = 400;
         int selIndex = listView.getSelectionIndex();
         if (index == -1 || index == selIndex) {
             sleepTime = 10;
             index = selIndex;
         }
         if (index < 0 || index >= menuDataList.size()) {
+        	//Activator.logError("executeCommandFromList: bad index " + index, null);
             return;
         }
         listView.setSelection(index);
+        listView.update();
         try {
             Thread.sleep(sleepTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        MenuData item = menuDataList.get(index);
-        // execute
-        Utils.executeCommand(workbench, item, true);
-        // close this dialog
+        // close this dialog first, because of bug:
+        // https://bugs.eclipse.org/bugs/show_bug.cgi?id=242246
         this.close();
+        // and wait until the context is right again
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // execute
+        Utils.executeCommand(workbench, menuDataList.get(index), true);
     }
 
     @Override
@@ -117,6 +121,8 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
             } else if(e.keyCode >= 'a' && e.keyCode <= 'z') { //check character
                 executeCommandFromList((e.keyCode - 'a') + ('9' - '0' + 1));
             }
+        } else {
+        	//Activator.logError("keyPressed", null);
         }
     }
 

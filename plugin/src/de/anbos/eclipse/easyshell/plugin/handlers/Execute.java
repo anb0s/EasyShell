@@ -18,6 +18,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.EditorPropertyTester;
 import de.anbos.eclipse.easyshell.plugin.actions.Action;
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
@@ -28,21 +29,25 @@ public class Execute extends AbstractHandler {
 
     public Object execute(ExecutionEvent event) throws ExecutionException {
         IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-        String commandID  = event.getCommand().getId();
-        ResourceType resourceType = ResourceType.getFromEnum(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.resource"));
-        CommandType commandType = CommandType.getFromAction(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.type"));
-        String commandValue = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.value");
-        String commandWorkingDir = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir");
-        ActionDelegate action = EditorPropertyTester.getActionExactResourceType(activePart, resourceType);
-        if (action != null) {
-        	action.setResourceType(resourceType);
-        	action.setCommandType(commandType);
-        	action.setCommandValue(commandValue);
-        	action.setCommandWorkingDir(commandWorkingDir);
-            Action act = new Action(commandID);
-            action.run((IAction)act);
+        if (activePart != null) {
+	        String commandID  = event.getCommand().getId();
+	        ResourceType resourceType = ResourceType.getFromEnum(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.resource"));
+	        CommandType commandType = CommandType.getFromAction(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.type"));
+	        String commandValue = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.value");
+	        String commandWorkingDir = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir");
+	        ActionDelegate action = EditorPropertyTester.getActionExactResourceType(activePart, resourceType);
+	        if (action != null) {
+	        	action.setResourceType(resourceType);
+	        	action.setCommandType(commandType);
+	        	action.setCommandValue(commandValue);
+	        	action.setCommandWorkingDir(commandWorkingDir);
+	            Action act = new Action(commandID);
+	            action.run((IAction)act);
+	        }
+	        action = null;
+        } else {
+        	Activator.logError("HandlerUtil.getActivePart() returns null: see Eclipse platform bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=242246", null);
         }
-        action = null;
         return null;
     }
 }

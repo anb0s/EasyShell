@@ -91,7 +91,7 @@ public class Utils {
     }
 
     public static LinuxDesktop detectLinuxDesktop() {
-        LinuxDesktop resultCode = Utils.detectDesktopSession();
+        LinuxDesktop resultCode = detectDesktopSession();
         /*
         if (resultCode == LinuxDesktop.desktopUnknown)
         {
@@ -117,7 +117,7 @@ public class Utils {
         desktops.put("cinnamon", LinuxDesktop.desktopCinnamon);
         desktops.put("xfce", LinuxDesktop.desktopXfce);
         // execute
-        Object desktop = Utils.isExpectedCommandOutput(command, desktops);
+        Object desktop = isExpectedCommandOutput(command, desktops);
         if (desktop != null) {
             return (LinuxDesktop)desktop;
         }
@@ -139,7 +139,7 @@ public class Utils {
         	fileBrowsers.put(".*", "*");
         }
         // execute
-        return Utils.isExpectedCommandOutput(command, fileBrowsers);
+        return isExpectedCommandOutput(command, fileBrowsers);
     }
 
     private static Object isExpectedCommandOutput(ArrayList<String> command, Map<String, Object> expectedOutput) {
@@ -239,23 +239,6 @@ public class Utils {
         tooltip.show(control.toDisplay(control.getSize().x/2, 5));
     }
 
-    public static void executeCommands(final IWorkbench workbench, final List<MenuData> menuData, boolean asynch) {
-        if (asynch) {
-            Display.getDefault().asyncExec( new Runnable(){
-                @Override
-                public void run() {
-                    for (MenuData element : menuData) {
-                        executeCommand(workbench, element, false);
-                    }
-                }
-            });
-        } else {
-            for (MenuData element : menuData) {
-                executeCommand(workbench, element, false);
-            }
-        }
-    }
-
     public static Map<String, Object> getParameterMapFromMenuData(MenuData menuData) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.resource",
@@ -269,20 +252,40 @@ public class Utils {
         return params;
     }
 
-    public static void executeCommand(IWorkbench workbench, MenuData menuData, boolean asynch) {
+    public static void executeCommand(final IWorkbench workbench, final MenuData menuData, boolean asynch) {
+		//Activator.logInfo("executeCommand: " + menuData.getNameExpanded() + ", " + asynch, null);
         executeCommand(workbench, "de.anbos.eclipse.easyshell.plugin.commands.execute", getParameterMapFromMenuData(menuData), asynch);
     }
 
     public static void executeCommand(final IWorkbench workbench, final String commandName, final Map<String, Object> params, boolean asynch) {
         if (asynch) {
-            Display.getDefault().asyncExec( new Runnable(){
+        	Display display = workbench == null ? Display.getDefault() : workbench.getDisplay();
+        	display.asyncExec( new Runnable(){
                 @Override
                 public void run() {
-                    Utils.executeCommand(workbench, commandName, params);
+                    executeCommand(workbench, commandName, params);
                 }
             });
         } else {
-            Utils.executeCommand(workbench, commandName, params);
+            executeCommand(workbench, commandName, params);
+        }
+    }
+
+    public static void executeCommands(final IWorkbench workbench, final List<MenuData> menuData, boolean asynch) {
+        if (asynch) {
+        	Display display = workbench == null ? Display.getDefault() : workbench.getDisplay();
+        	display.asyncExec( new Runnable(){
+                @Override
+                public void run() {
+                    for (MenuData element : menuData) {
+                        executeCommand(workbench, element, false);
+                    }
+                }
+            });
+        } else {
+            for (MenuData element : menuData) {
+                executeCommand(workbench, element, false);
+            }
         }
     }
 
