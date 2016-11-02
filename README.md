@@ -1,4 +1,4 @@
-# EasyShell [![Build Status](https://travis-ci.org/anb0s/EasyShell.svg)](https://travis-ci.org/anb0s/EasyShell) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
+# EasyShell [![Chat @ gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/anb0s/Lobby) [![Build Status](https://travis-ci.org/anb0s/EasyShell.svg)](https://travis-ci.org/anb0s/EasyShell) [![Build Status](https://drone.io/github.com/anb0s/EasyShell/status.png)](https://drone.io/github.com/anb0s/EasyShell/latest) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
 This Eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. Additionally it is possible to run selected file in the shell, copy file or directory path or run user defined external tools. Key shortcuts and multiple selections are also supported!
 
 Installation:
@@ -16,13 +16,39 @@ OR
 Features:
 ---------
 
-The plugin is platform independent in principal. It just launches a (configurable) system command to open the shell, file explorer or other user defined command. It also copies path etc. to clipboard.
+The plugin is platform independent in principal. It just launches a (configurable) system command to open the shell, file explorer or other user defined command. It also copies path etc. to clipboard. Just open context menu for an Eclipse editor or selected resource in some view:
 
 ![context_menu_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_context_menu_windows.png "Context Menu @ Windows")
 
+Keyboard-shortcuts:
+-------------------
+
+**Alt + E**: Main popup menu (Windows)
+
 ![popup_menu_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_popup_menu_windows.png "Popup Menu @ Windows (Alt+E)")
 
+**Alt + Shift + E**: execute multiple commands for selection(s)
+
 ![multi_selection_dialog_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+Shift+E)")
+
+Shortcuts that executes the command directly if only one defined or opens a popup menu like Alt + E reduced for category:
+
+**Alt + O**: Open Here (shell)
+
+**Alt + R**: Run with (shell)
+
+**Alt + X**: Explore
+
+**Alt + C**: Copy to Clipboard
+
+**Alt + U**: User defined category
+
+Special not available for all OS:
+
+**Alt + D**: Open with Default application
+
+Supported OS and commands:
+--------------------------
 
 The following platform, shell combinations and tools are supported as selections available in the preferences page. The user can define own commands and menues or just adapt the predefined ones!
 
@@ -68,6 +94,9 @@ Copy to clipboard
  - Full Path Unix (@Windows)
  - Qualified Name
  - ... more configurable...
+
+Preferences:
+------------
 
 ![preferences_menu](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu.png "Preferences - Menu")
 
