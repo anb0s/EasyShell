@@ -154,11 +154,13 @@ public class Initializer extends AbstractPreferenceInitializer {
         } else if (version == Version.v1_4) {
             // check preferences for default values
             migrateState = migrate_check_pref_and_ask_user(oldStore, version, PrefsV1_4.getPreferenceList(), migrateState);
-            CommandDataList cmdDataList = new CommandDataList();
-            MenuDataList menuDataList = CommandDataDefaultCollection.getCommandsNativeAsMenu(true);
-            if (PrefsV1_4.loadStore(oldStore, Utils.getOS(), cmdDataList, menuDataList)) {
-                store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.asCommandDataString(cmdDataList));
-                store.setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
+            if (migrateState == 0) {
+	            CommandDataList cmdDataList = new CommandDataList();
+	            MenuDataList menuDataList = CommandDataDefaultCollection.getCommandsNativeAsMenu(true);
+	            if (PrefsV1_4.loadStore(oldStore, Utils.getOS(), cmdDataList, menuDataList)) {
+	                store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.asCommandDataString(cmdDataList));
+	                store.setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
+	            }
             }
         }
         return migrateState;
