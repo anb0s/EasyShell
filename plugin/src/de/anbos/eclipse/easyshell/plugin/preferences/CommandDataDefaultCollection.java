@@ -106,7 +106,7 @@ public class CommandDataDefaultCollection {
     }
 
     private void addLinuxCommands() {
-        // Linux XDG Open (default application)
+        // Linux XDG Open (default application): https://linux.die.net/man/1/xdg-open 
         list.add(new CommandData("51ed300a-35d0-4e67-a5f8-6ebd7012a564", PresetType.presetPlugin, OS.osLinux, "XDG Open", ResourceType.resourceTypeFileOrDirectory, Category.categoryDefault, CommandType.commandTypeExecute,
                 "xdg-open ${easyshell:resource_loc}"));
         // Linux KDE Konsole
@@ -165,6 +165,9 @@ public class CommandDataDefaultCollection {
         // Linux Thunar
         list.add(new CommandData("cf8d4d60-10f4-4a31-a423-676d02d974e0", PresetType.presetPlugin, OS.osLinux, "Thunar", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "thunar ${easyshell:container_loc}"));
+        // Linux Caja (MATE): http://manpages.ubuntu.com/manpages/wily/man1/caja.1.html
+        list.add(new CommandData("f2b970ed-ef98-4ce2-861c-20f44a471f49", PresetType.presetPlugin, OS.osLinux, "Caja", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+                "caja ${easyshell:container_loc}"));        
     }
 
     private void addMacOSXCommands() {
