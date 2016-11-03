@@ -132,6 +132,11 @@ public class CommandDataDefaultCollection {
                 "mate-terminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc}"));
         list.add(new CommandData("d07df65d-ccc5-4c71-82f8-3a17e608516b", PresetType.presetPlugin, OS.osLinux, "MATE Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
                 "mate-terminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
+        // Linux LX Terminal (LXDE): http://manpages.ubuntu.com/manpages/precise/en/man1/lxterminal.1.html
+        list.add(new CommandData("8770e3c5-cd60-4c01-b1c0-8b7754b91b27", PresetType.presetPlugin, OS.osLinux, "LX Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
+                "lxterminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc}"));
+        list.add(new CommandData("94b0c584-0316-4dac-bd40-2ab1a0428d32", PresetType.presetPlugin, OS.osLinux, "LX Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
+                "lxterminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
         // Linux Sakura Terminal
         list.add(new CommandData("8e366a34-5ce2-4430-bc21-20e176e0128c", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute,
                 "sakura"));
@@ -263,6 +268,14 @@ public class CommandDataDefaultCollection {
                                         addNotNull(listDefault, getCommandData(listOS, ".*Xfce.*", Category.categoryRun));
                                         //addNotNull(listDefault, getCommandData(listOS, "Thunar", Category.categoryExplore));
                     break;
+                    case desktopMate:   addNotNull(listDefault, getCommandData(listOS, ".*MATE.*", Category.categoryOpen));
+                    					addNotNull(listDefault, getCommandData(listOS, ".*MATE.*", Category.categoryRun));
+                    					//addNotNull(listDefault, getCommandData(listOS, "Caja", Category.categoryExplore));
+                    break;
+                    case desktopLxde:   addNotNull(listDefault, getCommandData(listOS, ".*LX.*", Category.categoryOpen));
+										addNotNull(listDefault, getCommandData(listOS, ".*LX.*", Category.categoryRun));
+										//addNotNull(listDefault, getCommandData(listOS, "PCManFM", Category.categoryExplore));
+					break;
                     default:;
                 }
                 // try to detect the default file browser
