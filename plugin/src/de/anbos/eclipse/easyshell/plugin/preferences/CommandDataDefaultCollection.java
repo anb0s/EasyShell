@@ -122,11 +122,16 @@ public class CommandDataDefaultCollection {
                 "gnome-terminal --working-directory=${easyshell:container_loc}"));
         list.add(new CommandData("c6126958-32f2-4f96-9933-69ddd956f2e9", PresetType.presetPlugin, OS.osLinux, "Gnome Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
                 "gnome-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
-        // Linux Xfce Terminal
+        // Linux Xfce Terminal: http://docs.xfce.org/apps/terminal/command-line
         list.add(new CommandData("8175f9a7-4e54-4367-a6b6-251aedc187df", PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "xfce4-terminal --working-directory=${easyshell:container_loc}"));
         list.add(new CommandData("adf40e10-0ee9-4abe-8282-aff7d51bb68d", PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
                 "xfce4-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}'' --hold"));
+        // Linux MATE Terminal
+        list.add(new CommandData("9a11b3eb-497c-44dd-9813-a841a32465c1", PresetType.presetPlugin, OS.osLinux, "MATE Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
+                "mate-terminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc}"));
+        list.add(new CommandData("d07df65d-ccc5-4c71-82f8-3a17e608516b", PresetType.presetPlugin, OS.osLinux, "MATE Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
+                "mate-terminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
         // Linux Sakura Terminal
         list.add(new CommandData("8e366a34-5ce2-4430-bc21-20e176e0128c", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute,
                 "sakura"));
