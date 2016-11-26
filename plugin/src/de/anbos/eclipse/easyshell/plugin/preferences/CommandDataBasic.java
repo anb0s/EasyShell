@@ -14,6 +14,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class CommandDataBasic {
@@ -23,19 +24,20 @@ public class CommandDataBasic {
     private ResourceType resourceType = ResourceType.resourceTypeUnknown;
     private boolean useWorkingDirectory = false;
     private String workingDirectory = "";
+    private CommandTokenizer commandTokenizer = CommandTokenizer.commandTokenizerSpacesAndQuotes;
     private String command = "";
 
-    public CommandDataBasic(String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, String command) {
+    public CommandDataBasic(String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, CommandTokenizer tokenizer, String command) {
         setName(name);
         setResourceType(resType);
         setUseWorkingDirectory(useWorkingDirectory);
         setWorkingDirectory(workingDirectory);
+        setCommandTokenizer(tokenizer);
         setCommand(command);
     }
 
-
-    public CommandDataBasic(CommandDataBasic commandData) {
-        this(commandData.getName(), commandData.getResourceType(), commandData.isUseWorkingDirectory(), commandData.getWorkingDirectory(), commandData.getCommand());
+	public CommandDataBasic(CommandDataBasic commandData) {
+        this(commandData.getName(), commandData.getResourceType(), commandData.isUseWorkingDirectory(), commandData.getWorkingDirectory(), commandData.getCommandTokenizer(), commandData.getCommand());
     }
 
     public CommandDataBasic() {
@@ -55,6 +57,10 @@ public class CommandDataBasic {
 
     public String getWorkingDirectory() {
         return workingDirectory;
+    }
+
+    public CommandTokenizer getCommandTokenizer() {
+    	return commandTokenizer;
     }
 
     public String getCommand() {
@@ -81,6 +87,10 @@ public class CommandDataBasic {
         }
     }
 
+    public void setCommandTokenizer(CommandTokenizer commandTokenizer) {
+    	this.commandTokenizer = commandTokenizer;
+	}
+
 	public void setCommand(String command) {
 		this.command = command;
 	}
@@ -94,6 +104,7 @@ public class CommandDataBasic {
     	   data.getResourceType() == this.getResourceType() &&
     	   data.isUseWorkingDirectory() == this.isUseWorkingDirectory() &&
     	   data.getWorkingDirectory().equals(this.getWorkingDirectory()) &&
+    	   data.getCommandTokenizer() == this.getCommandTokenizer() &&
     	   data.getCommand().equals(this.getCommand())
     	  )
     	{
@@ -121,6 +132,11 @@ public class CommandDataBasic {
 	    setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
 	    setWorkingDirectory(tokenizer.nextToken());
 		// command
+	    String commandTokenizer = CommandTokenizer.commandTokenizerSpacesAndQuotes.toString();
+        if (version.getId() >= Version.v2_1_001.getId()) {
+        	commandTokenizer = tokenizer.nextToken();
+        }
+        setCommandTokenizer(CommandTokenizer.getFromEnum(commandTokenizer));
 		setCommand(tokenizer.nextToken());
 		return true;
 	}
@@ -134,6 +150,9 @@ public class CommandDataBasic {
         ret += getResourceType().toString() + delimiter;
         ret += Boolean.toString(isUseWorkingDirectory()) + delimiter;
         ret += getWorkingDirectory() + delimiter;
+        if (version.getId() >= Version.v2_1_001.getId()) {
+        	ret += getCommandTokenizer().toString() + delimiter;
+        }
         ret += getCommand() + delimiter;
         return ret;
     }

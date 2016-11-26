@@ -27,7 +27,7 @@ import de.anbos.eclipse.easyshell.plugin.preferences.CommandData;
 public enum Variable {
     // ${easyshell:resource_loc} == {2}
     varUnknown(false, false, "unknown", "unknown", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -35,7 +35,7 @@ public enum Variable {
         };
     }),
     varResourceLoc(true, false, "resource_loc", "absolute path of file or directory", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -44,7 +44,7 @@ public enum Variable {
     }),
     // ${easyshell:resource_name} == {3}
     varResourceName(true, false, "resource_name", "name of file or directory", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -52,7 +52,7 @@ public enum Variable {
         };
     }),
     varResourceBasename(true, false, "resource_basename", "name of file without extension", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -60,7 +60,7 @@ public enum Variable {
         };
     }),
     varResourceExtension(true, false, "resource_extension", "extension of file name (without '.')", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -69,7 +69,7 @@ public enum Variable {
     }),
     // ${easyshell:resource_path}
     varResourcePath(true, false, "resource_path", "relative path to workspace of file or directory", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -78,7 +78,7 @@ public enum Variable {
     }),
     // ${easyshell:container_loc} == {1}
     varContainerLoc(true, false, "container_loc", "absolute path of file directory or directory itself", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -87,7 +87,7 @@ public enum Variable {
     }),
     // ${easyshell:container_name}
     varContainerName(true, false, "container_name", "name of file directory or directory itself", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -96,7 +96,7 @@ public enum Variable {
     }),
     // ${easyshell:container_path}
     varContainerPath(true, false, "container_path", "relative path to workspace of file directory or directory itself", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -105,7 +105,7 @@ public enum Variable {
     }),
     // ${easyshell:project_loc_loc}
     varProjectLoc(true, false, "project_loc", "absolute path of project", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -114,13 +114,13 @@ public enum Variable {
     }),
     // ${easyshell:project_name} == {4}
     varProjectName(true, false, "project_name", "name of project", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             return ((Resource)object).getProjectName();
         };
     }),
     // ${easyshell:project_path}
     varProjectPath(true, false, "project_path", "relative path to workspace of project", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -129,7 +129,7 @@ public enum Variable {
     }),
     // ${easyshell:windows_drive} == {0}
     varWindowsDrive(true, false, "windows_drive", "drive letter of file or directory on Windows", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -138,7 +138,7 @@ public enum Variable {
     }),
     // ${easyshell:qualified_name}
     varQualifiedName(true, false, "qualified_name", "full qualified (class) name", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -147,7 +147,7 @@ public enum Variable {
     }),
     // ${easyshell:line_separator} == {5}
     varLineSeparator(true, false, "line_separator", "line separator, e.g. '\\n' (Unix) or '\\r\\n' (Windows)", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -155,7 +155,7 @@ public enum Variable {
         };
     }),
     varLineSeparatorUnix(false, false, "line_separator_unix", "line separator '\\n' (Unix)", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -163,7 +163,7 @@ public enum Variable {
         };
     }),
     varLineSeparatorWindows(false, false, "line_separator_windows", "line separator '\\r\\n' (Windows)", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -171,7 +171,7 @@ public enum Variable {
         };
     }),
     varPathSeparator(true, false, "path_separator", "path separator, e.g. ':' (Unix) or ';' (Windows)", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -179,7 +179,7 @@ public enum Variable {
         };
     }),
     varPathSeparatorUnix(false, false, "path_separator_unix", "path separator ':' (Unix)", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -187,7 +187,7 @@ public enum Variable {
         };
     }),
     varPathSeparatorWindows(false, false, "path_separator_windows", "path separator, e.g. ':' (Unix) or ';' (Windows)", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -195,7 +195,7 @@ public enum Variable {
         };
     }),
     varFileSeparator(true, false, "file_separator", "file separator, e.g. '/' (Unix) or '\\' (Windows)", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -203,7 +203,7 @@ public enum Variable {
         };
     }),
     varFileSeparatorUnix(false, false, "file_separator_unix", "file separator '/' (Unix)", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
@@ -211,15 +211,23 @@ public enum Variable {
         };
     }),
     varFileSeparatorWindows(false, false, "file_separator_windows", "file separator '\\' (Windows)", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
                 return "";
             }
             return ((Resource)object).getFileSeparator(OS.osWindows);
         };
     }),
+    varScriptBash(true, false, "script_bash", "Bash script", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getScriptBash((String)parameter);
+        };
+    }),
     varCommandCategory(false, true, "command_category", "command category", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof CommandData)) {
                 return "";
             }
@@ -227,7 +235,7 @@ public enum Variable {
         };
     }),
     varCommandType(false, true, "command_type", "command type", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof CommandData)) {
                 return "";
             }
@@ -235,7 +243,7 @@ public enum Variable {
         };
     }),
     varCommandName(false, true, "command_name", "command name", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof CommandData)) {
                 return "";
             }
@@ -243,7 +251,7 @@ public enum Variable {
         };
     }),
     varCommandOS(false, true, "command_os", "command operating system", new IVariableResolver() {
-        public String resolve(Object object) {
+        public String resolve(Object object, Object parameter) {
             if(!(object instanceof CommandData)) {
                 return "";
             }

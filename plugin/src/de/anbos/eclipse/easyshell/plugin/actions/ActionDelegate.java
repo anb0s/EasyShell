@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
@@ -34,12 +33,13 @@ import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Quotes;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
-import de.anbos.eclipse.easyshell.plugin.types.Tokenizer;
+import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;
 
 public class ActionDelegate implements IObjectActionDelegate {
 
     private List<Resource> resources = null;
     private IStructuredSelection currentSelection;
+    private CommandTokenizer commandTokenizer = CommandTokenizer.commandTokenizerUnknown;
     private String commandValue = null;
     private String commandWorkingDir = null;
     private CommandType commandType = CommandType.commandTypeUnknown;
@@ -59,6 +59,14 @@ public class ActionDelegate implements IObjectActionDelegate {
 
     public void setCommandType(CommandType commandType) {
         this.commandType = commandType;
+    }
+
+    public CommandTokenizer getCommandTokenizer() {
+        return commandTokenizer;
+    }
+
+    public void setCommandTokenizer(CommandTokenizer commandTokenizer) {
+        this.commandTokenizer = commandTokenizer;
     }
 
     public String getCommandValue() {
@@ -129,47 +137,54 @@ public class ActionDelegate implements IObjectActionDelegate {
         }
     }
 
-    private void handleExec(IStringVariableManager variableManager) throws CoreException, IOException {
-        String[] cmds = null;
+    private String[] getCommandResolved(IStringVariableManager variableManager) throws CoreException {
+    	String[] commandArray = null;
+    	switch(commandTokenizer) {
+	    	case commandTokenizerSpaces:
+	    		commandArray = Utils.splitSpaces(commandValue);
+	    	break;
+	    	case commandTokenizerSpacesAndQuotes:
+	    		commandArray = Utils.splitSpacesAndQuotes(commandValue);
+	    	break;
+	    	case commandTokenizerDisabled:
+	    		commandArray = new String[1];
+	    		commandArray[0] = commandValue;
+	        break;
+	    	default:
+	    		throw new IllegalArgumentException();
+    	}
+        // resolve the variables
+        for (int i=0;i<commandArray.length;i++) {
+        	commandArray[i] = variableManager.performStringSubstitution(commandArray[i], false);
+            Activator.logDebug("--- cmd: >");
+            Activator.logDebug(commandArray[i]);
+            Activator.logDebug("--- cmd: <");
+        }    	
+        return commandArray;
+    }
+
+    private File getWorkingDirectoryResolved(IStringVariableManager variableManager) throws CoreException {
         // working directory
         if (commandWorkingDir != null && !commandWorkingDir.isEmpty()) {
             variableManager.validateStringVariables(commandWorkingDir);
+            Activator.logDebug("--- working dir: >");
+            Activator.logDebug(commandWorkingDir);
+            Activator.logDebug("--- working dir: <");
+            return new File(variableManager.performStringSubstitution(commandWorkingDir, false));
         }
-        Activator.logDebug(commandWorkingDir);
-        // string tokenizer enabled ?
-        // TODO: get from preferences store
-        //Tokenizer tokenizer = Activator.isTokenizer(InstanceIDNum);
-        Tokenizer tokenizer = Tokenizer.tokenizerYes;
-        if (tokenizer == Tokenizer.tokenizerYes)
-        {
-        	StringTokenizer st = new StringTokenizer(commandValue);
-        	cmds = new String[st.countTokens()];
-        	int i = 0;
-        	while (st.hasMoreElements()) {
-        		cmds[i] = variableManager.performStringSubstitution(st.nextToken(), false);
-        		i++;
-        	}
-        }
-        // the old command line passing without string tokenizer
-        else {
-            cmds = new String[1];
-        	cmds[0] = variableManager.performStringSubstitution(commandValue, false);
-        }
-        // log out
-        for (int i=0;i<cmds.length;i++) {
-            Activator.logDebug("--- cmd: >");
-            Activator.logDebug(cmds[i]);
-            Activator.logDebug("--- cmd: <");
-        }
-        // execute
-        //Utils.showToolTip(Display.getDefault().getActiveShell(), "EasyShell: executed", commandValue);
-        // ---------- RUN --------------
-        //Runtime.getRuntime().exec(cmds);
-        // create process builder with commands and
-        ProcessBuilder pb = new ProcessBuilder(cmds);
-        // set working directory and redirect error stream
-        if (commandWorkingDir != null && !commandWorkingDir.isEmpty()) {
-            pb.directory(new File(variableManager.performStringSubstitution(commandWorkingDir, false)));
+        return null;
+    }
+
+    private void handleExec(IStringVariableManager variableManager) throws CoreException, IOException {
+    	// get working directory
+    	File workingDirectory = getWorkingDirectoryResolved(variableManager);
+        // get command
+        String[] command = getCommandResolved(variableManager);
+        // create process builder with command and ...
+        ProcessBuilder pb = new ProcessBuilder(command);
+        // ... set working directory and redirect error stream
+        if (workingDirectory != null) {
+            pb.directory(workingDirectory);
         }
         // get passed system environment
         //Map<String, String> env = pb.environment();

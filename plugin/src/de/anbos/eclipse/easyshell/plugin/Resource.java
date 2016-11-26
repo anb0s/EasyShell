@@ -12,8 +12,12 @@
 package de.anbos.eclipse.easyshell.plugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -269,5 +273,19 @@ public class Resource {
             }
         }
     }
+
+	public String getScriptBash(String parameter) {
+		String prefix = "scripts/";
+		URL fileURL = Activator.getDefault().getBundle().getEntry(prefix + parameter);
+		File file = null;
+		try {
+		    file = new File(FileLocator.resolve(fileURL).toURI().normalize());
+		} catch (URISyntaxException e1) {
+		    e1.printStackTrace();
+		} catch (IOException e1) {
+		    e1.printStackTrace();
+		}
+		return file.exists() ? file.getAbsolutePath() : "file not exists";
+	}
 
 }

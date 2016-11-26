@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ParameterizedCommand;
@@ -249,6 +250,8 @@ public class Utils {
                 menuData.getCommandData().getCommand());
         params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
                 menuData.getCommandData().isUseWorkingDirectory() ? menuData.getCommandData().getWorkingDirectory() : "");
+        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.tokenizer",
+        		menuData.getCommandData().getCommandTokenizer().toString());
         return params;
     }
 
@@ -328,6 +331,51 @@ public class Utils {
             basename = "";
         }
         return basename;
+    }
+
+    public static String[] splitSpaces(String str) {
+    	StringTokenizer st = new StringTokenizer(str);
+    	String[] strings = new String[st.countTokens()];
+    	for (int i=0;st.hasMoreElements();i++) {	        		
+    		strings[i] = st.nextToken();
+    		i++;
+    	}
+    	return strings;
+    }
+
+    /*
+     * borrowed the idea from:
+     * https://stackoverflow.com/questions/3366281/tokenizing-a-string-but-ignoring-delimiters-within-quotes/3366603#3366603
+     */
+    public static String[] splitSpacesAndQuotes(String str) {
+    	/* this is not working like expected
+    	String regex = "\"([^\"]*)\"|(\\S+)";
+        Matcher m = Pattern.compile(regex).matcher(commandValue);
+        while (m.find()) {
+            if (m.group(1) != null) {
+                System.out.println("Quoted [" + m.group(1) + "]");
+            } else {
+                System.out.println("Plain [" + m.group(2) + "]");
+            }
+        }
+        */
+        str += " "; // To detect last token when not quoted...
+        ArrayList<String> strings = new ArrayList<String>();
+        boolean inQuote = false;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c == '\"' || c == ' ' && !inQuote) {
+                if (c == '\"')
+                    inQuote = !inQuote;
+                if (!inQuote && sb.length() > 0) {
+                    strings.add(sb.toString());
+                    sb.delete(0, sb.length());
+                }
+            } else
+                sb.append(c);
+        }
+        return strings.toArray(new String[strings.size()]);
     }
 
 }

@@ -14,14 +14,14 @@ package de.anbos.eclipse.easyshell.plugin.legacy;
 /**
  * Tokenizer.
  */
-public enum Tokenizer {
+public enum EasyShellTokenizer {
 	EasyShellTokenizerNo(0, "No"),
 	EasyShellTokenizerYes(1, "Yes");
     // attributes
     private final int id;
     private final String mode;
     // construct
-    Tokenizer(int id, String mode) {
+    EasyShellTokenizer(int id, String mode) {
         this.id = id;
         this.mode = mode;
     }
@@ -31,11 +31,11 @@ public enum Tokenizer {
     public String getMode() {
         return mode;
     }
-    public static Tokenizer getFromId(int id) {
-    	Tokenizer ret = EasyShellTokenizerYes;
-        for(int i = 0; i < Tokenizer.values().length; i++) {
-            if (Tokenizer.values()[i].getId() == id) {
-                ret = Tokenizer.values()[i];
+    public static EasyShellTokenizer getFromId(int id) {
+    	EasyShellTokenizer ret = EasyShellTokenizerYes;
+        for(int i = 0; i < EasyShellTokenizer.values().length; i++) {
+            if (EasyShellTokenizer.values()[i].getId() == id) {
+                ret = EasyShellTokenizer.values()[i];
             }
         }
         return ret;

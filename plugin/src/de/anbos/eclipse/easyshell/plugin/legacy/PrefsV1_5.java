@@ -30,6 +30,7 @@ import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class PrefsV1_5 {
@@ -226,7 +227,7 @@ public class PrefsV1_5 {
         // set default
         store.setDefault(PreferenceEntry.preferenceQuotes.getString(instId), Quotes.quotesNo.name());
         store.setDefault(PreferenceEntry.preferenceDebug.getString(instId), Debug.debugNo.name());
-        store.setDefault(PreferenceEntry.preferenceTokenizer.getString(instId), Tokenizer.EasyShellTokenizerYes.name());
+        store.setDefault(PreferenceEntry.preferenceTokenizer.getString(instId), EasyShellTokenizer.EasyShellTokenizerYes.name());
     }
 
     public static List<String> getPreferenceList() {
@@ -299,7 +300,7 @@ public class PrefsV1_5 {
                 String openCmd = store.getString(PreferenceEntry.preferenceTargetOpen.getString(instanceId));
                 if (!openCmdList.contains(openCmd)) {
                     openCmdList.add(openCmd);
-                    CommandData cmdDataOpen = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, PrefsV1_4.migrateCommandVariables(openCmd));
+                    CommandData cmdDataOpen = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes, PrefsV1_4.migrateCommandVariables(openCmd));
                     cmdDataList.add(cmdDataOpen);
                     MenuData menuDataOpen = new MenuData(cmdDataOpen.getId(), true, MenuNameType.menuNameTypeOpenHere, null, cmdDataOpen.getId());
                     menuDataOpen.setPosition(position++);
@@ -311,7 +312,7 @@ public class PrefsV1_5 {
                 String runCmd = store.getString(PreferenceEntry.preferenceTargetRun.getString(instanceId));
                 if (!runCmdList.contains(runCmd)) {
                     runCmdList.add(runCmd);
-                    CommandData cmdDataRun = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryRun, CommandType.commandTypeExecute, PrefsV1_4.migrateCommandVariables(runCmd));
+                    CommandData cmdDataRun = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes, PrefsV1_4.migrateCommandVariables(runCmd));
                     cmdDataList.add(cmdDataRun);
                     MenuData menuDataRun = new MenuData(cmdDataRun.getId(), true, MenuNameType.menuNameTypeRunWith, null, cmdDataRun.getId());
                     menuDataRun.setPosition(position++);
@@ -323,7 +324,7 @@ public class PrefsV1_5 {
                 String exploreCmd = store.getString(PreferenceEntry.preferenceTargetExplore.getString(instanceId));
                 if (!exploreCmdList.contains(exploreCmd)) {
                     exploreCmdList.add(exploreCmd);
-                    CommandData cmdDataExplore = new CommandData(null, PresetType.presetUser, os, command.getExplorer(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, PrefsV1_4.migrateCommandVariables(exploreCmd));
+                    CommandData cmdDataExplore = new CommandData(null, PresetType.presetUser, os, command.getExplorer(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes, PrefsV1_4.migrateCommandVariables(exploreCmd));
                     cmdDataList.add(cmdDataExplore);
                     MenuData menuDataExplore = new MenuData(cmdDataExplore.getId(), true, MenuNameType.menuNameTypeShowIn, null, cmdDataExplore.getId());
                     menuDataExplore.setPosition(position++);
@@ -335,7 +336,7 @@ public class PrefsV1_5 {
                 String copyPathCmd = store.getString(PreferenceEntry.preferenceTargetCopyPath.getString(instanceId));
                 if (!copyPathList.contains(copyPathCmd)) {
                     copyPathList.add(copyPathCmd);
-                    CommandData cmdDataCopyPath = new CommandData(null, PresetType.presetUser, os, "Full Path", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, PrefsV1_4.migrateCommandVariables(copyPathCmd));
+                    CommandData cmdDataCopyPath = new CommandData(null, PresetType.presetUser, os, "Full Path", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpacesAndQuotes, PrefsV1_4.migrateCommandVariables(copyPathCmd));
                     cmdDataList.add(cmdDataCopyPath);
                     MenuData menuDataCopyPath = new MenuData(cmdDataCopyPath.getId(), true, MenuNameType.menuNameTypeCopyToClipboard, null, cmdDataCopyPath.getId());
                     menuDataCopyPath.setPosition(position++);

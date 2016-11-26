@@ -50,6 +50,7 @@ import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Converter;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;
 import de.anbos.eclipse.easyshell.plugin.types.Variable;
 
 public class CommandDataDialog extends StatusDialog {
@@ -71,6 +72,7 @@ public class CommandDataDialog extends StatusDialog {
     private Text    dirText;
     private ContentProposalAdapter dirTextAssist;
     private Text    valueText;
+    private Combo   tokenizerCombo;
     private ContentProposalAdapter valueTextAssist;
 
     @Override
@@ -125,6 +127,8 @@ public class CommandDataDialog extends StatusDialog {
         refreshCategoryCombo();
 
         refreshCommandTypeCombo();
+        
+        refreshTokenizerCombo();
 
         return pageComponent;
     }
@@ -151,16 +155,18 @@ public class CommandDataDialog extends StatusDialog {
         // create command type combo
         createCommandTypeCombo(pageGroup1);
         //create input nameText field
-        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), data.getName(), true);
+        nameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.name"), data.getName(), true);
         // create directory checkbox
         createDirCheckBox(pageGroup1);
         // create input dirText field and add content assist
-        dirText = createTextField(pageGroup1, null, data.getWorkingDirectory(), false);
+        dirText = createTextField(pageGroup1, null, Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.useworkdir") + Activator.getResourceString("easyshell.command.editor.dialog.tooltip.content.assists"), data.getWorkingDirectory(), false);
         dirTextAssist = addContentAssist(dirText);
         // create input valueText field and add content assist
-        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), data.getCommand(), true);
+        valueText = createTextField(pageGroup1, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.value") + Activator.getResourceString("easyshell.command.editor.dialog.tooltip.content.assists"), data.getCommand(), true);
         valueTextAssist = addContentAssist(valueText);
         valueTextAssist.setEnabled(true);
+        // create tokenizer combo
+        createTokenizerCombo(pageGroup1);
     }
 
     private ContentProposalAdapter addContentAssistSimple(Text textControl) {
@@ -258,10 +264,13 @@ public class CommandDataDialog extends StatusDialog {
         }
     }
 
-    private void createLabel(Composite parent, String name) {
+    private void createLabel(Composite parent, String name, String tooltip) {
         Label label = new Label(parent, SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
         label.setText(name);
+        if (tooltip != null) {
+        	label.setToolTipText(tooltip);
+        }
     }
 
     private Label createImageLabel(Composite parent, String image) {
@@ -273,7 +282,7 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createDirCheckBox(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.useworkdir"));
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.useworkdir"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.useworkdir"));
         // draw checkbox
         dirCheckBox = new Button(parent,SWT.CHECK);
         dirCheckBox.setSelection(this.data.isUseWorkingDirectory());
@@ -356,11 +365,18 @@ public class CommandDataDialog extends StatusDialog {
         dirCheckBox.notifyListeners(SWT.Selection, event);
     }
 
+    private void refreshTokenizerCombo() {
+        // send event to refresh
+        Event event = new Event();
+        event.item = null;
+        tokenizerCombo.notifyListeners(SWT.Selection, event);
+    }
+
     protected void okPressed() {
         if (!validateValues()) {
             return;
         }
-        CommandDataBasic cmdDataBasic = new CommandDataBasic(nameText.getText(), ResourceType.getFromName(resourceTypeCombo.getText()), dirCheckBox.getSelection(), dirText.getText(), valueText.getText());
+        CommandDataBasic cmdDataBasic = new CommandDataBasic(nameText.getText(), ResourceType.getFromName(resourceTypeCombo.getText()), dirCheckBox.getSelection(), dirText.getText(), CommandTokenizer.getFromName(tokenizerCombo.getText()), valueText.getText());
         switch(data.getPresetType()) {
             case presetUser:
                 data.setBasicData(cmdDataBasic);
@@ -440,10 +456,11 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createResourceTypeCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.resource"));
-        createLabel(parent, "");
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.resource"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.resource"));
+        createLabel(parent, "", null);
         // draw combo
         resourceTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
+        resourceTypeCombo.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.combo.tooltip.resource"));
         resourceTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         //resourceTypeCombo.setEditable(false);
         resourceTypeCombo.setItems(ResourceType.getNamesAsArray());
@@ -470,10 +487,11 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createCategoryCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.category"));
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.category"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.category"));
         categoryImage = createImageLabel(parent, Category.categoryDefault.getIcon());
         // draw combo
         categoryCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
+        categoryCombo.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.combo.tooltip.category"));
         categoryCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         categoryCombo.setItems(Category.getNamesAsArray());
         categoryCombo.select(0);
@@ -500,10 +518,11 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createCommandTypeCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.type"));
-        createLabel(parent, "");
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.type"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.type"));
+        createLabel(parent, "", null);
         // draw combo
         commandTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
+        commandTypeCombo.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.combo.tooltip.type"));
         commandTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         //commandTypeCombo.setEditable(false);
         commandTypeCombo.setItems(CommandType.getNamesAsArray());
@@ -528,19 +547,51 @@ public class CommandDataDialog extends StatusDialog {
         commandTypeCombo.setEnabled(data.getPresetType() == PresetType.presetUser);
     }
 
-    private Text createTextField(Composite parent, String labelText, String editValue, boolean emptyLabel) {
+    private void createTokenizerCombo(Composite parent) {
+        // draw label
+        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.tokenizer"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.tokenizer"));
+        createLabel(parent, "", null);
+        // draw combo
+        tokenizerCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
+        tokenizerCombo.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.combo.tooltip.tokenizer"));
+        tokenizerCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        //tokenizerCombo.setEditable(false);
+        tokenizerCombo.setItems(CommandTokenizer.getNamesAsArray());
+        tokenizerCombo.select(0);
+        tokenizerCombo.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                //String text = tokenizerCombo.getItem(tokenizerCombo.getSelectionIndex());
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // TODO Auto-generated method stub
+            }
+        });
+        String[] items = tokenizerCombo.getItems();
+        for(int i = 0 ; i < items.length ; i++) {
+            if(items[i].equals(this.data.getCommandTokenizer().getName())) {
+            	tokenizerCombo.select(i);
+                break;
+            }
+        }
+        tokenizerCombo.setEnabled(true);
+    }
+
+    private Text createTextField(Composite parent, String labelText, String labelTooltip, String editValue, boolean emptyLabel) {
         // draw label
         if (labelText != null) {
-            createLabel(parent, labelText);
+            createLabel(parent, labelText, labelTooltip);
         }
         if (emptyLabel) {
-            createLabel(parent, "");
+            createLabel(parent, "", null);
         }
         // draw textfield
         Text text = new Text(parent,SWT.BORDER);
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         text.setText(editValue);
         text.setEditable(true);
+        text.setToolTipText(labelTooltip);
         return text;
     }
 

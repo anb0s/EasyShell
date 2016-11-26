@@ -12,5 +12,5 @@
 package de.anbos.eclipse.easyshell.plugin.types;
 
 public interface IVariableResolver {
-    String resolve(Object object);
+    String resolve(Object object, Object parameter);
 }

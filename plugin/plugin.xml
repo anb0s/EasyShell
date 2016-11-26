@@ -32,6 +32,11 @@
                name="resource"
                optional="false">
          </commandParameter>
+         <commandParameter
+               id="de.anbos.eclipse.easyshell.plugin.commands.parameter.tokenizer"
+               name="tokenizer"
+               optional="false">
+         </commandParameter>
       </command>
       <command
             categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"

@@ -22,6 +22,7 @@ import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class CommandData extends Data {
@@ -44,12 +45,12 @@ public class CommandData extends Data {
         setUserData(userData);
     }
 
-    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, Category category, CommandType cmdType, String command) {
-        this(id, new CommandDataBasic(name, resType, useWorkingDirectory, workingDirectory, command), presetType, os, category, cmdType, null);
+    public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, Category category, CommandType cmdType, CommandTokenizer tokenizer, String command) {
+        this(id, new CommandDataBasic(name, resType, useWorkingDirectory, workingDirectory, tokenizer, command), presetType, os, category, cmdType, null);
     }
 
     public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, Category category, CommandType cmdType, String command) {
-        this(id, presetType, os, name, resType, false, null, category, cmdType, command);
+        this(id, presetType, os, name, resType, false, null, category, cmdType, CommandTokenizer.commandTokenizerSpacesAndQuotes, command);
     }
 
     public CommandData(CommandData commandData, String newId) {
@@ -118,6 +119,14 @@ public class CommandData extends Data {
 
     public CommandType getCommandType() {
         return commandType;
+    }
+
+    public CommandTokenizer getCommandTokenizer() {
+        if (getPresetType() == PresetType.presetPluginAndUser) {
+            return userData.getCommandTokenizer();
+        } else {
+            return basicData.getCommandTokenizer();
+        }
     }
 
     public String getCommand() {
@@ -213,6 +222,14 @@ public class CommandData extends Data {
         this.commandType = cmdType;
     }
 
+    public void setCommandTokenizer(CommandTokenizer commandTokenizer) {
+        if (getPresetType() == PresetType.presetPluginAndUser) {
+            userData.setCommandTokenizer(commandTokenizer);
+        } else {
+            basicData.setCommandTokenizer(commandTokenizer);
+        }
+    }
+
 	public void setCommand(String command) {
         if (getPresetType() == PresetType.presetPluginAndUser) {
             userData.setCommand(command);
@@ -278,6 +295,11 @@ public class CommandData extends Data {
 		    setCommandType(CommandType.getFromDeprecatedCommandTypeEnum(commandTypeStr));
 		}
 		// go on compatible
+	    String commandTokenizer = CommandTokenizer.commandTokenizerSpacesAndQuotes.toString();
+        if (version.getId() >= Version.v2_1_001.getId()) {
+        	commandTokenizer = tokenizer.nextToken();
+        }
+        basicData.setCommandTokenizer(CommandTokenizer.getFromEnum(commandTokenizer));
 		basicData.setCommand(tokenizer.nextToken());
 		if (version.getId() >= Version.v2_0_005.getId()) {
 	        // let read userData if there
@@ -306,6 +328,9 @@ public class CommandData extends Data {
             ret += getCategory().toString() + delimiter;
         }
         ret += getCommandType().toString() + delimiter;
+        if (version.getId() >= Version.v2_1_001.getId()) {
+        	ret += basicData.getCommandTokenizer().toString() + delimiter;
+        }
         ret += basicData.getCommand() + delimiter;
         if (version.getId() >= Version.v2_0_005.getId()) {
             if (getPresetType() == PresetType.presetPluginAndUser) {

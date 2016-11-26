@@ -75,7 +75,7 @@ public class MenuData extends Data {
     public String getNameExpanded() {
         String expanded = namePattern;
         for (Variable variable : Variable.getInternalVariables()) {
-            expanded = expanded.replace(variable.getFullVariableName(), variable.getResolver().resolve(getCommandData()));
+            expanded = expanded.replace(variable.getFullVariableName(), variable.getResolver().resolve(getCommandData(), null));
         }
         /*
         expanded = expanded.replace("${easyshell:command_category}", getCommandData().getCategory().getName());

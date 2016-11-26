@@ -41,7 +41,7 @@ public class DynamicVariableResolver implements IDynamicVariableResolver {
 
     private String handleOwnVariable(String argument) {
         String variableArg = argument;
-        String converterName = "Unknown";
+        String variableArgExt = null;
         int converterIndex = argument.indexOf(":");
         if (converterIndex != -1) {
             // first try to find a variable that has same pattern
@@ -51,23 +51,30 @@ public class DynamicVariableResolver implements IDynamicVariableResolver {
             if (variableSubsResolver != null) {
                 variableArg   = variableSubs;
             } else {
-                variableArg   = argument.substring(0, converterIndex);
-                converterName = argument.substring(converterIndex + 1);
+                variableArg    = argument.substring(0, converterIndex);
+                variableArgExt = argument.substring(converterIndex + 1);
             }
         }
-        IConverter converter = Converters.getMap().get(converterName);
-        if (converter == null) {
+        // find converter
+        IConverter converter = null;
+        if (variableArgExt != null) {
+        	converter = Converters.getMap().get(variableArgExt);
+        }
+        if (converter != null) {
+        	variableArgExt = null;
+        } else {
             converter = Converter.converterUnknown.getConverterImpl();
         }
+        // find resolver
         IVariableResolver resolver = Variables.getMap().get(variableArg);
         if (resolver == null) {
             resolver = Variable.varUnknown.getResolver();
         }
-        return autoQuotes(converter.convert(resolver.resolve(resource)));
+        return autoQuotes(converter.convert(resolver.resolve(resource, variableArgExt)));
     }
 
     private String handleEclipseVariable(String variable, String argument) {
-        return autoQuotes(Variables.getMap().get(argument).resolve(resource));
+        return autoQuotes(Variables.getMap().get(argument).resolve(resource, null));
     }
 
     public static Resource getResource() {
