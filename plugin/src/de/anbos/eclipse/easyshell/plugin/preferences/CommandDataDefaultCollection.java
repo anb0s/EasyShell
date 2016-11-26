@@ -176,7 +176,12 @@ public class CommandDataDefaultCollection {
                 "caja ${easyshell:container_loc}"));
         // Linux Guake: http://guake-project.org, http://askubuntu.com/questions/152193/how-to-open-directory-in-guake-from-nautilus
         list.add(new CommandData("554d1dc7-4f26-4be9-bc2a-86d5a41ec606", PresetType.presetPlugin, OS.osLinux, "Guake", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
-                "guake --show --execute-command=\"cd '${easyshell:container_loc}'\""));        
+                "guake --show --execute-command=\"cd '${easyshell:container_loc}'\""));
+        // Linux Krusader:
+        list.add(new CommandData("d93cd39e-1f78-47e2-90d3-88b8c8495c61", PresetType.presetPlugin, OS.osLinux, "Krusader (left panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+                "krusader --left=${easyshell:container_loc}"));
+        list.add(new CommandData("1df6da5c-5455-4372-a2ae-6b1b3f910e76", PresetType.presetPlugin, OS.osLinux, "Krusader (right panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+                "krusader --right=${easyshell:container_loc}"));
     }
 
     private void addMacOSXCommands() {
