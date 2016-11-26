@@ -173,7 +173,10 @@ public class CommandDataDefaultCollection {
                 "thunar ${easyshell:container_loc}"));
         // Linux Caja (MATE): http://manpages.ubuntu.com/manpages/wily/man1/caja.1.html
         list.add(new CommandData("f2b970ed-ef98-4ce2-861c-20f44a471f49", PresetType.presetPlugin, OS.osLinux, "Caja", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
-                "caja ${easyshell:container_loc}"));        
+                "caja ${easyshell:container_loc}"));
+        // Linux Guake: http://guake-project.org, http://askubuntu.com/questions/152193/how-to-open-directory-in-guake-from-nautilus
+        list.add(new CommandData("554d1dc7-4f26-4be9-bc2a-86d5a41ec606", PresetType.presetPlugin, OS.osLinux, "Guake", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
+                "guake --show --execute-command=\"cd '${easyshell:container_loc}'\""));        
     }
 
     private void addMacOSXCommands() {
