@@ -73,4 +73,4 @@ public enum CommandTokenizer {
         }
         return arr;
     }
-};
+}

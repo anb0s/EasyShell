@@ -11,6 +11,9 @@
 
 package de.anbos.eclipse.easyshell.plugin.types;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Debug.
  */
@@ -54,5 +57,22 @@ public enum Debug {
     }
     public static Debug getFromEnum(String name) {
         return Debug.valueOf(name);
+    }
+    public static List<String> getNamesAsList() {
+        List<String> list = new ArrayList<String>();
+        for(int i = 0; i < Debug.values().length; i++) {
+            if (Debug.values()[i] != debugUnknown) {
+                list.add(Debug.values()[i].getName());
+            }
+        }
+        return list;
+    }
+    public static String[] getNamesAsArray() {
+        List<String> list = getNamesAsList();
+        String[] arr = new String[list.size()];
+        for (int i=0;i<list.size();i++) {
+            arr[i] = list.get(i);
+        }
+        return arr;
     }
 }
