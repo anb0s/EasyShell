@@ -20,6 +20,7 @@ import de.anbos.eclipse.easyshell.plugin.types.Version;
 public class CommandDataBasic {
 
     // command
+	private String id = null;
     private String name = "";
     private ResourceType resourceType = ResourceType.resourceTypeUnknown;
     private boolean useWorkingDirectory = false;
@@ -27,8 +28,9 @@ public class CommandDataBasic {
     private CommandTokenizer commandTokenizer = CommandTokenizer.commandTokenizerSpacesAndQuotes;
     private String command = "";
 
-    public CommandDataBasic(String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, CommandTokenizer tokenizer, String command) {
-        setName(name);
+    public CommandDataBasic(String id, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, CommandTokenizer tokenizer, String command) {
+        setId(id);
+    	setName(name);
         setResourceType(resType);
         setUseWorkingDirectory(useWorkingDirectory);
         setWorkingDirectory(workingDirectory);
@@ -37,10 +39,18 @@ public class CommandDataBasic {
     }
 
 	public CommandDataBasic(CommandDataBasic commandData) {
-        this(commandData.getName(), commandData.getResourceType(), commandData.isUseWorkingDirectory(), commandData.getWorkingDirectory(), commandData.getCommandTokenizer(), commandData.getCommand());
+        this(commandData.getId(), commandData.getName(), commandData.getResourceType(), commandData.isUseWorkingDirectory(), commandData.getWorkingDirectory(), commandData.getCommandTokenizer(), commandData.getCommand());
+    }
+
+    public CommandDataBasic(String id) {
+    	setId(id);
     }
 
     public CommandDataBasic() {
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -65,6 +75,10 @@ public class CommandDataBasic {
 
     public String getCommand() {
         return command;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 	public void setName(String name) {
@@ -121,6 +135,11 @@ public class CommandDataBasic {
             tokenizer = new StringTokenizer(value,delimiter);
         }
 		// set command data members
+        if (version.getId() >= Version.v2_1_001.getId()) {
+	        if (getId() == null) {
+	        	setId(tokenizer.nextToken());
+	        }
+        }
         setName(tokenizer.nextToken());
         // handling of resource Type
         String resourceTypeStr = tokenizer.nextToken();
@@ -146,7 +165,13 @@ public class CommandDataBasic {
     }
 
     public String serialize(Version version, String delimiter) {
-        String ret = getName() + delimiter;
+        String ret = getId();
+        if (ret != null) {
+        	ret += delimiter;
+        } else {
+        	ret = "";
+        }
+        ret += getName() + delimiter;
         ret += getResourceType().toString() + delimiter;
         ret += Boolean.toString(isUseWorkingDirectory()) + delimiter;
         ret += getWorkingDirectory() + delimiter;

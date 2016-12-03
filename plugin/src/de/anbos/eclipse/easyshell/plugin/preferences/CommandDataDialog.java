@@ -376,7 +376,7 @@ public class CommandDataDialog extends StatusDialog {
         if (!validateValues()) {
             return;
         }
-        CommandDataBasic cmdDataBasic = new CommandDataBasic(nameText.getText(), ResourceType.getFromName(resourceTypeCombo.getText()), dirCheckBox.getSelection(), dirText.getText(), CommandTokenizer.getFromName(tokenizerCombo.getText()), valueText.getText());
+        CommandDataBasic cmdDataBasic = new CommandDataBasic(null, nameText.getText(), ResourceType.getFromName(resourceTypeCombo.getText()), dirCheckBox.getSelection(), dirText.getText(), CommandTokenizer.getFromName(tokenizerCombo.getText()), valueText.getText());
         switch(data.getPresetType()) {
             case presetUser:
                 data.setBasicData(cmdDataBasic);
@@ -384,13 +384,9 @@ public class CommandDataDialog extends StatusDialog {
                 data.setCommandType(CommandType.getFromName(commandTypeCombo.getText()));
                 break;
             case presetPlugin:
+            case presetPluginModify:
                 if (data.checkIfUserDataOverridesPreset(cmdDataBasic)) {
                     data.addUserData(cmdDataBasic);
-                }
-                break;
-            case presetPluginAndUser:
-                if (data.checkIfUserDataOverridesPreset(cmdDataBasic)) {
-                    data.setUserData(cmdDataBasic);
                 } else {
                     data.removeUserData();
                 }

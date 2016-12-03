@@ -291,7 +291,7 @@ public class MenuDataDialog extends StatusDialog {
             String[] names = getAllCommandsAsComboNames(cmdList);
             commandCombo.setItems(names);
             commandCombo.select(names.length-1);
-        } else if (data.getPresetType() == PresetType.presetPluginAndUser) {
+        } else if (data.getPresetType() == PresetType.presetPluginModify) {
             data.removeUserData();
             replaceCommand(index, data);
         }
@@ -339,7 +339,7 @@ public class MenuDataDialog extends StatusDialog {
         String commandNames = commandCombo.getItem(index);
         String title = null;
         String question = null;
-        if (data.getPresetType() == PresetType.presetPluginAndUser) {
+        if (data.getPresetType() == PresetType.presetPluginModify) {
             title = Activator.getResourceString("easyshell.menu.editor.dialog.title.user.remove");
             question = MessageFormat.format(
                     Activator.getResourceString("easyshell.menu.editor.dialog.question.user.remove"),
@@ -357,7 +357,7 @@ public class MenuDataDialog extends StatusDialog {
             for (MenuData menu : menus) {
                 menuNames += menu.getNameExpanded() + "\n";
             }
-            if (data.getPresetType() == PresetType.presetPluginAndUser) {
+            if (data.getPresetType() == PresetType.presetPluginModify) {
                 title = Activator.getResourceString("easyshell.menu.editor.dialog.title.remove.user.menu");
                 question = MessageFormat.format(Activator.getResourceString("easyshell.menu.editor.dialog.question.remove.user.menu"),
                         commandNames, menuNames);

@@ -31,7 +31,9 @@ public interface Constants {
 
 	// Preferences
     public static final String PREF_COMMANDS_PRESET = "COMMANDS_PRESET";
-	public static final String PREF_COMMANDS        = "COMMANDS";
+    public static final String PREF_COMMANDS_MODIFY = "COMMANDS_MODIFY";
+	public static final String PREF_COMMANDS_USER   = "COMMANDS_USER";
+	public static final String PREF_COMMANDS_OLD	= "COMMANDS";
 	public static final String PREF_MENU            = "MENU";
 	public static final String PREF_MIGRATED        = "MIGRATED";
 

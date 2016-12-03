@@ -456,7 +456,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         }
         String title = null;
         String question = null;
-        if (type == PresetType.presetPluginAndUser) {
+        if (type == PresetType.presetPluginModify) {
             title = Activator.getResourceString("easyshell.command.page.dialog.remove.user.title");
             question = MessageFormat.format(
                     Activator.getResourceString("easyshell.command.page.dialog.remove.user.question"),
@@ -474,7 +474,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
             for (MenuData menu : menus) {
                 menuNames += menu.getNameExpanded() + "\n";
             }
-            if (type == PresetType.presetPluginAndUser) {
+            if (type == PresetType.presetPluginModify) {
                 title = Activator.getResourceString("easyshell.command.page.dialog.remove.menu.user.title");
                 question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.remove.menu.user.question"),
                         commandNames, menuNames);
@@ -500,7 +500,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
             for (CommandData command : commands) {
                 if (command.getPresetType() == PresetType.presetUser) {
                     CommandDataStore.instance().delete(command);
-                } else if (command.getPresetType() == PresetType.presetPluginAndUser) {
+                } else if (command.getPresetType() == PresetType.presetPluginModify) {
                     command.removeUserData();
                     CommandDataStore.instance().replace(command);
                 }

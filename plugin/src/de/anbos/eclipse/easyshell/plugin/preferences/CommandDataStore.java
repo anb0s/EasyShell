@@ -35,7 +35,10 @@ public class CommandDataStore extends DataStore<CommandData> {
         store.addPropertyChangeListener(new IPropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
-                if (event.getProperty().equals(Constants.PREF_COMMANDS) || event.getProperty().equals(Constants.PREF_COMMANDS_PRESET)) {
+                if (event.getProperty().equals(Constants.PREF_COMMANDS_USER) 	||
+                	event.getProperty().equals(Constants.PREF_COMMANDS_PRESET)	||
+                	event.getProperty().equals(Constants.PREF_COMMANDS_MODIFY)
+                ) {
                     load();
                 }
             }
@@ -52,10 +55,12 @@ public class CommandDataStore extends DataStore<CommandData> {
         return userItems;
     }
 
-    private CommandDataList getPresetCommands() {
+    private CommandDataList getPresetCommands(boolean modifyOnly) {
         CommandDataList presetItems = new CommandDataList();
         for (CommandData data : getDataList()) {
-            if (data.getPresetType() == PresetType.presetPlugin || data.getPresetType() == PresetType.presetPluginAndUser) {
+        	if ( ( modifyOnly && (data.getPresetType() == PresetType.presetPluginModify)) ||
+        	     (!modifyOnly && (data.getPresetType() == PresetType.presetPlugin || data.getPresetType() == PresetType.presetPluginModify))
+        	   ) {
                 presetItems.add(data);
             }
         }
@@ -77,22 +82,27 @@ public class CommandDataStore extends DataStore<CommandData> {
     @Override
     public void save() {
         super.save();
-        getStore().setValue(Constants.PREF_COMMANDS_PRESET,PreferenceValueConverter.asCommandDataString(getPresetCommands()));
-        getStore().setValue(Constants.PREF_COMMANDS,PreferenceValueConverter.asCommandDataString(getUserCommands()));
+        // do not safe the presets
+        //getStore().setValue(Constants.PREF_COMMANDS_PRESET,PreferenceValueConverter.asCommandDataString(getPresetCommands(false), false));
+        getStore().setValue(Constants.PREF_COMMANDS_MODIFY,PreferenceValueConverter.asCommandDataString(getPresetCommands(true), true));
+        getStore().setValue(Constants.PREF_COMMANDS_USER,PreferenceValueConverter.asCommandDataString(getUserCommands(), false));
     }
 
     @Override
     public void loadDefaults() {
         getStore().setToDefault(Constants.PREF_COMMANDS_PRESET);
-        getStore().setToDefault(Constants.PREF_COMMANDS);
+        getStore().setToDefault(Constants.PREF_COMMANDS_MODIFY);
+        getStore().setToDefault(Constants.PREF_COMMANDS_USER);
         load();
     }
 
     @Override
     public void load() {
         CommandData[] arrayPreset = PreferenceValueConverter.asCommandDataArray(getStore().getString(Constants.PREF_COMMANDS_PRESET));
-        CommandData[] arrayUser   = PreferenceValueConverter.asCommandDataArray(getStore().getString(Constants.PREF_COMMANDS));
+        CommandDataBasic[] arrayModify = PreferenceValueConverter.asCommandDataBasicArray(getStore().getString(Constants.PREF_COMMANDS_MODIFY));
+        CommandData[] arrayUser   = PreferenceValueConverter.asCommandDataArray(getStore().getString(Constants.PREF_COMMANDS_USER));
         removeAll();
+        addModifyToPreset(arrayModify, arrayPreset);
         for(int i = 0 ; i < arrayPreset.length ; i++) {
             addInternal(arrayPreset[i]);
         }
@@ -102,7 +112,18 @@ public class CommandDataStore extends DataStore<CommandData> {
         super.load();
     }
 
-    public CommandData getCommandDataByName(String name) {
+    private void addModifyToPreset(CommandDataBasic[] arrayModify, CommandData[] arrayPreset) {
+        for(int i = 0 ; i < arrayModify.length ; i++) {
+            for(int j = 0 ; j < arrayPreset.length ; j++) {
+            	if (arrayModify[i].getId().equals(arrayPreset[j].getId())) {
+            		arrayPreset[j].addUserData(arrayModify[i]);
+            		break;
+            	}
+            }        	
+        }    	
+	}
+
+	public CommandData getCommandDataByName(String name) {
         for (CommandData data : getDataList()) {
             if (data.getName().equals(name)) {
                 return data;

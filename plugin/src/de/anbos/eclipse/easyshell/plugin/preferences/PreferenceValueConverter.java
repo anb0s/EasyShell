@@ -26,10 +26,19 @@ public class PreferenceValueConverter {
 
 	// Static ------------------------------------------------------------------
 
-    public static String asCommandDataString(List<CommandData> items) {
+    public static String asCommandDataBasicString(List<CommandDataBasic> items) {
+        StringBuffer buffer = new StringBuffer();
+        for(CommandDataBasic item : items) {
+            buffer.append(asCommandDataBasicString(item));
+            buffer.append(ITEM_DELIMITER);
+        }
+        return buffer.toString();
+    }
+
+    public static String asCommandDataString(List<CommandData> items, boolean modifyDataOnly) {
         StringBuffer buffer = new StringBuffer();
         for(CommandData item : items) {
-            buffer.append(asCommandDataString(item));
+            buffer.append(asCommandDataString(item, modifyDataOnly));
             buffer.append(ITEM_DELIMITER);
         }
         return buffer.toString();
@@ -44,8 +53,16 @@ public class PreferenceValueConverter {
         return buffer.toString();
     }
 
-    public static final String asCommandDataString(CommandData data) {
-        return data.serialize(VALUE_DELIMITER);
+    public static final String asCommandDataBasicString(CommandDataBasic data) {
+   		return data.serialize(VALUE_DELIMITER);
+    }
+
+    public static final String asCommandDataString(CommandData data, boolean modifyDataOnly) {
+    	if (modifyDataOnly) {
+    		return asCommandDataBasicString(data.getModifyData());
+    	} else {
+    		return data.serialize(VALUE_DELIMITER);
+    	}
     }
 
     public static final String asMenuDataString(MenuData data) {
@@ -61,6 +78,15 @@ public class PreferenceValueConverter {
         return items;
     }
 
+    public static CommandDataBasic[] asCommandDataBasicArray(String value) {
+        StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
+        CommandDataBasic[] items = new CommandDataBasic[tokenizer.countTokens()];
+        for(int i = 0 ; i < items.length ; i++) {
+            items[i] = asCommandDataBasic(tokenizer.nextToken());
+        }
+        return items;
+    }
+
     public static MenuData[] asMenuDataArray(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
         MenuData[] items = new MenuData[tokenizer.countTokens()];
@@ -72,6 +98,12 @@ public class PreferenceValueConverter {
 
     public static CommandData asCommandData(String value) {
         CommandData data = new CommandData();
+        data.deserialize(value, null, VALUE_DELIMITER);
+        return data;
+    }
+
+    public static CommandDataBasic asCommandDataBasic(String value) {
+        CommandDataBasic data = new CommandDataBasic();
         data.deserialize(value, null, VALUE_DELIMITER);
         return data;
     }
@@ -95,20 +127,40 @@ public class PreferenceValueConverter {
         return data;
     }
 
+    public static CommandDataBasic migrateCommandDataBasic(Version version, String value) {
+    	CommandDataBasic data = new CommandDataBasic();
+        data.deserialize(version, value, null, VALUE_DELIMITER);
+        return data;
+    }
+
     public static MenuData migrateMenuData(Version version, String value) {
         MenuData data = new MenuData();
         data.deserialize(version, value, null, VALUE_DELIMITER);
         return data;
     }
 
-    public static String migrateCommandDataList(Version version, String value) {
+    public static String migrateCommandDataList(Version version, String value, boolean modifyDataOnly) {
         StringBuffer buffer = new StringBuffer();
         StringTokenizer tokenizer = new StringTokenizer(value, ITEM_DELIMITER);
         int num = tokenizer.countTokens();
         for(int i = 0 ; i < num; i++) {
             CommandData data = migrateCommandData(version, tokenizer.nextToken());
             if (data != null) {
-                buffer.append(asCommandDataString(data));
+                buffer.append(asCommandDataString(data, modifyDataOnly));
+                buffer.append(ITEM_DELIMITER);
+            }
+        }
+        return buffer.toString();
+    }
+
+    public static String migrateCommandDataBasicList(Version version, String value) {
+        StringBuffer buffer = new StringBuffer();
+        StringTokenizer tokenizer = new StringTokenizer(value, ITEM_DELIMITER);
+        int num = tokenizer.countTokens();
+        for(int i = 0 ; i < num; i++) {
+            CommandDataBasic data = migrateCommandDataBasic(version, tokenizer.nextToken());
+            if (data != null) {
+                buffer.append(asCommandDataBasicString(data));
                 buffer.append(ITEM_DELIMITER);
             }
         }

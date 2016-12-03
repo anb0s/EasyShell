@@ -39,11 +39,13 @@ public class Initializer extends AbstractPreferenceInitializer {
 	}
 
     private void setDefaults(IPreferenceStore store) {
-        String defaultCommandsPreset = PreferenceValueConverter.asCommandDataString(CommandDataDefaultCollection.getCommandsNative(null));
+        String defaultCommandsPreset = PreferenceValueConverter.asCommandDataString(CommandDataDefaultCollection.getCommandsNative(null), false);
+        String defaultCommandsModify = "";
         String defaultCommands = "";
         String defaultMenu    = PreferenceValueConverter.asMenuDataString(CommandDataDefaultCollection.getCommandsNativeAsMenu(true));
         store.setDefault(Constants.PREF_COMMANDS_PRESET, defaultCommandsPreset);
-        store.setDefault(Constants.PREF_COMMANDS, defaultCommands);
+        store.setDefault(Constants.PREF_COMMANDS_MODIFY, defaultCommandsModify);
+        store.setDefault(Constants.PREF_COMMANDS_USER, defaultCommands);
         store.setDefault(Constants.PREF_MENU, defaultMenu);
         store.setDefault(Constants.PREF_MIGRATED, false);
     }
@@ -94,11 +96,37 @@ public class Initializer extends AbstractPreferenceInitializer {
     private int migrate_from_v2(IPreferenceStore store, Version version, int migrateState) {
         // get the old v2 store
         IPreferenceStore oldStore = Activator.getDefault().getPreferenceStoreByVersion(version.name());
-        // check preferences for default values
-        migrateState = migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS)), migrateState);
+        // get the old preset with embedded modify
+        migrateState = migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS_PRESET)), migrateState);
+        String oldPresetsModified = null;
         if (migrateState == 0) {
-            store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.migrateCommandDataList(version, oldStore.getString(Constants.PREF_COMMANDS)));
+        	oldPresetsModified = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getString(Constants.PREF_COMMANDS_PRESET), true);
+            store.setValue(Constants.PREF_COMMANDS_MODIFY, oldPresetsModified);
         }
+        // get the new modify
+        migrateState = migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS_MODIFY)), migrateState);
+        if (migrateState == 0) {
+        	String newPresetsModified = PreferenceValueConverter.migrateCommandDataBasicList(version, oldStore.getString(Constants.PREF_COMMANDS_MODIFY));
+        	if (oldPresetsModified == null || oldPresetsModified.isEmpty()) {
+        		store.setValue(Constants.PREF_COMMANDS_MODIFY, newPresetsModified);
+        	}
+        }
+        // get old user commands
+        migrateState = migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS_OLD)), migrateState);
+        String oldUserCommands = null;
+        if (migrateState == 0) {
+        	oldUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getString(Constants.PREF_COMMANDS_OLD), false);
+            store.setValue(Constants.PREF_COMMANDS_USER, oldUserCommands);
+        }
+        // get new user commands
+        migrateState = migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS_USER)), migrateState);
+        if (migrateState == 0) {
+        	String newUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getString(Constants.PREF_COMMANDS_USER), false);
+        	if (oldUserCommands == null || oldUserCommands.isEmpty()) {
+        		store.setValue(Constants.PREF_COMMANDS_USER, newUserCommands);
+        	}
+        }
+        // get menus
         migrateState = migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_MENU)), migrateState);
         if (migrateState == 0) {
             store.setValue(Constants.PREF_MENU, PreferenceValueConverter.migrateMenuDataList(version, oldStore.getString(Constants.PREF_MENU)));
@@ -147,7 +175,7 @@ public class Initializer extends AbstractPreferenceInitializer {
                 CommandDataList cmdDataList = new CommandDataList();
                 MenuDataList menuDataList = CommandDataDefaultCollection.getCommandsNativeAsMenu(true);
                 if (PrefsV1_5.loadStore(oldStore, Utils.getOS(), cmdDataList, menuDataList)) {
-                    store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.asCommandDataString(cmdDataList));
+                    store.setValue(Constants.PREF_COMMANDS_USER, PreferenceValueConverter.asCommandDataString(cmdDataList, false));
                     store.setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
                 }
             }
@@ -158,7 +186,7 @@ public class Initializer extends AbstractPreferenceInitializer {
 	            CommandDataList cmdDataList = new CommandDataList();
 	            MenuDataList menuDataList = CommandDataDefaultCollection.getCommandsNativeAsMenu(true);
 	            if (PrefsV1_4.loadStore(oldStore, Utils.getOS(), cmdDataList, menuDataList)) {
-	                store.setValue(Constants.PREF_COMMANDS, PreferenceValueConverter.asCommandDataString(cmdDataList));
+	                store.setValue(Constants.PREF_COMMANDS_USER, PreferenceValueConverter.asCommandDataString(cmdDataList, false));
 	                store.setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
 	            }
             }
