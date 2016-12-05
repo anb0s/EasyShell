@@ -338,7 +338,6 @@ public class Utils {
     	String[] strings = new String[st.countTokens()];
     	for (int i=0;st.hasMoreElements();i++) {	        		
     		strings[i] = st.nextToken();
-    		i++;
     	}
     	return strings;
     }
