@@ -144,7 +144,7 @@ public class ActionDelegate implements IObjectActionDelegate {
 	    		commandArray = Utils.splitSpaces(commandValue);
 	    	break;
 	    	case commandTokenizerSpacesAndQuotes:
-	    		commandArray = Utils.splitSpacesAndQuotes(commandValue);
+	    		commandArray = Utils.splitSpacesAndQuotes(commandValue, true);
 	    	break;
 	    	case commandTokenizerDisabled:
 	    		commandArray = new String[1];
