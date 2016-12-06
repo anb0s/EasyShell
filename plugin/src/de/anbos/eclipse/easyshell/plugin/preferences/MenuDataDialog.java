@@ -292,7 +292,7 @@ public class MenuDataDialog extends StatusDialog {
             commandCombo.setItems(names);
             commandCombo.select(names.length-1);
         } else if (data.getPresetType() == PresetType.presetPluginModify) {
-            data.removeUserData();
+            data.removeModifyData();
             replaceCommand(index, data);
         }
     }

@@ -501,7 +501,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
                 if (command.getPresetType() == PresetType.presetUser) {
                     CommandDataStore.instance().delete(command);
                 } else if (command.getPresetType() == PresetType.presetPluginModify) {
-                    command.removeUserData();
+                    command.removeModifyData();
                     CommandDataStore.instance().replace(command);
                 }
             }

@@ -385,11 +385,7 @@ public class CommandDataDialog extends StatusDialog {
                 break;
             case presetPlugin:
             case presetPluginModify:
-                if (data.checkIfUserDataOverridesPreset(cmdDataBasic)) {
-                    data.addUserData(cmdDataBasic);
-                } else {
-                    data.removeUserData();
-                }
+            	data.addOrRemoveModifyData(cmdDataBasic);
                 break;
             default:
                 break;

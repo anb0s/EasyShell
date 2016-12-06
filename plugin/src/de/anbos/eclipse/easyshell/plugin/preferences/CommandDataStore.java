@@ -116,7 +116,7 @@ public class CommandDataStore extends DataStore<CommandData> {
         for(int i = 0 ; i < arrayModify.length ; i++) {
             for(int j = 0 ; j < arrayPreset.length ; j++) {
             	if (arrayModify[i].getId().equals(arrayPreset[j].getId())) {
-            		arrayPreset[j].addUserData(arrayModify[i]);
+            		arrayPreset[j].addOrRemoveModifyData(arrayModify[i]);
             		break;
             	}
             }        	

@@ -146,10 +146,7 @@ public class CommandData extends Data {
     }
 
     public boolean checkIfUserDataOverridesPreset(CommandDataBasic modifyData) {
-        if (getPresetType() == PresetType.presetPlugin) {
-            return !basicData.equals(modifyData);
-        }
-        return false;
+        return !basicData.equals(modifyData);
     }
 
     public void setBasicData(CommandDataBasic basicData) {
@@ -160,7 +157,7 @@ public class CommandData extends Data {
         this.modifyData = modifyData;
     }
 
-    public void addUserData(CommandDataBasic modifyData) {
+    private void addModifyData(CommandDataBasic modifyData) {
         if (getPresetType() != PresetType.presetPluginModify) {
             setPresetType(PresetType.presetPluginModify);
         }
@@ -168,13 +165,22 @@ public class CommandData extends Data {
         setModifyData(modifyData);
     }
 
-    public void removeUserData() {
-        if (getPresetType() == PresetType.presetPluginModify) {
+    public void removeModifyData() {
+        if (getPresetType() != PresetType.presetPlugin) {
             setPresetType(PresetType.presetPlugin);
         }
         setModifyData(null);
     }
 
+    public void addOrRemoveModifyData(CommandDataBasic modifyData) {
+        if (checkIfUserDataOverridesPreset(modifyData)) {
+        	addModifyData(modifyData);
+        } else {
+            removeModifyData();
+        }    	
+    }
+
+/*
 	public void setName(String name) {
 	    if (getPresetType() == PresetType.presetPluginModify) {
 	        modifyData.setName(name);
@@ -182,7 +188,7 @@ public class CommandData extends Data {
 	        basicData.setName(name);
 	    }
 	}
-
+*/
     public void setOs(OS os) {
         this.os = os;
     }
