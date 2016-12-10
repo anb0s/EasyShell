@@ -35,9 +35,11 @@ import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.preferences.GeneralDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.types.LinuxDesktop;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
+import de.anbos.eclipse.easyshell.plugin.types.Tooltip;
 
 public class Utils {
 
@@ -210,6 +212,9 @@ public class Utils {
     }
 
     public static void showToolTip(Control control, int style, String title, String message) {
+    	if (GeneralDataStore.instance().getData().getToolTipAll() != Tooltip.tooltipYes) {
+    		return;
+    	}
         if (control == null) {
             control = Display.getDefault().getActiveShell();
         }

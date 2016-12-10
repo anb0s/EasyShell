@@ -30,9 +30,11 @@ import de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver;
 import de.anbos.eclipse.easyshell.plugin.Resource;
 import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
+import de.anbos.eclipse.easyshell.plugin.preferences.GeneralDataStore;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Quotes;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+import de.anbos.eclipse.easyshell.plugin.types.Tooltip;
 import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;
 
 public class ActionDelegate implements IObjectActionDelegate {
@@ -132,7 +134,9 @@ public class ActionDelegate implements IObjectActionDelegate {
         // handling copy to clipboard
         if ((commandType == CommandType.commandTypeClipboard) && (cmdAll != null) && (cmdAll.length() != 0)) {
             Utils.copyToClipboard(cmdAll);
-            Activator.tooltipInfo(Activator.getResourceString("easyshell.message.copytoclipboard"), cmdAll);
+            if (GeneralDataStore.instance().getData().getToolTipClipboard() == Tooltip.tooltipYes) {
+            	Activator.tooltipInfo(Activator.getResourceString("easyshell.message.copytoclipboard"), cmdAll);
+            }
         }
     }
 

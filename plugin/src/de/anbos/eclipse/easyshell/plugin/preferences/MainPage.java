@@ -22,7 +22,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -33,13 +33,17 @@ import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.misc.UtilsUI;
 import de.anbos.eclipse.easyshell.plugin.types.Debug;
+import de.anbos.eclipse.easyshell.plugin.types.Tooltip;
 
 
 public class MainPage extends PreferencePage implements IWorkbenchPreferencePage {
 
     private IWorkbench workbench;
     
-    private Combo debugCombo;
+    private Button 	debug;
+    private Button 	toolTipAll;
+    private Button 	toolTipClipboard;
+    private Button 	toolTipError;
 
     public MainPage() {
     }
@@ -79,7 +83,10 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
             }
         }
         if (save) {
-        	GeneralDataStore.instance().getData().setDebug(Debug.getFromName(debugCombo.getText()));
+        	GeneralDataStore.instance().getData().setDebug(debug.getSelection() ? Debug.debugYes : Debug.debugNo);
+        	GeneralDataStore.instance().getData().setToolTipAll(toolTipAll.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
+        	GeneralDataStore.instance().getData().setToolTipClipboard(toolTipClipboard.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
+        	GeneralDataStore.instance().getData().setToolTipError(toolTipError.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
         	GeneralDataStore.instance().save();
         }
         return save;
@@ -91,12 +98,12 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
     }
 
     private boolean validateValues() {
-    	final String title = Activator.getResourceString("easyshell.main.page.error.title.incompletedata");
+    	//final String title = Activator.getResourceString("easyshell.main.page.error.title.incompletedata");
         // check resource
-        if ( (debugCombo.getText() == null) || (debugCombo.getText().length() <= 0)) {
+        /*if ( (debugCombo.getText() == null) || (debugCombo.getText().length() <= 0)) {
             MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.main.page.error.text.debug"));
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -112,74 +119,159 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         int result = dialog.open();
         if (result == 0) {
             GeneralDataStore.instance().loadDefaults();
-            UtilsUI.refreshWidget(debugCombo);
+            refreshWidgets();
         }
     }
 
     @Override
     protected Control createContents(Composite parent) {
+    	// forward to menu page
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("preferencePageId","de.anbos.eclipse.easyshell.plugin.preferences.MenuPage");
         Utils.executeCommand(workbench, "org.eclipse.ui.window.preferences", params, true);
         
+        // create own
         Composite pageComponent = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout(3, false);
         pageComponent.setLayout(layout);
-
-        createGroup(pageComponent);
-        
+        createGroup(pageComponent);       
         return pageComponent;
     }
 
     private void createGroup(Composite pageComponent) {
-        // define group1
-    	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup1.setText(Activator.getResourceString("easyshell.main.page.title.group1"));
-    	pageGroup1.setToolTipText(Activator.getResourceString("easyshell.main.page.tooltip.group1"));
-        GridLayout layout1 = new GridLayout();
-        layout1.numColumns = 3;
-        layout1.makeColumnsEqualWidth = false;
-        layout1.marginWidth = 5;
-        layout1.marginHeight = 4;
-        pageGroup1.setLayout(layout1);
-        GridData data1 = new GridData(GridData.FILL_HORIZONTAL);
-        pageGroup1.setLayoutData(data1);
-        pageGroup1.setFont(pageComponent.getFont());
-
-        createDebugCombo(pageGroup1);
-        
-        UtilsUI.refreshWidget(debugCombo);
+        Group pageGroup1 = createGroup1(pageComponent);
+        createWidgets(pageGroup1);
+        refreshWidgets();
     }
 
-    private void createDebugCombo(Composite parent) {
+	private Group createGroup1(Composite pageComponent) {
+    	Group pageGroup = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
+    	pageGroup.setText(Activator.getResourceString("easyshell.main.page.title.group1"));
+    	pageGroup.setToolTipText(Activator.getResourceString("easyshell.main.page.tooltip.group1"));
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        layout.makeColumnsEqualWidth = false;
+        layout.marginWidth = 5;
+        layout.marginHeight = 4;
+        pageGroup.setLayout(layout);
+        GridData data = new GridData(GridData.FILL_HORIZONTAL);
+        pageGroup.setLayoutData(data);
+        pageGroup.setFont(pageComponent.getFont());
+		return pageGroup;
+	}
+
+	private Composite createGroup1_1(Composite pageComponent) {
+		// define group1
+		Composite pageGroup = new Composite(pageComponent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        layout.makeColumnsEqualWidth = false;
+        layout.marginWidth = 5;
+        layout.marginHeight = 4;
+        pageGroup.setLayout(layout);
+        GridData data = new GridData(GridData.FILL_HORIZONTAL);
+        pageGroup.setLayoutData(data);
+        pageGroup.setFont(pageComponent.getFont());
+		return pageGroup;
+	}
+
+    private void createWidgets(Composite parent) {
+    	createCheckBoxDebug(parent);
+        createCheckBoxToolTipAll(parent);
+        Composite group1_1 = createGroup1_1(parent);
+        createCheckBoxToolTipClipboard(group1_1);
+        createCheckBoxToolTipError(group1_1);
+    }
+
+    private void refreshWidgets() {
+        UtilsUI.refreshWidget(debug);        
+        UtilsUI.refreshWidget(toolTipAll);        
+        UtilsUI.refreshWidget(toolTipClipboard);
+        UtilsUI.refreshWidget(toolTipError);    	
+    }
+
+    private void createCheckBoxDebug(Composite parent) {
         // draw label
-    	UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.main.page.label.combo.debug"), Activator.getResourceString("easyshell.main.page.label.combo.tooltip.debug"));
-    	UtilsUI.createLabel(parent, "", null);
-        // draw combo
-        debugCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
-        debugCombo.setToolTipText(Activator.getResourceString("easyshell.main.page.label.combo.tooltip.debug"));
-        debugCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        debugCombo.setItems(Debug.getNamesAsArray());
-        debugCombo.select(0);
-        debugCombo.addSelectionListener(new SelectionListener() {
+    	//UtilsUI.createLabel(parent, "", null);
+        // draw checkbox
+        GeneralData data = GeneralDataStore.instance().getData();
+        debug = new Button(parent,SWT.CHECK);
+        debug.setSelection(data.getDebug() == Debug.debugYes);
+        debug.addSelectionListener(new SelectionListener() {
             @Override
-			public void widgetSelected(SelectionEvent e) {
-				//String text = resourceTypeCombo.getItem(resourceTypeCombo.getSelectionIndex());
-			}
+            public void widgetSelected(SelectionEvent e) {
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
+        debug.setText(Activator.getResourceString("easyshell.main.page.label.button.debug"));
+        debug.setToolTipText(Activator.getResourceString("easyshell.main.page.label.button.tooltip.debug"));
+        debug.setEnabled(true);
+    }
+
+    private void createCheckBoxToolTipAll(Composite parent) {
+        // draw label
+    	//UtilsUI.createLabel(parent, "", null);
+        // draw checkbox
+        GeneralData data = GeneralDataStore.instance().getData();
+        toolTipAll = new Button(parent,SWT.CHECK);
+        toolTipAll.setSelection(data.getToolTipAll() == Tooltip.tooltipYes);
+        toolTipAll.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                boolean enabled = toolTipAll.getSelection();
+                toolTipClipboard.setEnabled(enabled);
+                toolTipError.setEnabled(enabled);
+            }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // TODO Auto-generated method stub
             }
-		});
+        });
+        toolTipAll.setText(Activator.getResourceString("easyshell.main.page.label.button.tooltipall"));
+        toolTipAll.setToolTipText(Activator.getResourceString("easyshell.main.page.label.button.tooltip.tooltipall"));
+        toolTipAll.setEnabled(true);
+    }
+
+    private void createCheckBoxToolTipClipboard(Composite parent) {
+        // draw label
+    	UtilsUI.createLabel(parent, "", null);
+        // draw checkbox
         GeneralData data = GeneralDataStore.instance().getData();
-        String[] items = debugCombo.getItems();
-        for(int i = 0 ; i < items.length ; i++) {
-            if(items[i].equals(data.getDebug().getName())) {
-            	debugCombo.select(i);
-                break;
+        toolTipClipboard = new Button(parent,SWT.CHECK);
+        toolTipClipboard.setSelection(data.getToolTipClipboard() == Tooltip.tooltipYes);
+        toolTipClipboard.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
             }
-        }
-        debugCombo.setEnabled(true);
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
+        toolTipClipboard.setText(Activator.getResourceString("easyshell.main.page.label.button.tooltipclip"));
+        toolTipClipboard.setToolTipText(Activator.getResourceString("easyshell.main.page.label.button.tooltip.tooltipclip"));
+        toolTipClipboard.setEnabled(true);
+    }
+
+    private void createCheckBoxToolTipError(Composite parent) {
+        // draw label
+    	UtilsUI.createLabel(parent, "", null);
+        // draw checkbox
+        GeneralData data = GeneralDataStore.instance().getData();
+        toolTipError = new Button(parent,SWT.CHECK);
+        toolTipError.setSelection(data.getToolTipError() == Tooltip.tooltipYes);
+        toolTipError.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
+        toolTipError.setText(Activator.getResourceString("easyshell.main.page.label.button.tooltiperror"));
+        toolTipError.setToolTipText(Activator.getResourceString("easyshell.main.page.label.button.tooltip.tooltiperror"));
+        toolTipError.setEnabled(true);
     }
 
 }
