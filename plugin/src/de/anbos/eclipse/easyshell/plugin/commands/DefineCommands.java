@@ -40,9 +40,6 @@ public class DefineCommands extends ExtensionContributionFactory {
 	@Override
 	public void createContributionItems(IServiceLocator  serviceLocator,
 			IContributionRoot additions) {
-	    // load the preferences
-	    CommandDataStore.instance().load();
-	    MenuDataStore.instance().load();
 	    MenuDataList items = MenuDataStore.instance().getEnabledCommandMenuDataList();
         for (MenuData item : items) {
             ResourceType resTypeWanted      = getWantedResourceType();

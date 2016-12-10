@@ -43,10 +43,12 @@ public class Initializer extends AbstractPreferenceInitializer {
         String defaultCommandsModify = "";
         String defaultCommands = "";
         String defaultMenu    = PreferenceValueConverter.asMenuDataString(CommandDataDefaultCollection.getCommandsNativeAsMenu(true));
+        String defaultGeneral = PreferenceValueConverter.asGeneralDataString(new GeneralData());
         store.setDefault(Constants.PREF_COMMANDS_PRESET, defaultCommandsPreset);
         store.setDefault(Constants.PREF_COMMANDS_MODIFY, defaultCommandsModify);
         store.setDefault(Constants.PREF_COMMANDS_USER, defaultCommands);
         store.setDefault(Constants.PREF_MENU, defaultMenu);
+        store.setDefault(Constants.PREF_GENERAL, defaultGeneral);
         store.setDefault(Constants.PREF_MIGRATED, false);
     }
 

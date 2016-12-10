@@ -38,10 +38,11 @@ public class MenuDataStore extends DataStore<MenuData> {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
                 if (event.getProperty().equals(Constants.PREF_MENU)) {
-                    load((String)event.getNewValue());
+                	loadInternal((String)event.getNewValue());
                 }
             }
         });
+        load();
     }
 
     public MenuData[] getCommandMenuDataArray() {
@@ -96,7 +97,7 @@ public class MenuDataStore extends DataStore<MenuData> {
         load();
     }
 
-    public void load(String prefMenu) {
+    private void loadInternal(String prefMenu) {
         if (prefMenu == null) {
             prefMenu = getStore().getString(Constants.PREF_MENU);
         }
@@ -110,7 +111,7 @@ public class MenuDataStore extends DataStore<MenuData> {
 
     @Override
     public void load() {
-        load(null);
+    	loadInternal(null);
     }
 
     public MenuDataList getRefencedBy(String id) {

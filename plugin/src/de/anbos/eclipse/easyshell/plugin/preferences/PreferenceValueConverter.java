@@ -69,6 +69,10 @@ public class PreferenceValueConverter {
         return data.serialize(VALUE_DELIMITER);
     }
 
+	public static String asGeneralDataString(GeneralData data) {
+		return data.serialize(VALUE_DELIMITER);
+	}
+
     public static CommandData[] asCommandDataArray(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
         CommandData[] items = new CommandData[tokenizer.countTokens()];
@@ -113,6 +117,12 @@ public class PreferenceValueConverter {
         data.deserialize(value, null, VALUE_DELIMITER);
         return data;
     }
+
+	public static GeneralData asGeneralData(String value) {
+		GeneralData data = new GeneralData();
+        data.deserialize(value, null, VALUE_DELIMITER);
+        return data;
+	}
 
     public static CommandData migrateCommandData(Version version, String value) {
         CommandData data = new CommandData();

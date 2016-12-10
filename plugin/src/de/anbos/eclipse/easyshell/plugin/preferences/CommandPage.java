@@ -151,12 +151,6 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         // search
         createSearchField(pageComponent);
 
-        // command store
-        CommandDataStore.instance().load();
-
-        // menu store
-        MenuDataStore.instance().load();
-
         // table viewer
         createTableViewer(pageComponent);
 

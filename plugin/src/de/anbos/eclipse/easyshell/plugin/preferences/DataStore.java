@@ -18,26 +18,20 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import de.anbos.eclipse.easyshell.plugin.Constants;
+public class DataStore<ITEMS_TYPE extends Data> extends Store implements IDataStore {
 
-public class DataStore<T extends Data> implements IDataStore {
-
-    private IPreferenceStore store;
-    private List<T> items;
+    private List<ITEMS_TYPE> items;
     private DataObjectComparator comparator;
 
     public DataStore(IPreferenceStore store) {
-        this.items = new ArrayList<T>();
-        this.store = store;
+    	super(store);
+        this.items = new ArrayList<ITEMS_TYPE>();
     }
 
-    public List<T> getDataList() {
+    public List<ITEMS_TYPE> getDataList() {
         return items;
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IDataStore#getPreviousElement(de.anbos.eclipse.easyshell.plugin.preferences.IData)
-     */
     @Override
     public IData getPreviousElement(IData data) {
         for(int i = 0 ; i < items.size() ; i++) {
@@ -53,9 +47,6 @@ public class DataStore<T extends Data> implements IDataStore {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IDataStore#getNextElement(de.anbos.eclipse.easyshell.plugin.preferences.IData)
-     */
     @Override
     public IData getNextElement(IData data) {
         for(int i = 0 ; i < items.size() ; i++) {
@@ -71,9 +62,6 @@ public class DataStore<T extends Data> implements IDataStore {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IDataStore#getLastElement()
-     */
     @Override
     public IData getLastElement() {
     	int index = items.size() - 1;
@@ -83,7 +71,7 @@ public class DataStore<T extends Data> implements IDataStore {
     	return (IData)items.get(index);
     }
 
-    public void add(T data) {
+    public void add(ITEMS_TYPE data) {
     	int position = 0;
     	IData lastElement = getLastElement();
     	if(lastElement != null) {
@@ -93,7 +81,7 @@ public class DataStore<T extends Data> implements IDataStore {
     	addInternal(data);
     }
 
-    public void replace(T data) {
+    public void replace(ITEMS_TYPE data) {
         items.set(items.indexOf(data), data);
     }
 
@@ -101,71 +89,34 @@ public class DataStore<T extends Data> implements IDataStore {
         items.remove(data);
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IDataStore#save()
-     */
     @Override
     public void save() {
         sort();
         renumber();
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IDataStore#loadDefaults()
-     */
-    @Override
-    public void loadDefaults() {
-        load();
-    }
-
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IDataStore#load()
-     */
     @Override
     public void load() {
         sort();
         renumber();
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IDataStore#removeAll()
-     */
     @Override
     public void removeAll() {
     	items.clear();
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IDataStore#isMigrated()
-     */
-    @Override
-    public boolean isMigrated() {
-        return store.getBoolean(Constants.PREF_MIGRATED);
-    }
-
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IDataStore#setMigrated(boolean)
-     */
-    @Override
-    public void setMigrated(boolean migrated) {
-        store.setValue(Constants.PREF_MIGRATED, migrated);
-    }
-
-    public T getByPosition(int position) {
+    public ITEMS_TYPE getByPosition(int position) {
         return items.get(position);
     }
 
-    public T getById(String id) {
-        for (T data : getDataList()) {
+    public ITEMS_TYPE getById(String id) {
+        for (ITEMS_TYPE data : getDataList()) {
             if (data.getId().equals(id)) {
                 return data;
             }
         }
         return null;
-    }
-
-    protected IPreferenceStore getStore() {
-        return store;
     }
 
     @Override
@@ -183,7 +134,7 @@ public class DataStore<T extends Data> implements IDataStore {
         }
     }
 
-    protected void addInternal(T data) {
+    protected void addInternal(ITEMS_TYPE data) {
         items.add(data);
     }
 

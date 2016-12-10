@@ -31,6 +31,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
+import de.anbos.eclipse.easyshell.plugin.preferences.GeneralDataStore;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.Debug;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
@@ -223,8 +224,7 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static void logDebug(String string) {
-        // TODO: get from preferences store
-        Debug debug = Debug.debugNo;
+    	Debug debug = GeneralDataStore.instance().getData().getDebug();
         if (debug == Debug.debugYes) {
             log(Status.INFO, string, null);
         }

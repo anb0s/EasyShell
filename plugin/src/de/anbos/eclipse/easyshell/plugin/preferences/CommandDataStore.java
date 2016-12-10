@@ -43,6 +43,7 @@ public class CommandDataStore extends DataStore<CommandData> {
                 }
             }
         });
+        load();
     }
 
     private CommandDataList getUserCommands() {

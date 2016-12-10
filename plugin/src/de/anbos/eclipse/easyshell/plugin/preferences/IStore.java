@@ -11,16 +11,16 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
-public interface IData {
+public interface IStore {
 
-    int getPosition();
+    void save();
 
-    String getId();
+    void loadDefaults();
 
-    boolean equals(Object object);
+    void load();
 
-    void setPosition(int position);
+    boolean isMigrated();
 
-    void setId(String id);
+    void setMigrated(boolean migrated);
 
 }

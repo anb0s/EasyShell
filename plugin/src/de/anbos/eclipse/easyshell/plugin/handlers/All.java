@@ -72,8 +72,6 @@ public class All extends AbstractHandler {
     }
 
     public MenuDataList getMenuDataList(Category category) {
-        CommandDataStore.instance().load();
-        MenuDataStore.instance().load();
         MenuDataList menuDataList = MenuDataStore.instance().getEnabledCommandMenuDataListByCategory(category);
         return menuDataList;
     }

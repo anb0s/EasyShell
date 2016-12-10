@@ -52,7 +52,8 @@ import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
 
 public class MenuDataDialog extends StatusDialog {
 
-    private MenuData menuData;
+
+	private MenuData menuData;
     private List<CommandData> cmdList;
 
     private Button  enabledCheckBox;
@@ -88,6 +89,23 @@ public class MenuDataDialog extends StatusDialog {
     protected boolean isResizable() {
       return true;
     }
+
+    @Override
+    protected void okPressed() {
+        if (!validateValues()) {
+            return;
+        }
+        menuData.setEnabled(enabledCheckBox.getSelection());
+        menuData.setNameType(getAllNameTypes()[nameTypeCombo.getSelectionIndex()]);
+        menuData.setNamePattern(namePatternText.getText());
+        menuData.setCommandId(cmdList.get(commandCombo.getSelectionIndex()).getId());
+        super.okPressed();
+    }
+
+    @Override
+	protected void cancelPressed() {
+		super.cancelPressed();
+	}
 
     public Control createDialogArea(Composite parent) {
         Font font = parent.getFont();
@@ -246,17 +264,6 @@ public class MenuDataDialog extends StatusDialog {
         return adapter;
     }
 
-    protected void okPressed() {
-        if (!validateValues()) {
-            return;
-        }
-        menuData.setEnabled(enabledCheckBox.getSelection());
-        menuData.setNameType(getAllNameTypes()[nameTypeCombo.getSelectionIndex()]);
-        menuData.setNamePattern(namePatternText.getText());
-        menuData.setCommandId(cmdList.get(commandCombo.getSelectionIndex()).getId());
-        super.okPressed();
-    }
-
     private void addDialog(CommandData data, boolean copy) {
         String title = Activator.getResourceString("easyshell.command.editor.dialog.title.new");
         if (copy) {
@@ -271,7 +278,6 @@ public class MenuDataDialog extends StatusDialog {
 
     private void addCommand(CommandData data) {
         CommandDataStore.instance().add(data);
-        //CommandDataStore.instance().save();
         cmdList.add(data);
         String[] names = getAllCommandsAsComboNames(cmdList);
         commandCombo.setItems(names);
