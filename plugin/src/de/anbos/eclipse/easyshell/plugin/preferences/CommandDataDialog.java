@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -45,6 +44,7 @@ import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
+import de.anbos.eclipse.easyshell.plugin.misc.UtilsUI;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Converter;
@@ -120,15 +120,15 @@ public class CommandDataDialog extends StatusDialog {
 
         setHelpAvailable(showHelpButton);
 
-        refreshResourceTypeCombo();
+        UtilsUI.refreshWidget(resourceTypeCombo);
 
-        refreshDirCheckBox();
-
-        refreshCategoryCombo();
-
-        refreshCommandTypeCombo();
+        UtilsUI.refreshWidget(categoryCombo);
         
-        refreshTokenizerCombo();
+        UtilsUI.refreshWidget(commandTypeCombo);
+
+        UtilsUI.refreshWidget(dirCheckBox);
+
+        UtilsUI.refreshWidget(tokenizerCombo);
 
         return pageComponent;
     }
@@ -264,25 +264,10 @@ public class CommandDataDialog extends StatusDialog {
         }
     }
 
-    private void createLabel(Composite parent, String name, String tooltip) {
-        Label label = new Label(parent, SWT.LEFT);
-        label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        label.setText(name);
-        if (tooltip != null) {
-        	label.setToolTipText(tooltip);
-        }
-    }
-
-    private Label createImageLabel(Composite parent, String image) {
-        Label label = new Label(parent, SWT.LEFT);
-        label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        label.setImage(new Image(null, Activator.getImageDescriptor(image).getImageData()));
-        return label;
-    }
 
     private void createDirCheckBox(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.useworkdir"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.useworkdir"));
+        UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.useworkdir"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.useworkdir"));
         // draw checkbox
         dirCheckBox = new Button(parent,SWT.CHECK);
         dirCheckBox.setSelection(this.data.isUseWorkingDirectory());
@@ -335,41 +320,6 @@ public class CommandDataDialog extends StatusDialog {
         });
         Label label = new Label(parent, 0);
         label.setText(labelText);
-    }
-
-    private void refreshResourceTypeCombo() {
-        // send event to refresh
-        Event event = new Event();
-        event.item = null;
-        resourceTypeCombo.notifyListeners(SWT.Selection, event);
-    }
-
-    private void refreshCategoryCombo() {
-        // send event to refresh
-        Event event = new Event();
-        event.item = null;
-        categoryCombo.notifyListeners(SWT.Selection, event);
-    }
-
-    private void refreshCommandTypeCombo() {
-        // send event to refresh
-        Event event = new Event();
-        event.item = null;
-        commandTypeCombo.notifyListeners(SWT.Selection, event);
-    }
-
-    private void refreshDirCheckBox() {
-        // send event to refresh
-        Event event = new Event();
-        event.item = null;
-        dirCheckBox.notifyListeners(SWT.Selection, event);
-    }
-
-    private void refreshTokenizerCombo() {
-        // send event to refresh
-        Event event = new Event();
-        event.item = null;
-        tokenizerCombo.notifyListeners(SWT.Selection, event);
     }
 
     protected void okPressed() {
@@ -448,8 +398,8 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createResourceTypeCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.resource"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.resource"));
-        createLabel(parent, "", null);
+        UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.resource"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.resource"));
+        UtilsUI.createLabel(parent, "", null);
         // draw combo
         resourceTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         resourceTypeCombo.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.combo.tooltip.resource"));
@@ -479,8 +429,8 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createCategoryCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.category"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.category"));
-        categoryImage = createImageLabel(parent, Category.categoryDefault.getIcon());
+        UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.category"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.category"));
+        categoryImage = UtilsUI.createImageLabel(parent, Category.categoryDefault.getIcon());
         // draw combo
         categoryCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         categoryCombo.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.combo.tooltip.category"));
@@ -510,8 +460,8 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createCommandTypeCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.type"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.type"));
-        createLabel(parent, "", null);
+        UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.type"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.type"));
+        UtilsUI.createLabel(parent, "", null);
         // draw combo
         commandTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         commandTypeCombo.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.combo.tooltip.type"));
@@ -541,8 +491,8 @@ public class CommandDataDialog extends StatusDialog {
 
     private void createTokenizerCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.tokenizer"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.tokenizer"));
-        createLabel(parent, "", null);
+        UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.tokenizer"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.tokenizer"));
+        UtilsUI.createLabel(parent, "", null);
         // draw combo
         tokenizerCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         tokenizerCombo.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.combo.tooltip.tokenizer"));
@@ -573,10 +523,10 @@ public class CommandDataDialog extends StatusDialog {
     private Text createTextField(Composite parent, String labelText, String labelTooltip, String editValue, boolean emptyLabel) {
         // draw label
         if (labelText != null) {
-            createLabel(parent, labelText, labelTooltip);
+            UtilsUI.createLabel(parent, labelText, labelTooltip);
         }
         if (emptyLabel) {
-            createLabel(parent, "", null);
+            UtilsUI.createLabel(parent, "", null);
         }
         // draw textfield
         Text text = new Text(parent,SWT.BORDER);

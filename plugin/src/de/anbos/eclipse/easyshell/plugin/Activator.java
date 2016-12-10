@@ -188,19 +188,19 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static void logSuccess(String msg, Exception e) {
-        logSuccess(null, msg, null, false);
+        logSuccess(null, msg, e, false);
     }
 
     public static void logInfo(String msg, Exception e) {
-        logInfo(null, msg, null, false);
+        logInfo(null, msg, e, false);
     }
 
     public static void logWarning(String msg, Exception e) {
-        logWarning(null, msg, null, false);
+        logWarning(null, msg, e, false);
     }
 
     public static void logError(String msg, Exception e) {
-        logError(null, msg, null, false);
+        logError(null, msg, e, false);
     }
 
     public static void log(int status, String msg, Exception e) {
@@ -226,7 +226,7 @@ public class Activator extends AbstractUIPlugin {
     public static void logDebug(String string) {
     	Debug debug = GeneralDataStore.instance().getData().getDebug();
         if (debug == Debug.debugYes) {
-            log(Status.INFO, string, null);
+        	logInfo(string, null);
         }
     }
 

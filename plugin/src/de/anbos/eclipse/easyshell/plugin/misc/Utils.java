@@ -163,7 +163,7 @@ public class Utils {
                 	}
                 }
             }
-            Activator.logInfo("isExpectedCommandOutput: answer: >" + expectedLine + "<", null);
+            Activator.logDebug("isExpectedCommandOutput: answer: >" + expectedLine + "<");
             line = null;
             BufferedReader err = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
             // If there is any error output, print it to

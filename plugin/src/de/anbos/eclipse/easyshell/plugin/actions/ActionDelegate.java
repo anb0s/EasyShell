@@ -96,26 +96,25 @@ public class ActionDelegate implements IObjectActionDelegate {
         }
         // get the manager for variables expansion
         IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
-        // iterate over the reources
+        // iterate over the resources        
         for (Resource resource : resources) {
             // TODO: get from preferences store
             //Quotes quotes = Activator.getQuotes(InstanceIDNum);
             Quotes quotes = Quotes.quotesNo;
             if (resource.resolve()) {
+            	Activator.logDebug("res:>" + resource.getResourceLocation() + "<");
                 try {
                     // set arguments for resolving
                     DynamicVariableResolver.setResource(resource);
                     DynamicVariableResolver.setQuotes(quotes);
                     // validate the command
                     variableManager.validateStringVariables(commandValue);
-                    Activator.logDebug(commandValue);
+                    Activator.logDebug("cmd:>" + commandValue + "<");
                     // handling copy to clipboard
                     if (commandType == CommandType.commandTypeClipboard) {
                     	String cmd = variableManager.performStringSubstitution(commandValue, false);
-                    	Activator.logDebug("--- clp: >");
+                    	Activator.logDebug("clp:>" + cmd + "<");
                         cmdAll += cmd;
-                        Activator.logDebug(cmd);
-                        Activator.logDebug("--- clp: <");
                     }
                     // handling command line
                     else {
@@ -156,9 +155,7 @@ public class ActionDelegate implements IObjectActionDelegate {
         // resolve the variables
         for (int i=0;i<commandArray.length;i++) {
         	commandArray[i] = variableManager.performStringSubstitution(commandArray[i], false);
-            Activator.logDebug("--- cmd: >");
-            Activator.logDebug(commandArray[i]);
-            Activator.logDebug("--- cmd: <");
+            Activator.logDebug("exc" + i + ":>" + commandArray[i]+ "<");
         }    	
         return commandArray;
     }
@@ -167,18 +164,17 @@ public class ActionDelegate implements IObjectActionDelegate {
         // working directory
         if (commandWorkingDir != null && !commandWorkingDir.isEmpty()) {
             variableManager.validateStringVariables(commandWorkingDir);
-            Activator.logDebug("--- working dir: >");
-            Activator.logDebug(commandWorkingDir);
-            Activator.logDebug("--- working dir: <");
+            Activator.logDebug("cwd: >" + commandWorkingDir + "<");
             return new File(variableManager.performStringSubstitution(commandWorkingDir, false));
         }
         return null;
     }
 
     private void handleExec(IStringVariableManager variableManager) throws CoreException, IOException {
+    	Activator.logDebug("exc:>---");
     	// get working directory
     	File workingDirectory = getWorkingDirectoryResolved(variableManager);
-        // get command
+        // get command    	
         String[] command = getCommandResolved(variableManager);
         // create process builder with command and ...
         ProcessBuilder pb = new ProcessBuilder(command);
@@ -186,6 +182,7 @@ public class ActionDelegate implements IObjectActionDelegate {
         if (workingDirectory != null) {
             pb.directory(workingDirectory);
         }
+        Activator.logDebug("exc:<---");
         // get passed system environment
         //Map<String, String> env = pb.environment();
         // add own variables
