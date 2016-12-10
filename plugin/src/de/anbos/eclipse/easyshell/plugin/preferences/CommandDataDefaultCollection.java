@@ -101,6 +101,10 @@ public class CommandDataDefaultCollection {
         // Windows TotalCommander
         list.add(new CommandData("e487327c-dfdb-42e7-bf16-3b81a34e5703", PresetType.presetPlugin, OS.osWindows, "TotalCommander", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "cmd.exe /C totalcmd64.exe /O /T ${easyshell:container_loc}"));
+        list.add(new CommandData("d13ad020-aeb8-4b48-acc6-4e09dea4913a", PresetType.presetPlugin, OS.osWindows, "TotalCommander (left)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+                "cmd.exe /C totalcmd64.exe /O /L=${easyshell:container_loc}"));
+        list.add(new CommandData("a6728fb1-89f3-4c3a-8ab0-5c57b6d7ee48", PresetType.presetPlugin, OS.osWindows, "TotalCommander (right)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+                "cmd.exe /C totalcmd64.exe /O /R=${easyshell:container_loc}"));
         // PowerCmd
         list.add(new CommandData("771c0bac-cdb2-47fe-a030-6b830d366da1", PresetType.presetPlugin, OS.osWindows, "PowerCmd", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "cmd.exe /C start \"${easyshell:project_name}\" PowerCmd.exe /P ${easyshell:container_loc}"));
