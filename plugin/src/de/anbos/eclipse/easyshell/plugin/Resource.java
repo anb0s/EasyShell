@@ -112,6 +112,25 @@ public class Resource {
         return "";
     }
 
+    public String getParentLocation() {
+        return file.getParent();
+    }
+
+    public String getParentName() {
+        if (resource != null) {
+            return resource.getParent().getName();
+        } else {
+            return file.getParentFile().getName();
+        }
+    }
+
+    public String getParentPath() {
+        if (resource != null) {
+            return resource.getParent().getFullPath().toString();
+        }
+        return "";
+    }
+
     public String getResourceLocation() {
         return file.getPath();
     }

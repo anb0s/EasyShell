@@ -103,7 +103,34 @@ public enum Variable {
             return ((Resource)object).getContainerPath();
         };
     }),
-    // ${easyshell:project_loc_loc}
+    // ${easyshell:parent_loc} for file it's equal to ${easyshell:container_loc}
+    varParentLoc(true, false, "parent_loc", "absolute path of parent directory\n\nfor files it's equal to ${easyshell:container_loc}", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getParentLocation();
+        };
+    }),
+    // ${easyshell:parent_name} for file it's equal to ${easyshell:container_name}
+    varParentName(true, false, "parent_name", "name of parent directory\n\nfor files it's equal to ${easyshell:container_name}", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getParentName();
+        };
+    }),
+    // ${easyshell:parent_path} for file it's equal to ${easyshell:container_path}
+    varParentPath(true, false, "parent_path", "relative path to workspace of parent directory\n\nfor files it's equal to ${easyshell:container_path}", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getParentPath();
+        };
+    }),
+    // ${easyshell:project_loc}
     varProjectLoc(true, false, "project_loc", "absolute path of project", new IVariableResolver() {
         public String resolve(Object object, Object parameter) {
             if(!(object instanceof Resource)) {
