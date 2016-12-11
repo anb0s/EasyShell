@@ -234,7 +234,7 @@ public class PrefsV1_4 {
         int position = menuDataList.size();
         // open
         String openCmd = store.getString(PreferenceEntry.preferenceTargetOpen.getString());
-        CommandData cmdDataOpen = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes, migrateCommandVariables(openCmd));
+        CommandData cmdDataOpen = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces, migrateCommandVariables(openCmd));
         cmdDataList.add(cmdDataOpen);
         MenuData menuDataOpen = new MenuData(cmdDataOpen.getId(), true, MenuNameType.menuNameTypeOpenHere, null, cmdDataOpen.getId());
         menuDataOpen.setPosition(position++);
@@ -243,7 +243,7 @@ public class PrefsV1_4 {
         menuDataList.add(menuDataOpen);
         // run
         String runCmd = store.getString(PreferenceEntry.preferenceTargetRun.getString());
-        CommandData cmdDataRun = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes, migrateCommandVariables(runCmd));
+        CommandData cmdDataRun = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces, migrateCommandVariables(runCmd));
         cmdDataList.add(cmdDataRun);
         MenuData menuDataRun = new MenuData(cmdDataRun.getId(), true, MenuNameType.menuNameTypeRunWith, null, cmdDataRun.getId());
         menuDataRun.setPosition(position++);
@@ -252,7 +252,7 @@ public class PrefsV1_4 {
         menuDataList.add(menuDataRun);
         // explore
         String exploreCmd = store.getString(PreferenceEntry.preferenceTargetExplore.getString());
-        CommandData cmdDataExplore = new CommandData(null, PresetType.presetUser, os, command.getExplorer(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes, migrateCommandVariables(exploreCmd));
+        CommandData cmdDataExplore = new CommandData(null, PresetType.presetUser, os, command.getExplorer(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces, migrateCommandVariables(exploreCmd));
         cmdDataList.add(cmdDataExplore);
         MenuData menuDataExplore = new MenuData(cmdDataExplore.getId(), true, MenuNameType.menuNameTypeShowIn, null, cmdDataExplore.getId());
         menuDataExplore.setPosition(position++);
@@ -261,7 +261,7 @@ public class PrefsV1_4 {
         menuDataList.add(menuDataExplore);
         // copy to clipboard
         String copyPathCmd = store.getString(PreferenceEntry.preferenceTargetCopyPath.getString());
-        CommandData cmdDataCopyPath = new CommandData(null, PresetType.presetUser, os, "Full Path", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpacesAndQuotes, migrateCommandVariables(copyPathCmd));
+        CommandData cmdDataCopyPath = new CommandData(null, PresetType.presetUser, os, "Full Path", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpaces, migrateCommandVariables(copyPathCmd));
         cmdDataList.add(cmdDataCopyPath);
         MenuData menuDataCopyPath = new MenuData(cmdDataCopyPath.getId(), true, MenuNameType.menuNameTypeCopyToClipboard, null, cmdDataCopyPath.getId());
         menuDataCopyPath.setPosition(position++);

@@ -18,7 +18,7 @@ public enum CommandTokenizer {
     commandTokenizerUnknown(-1, "Unknown"),
 	commandTokenizerDisabled(0, "Disabled"),
 	commandTokenizerSpaces(1, "Split spaces only"),
-	commandTokenizerSpacesAndQuotes(2, "Split spaces and remove quotes"),
+	commandTokenizerSpacesAndQuotes(2, "Split spaces and remove outer quotes"),
 	commandTokenizerSpacesAndQuotesSkip(3, "Split spaces and skip quotes");
     // attributes
     private final int id;

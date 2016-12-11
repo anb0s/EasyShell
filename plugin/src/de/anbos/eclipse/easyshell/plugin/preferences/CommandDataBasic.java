@@ -25,7 +25,7 @@ public class CommandDataBasic {
     private ResourceType resourceType = ResourceType.resourceTypeUnknown;
     private boolean useWorkingDirectory = false;
     private String workingDirectory = "";
-    private CommandTokenizer commandTokenizer = CommandTokenizer.commandTokenizerSpacesAndQuotes;
+    private CommandTokenizer commandTokenizer = CommandTokenizer.commandTokenizerSpaces;
     private String command = "";
 
     public CommandDataBasic(String id, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, CommandTokenizer tokenizer, String command) {
@@ -151,9 +151,12 @@ public class CommandDataBasic {
 	    setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
 	    setWorkingDirectory(tokenizer.nextToken());
 		// command
-	    String commandTokenizer = CommandTokenizer.commandTokenizerSpacesAndQuotes.toString();
+	    String commandTokenizer = CommandTokenizer.commandTokenizerSpaces.toString();	    
         if (version.getId() >= Version.v2_1_001.getId()) {
-        	commandTokenizer = tokenizer.nextToken();
+        	String oldCommandTokenizer = tokenizer.nextToken();
+        	if (version.getId() >= Version.v2_1_003.getId()) {
+        		commandTokenizer = oldCommandTokenizer;
+        	}
         }
         setCommandTokenizer(CommandTokenizer.getFromEnum(commandTokenizer));
 		setCommand(tokenizer.nextToken());

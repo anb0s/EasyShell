@@ -50,7 +50,7 @@ public class CommandData extends Data {
     }
 
     public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, Category category, CommandType cmdType, String command) {
-        this(id, presetType, os, name, resType, false, null, category, cmdType, CommandTokenizer.commandTokenizerSpacesAndQuotes, command);
+        this(id, presetType, os, name, resType, false, null, category, cmdType, CommandTokenizer.commandTokenizerSpaces, command);
     }
 
     public CommandData(CommandData commandData, String newId) {
@@ -306,9 +306,12 @@ public class CommandData extends Data {
 		    setCommandType(CommandType.getFromDeprecatedCommandTypeEnum(commandTypeStr));
 		}
 		// go on compatible
-	    String commandTokenizer = CommandTokenizer.commandTokenizerSpacesAndQuotes.toString();
+	    String commandTokenizer = CommandTokenizer.commandTokenizerSpaces.toString();
         if (version.getId() >= Version.v2_1_001.getId()) {
-        	commandTokenizer = tokenizer.nextToken();
+        	String oldCommandTokenizer = tokenizer.nextToken();
+        	if (version.getId() >= Version.v2_1_003.getId()) {
+        		commandTokenizer = oldCommandTokenizer;
+        	}
         }
         basicData.setCommandTokenizer(CommandTokenizer.getFromEnum(commandTokenizer));
 		basicData.setCommand(tokenizer.nextToken());

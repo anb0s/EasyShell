@@ -87,9 +87,9 @@ public class CommandDataDefaultCollection {
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files\\Git\\bin\\bash.exe\" --login -i"));
         list.add(new CommandData("ee790c7f-9c6d-40f9-84f6-51a948a59d45", PresetType.presetPlugin, OS.osWindows, "Git Bash v1.x", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\Program Files\\Git\\bin\\bash.exe\" --login -i -c ./''${easyshell:resource_name}''"));
-        list.add(new CommandData("d2726c3f-6da3-46b5-8029-1c63d0ff6bd2", PresetType.presetPlugin, OS.osWindows, "Git Bash v2.x", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+        list.add(new CommandData("d2726c3f-6da3-46b5-8029-1c63d0ff6bd2", PresetType.presetPlugin, OS.osWindows, "Git Bash v2.x", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
                 "C:\\Program Files\\Git\\git-bash.exe"));
-        list.add(new CommandData("03e6678b-f67f-42ed-b65f-6b6f06ec0e8f", PresetType.presetPlugin, OS.osWindows, "Git Bash v2.x", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+        list.add(new CommandData("03e6678b-f67f-42ed-b65f-6b6f06ec0e8f", PresetType.presetPlugin, OS.osWindows, "Git Bash v2.x", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
                 "C:\\Program Files\\Git\\git-bash.exe -c ./''${easyshell:resource_name}''"));
         // Windows ConEmu
         list.add(new CommandData("1bd62e22-cd93-4136-b643-1cbb9579c195", PresetType.presetPlugin, OS.osWindows, "ConEmu", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
@@ -143,14 +143,14 @@ public class CommandDataDefaultCollection {
         list.add(new CommandData("94b0c584-0316-4dac-bd40-2ab1a0428d32", PresetType.presetPlugin, OS.osLinux, "LX Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
                 "lxterminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
         // Linux Sakura Terminal
-        list.add(new CommandData("8e366a34-5ce2-4430-bc21-20e176e0128c", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+        list.add(new CommandData("8e366a34-5ce2-4430-bc21-20e176e0128c", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
                 "sakura"));
-        list.add(new CommandData("2a979af5-86a7-440e-b4f0-8442e85412e4", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+        list.add(new CommandData("2a979af5-86a7-440e-b4f0-8442e85412e4", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
                 "sakura --execute=./''${easyshell:resource_name}'' --hold"));
         // Linux ROXTerm
-        list.add(new CommandData("f573a4de-22fa-467f-a433-042d0992ab28", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+        list.add(new CommandData("f573a4de-22fa-467f-a433-042d0992ab28", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
                 "roxterm --title=${easyshell:project_name} --directory=${easyshell:container_loc}"));
-        list.add(new CommandData("1cc39e61-8d8d-4493-8baa-7a11ff01c06c", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+        list.add(new CommandData("1cc39e61-8d8d-4493-8baa-7a11ff01c06c", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
                 "roxterm --title=${easyshell:project_name} --directory=${easyshell:container_loc} --execute ./''${easyshell:resource_name}''"));
         // Linux Pantheon Terminal
         list.add(new CommandData("e5b3b0f6-e27c-4a2d-aa1a-caef784dd3da", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
@@ -179,7 +179,7 @@ public class CommandDataDefaultCollection {
         list.add(new CommandData("f2b970ed-ef98-4ce2-861c-20f44a471f49", PresetType.presetPlugin, OS.osLinux, "Caja", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "caja ${easyshell:container_loc}"));
         // Linux Guake: http://guake-project.org, http://askubuntu.com/questions/152193/how-to-open-directory-in-guake-from-nautilus
-        list.add(new CommandData("554d1dc7-4f26-4be9-bc2a-86d5a41ec606", PresetType.presetPlugin, OS.osLinux, "Guake", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
+        list.add(new CommandData("554d1dc7-4f26-4be9-bc2a-86d5a41ec606", PresetType.presetPlugin, OS.osLinux, "Guake", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
                 "guake --show --execute-command=\"cd '${easyshell:container_loc}'\""));
         // Linux Krusader:
         list.add(new CommandData("d93cd39e-1f78-47e2-90d3-88b8c8495c61", PresetType.presetPlugin, OS.osLinux, "Krusader (left panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
