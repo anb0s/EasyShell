@@ -121,42 +121,44 @@ public class CommandDataDefaultCollection {
                 "konsole --workdir ${easyshell:container_loc} --noclose  -e ${easyshell:resource_loc}"));
         // Linux Konqueror
         list.add(new CommandData("8873342e-e02b-4feb-8f56-9f52524c0f46", PresetType.presetPlugin, OS.osLinux, "Konqueror", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
-                "konqueror file:\"${easyshell:resource_loc}\""));
+                "konqueror --select file:${easyshell:resource_loc}"));
+        list.add(new CommandData("3c3358b2-3541-4d13-b5bc-137ba239dae7", PresetType.presetPlugin, OS.osLinux, "Konqueror", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
+                "konqueror file:${easyshell:resource_loc}"));
         // Linux Gnome Terminal
         list.add(new CommandData("53f7b6a3-f8d5-4682-b0ef-1d6ceec5cc8a", PresetType.presetPlugin, OS.osLinux, "Gnome Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "gnome-terminal --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData("c6126958-32f2-4f96-9933-69ddd956f2e9", PresetType.presetPlugin, OS.osLinux, "Gnome Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
-                "gnome-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
+        list.add(new CommandData("c6126958-32f2-4f96-9933-69ddd956f2e9", PresetType.presetPlugin, OS.osLinux, "Gnome Terminal", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+                "gnome-terminal --working-directory=${easyshell:container_loc} --command=./\"'${easyshell:resource_name}'\""));
         // Linux Xfce Terminal: http://docs.xfce.org/apps/terminal/command-line
         list.add(new CommandData("8175f9a7-4e54-4367-a6b6-251aedc187df", PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "xfce4-terminal --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData("adf40e10-0ee9-4abe-8282-aff7d51bb68d", PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
-                "xfce4-terminal --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}'' --hold"));
+        list.add(new CommandData("adf40e10-0ee9-4abe-8282-aff7d51bb68d", PresetType.presetPlugin, OS.osLinux, "Xfce Terminal", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+                "xfce4-terminal --working-directory=${easyshell:container_loc} --command=./\"'${easyshell:resource_name}'\" --hold"));
         // Linux MATE Terminal
         list.add(new CommandData("9a11b3eb-497c-44dd-9813-a841a32465c1", PresetType.presetPlugin, OS.osLinux, "MATE Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "mate-terminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData("d07df65d-ccc5-4c71-82f8-3a17e608516b", PresetType.presetPlugin, OS.osLinux, "MATE Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
-                "mate-terminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
+        list.add(new CommandData("d07df65d-ccc5-4c71-82f8-3a17e608516b", PresetType.presetPlugin, OS.osLinux, "MATE Terminal", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+                "mate-terminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc} --command=./\"'${easyshell:resource_name}'\""));
         // Linux LX Terminal (LXDE): http://manpages.ubuntu.com/manpages/precise/en/man1/lxterminal.1.html
         list.add(new CommandData("8770e3c5-cd60-4c01-b1c0-8b7754b91b27", PresetType.presetPlugin, OS.osLinux, "LX Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "lxterminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData("94b0c584-0316-4dac-bd40-2ab1a0428d32", PresetType.presetPlugin, OS.osLinux, "LX Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
-                "lxterminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc} --command=./''${easyshell:resource_name}''"));
+        list.add(new CommandData("94b0c584-0316-4dac-bd40-2ab1a0428d32", PresetType.presetPlugin, OS.osLinux, "LX Terminal", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+                "lxterminal --title=${easyshell:project_name} --working-directory=${easyshell:container_loc} --command=./\"'${easyshell:resource_name}'\""));
         // Linux Sakura Terminal
         list.add(new CommandData("8e366a34-5ce2-4430-bc21-20e176e0128c", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
                 "sakura"));
-        list.add(new CommandData("2a979af5-86a7-440e-b4f0-8442e85412e4", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
-                "sakura --execute=./''${easyshell:resource_name}'' --hold"));
+        list.add(new CommandData("2a979af5-86a7-440e-b4f0-8442e85412e4", PresetType.presetPlugin, OS.osLinux, "Sakura Terminal", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+                "sakura --execute=./\"'${easyshell:resource_name}'\" --hold"));
         // Linux ROXTerm
-        list.add(new CommandData("f573a4de-22fa-467f-a433-042d0992ab28", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
+        list.add(new CommandData("f573a4de-22fa-467f-a433-042d0992ab28", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
                 "roxterm --title=${easyshell:project_name} --directory=${easyshell:container_loc}"));
-        list.add(new CommandData("1cc39e61-8d8d-4493-8baa-7a11ff01c06c", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
-                "roxterm --title=${easyshell:project_name} --directory=${easyshell:container_loc} --execute ./''${easyshell:resource_name}''"));
+        list.add(new CommandData("1cc39e61-8d8d-4493-8baa-7a11ff01c06c", PresetType.presetPlugin, OS.osLinux, "ROXTerm", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+                "roxterm --title=${easyshell:project_name} --directory=${easyshell:container_loc} --execute ./\"'${easyshell:resource_name}'\""));
         // Linux Pantheon Terminal
         list.add(new CommandData("e5b3b0f6-e27c-4a2d-aa1a-caef784dd3da", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "pantheon-terminal --working-directory=${easyshell:container_loc}"));
-        list.add(new CommandData("22ec69ee-e39e-4fa6-a241-4e950d3235af", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
-                "pantheon-terminal --working-directory=${easyshell:container_loc} --execute=./''${easyshell:resource_name}''"));
+        list.add(new CommandData("22ec69ee-e39e-4fa6-a241-4e950d3235af", PresetType.presetPlugin, OS.osLinux, "Pantheon Terminal", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+                "pantheon-terminal --working-directory=${easyshell:container_loc} --execute=./\"'${easyshell:resource_name}'\""));
         // Linux Pantheon Filebrowser
         list.add(new CommandData("025e2f56-3d2e-47e1-8daa-c2c74049b150", PresetType.presetPlugin, OS.osLinux, "Pantheon", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "pantheon-files ${easyshell:resource_loc}"));
@@ -168,7 +170,7 @@ public class CommandDataDefaultCollection {
                 "nautilus ${easyshell:resource_loc}"));
         // Linux Dolphin
         list.add(new CommandData("4fbfa632-5455-4384-9f9e-773603a12bea", PresetType.presetPlugin, OS.osLinux, "Dolphin", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
-                "dolphin --select ${easyshell:resource_loc}"));
+                "dolphin --select file:${easyshell:resource_loc}"));
         // Linux Nemo
         list.add(new CommandData("8e14d26d-2981-4b81-b8e5-6a942c6f2c59", PresetType.presetPlugin, OS.osLinux, "Nemo", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "nemo ${easyshell:resource_loc}"));
