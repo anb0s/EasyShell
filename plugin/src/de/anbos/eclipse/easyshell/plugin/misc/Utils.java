@@ -351,18 +351,7 @@ public class Utils {
      * borrowed the idea from:
      * https://stackoverflow.com/questions/3366281/tokenizing-a-string-but-ignoring-delimiters-within-quotes/3366603#3366603
      */
-    public static String[] splitSpacesAndQuotes(String str, boolean leaveQuotes) {
-    	/* this is not working like expected
-    	String regex = "\"([^\"]*)\"|(\\S+)";
-        Matcher m = Pattern.compile(regex).matcher(commandValue);
-        while (m.find()) {
-            if (m.group(1) != null) {
-                System.out.println("Quoted [" + m.group(1) + "]");
-            } else {
-                System.out.println("Plain [" + m.group(2) + "]");
-            }
-        }
-        */
+    public static String[] splitSpacesAndQuotes(String str, boolean skipOuterQuotes) {
         str += " "; // To detect last token when not quoted...
         ArrayList<String> strings = new ArrayList<String>();
         boolean inQuote = false;
@@ -380,8 +369,7 @@ public class Utils {
                 			inQuote=false;                			
                 		}
                 	}
-                    //inQuote = !inQuote;
-                    if (leaveQuotes) {
+                    if (skipOuterQuotes || (inQuote && (quote != c))) {
                     	sb.append(c);
                     }
                 }
