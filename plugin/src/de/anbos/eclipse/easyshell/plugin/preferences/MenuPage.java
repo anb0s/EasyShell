@@ -57,7 +57,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
     List<CommandData> commandList;
     private MenuDataMover itemMover;
     private Text searchText;
-    private MenuTableFilter filter;
+    private MenuDataFilter filter;
     private CheckboxTableViewer tableViewer;
     private Button addNewButton;
     private Button addCopyButton;
@@ -148,23 +148,9 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void createSearchField(Composite parent) {
-        /*
-        Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
-        group.setText(Activator.getResourceString("easyshell.command.page.text.text.search"));
-        group.setToolTipText(Activator.getResourceString("easyshell.command.page.text.tooltip.search"));
-        GridLayout layout2 = new GridLayout();
-        layout2.numColumns = 1;
-        layout2.makeColumnsEqualWidth = false;
-        layout2.marginWidth = 5;
-        layout2.marginHeight = 4;
-        group.setLayout(layout2);
-        GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
-        group.setLayoutData(data2);
-        group.setFont(parent.getFont());*/
-
         //Label searchLabel = new Label(parent, SWT.NONE);
         //searchLabel.setText("Search: ");
-        filter = new MenuTableFilter();
+        filter = new MenuDataFilter();
         searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
         searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
             | GridData.HORIZONTAL_ALIGN_FILL));
@@ -473,17 +459,8 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         tableViewer.refresh();
     }
 
-    /*
-    private void refreshTableViewer(MenuData data) {
-        tableViewer.refresh();
-        tableViewer.setChecked(data, data.isEnabled());
-        tableViewer.setSelection(new StructuredSelection(data));
-    }
-    */
-
     private void refreshTableViewer() {
         tableViewer.refresh();
-        // update/set checked elements
         tableViewer.setAllChecked(false);
         tableViewer.setCheckedElements(MenuDataStore.instance().getEnabledCommandMenuDataArray());
     }

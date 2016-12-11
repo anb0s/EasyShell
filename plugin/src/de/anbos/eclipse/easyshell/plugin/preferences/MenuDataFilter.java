@@ -14,11 +14,13 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-public class CommandTableFilter extends ViewerFilter {
+public class MenuDataFilter extends ViewerFilter {
 
     private String searchString;
 
     public void setSearchText(String s) {
+    	// remove not valid chars
+    	s = s.replaceAll("[\\*|\\.|\\(|\\)|\\?]","");
         // add pre and post fix that it can be used for case-insensitive matching
         this.searchString = "(?i).*" + s + ".*";
     }
@@ -28,17 +30,14 @@ public class CommandTableFilter extends ViewerFilter {
         if (searchString == null || searchString.length() == 0) {
             return true;
         }
-        CommandData data = (CommandData) element;
-        if (data.getCategory().getName().matches(searchString)) {
+        MenuData data = (MenuData) element;
+        if (data.getNameExpanded().matches(searchString)) {
             return true;
         }
-        if (data.getName().matches(searchString)) {
+        if (data.getCommandData().getName().matches(searchString)) {
             return true;
         }
-        if (data.getPresetType().getName().matches(searchString)) {
-            return true;
-        }
-        if (data.getCommand().matches(searchString)) {
+        if (data.getCommandData().getCommand().matches(searchString)) {
             return true;
         }
         return false;
