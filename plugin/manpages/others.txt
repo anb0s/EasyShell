@@ -1,0 +1,2 @@
+Linux hold terminal:
+http://unix.stackexchange.com/questions/155955/opening-a-terminal-other-than-xterm-running-a-command-on-it-and-not-closing-th

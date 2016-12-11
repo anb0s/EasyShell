@@ -22,12 +22,15 @@ import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -57,7 +60,11 @@ public class MenuDataDialog extends StatusDialog {
     private List<CommandData> cmdList;
 
     private Button  enabledCheckBox;
-    private Combo   commandCombo;
+
+    private Text searchText;
+    private CommandDataFilter filter;
+    private TypedComboBox<CommandData> commandComboViewer;
+
     private Combo   nameTypeCombo;
     private Text    namePatternText;
     ContentProposalAdapter namePatternTextAssist;
@@ -98,7 +105,7 @@ public class MenuDataDialog extends StatusDialog {
         menuData.setEnabled(enabledCheckBox.getSelection());
         menuData.setNameType(getAllNameTypes()[nameTypeCombo.getSelectionIndex()]);
         menuData.setNamePattern(namePatternText.getText());
-        menuData.setCommandId(cmdList.get(commandCombo.getSelectionIndex()).getId());
+        menuData.setCommandId(commandComboViewer.getSelection().getId());
         super.okPressed();
     }
 
@@ -167,8 +174,12 @@ public class MenuDataDialog extends StatusDialog {
         pageGroup2.setLayoutData(gridData2);
         pageGroup2.setFont(font);
 
+        // search
+        createSearchField(pageGroup2);
+
         // create selected command combo
         createCommandCombo(pageGroup2); createNewButton(font, pageGroup2, gridData2);
+
         // create input commandText field
         commandText = createTextField(pageGroup2, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), menuData.getCommandData().getCommand(), false);
         createEditButton(font, pageGroup2, gridData2);
@@ -272,34 +283,32 @@ public class MenuDataDialog extends StatusDialog {
         CommandDataDialog dialog = new CommandDataDialog(getShell(), data, title);
         if (dialog.open() == Window.OK) {
             addCommand(data);
-            refreshCommandCombo();
         }
     }
 
     private void addCommand(CommandData data) {
         CommandDataStore.instance().add(data);
         cmdList.add(data);
-        String[] names = getAllCommandsAsComboNames(cmdList);
-        commandCombo.setItems(names);
-        commandCombo.select(names.length-1);
+        commandComboViewer.setContent(cmdList);
+        commandComboViewer.selectLastItem();
     }
 
-    private void replaceCommand(int index, CommandData data) {
+    private void replaceCommand(CommandData data) {
         CommandDataStore.instance().replace(data);
-        commandCombo.setItem(index, data.getCommandAsComboName());
-        commandCombo.select(index);
+        cmdList = CommandDataStore.instance().getDataList();
+        commandComboViewer.setContent(cmdList);
+        commandComboViewer.setSelection(data);
     }
 
-    private void removeCommand(int index, CommandData data) {
+    private void removeCommand(CommandData data) {
         if (data.getPresetType() == PresetType.presetUser) {
             CommandDataStore.instance().delete(data);
-            cmdList.remove(index);
-            String[] names = getAllCommandsAsComboNames(cmdList);
-            commandCombo.setItems(names);
-            commandCombo.select(names.length-1);
+            cmdList = CommandDataStore.instance().getDataList();
+            commandComboViewer.setContent(cmdList);
+            commandComboViewer.selectLastItem();
         } else if (data.getPresetType() == PresetType.presetPluginModify) {
             data.removeModifyData();
-            replaceCommand(index, data);
+            replaceCommand(data);
         }
     }
 
@@ -309,22 +318,19 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void addCopyDialog() {
-        int index = commandCombo.getSelectionIndex();
-        CommandData data = new CommandData(cmdList.get(index), true);
+        CommandData data = new CommandData(commandComboViewer.getSelection(), true);
         data.setPresetType(PresetType.presetUser);
         addDialog(data, true);
     }
 
     private void editDialog() {
-        int index = commandCombo.getSelectionIndex();
-        CommandData dataSelected = cmdList.get(index);
+        CommandData dataSelected = commandComboViewer.getSelection();
         CommandData dataNew = new CommandData(dataSelected, false);
         dataNew.setPosition(dataSelected.getPosition());
         String title = MessageFormat.format(Activator.getResourceString("easyshell.command.editor.dialog.title.edit"), dataNew.getPresetType().getName());
         CommandDataDialog dialog = new CommandDataDialog(getShell(), dataNew, title);
         if (dialog.open() == Window.OK) {
-            replaceCommand(index, dataNew);
-            refreshCommandCombo();
+            replaceCommand(dataNew);
         } else {
             dataNew = null;
         }
@@ -335,14 +341,13 @@ public class MenuDataDialog extends StatusDialog {
         List<CommandData> commands = new ArrayList<CommandData>();
         List<MenuData> menus = new ArrayList<MenuData>();
         // get the selected
-        int index = commandCombo.getSelectionIndex();
-        CommandData data = cmdList.get(index);
+        CommandData data = commandComboViewer.getSelection();
         commands.add(data);
         // get referenced menus and remove the the actual menus
         menus.addAll(MenuDataStore.instance().getRefencedBy(data.getId()));
         menus.remove(this.menuData);
         // ask user
-        String commandNames = commandCombo.getItem(index);
+        String commandNames = data.getCommandAsComboName();
         String title = null;
         String question = null;
         if (data.getPresetType() == PresetType.presetPluginModify) {
@@ -383,16 +388,12 @@ public class MenuDataDialog extends StatusDialog {
             for (MenuData menu : menus) {
                 MenuDataStore.instance().delete(menu);
             }
-            removeCommand(index, data);
-            refreshCommandCombo();
+            removeCommand(data);
         }
     }
 
     private void refreshCommandCombo() {
-        // send event to refresh
-        Event event = new Event();
-        event.item = null;
-        commandCombo.notifyListeners(SWT.Selection, event);
+    	commandComboViewer.setSelection(this.menuData.getCommandData());
     }
 
     private void refreshNameTypeCombo() {
@@ -407,7 +408,8 @@ public class MenuDataDialog extends StatusDialog {
     	String title = Activator.getResourceString("easyshell.menu.editor.dialog.error.incompletedata.title");
 
     	// check type
-        if ( (commandCombo.getText() == null) || (commandCombo.getText().length() <= 0)) {
+    	CommandData data = commandComboViewer.getSelection();
+        if (data == null) {
         	MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.menu.editor.dialog.error.type.text"));
         	return false;
         }
@@ -424,13 +426,11 @@ public class MenuDataDialog extends StatusDialog {
         if (!valid) {
             MessageDialog.openError(getShell(), title, text);
         } else {
-            int index = commandCombo.getSelectionIndex();
-            CommandData data = cmdList.get(index);
             List<MenuData> menus = MenuDataStore.instance().getRefencedBy(data.getId());
             menus.remove(this.menuData);
             if (menus.size() >0) {
                 title = Activator.getResourceString("easyshell.menu.editor.dialog.title.duplicate");
-                String commandNames = commandCombo.getItem(index);
+                String commandNames = data.getCommandAsComboName();
                 String menuNames = "";
                 for (MenuData menu : menus) {
                     menuNames += menu.getNameExpanded() + "\n";
@@ -460,14 +460,6 @@ public class MenuDataDialog extends StatusDialog {
         enabledCheckBox.setSelection(this.menuData.isEnabled());
     }
 
-    private String[] getAllCommandsAsComboNames(List<CommandData> list) {
-        String[] arr = new String[list.size()];
-        for (int i=0;i<list.size();i++) {
-            arr[i] = list.get(i).getCommandAsComboName();
-        }
-        return arr;
-    }
-
     private String[] getAllNameTypesAsComboNames() {
         return MenuNameType.getNamesAsArray();
     }
@@ -476,44 +468,93 @@ public class MenuDataDialog extends StatusDialog {
         return MenuNameType.getAsArray();
     }
 
+    private void createSearchField(Composite parent) {
+    	createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.text.filter"));
+        filter = new CommandDataFilter();
+        searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
+        searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+        searchText.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent ke) {
+              filter.setSearchText(searchText.getText());
+              commandComboViewer.getViewer().refresh();
+              commandComboViewer.getViewer().getCombo().select(0);
+            }
+        });
+        searchText.setToolTipText(Activator.getResourceString("easyshell.command.page.text.tooltip.search"));
+        // fake
+        Label label = new Label(parent, SWT.NONE);
+        label.setText("");
+    }
+
     private void createCommandCombo(Composite parent) {
         // draw label
         createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.combo.preset"));
-        // draw combo
-        commandCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
-        commandCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        //commandCombo.setEditable(false);
-        commandCombo.setItems(getAllCommandsAsComboNames(cmdList));
-        commandCombo.select(0);
-        commandCombo.addSelectionListener(new SelectionListener() {
+        
+        commandComboViewer = new TypedComboBox<CommandData>(parent);
+
+        commandComboViewer.addSelectionListener(new TypedComboBoxSelectionListener<CommandData>() {
+
             @Override
-			public void widgetSelected(SelectionEvent e) {
-                int index = commandCombo.getSelectionIndex();
-				//String text = commandCombo.getItem(index);
-                CommandData cmdData = cmdList.get(index);
-				menuData.setCommandId(cmdData.getId());
+            public void selectionChanged(TypedComboBox<CommandData> typedComboBox, CommandData newSelection) {
+				menuData.setCommandId(newSelection.getId());
 				if (menuData.getNameType() != MenuNameType.menuNameTypeUser) {
-				    menuData.setNameTypeFromCategory(cmdData.getCategory());
+				    menuData.setNameTypeFromCategory(newSelection.getCategory());
 				}
 				commandText.setText(menuData.getCommandData().getCommand());
 				boolean presetSelected = menuData.getCommandData().getPresetType() == PresetType.presetPlugin;
-				//editButton.setEnabled(!presetSelected);
 				removeButton.setEnabled(!presetSelected);
 				// updates & refreshes
 				updateTypeComboSelection();
 				refreshNameTypeCombo();
-			}
+            }
+
+        });
+
+        commandComboViewer.setLabelProvider(new TypedComboBoxLabelProvider<CommandData>() {
+
             @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-                // TODO Auto-generated method stub
+            public String getSelectedLabel(CommandData element) {
+                return element.getCommandAsComboName();
             }
-		});
-        for(int i = 0 ; i < cmdList.size() ; i++) {
-            if (cmdList.get(i).equals(this.menuData.getCommandData())) {
-                commandCombo.select(i);
-                return;
+
+            @Override
+            public String getListLabel(CommandData element) {
+                return element.getCommandAsComboName();
             }
+
+            @Override
+            public Image getImage(CommandData element) {
+                return element.getCategoryImage();
+            }
+
+        });
+
+        if (filter != null) {
+        	commandComboViewer.getViewer().addFilter(filter);        	
         }
+        
+        /*Combo combo = commandComboViewer.getViewer().getCombo();
+        combo.addModifyListener(new ModifyListener() {			
+			@Override
+			public void modifyText(ModifyEvent e) {
+				if (refreshing) {
+					refreshing = false;
+					return;
+				}
+				Combo combo = commandComboViewer.getViewer().getCombo();
+				if (combo != null && filter != null) {
+					String text = combo.getText();
+					CommandData data = commandComboViewer.getSelection();
+					if (text != null && data != null && !data.getCommandAsComboName().equals(text)) {
+			            filter.setSearchText(text);
+			            refreshing = true;
+			            //commandComboViewer.getViewer().refresh();						
+					}
+				}
+			}
+		});*/
+        
+        commandComboViewer.setContent(cmdList);                
     }
 
     private void createNameTypeCombo(Composite parent) {
