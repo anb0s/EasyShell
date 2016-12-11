@@ -188,6 +188,11 @@ public class CommandDataDefaultCollection {
                 "krusader --left=${easyshell:container_loc}"));
         list.add(new CommandData("1df6da5c-5455-4372-a2ae-6b1b3f910e76", PresetType.presetPlugin, OS.osLinux, "Krusader (right panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "krusader --right=${easyshell:container_loc}"));
+        // Linux Enlightenment (Terminology emulator): https://www.enlightenment.org/about-terminology
+        list.add(new CommandData("837716a1-5475-42fa-b40b-6d3da56197a1", PresetType.presetPlugin, OS.osLinux, "Enlightenment Terminology", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
+                "terminology --current-directory=${easyshell:container_loc}"));
+        list.add(new CommandData("7137aada-940a-4b03-90b2-f468d696019a", PresetType.presetPlugin, OS.osLinux, "Enlightenment Terminology", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotes,
+                "terminology --hold --current-directory=${easyshell:container_loc} -e ./\"'${easyshell:resource_name}'\""));
     }
 
     private void addMacOSXCommands() {
