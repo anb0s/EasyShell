@@ -128,7 +128,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         createSearchField(pageComponent);
 
         // get the native commands list
-        commandList = CommandDataDefaultCollection.getCommandsNative(new CommandDataList(CommandDataStore.instance().getDataList()));
+        commandList = CommandDataDefaultCollection.getCommandsNativeAll(new CommandDataList(CommandDataStore.instance().getDataList()));
 
         // table viewer
         createTableViewer(pageComponent);

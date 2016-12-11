@@ -39,7 +39,7 @@ public class Initializer extends AbstractPreferenceInitializer {
 	}
 
     private void setDefaults(IPreferenceStore store) {
-        String defaultCommandsPreset = PreferenceValueConverter.asCommandDataString(CommandDataDefaultCollection.getCommandsNative(null), false);
+        String defaultCommandsPreset = PreferenceValueConverter.asCommandDataString(CommandDataDefaultCollection.getCommandsNativeAll(null), false);
         String defaultCommandsModify = "";
         String defaultCommands = "";
         String defaultMenu    = PreferenceValueConverter.asMenuDataString(CommandDataDefaultCollection.getCommandsNativeAsMenu(true));

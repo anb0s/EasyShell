@@ -22,7 +22,6 @@ import org.eclipse.ui.services.IServiceLocator;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
-import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataStore;

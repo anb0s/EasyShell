@@ -25,7 +25,6 @@ import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
 import de.anbos.eclipse.easyshell.plugin.commands.ExecuteCommandPopup;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.commands.ExecuteCommandDialog;
-import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataStore;

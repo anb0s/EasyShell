@@ -35,8 +35,11 @@ import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandData;
+import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataList;
 import de.anbos.eclipse.easyshell.plugin.preferences.GeneralDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
+import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.LinuxDesktop;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 import de.anbos.eclipse.easyshell.plugin.types.Tooltip;
@@ -382,6 +385,43 @@ public class Utils {
             }
         }
         return strings.toArray(new String[strings.size()]);
+    }
+
+    public static void addNotNull(CommandDataList list, CommandData data) {
+    	if (data != null) {
+    		list.add(data);
+    	}
+    }
+
+    public static CommandDataList getCommandData(CommandDataList list, OS os) {
+        CommandDataList listOut = new CommandDataList();
+        for (CommandData entry : list) {
+            if (entry.getOs() == os) {
+                CommandData newData = new CommandData(entry, false);
+                listOut.add(newData);
+            }
+        }
+        return listOut;
+    }
+
+    public static CommandData getCommandData(CommandDataList list, String name, Category category) {
+        for (CommandData entry : list) {
+            if (entry.getCategory() == category && entry.getName().matches(name)) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
+    public static CommandDataList getCommandDataList(CommandDataList list, Category category) {
+    	CommandDataList listOut = new CommandDataList();
+        for (CommandData entry : list) {
+            if (entry.getCategory() == category) {
+            	CommandData newData = new CommandData(entry, false);
+            	listOut.add(newData);
+            }
+        }
+        return listOut;
     }
 
 }
