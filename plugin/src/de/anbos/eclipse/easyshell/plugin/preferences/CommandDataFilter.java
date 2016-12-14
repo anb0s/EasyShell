@@ -27,10 +27,19 @@ public class CommandDataFilter extends ViewerFilter {
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
+        if(!(element instanceof CommandData)) {
+            return false;
+        }
+        CommandData data = (CommandData) element;
+        boolean selected = isSelected(data);
+       	data.setSelected(selected);
+       	return selected;
+    }
+
+    private boolean isSelected(CommandData data) {
         if (searchString == null || searchString.length() == 0) {
             return true;
         }
-        CommandData data = (CommandData) element;
         if (data.getCategory().getName().matches(searchString)) {
             return true;
         }
@@ -43,7 +52,6 @@ public class CommandDataFilter extends ViewerFilter {
         if (data.getCommand().matches(searchString)) {
             return true;
         }
-        return false;
+        return false;    	
     }
-
 }

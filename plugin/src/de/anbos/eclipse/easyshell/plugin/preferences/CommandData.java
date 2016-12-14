@@ -34,6 +34,8 @@ public class CommandData extends Data {
     private Category category = Category.categoryUnknown;
     private CommandType commandType = CommandType.commandTypeUnknown;
     private CommandDataBasic modifyData = null;
+    // internal
+    private boolean selected = true; 
 
     public CommandData(String id, CommandDataBasic basicData, PresetType presetType, OS os, Category category, CommandType cmdType, CommandDataBasic modifyData) {
         super(id);
@@ -367,5 +369,13 @@ public class CommandData extends Data {
     public String serialize(String delimiter) {
         return serialize(Version.actual, delimiter);
     }
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	public boolean isSelected() {
+		return this.selected;
+	}
 
 }

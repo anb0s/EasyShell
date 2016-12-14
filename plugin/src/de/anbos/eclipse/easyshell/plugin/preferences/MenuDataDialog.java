@@ -481,6 +481,18 @@ public class MenuDataDialog extends StatusDialog {
         return MenuNameType.getAsArray();
     }
 
+    private CommandData getFirstSelected() {
+    	CommandData retData = null;
+    	for (Object object : (Object[])commandComboViewer.getViewer().getInput()) {
+    		CommandData data = (CommandData)object;
+    		if (data.isSelected()) {
+    			retData = data;
+    			break;
+    		}
+    	}
+    	return retData;
+    }
+
     private void createSearchField(Composite parent) {
     	createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.text.filter"));
         filter = new CommandDataFilter();
@@ -491,6 +503,7 @@ public class MenuDataDialog extends StatusDialog {
               filter.setSearchText(searchText.getText());
               commandComboViewer.getViewer().refresh();
               commandComboViewer.getViewer().getCombo().select(0);
+              commandComboViewer.setSelection(getFirstSelected());        
             }
         });
         searchText.setToolTipText(Activator.getResourceString("easyshell.command.page.text.tooltip.search"));
