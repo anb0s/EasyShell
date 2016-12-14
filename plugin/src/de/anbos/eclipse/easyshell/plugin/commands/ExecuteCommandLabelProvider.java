@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 
 public class ExecuteCommandLabelProvider extends LabelProvider {
@@ -25,7 +26,12 @@ public class ExecuteCommandLabelProvider extends LabelProvider {
             return null;
         }
         MenuData data = (MenuData)element;
-        return new Image(null, Activator.getImageDescriptor(data.getCommandData().getCategory().getIcon()).getImageData());
+        try {
+			return new Image(null, Activator.getImageDescriptor(data.getCommandData().getCategory().getIcon()).getImageData());
+		} catch (UnknownCommandID e) {
+			e.logInternalError();
+			return null;
+		}
     }
 
     @Override

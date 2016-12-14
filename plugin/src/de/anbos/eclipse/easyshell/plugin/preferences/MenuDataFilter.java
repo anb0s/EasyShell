@@ -14,6 +14,8 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
+import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
+
 public class MenuDataFilter extends ViewerFilter {
 
     private String searchString;
@@ -34,12 +36,16 @@ public class MenuDataFilter extends ViewerFilter {
         if (data.getNameExpanded().matches(searchString)) {
             return true;
         }
-        if (data.getCommandData().getName().matches(searchString)) {
-            return true;
-        }
-        if (data.getCommandData().getCommand().matches(searchString)) {
-            return true;
-        }
+		try {
+	        if (data.getCommandData().getName().matches(searchString)) {
+	            return true;
+	        }
+	        if (data.getCommandData().getCommand().matches(searchString)) {
+	            return true;
+	        }
+		} catch (UnknownCommandID e) {
+			e.logInternalError();
+		}
         return false;
     }
 

@@ -14,6 +14,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
+import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
 import de.anbos.eclipse.easyshell.plugin.types.Variable;
@@ -75,14 +76,13 @@ public class MenuData extends Data {
     public String getNameExpanded() {
         String expanded = namePattern;
         for (Variable variable : Variable.getInternalVariables()) {
-            expanded = expanded.replace(variable.getFullVariableName(), variable.getResolver().resolve(getCommandData(), null));
+            try {
+				expanded = expanded.replace(variable.getFullVariableName(), variable.getResolver().resolve(getCommandData(), null));
+			} catch (UnknownCommandID e) {
+				e.logInternalError();
+				break;
+			}
         }
-        /*
-        expanded = expanded.replace("${easyshell:command_category}", getCommandData().getCategory().getName());
-        expanded = expanded.replace("${easyshell:command_type}", getCommandData().getCommandType().getName());
-        expanded = expanded.replace("${easyshell:command_name}", getCommandData().getName());
-        expanded = expanded.replace("${easyshell:command_os}", getCommandData().getOs().getName());
-        */
         return expanded;
     }
 
@@ -181,7 +181,11 @@ public class MenuData extends Data {
         if (version.getId() >= Version.v2_0_003.getId()) {
             ret += getCommandId() + delimiter;
         } else {
-            ret += getCommandData().serialize(version, delimiter);
+            try {
+				ret += getCommandData().serialize(version, delimiter);
+			} catch (UnknownCommandID e) {
+				e.logInternalError();
+			}
         }
         return ret;
     }
@@ -211,15 +215,22 @@ public class MenuData extends Data {
         this.commandId = commandId;
     }
 
-    public CommandData getCommandData() {
-        return CommandDataStore.instance().getById(getCommandId());
+    public CommandData getCommandData() throws UnknownCommandID {
+    	String commandIdStr = getCommandId();
+    	CommandData data = CommandDataStore.instance().getById(commandIdStr);
+    	if (data != null) {
+    		return data;
+    	} else {
+    		throw new UnknownCommandID(commandIdStr);
+    	}
     }
 
     public void setNameTypeFromCategory() {
-        CommandData newData = getCommandData();
-        if (newData != null) {
-            setNameTypeFromCategory(newData.getCategory());
-        }
+		try {
+			setNameTypeFromCategory(getCommandData().getCategory());
+		} catch (UnknownCommandID e) {
+			e.logInternalError();
+		}
     }
 
     public void setNameTypeFromCategory(Category category) {

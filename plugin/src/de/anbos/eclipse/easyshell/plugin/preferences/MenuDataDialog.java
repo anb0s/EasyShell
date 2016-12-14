@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
@@ -181,7 +182,14 @@ public class MenuDataDialog extends StatusDialog {
         createCommandCombo(pageGroup2); createNewButton(font, pageGroup2, gridData2);
 
         // create input commandText field
-        commandText = createTextField(pageGroup2, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), menuData.getCommandData().getCommand(), false);
+        String commandStr;
+		try {
+			commandStr = menuData.getCommandData().getCommand();
+		} catch (UnknownCommandID e1) {
+			e1.logInternalError();
+			commandStr = "Unknown ID: " + e1.getID();
+		}
+        commandText = createTextField(pageGroup2, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), commandStr, false);
         createEditButton(font, pageGroup2, gridData2);
         createLabel(pageGroup2, "");createLabel(pageGroup2, "");
         createCopyButton(font, pageGroup2, gridData2);
@@ -393,7 +401,12 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void refreshCommandCombo() {
-    	commandComboViewer.setSelection(this.menuData.getCommandData());
+    	try {
+			commandComboViewer.setSelection(this.menuData.getCommandData());
+		} catch (UnknownCommandID e) {
+			e.logInternalError();
+			commandComboViewer.selectFirstItem();
+		}
     }
 
     private void refreshNameTypeCombo() {
@@ -495,13 +508,22 @@ public class MenuDataDialog extends StatusDialog {
         commandComboViewer.addSelectionListener(new TypedComboBoxSelectionListener<CommandData>() {
 
             @Override
-            public void selectionChanged(TypedComboBox<CommandData> typedComboBox, CommandData newSelection) {
+            public void selectionChanged(TypedComboBox<CommandData> typedComboBox, CommandData newSelection) { 
 				menuData.setCommandId(newSelection.getId());
 				if (menuData.getNameType() != MenuNameType.menuNameTypeUser) {
 				    menuData.setNameTypeFromCategory(newSelection.getCategory());
 				}
-				commandText.setText(menuData.getCommandData().getCommand());
-				boolean presetSelected = menuData.getCommandData().getPresetType() == PresetType.presetPlugin;
+				String commandStr = null;
+				PresetType presetType = PresetType.presetPlugin;
+				try {
+					commandStr = menuData.getCommandData().getCommand();
+					presetType = menuData.getCommandData().getPresetType();
+				} catch (UnknownCommandID e) {
+					e.logInternalError();
+					commandStr = "Unknown ID: " + e.getID();
+				}
+				commandText.setText(commandStr);
+				boolean presetSelected =  presetType == PresetType.presetPlugin;
 				removeButton.setEnabled(!presetSelected);
 				// updates & refreshes
 				updateTypeComboSelection();

@@ -19,6 +19,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.Constants;
+import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 
 public class MenuDataStore extends DataStore<MenuData> {
@@ -62,9 +63,13 @@ public class MenuDataStore extends DataStore<MenuData> {
         Iterator<MenuData> dataIterator = getDataList().iterator();
         while(dataIterator.hasNext()) {
             MenuData data = (MenuData)dataIterator.next();
-            if(data.isEnabled() && (category == Category.categoryUnknown || data.getCommandData().getCategory() == category)) {
-                checkedItems.add(data);
-            }
+    		try {
+                if(data.isEnabled() && (category == Category.categoryUnknown || data.getCommandData().getCategory() == category)) {
+                    checkedItems.add(data);
+                }
+    		} catch (UnknownCommandID e) {
+    			e.logInternalError();
+    		}
         }
         return checkedItems;
     }

@@ -35,6 +35,7 @@ import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 import de.anbos.eclipse.easyshell.plugin.preferences.CommandData;
 import de.anbos.eclipse.easyshell.plugin.preferences.CommandDataList;
 import de.anbos.eclipse.easyshell.plugin.preferences.GeneralDataStore;
@@ -250,16 +251,20 @@ public class Utils {
 
     public static Map<String, Object> getParameterMapFromMenuData(MenuData menuData) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.resource",
-                menuData.getCommandData().getResourceType().toString());
-        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
-                menuData.getCommandData().getCommandType().getAction());
-        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
-                menuData.getCommandData().getCommand());
-        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
-                menuData.getCommandData().isUseWorkingDirectory() ? menuData.getCommandData().getWorkingDirectory() : "");
-        params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.tokenizer",
-        		menuData.getCommandData().getCommandTokenizer().toString());
+        try {
+            params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.resource",
+                    menuData.getCommandData().getResourceType().toString());
+            params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.type",
+                    menuData.getCommandData().getCommandType().getAction());
+            params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.value",
+                    menuData.getCommandData().getCommand());
+            params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir",
+                    menuData.getCommandData().isUseWorkingDirectory() ? menuData.getCommandData().getWorkingDirectory() : "");
+            params.put("de.anbos.eclipse.easyshell.plugin.commands.parameter.tokenizer",
+            		menuData.getCommandData().getCommandTokenizer().toString());
+		} catch (UnknownCommandID e) {
+			e.logInternalError();
+		}
         return params;
     }
 

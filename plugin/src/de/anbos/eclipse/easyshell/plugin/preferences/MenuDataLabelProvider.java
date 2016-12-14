@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 
 public class MenuDataLabelProvider extends LabelProvider implements ITableLabelProvider {
 
@@ -24,12 +25,17 @@ public class MenuDataLabelProvider extends LabelProvider implements ITableLabelP
             return null;
         }
         MenuData data = (MenuData)element;
-        switch(columnIndex) {
-            case 0:
-                return new Image(null, Activator.getImageDescriptor(data.getCommandData().getCategory().getIcon()).getImageData());
-            default:
-                return null;
-        }
+		try {
+	        switch(columnIndex) {
+	            case 0:
+	                return new Image(null, Activator.getImageDescriptor(data.getCommandData().getCategory().getIcon()).getImageData());
+	            default:
+	                return null;
+	        }
+		} catch (UnknownCommandID e) {
+			e.logInternalError();
+			return null;
+		}
     }
 
     public String getColumnText(Object element, int columnIndex) {
@@ -37,14 +43,20 @@ public class MenuDataLabelProvider extends LabelProvider implements ITableLabelP
             return ""; //$NON-NLS-1$
         }
         MenuData data = (MenuData)element;
-        switch(columnIndex) {
-            case 0:
-                return data.getNameExpanded();
-            case 1:
-            	return data.getCommandData().getCommand();
-            default:
-                return ""; //$NON-NLS-1$
-        }
+		try {
+	        switch(columnIndex) {
+	            case 0:
+	                return data.getNameExpanded();
+	            case 1:
+	            	return data.getCommandData().getCommand();
+	            default:
+	                return ""; //$NON-NLS-1$
+	        }
+		} catch (UnknownCommandID e) {
+			e.logInternalError();
+			return null;
+		}
+
     }
 
 }
