@@ -52,7 +52,7 @@ Supported OS and commands:
 
 The following platform, shell combinations and tools are supported as selections available in the preferences page. The user can define own commands and menues or just adapt the predefined ones!
 
-'''Windows:'''
+**Windows:**
 - Terminals
   - Command prompt (known as DOS shell or cmd.exe)
   - PowerShell
@@ -71,7 +71,7 @@ The following platform, shell combinations and tools are supported as selections
   - TotalCommander
     http://www.ghisler.com  
 
-'''Unix (BSD, Mac OS X) or Linux:'''
+**Linux:**
 - Terminals
   - XDG Open
   - KDE Konsole
@@ -95,7 +95,7 @@ The following platform, shell combinations and tools are supported as selections
   - Caja
   - Krusader
 
-'''MAC OS X'''
+**MAC OS X**
 - Terminals
   - Open
   - Terminal
@@ -103,11 +103,12 @@ The following platform, shell combinations and tools are supported as selections
 - File Browsers
   - Finder
 
-Copy to clipboard:
- - Full Path
- - Full Path Unix (@Windows)
- - Qualified Name
- - ... more configurable...
+**All OS**
+- Copy to clipboard:
+  - Full Path
+  - Full Path Unix (@Windows)
+  - Qualified Name
+  - ... more configurable...
 
 If path to your tool is not added to PATH variable, please add it or adapt the command in EasyShell!
 
