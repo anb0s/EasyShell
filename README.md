@@ -52,48 +52,64 @@ Supported OS and commands:
 
 The following platform, shell combinations and tools are supported as selections available in the preferences page. The user can define own commands and menues or just adapt the predefined ones!
 
-Windows:
+'''Windows:'''
+Terminals:
 - Command prompt (known as DOS shell or cmd.exe)
 - PowerShell
-- Bash (Cygwin, Git for Windows, etc.)
+- Bash (Cygwin, Git for Windows 1.x/2.x, etc.)
   http://cygwin.com, https://git-for-windows.github.io
 - Console
   https://sourceforge.net/projects/console
 - ConEmu 
-  https://code.google.com/p/conemu-maximus5/
+  https://code.google.com/p/conemu-maximus5
 - Cmder
   https://github.com/cmderdev/cmder
+- PowerCmd
+  http://www.powercmd.com
+File Browsers:
 - Explorer
 - TotalCommander
   http://www.ghisler.com  
 
-If path to your tool is not added to PATH variable, please add it or adapt the command in EasyShell!
-
-Unix (BSD, Mac OS X) or Linux:
+'''Unix (BSD, Mac OS X) or Linux:'''
+Terminals:
 - XDG Open
 - KDE Konsole
-- Konqueror
 - Gnome Terminal
 - Xfce Terminal
+- MATE Terminal
+- LX Terminal
 - Sakura Terminal
 - ROXTerm
 - Pantheon Terminal
-- Dolphin
-- Nautilus
-- Nemo
-- Thunar
+- Guake
+- Enlightenment Terminology
+File Browsers:
+- Konqueror
 - Pantheon
 - PCManFM
+- Nautilus
+- Dolphin
+- Nemo
+- Thunar
+- Caja
+- Krusader
 
-MAC OS X
+'''MAC OS X'''
+Terminals:
+ - Open
  - Terminal
+ - iTerm
+File Browsers:
  - Finder
 
-Copy to clipboard
+Copy to clipboard:
  - Full Path
  - Full Path Unix (@Windows)
  - Qualified Name
  - ... more configurable...
+
+If path to your tool is not added to PATH variable, please add it or adapt the command in EasyShell!
 
 Preferences:
 ------------
@@ -121,6 +137,9 @@ The following substitution variables are available for building the command:
 - ${easyshell:container_loc} = absolute path of file directory or directory itself
 - ${easyshell:container_name} = name of file directory or directory itself
 - ${easyshell:container_path} = relative path to workspace of file directory or directory itself
+- ${easyshell:parent_loc} = absolute path of parent directory, for files it's equal to ${easyshell:container_loc}
+- ${easyshell:parent_name} = name of parent directory, for files it's equal to ${easyshell:container_name}
+- ${easyshell:parent_path} = relative path to workspace of parent directory, for files it's equal to ${easyshell:container_path}
 - ${easyshell:project_loc} = absolute path of project
 - ${easyshell:project_name} = name of project
 - ${easyshell:project_path} = relative path to workspace of project
@@ -129,7 +148,14 @@ The following substitution variables are available for building the command:
 - ${easyshell:line_separator} = line separator, e.g. '\\n' (Unix) or '\\r\\n' (Windows)
 - ${easyshell:path_separator} = path separator, e.g. ':' (Unix) or ';' (Windows)
 - ${easyshell:file_separator} = file separator, e.g. '/' (Unix) or '\\' (Windows)
+- ${easyshell:script_bash} = Bash script (internal)
 - and all other available variables in Eclipse
+
+The following substitution variables are available for building the menu name:
+- ${easyshell:command_category} = command category
+- ${easyshell:command_type} = command type
+- ${easyshell:command_name} = command name
+- ${easyshell:command_os} = command operating system
 
 License:
 --------
