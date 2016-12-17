@@ -53,55 +53,55 @@ Supported OS and commands:
 The following platform, shell combinations and tools are supported as selections available in the preferences page. The user can define own commands and menues or just adapt the predefined ones!
 
 '''Windows:'''
-Terminals:
-- Command prompt (known as DOS shell or cmd.exe)
-- PowerShell
-- Bash (Cygwin, Git for Windows 1.x/2.x, etc.)
-  http://cygwin.com, https://git-for-windows.github.io
-- Console
-  https://sourceforge.net/projects/console
-- ConEmu 
-  https://code.google.com/p/conemu-maximus5
-- Cmder
-  https://github.com/cmderdev/cmder
-- PowerCmd
-  http://www.powercmd.com
-File Browsers:
-- Explorer
-- TotalCommander
-  http://www.ghisler.com  
+- Terminals
+  - Command prompt (known as DOS shell or cmd.exe)
+  - PowerShell
+  - Bash (Cygwin, Git for Windows 1.x/2.x, etc.)
+    http://cygwin.com, https://git-for-windows.github.io
+  - Console
+    https://sourceforge.net/projects/console
+  - ConEmu 
+    https://code.google.com/p/conemu-maximus5
+  - Cmder
+    https://github.com/cmderdev/cmder
+  - PowerCmd
+    http://www.powercmd.com
+- File Browsers
+  - Explorer
+  - TotalCommander
+    http://www.ghisler.com  
 
 '''Unix (BSD, Mac OS X) or Linux:'''
-Terminals:
-- XDG Open
-- KDE Konsole
-- Gnome Terminal
-- Xfce Terminal
-- MATE Terminal
-- LX Terminal
-- Sakura Terminal
-- ROXTerm
-- Pantheon Terminal
-- Guake
-- Enlightenment Terminology
-File Browsers:
-- Konqueror
-- Pantheon
-- PCManFM
-- Nautilus
-- Dolphin
-- Nemo
-- Thunar
-- Caja
-- Krusader
+- Terminals
+  - XDG Open
+  - KDE Konsole
+  - Gnome Terminal
+  - Xfce Terminal
+  - MATE Terminal
+  - LX Terminal
+  - Sakura Terminal
+  - ROXTerm
+  - Pantheon Terminal
+  - Guake
+  - Enlightenment Terminology
+- File Browsers
+  - Konqueror
+  - Pantheon
+  - PCManFM
+  - Nautilus
+  - Dolphin
+  - Nemo
+  - Thunar
+  - Caja
+  - Krusader
 
 '''MAC OS X'''
-Terminals:
- - Open
- - Terminal
- - iTerm
-File Browsers:
- - Finder
+- Terminals
+  - Open
+  - Terminal
+  - iTerm
+- File Browsers
+  - Finder
 
 Copy to clipboard:
  - Full Path
