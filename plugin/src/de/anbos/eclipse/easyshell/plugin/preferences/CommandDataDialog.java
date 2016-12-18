@@ -483,7 +483,12 @@ public class CommandDataDialog extends StatusDialog {
         commandTypeCombo.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                //String text = typeCombo.getItem(typeCombo.getSelectionIndex());
+                String text = commandTypeCombo.getItem(commandTypeCombo.getSelectionIndex());
+                CommandType commandType = CommandType.getFromName(text);
+                boolean enabledTokenizer = commandType == CommandType.commandTypeExecute;
+            	tokenizerCombo.setEnabled(enabledTokenizer);
+            	String tokenizerName = enabledTokenizer ? null : CommandTokenizer.commandTokenizerDisabled.getName();
+           		selectTokenizerCombo(tokenizerName);
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -521,14 +526,19 @@ public class CommandDataDialog extends StatusDialog {
                 // TODO Auto-generated method stub
             }
         });
+        selectTokenizerCombo(null);
+        tokenizerCombo.setEnabled(true);
+    }
+
+    private void selectTokenizerCombo(String altName) {
         String[] items = tokenizerCombo.getItems();
         for(int i = 0 ; i < items.length ; i++) {
-            if(items[i].equals(this.data.getCommandTokenizer().getName())) {
+        	String name = altName != null ? altName : this.data.getCommandTokenizer().getName();
+            if(items[i].equals(name)) {
             	tokenizerCombo.select(i);
                 break;
             }
         }
-        tokenizerCombo.setEnabled(true);
     }
 
 }
