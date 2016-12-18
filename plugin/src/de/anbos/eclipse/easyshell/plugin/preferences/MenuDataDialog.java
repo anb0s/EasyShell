@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
@@ -47,6 +46,7 @@ import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
+import de.anbos.eclipse.easyshell.plugin.misc.UtilsUI;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
@@ -55,7 +55,6 @@ import de.anbos.eclipse.easyshell.plugin.types.Variable;
 import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
 
 public class MenuDataDialog extends StatusDialog {
-
 
 	private MenuData menuData;
     private List<CommandData> cmdList;
@@ -116,36 +115,106 @@ public class MenuDataDialog extends StatusDialog {
 	}
 
     public Control createDialogArea(Composite parent) {
-        Font font = parent.getFont();
-    	Composite pageComponent = new Composite(parent,SWT.NULL);
-        GridLayout layout0 = new GridLayout();
-        layout0.numColumns = 1;
-        layout0.makeColumnsEqualWidth = false;
-        layout0.marginWidth = 5;
-        layout0.marginHeight = 4;
-        pageComponent.setLayout(layout0);
-        GridData gridData0 = new GridData(GridData.FILL_HORIZONTAL);
-        gridData0.widthHint = 640;
-        pageComponent.setLayoutData(gridData0);
-        pageComponent.setFont(font);
-    	// define group1
-    	Group pageGroup1 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup1.setText(Activator.getResourceString("easyshell.menu.editor.dialog.title.group1"));
-        GridLayout layout1 = new GridLayout();
-        layout1.numColumns = 2;
-        layout1.makeColumnsEqualWidth = false;
-        layout1.marginWidth = 5;
-        layout1.marginHeight = 4;
-        pageGroup1.setLayout(layout1);
-        GridData gridData1 = new GridData(GridData.FILL_HORIZONTAL);
-        pageGroup1.setLayoutData(gridData1);
-        pageGroup1.setFont(font);
-        // create activity checkbox
-        createEnabledCheckBox(pageGroup1);
+    	Composite pageComponent = createPageComponent(parent);
+
+        Group pageGroupCommand = createGroupCommand(pageComponent);
+
+        Group pageGroupMenu = createGroupMenu(pageComponent);
+
+        createCommandControls(pageGroupCommand);
+
+        createNameControls(pageGroupMenu);
+
+        // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61
+        setHelpAvailable(false);
+
+        refreshCommandCombo();
+
+        return pageComponent;
+    }
+
+    public Composite createPageComponent(Composite parent) {
+	    Font font = parent.getFont();
+		Composite pageComponent = new Composite(parent,SWT.NULL);
+	    GridLayout layoutComponent = new GridLayout();
+	    layoutComponent.numColumns = 1;
+	    layoutComponent.makeColumnsEqualWidth = false;
+	    layoutComponent.marginWidth = 5;
+	    layoutComponent.marginHeight = 4;
+	    pageComponent.setLayout(layoutComponent);
+	    GridData gridDataComponent = new GridData(GridData.FILL_HORIZONTAL);
+	    gridDataComponent.widthHint = 640;
+	    pageComponent.setLayoutData(gridDataComponent);
+	    pageComponent.setFont(font);
+	    return pageComponent;
+    }
+
+    public Group createGroupCommand(Composite parent) {
+    	Font font = parent.getFont();
+        Group pageGroupCommand = new Group(parent, SWT.SHADOW_ETCHED_IN);
+        pageGroupCommand.setText(Activator.getResourceString("easyshell.menu.editor.dialog.title.group.command"));
+        pageGroupCommand.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.title.group.tooltip.command"));
+        GridLayout layoutCommand = new GridLayout();
+        layoutCommand.numColumns = 3;
+        layoutCommand.makeColumnsEqualWidth = false;
+        layoutCommand.marginWidth = 5;
+        layoutCommand.marginHeight = 4;
+        pageGroupCommand.setLayout(layoutCommand);
+        GridData gridDataCommand = new GridData(GridData.FILL_HORIZONTAL);
+        pageGroupCommand.setLayoutData(gridDataCommand);
+        pageGroupCommand.setFont(font);
+	    return pageGroupCommand;
+    }
+
+    public Group createGroupMenu(Composite parent) {
+    	Font font = parent.getFont();
+		Group pageGroupMenu = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		pageGroupMenu.setText(Activator.getResourceString("easyshell.menu.editor.dialog.title.group.menu"));
+		pageGroupMenu.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.title.group.tooltip.menu"));
+	    GridLayout layoutMenu = new GridLayout();
+	    layoutMenu.numColumns = 2;
+	    layoutMenu.makeColumnsEqualWidth = false;
+	    layoutMenu.marginWidth = 5;
+	    layoutMenu.marginHeight = 4;
+	    pageGroupMenu.setLayout(layoutMenu);
+	    GridData gridDataMenu = new GridData(GridData.FILL_HORIZONTAL);
+	    pageGroupMenu.setLayoutData(gridDataMenu);
+	    pageGroupMenu.setFont(font);
+	    return pageGroupMenu;
+    }
+
+    public void createCommandControls(Composite parent) {
+    	// enable checkbox
+    	createEnabledCheckBox(parent);
+
+        // search
+        createSearchField(parent); createNewButton(parent);
+
+        // create selected command combo
+        createCommandCombo(parent); createEditButton(parent);
+
+        // create input commandText field
+        String commandStr;
+		try {
+			commandStr = menuData.getCommandData().getCommand();
+		} catch (UnknownCommandID e1) {
+			e1.logInternalError();
+			commandStr = "Unknown ID: " + e1.getID();
+		}
+        commandText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.command"), commandStr, false);
+
+        //createLabel(parent, "");createLabel(parent, "");
+        createCopyButton(parent);
+        UtilsUI.createLabel(parent, "", null);
+        UtilsUI.createLabel(parent, "", null);
+        createRemoveButton(parent);
+    }
+
+    public void createNameControls(Composite parent) {
         // type combo
-        createNameTypeCombo(pageGroup1);
+        createNameTypeCombo(parent);//UtilsUI.createLabel(parent, "", null);
         // create input nameText field
-        namePatternText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.pattern"), menuData.getNamePattern(), true);
+        namePatternText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.pattern"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.pattern"), menuData.getNamePattern(), false);
         namePatternTextAssist = addContentAssistExtended(namePatternText);
         namePatternText.addModifyListener(new ModifyListener() {
             @Override
@@ -158,60 +227,15 @@ public class MenuDataDialog extends StatusDialog {
                 }
             }
         });
-
+        //UtilsUI.createLabel(parent, "", null);
         // create output menuNameText field
-        menuNameText = createTextField(pageGroup1, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), menuData.getNameExpanded(), false);
-
-        // define group2
-        Group pageGroup2 = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-        pageGroup2.setText(Activator.getResourceString("easyshell.menu.editor.dialog.title.group2"));
-        GridLayout layout2 = new GridLayout();
-        layout2.numColumns = 3;
-        layout2.makeColumnsEqualWidth = false;
-        layout2.marginWidth = 5;
-        layout2.marginHeight = 4;
-        pageGroup2.setLayout(layout2);
-        GridData gridData2 = new GridData(GridData.FILL_HORIZONTAL);
-        pageGroup2.setLayoutData(gridData2);
-        pageGroup2.setFont(font);
-
-        // search
-        createSearchField(pageGroup2);
-
-        // create selected command combo
-        createCommandCombo(pageGroup2); createNewButton(font, pageGroup2, gridData2);
-
-        // create input commandText field
-        String commandStr;
-		try {
-			commandStr = menuData.getCommandData().getCommand();
-		} catch (UnknownCommandID e1) {
-			e1.logInternalError();
-			commandStr = "Unknown ID: " + e1.getID();
-		}
-        commandText = createTextField(pageGroup2, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), commandStr, false);
-        createEditButton(font, pageGroup2, gridData2);
-        createLabel(pageGroup2, "");createLabel(pageGroup2, "");
-        createCopyButton(font, pageGroup2, gridData2);
-        createLabel(pageGroup2, "");createLabel(pageGroup2, "");
-        createRemoveButton(font, pageGroup2, gridData2);
-
-        // TODO: to be enabled again, see https://github.com/anb0s/EasyShell/issues/61
-        setHelpAvailable(false);
-
-        refreshCommandCombo();
-
-        return pageComponent;
+        menuNameText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.name"), menuData.getNameExpanded(), false);
+        //UtilsUI.createLabel(parent, "", null);
     }
 
-    private void createLabel(Composite parent, String name) {
-        Label label = new Label(parent, SWT.LEFT);
-        label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        label.setText(name);
-    }
-
-    private void createRemoveButton(Font font, Group pageGroup1, GridData gridData1) {
-        removeButton = new Button(pageGroup1, SWT.PUSH);
+    private void createRemoveButton(Composite parent) {
+    	Font font = parent.getFont();
+        removeButton = new Button(parent, SWT.PUSH);
         removeButton.setText(Activator.getResourceString("easyshell.menu.editor.dialog.button.text.remove"));
         removeButton.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.button.tooltip.remove"));
         removeButton.addSelectionListener(new SelectionAdapter() {
@@ -220,13 +244,14 @@ public class MenuDataDialog extends StatusDialog {
                 removeDialog();
             }
         });
-        removeButton.setLayoutData(gridData1);
+        removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         removeButton.setFont(font);
         setButtonLayoutData(removeButton);
     }
 
-    private void createEditButton(Font font, Group pageGroup1, GridData gridData1) {
-        editButton = new Button(pageGroup1, SWT.PUSH);
+    private void createEditButton(Composite parent) {
+    	Font font = parent.getFont();
+        editButton = new Button(parent, SWT.PUSH);
         editButton.setText(Activator.getResourceString("easyshell.menu.editor.dialog.button.text.edit"));
         editButton.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.button.tooltip.edit"));
         editButton.addSelectionListener(new SelectionAdapter() {
@@ -235,13 +260,14 @@ public class MenuDataDialog extends StatusDialog {
                 editDialog();
             }
         });
-        editButton.setLayoutData(gridData1);
+        editButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         editButton.setFont(font);
         setButtonLayoutData(editButton);
     }
 
-    private void createCopyButton(Font font, Group pageGroup1, GridData gridData1) {
-        addCopyButton = new Button(pageGroup1, SWT.PUSH);
+    private void createCopyButton(Composite parent) {
+    	Font font = parent.getFont();
+        addCopyButton = new Button(parent, SWT.PUSH);
         addCopyButton.setText(Activator.getResourceString("easyshell.menu.editor.dialog.button.text.copy"));
         addCopyButton.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.button.tooltip.copy"));
         addCopyButton.addSelectionListener(new SelectionAdapter() {
@@ -250,13 +276,14 @@ public class MenuDataDialog extends StatusDialog {
                 addCopyDialog();
             }
         });
-        addCopyButton.setLayoutData(gridData1);
+        addCopyButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         addCopyButton.setFont(font);
         setButtonLayoutData(addCopyButton);
     }
 
-    private void createNewButton(Font font, Group pageGroup1, GridData gridData1) {
-        addNewButton = new Button(pageGroup1, SWT.PUSH);
+    private void createNewButton(Composite parent) {
+    	Font font = parent.getFont();
+        addNewButton = new Button(parent, SWT.PUSH);
         addNewButton.setText(Activator.getResourceString("easyshell.menu.editor.dialog.button.text.new"));
         addNewButton.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.button.tooltip.new"));
         addNewButton.addSelectionListener(new SelectionAdapter() {
@@ -265,7 +292,7 @@ public class MenuDataDialog extends StatusDialog {
                 addNewDialog();
             }
         });
-        addNewButton.setLayoutData(gridData1);
+        addNewButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         addNewButton.setFont(font);
         setButtonLayoutData(addNewButton);
     }
@@ -467,10 +494,12 @@ public class MenuDataDialog extends StatusDialog {
 
     private void createEnabledCheckBox(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.active"));
+    	UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.active"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.active"));
         // draw checkbox
         enabledCheckBox = new Button(parent,SWT.CHECK);
         enabledCheckBox.setSelection(this.menuData.isEnabled());
+        UtilsUI.createLabel(parent, "", null);
+        //UtilsUI.createLabel(parent, "", null);
     }
 
     private String[] getAllNameTypesAsComboNames() {
@@ -494,7 +523,7 @@ public class MenuDataDialog extends StatusDialog {
     }
 
     private void createSearchField(Composite parent) {
-    	createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.text.filter"));
+    	UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.text.filter"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.filter"));
         filter = new CommandDataFilter();
         searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
         searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
@@ -503,25 +532,23 @@ public class MenuDataDialog extends StatusDialog {
               filter.setSearchText(searchText.getText());
               commandComboViewer.getViewer().refresh();
               commandComboViewer.getViewer().getCombo().select(0);
-              commandComboViewer.setSelection(getFirstSelected());        
+              commandComboViewer.setSelection(getFirstSelected());
             }
         });
         searchText.setToolTipText(Activator.getResourceString("easyshell.command.page.text.tooltip.search"));
-        // fake
-        Label label = new Label(parent, SWT.NONE);
-        label.setText("");
+        //createLabel(parent, "");
     }
 
     private void createCommandCombo(Composite parent) {
         // draw label
-        createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.combo.preset"));
-        
+    	UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.combo.preset"), Activator.getResourceString("easyshell.menu.editor.dialog.combo.tooltip.preset"));
+
         commandComboViewer = new TypedComboBox<CommandData>(parent);
 
         commandComboViewer.addSelectionListener(new TypedComboBoxSelectionListener<CommandData>() {
 
             @Override
-            public void selectionChanged(TypedComboBox<CommandData> typedComboBox, CommandData newSelection) { 
+            public void selectionChanged(TypedComboBox<CommandData> typedComboBox, CommandData newSelection) {
 				menuData.setCommandId(newSelection.getId());
 				if (menuData.getNameType() != MenuNameType.menuNameTypeUser) {
 				    menuData.setNameTypeFromCategory(newSelection.getCategory());
@@ -565,11 +592,11 @@ public class MenuDataDialog extends StatusDialog {
         });
 
         if (filter != null) {
-        	commandComboViewer.getViewer().addFilter(filter);        	
+        	commandComboViewer.getViewer().addFilter(filter);
         }
-        
+
         /*Combo combo = commandComboViewer.getViewer().getCombo();
-        combo.addModifyListener(new ModifyListener() {			
+        combo.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				if (refreshing) {
@@ -583,22 +610,21 @@ public class MenuDataDialog extends StatusDialog {
 					if (text != null && data != null && !data.getCommandAsComboName().equals(text)) {
 			            filter.setSearchText(text);
 			            refreshing = true;
-			            //commandComboViewer.getViewer().refresh();						
+			            //commandComboViewer.getViewer().refresh();
 					}
 				}
 			}
 		});*/
-        
-        commandComboViewer.setContent(cmdList);                
+
+        commandComboViewer.getViewer().getCombo().setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.combo.tooltip.preset"));
+        commandComboViewer.setContent(cmdList);
     }
 
     private void createNameTypeCombo(Composite parent) {
-        // draw label
-        Label comboLabel = new Label(parent,SWT.LEFT);
-        comboLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        comboLabel.setText(Activator.getResourceString("easyshell.menu.editor.dialog.label.combo.pattern")); //$NON-NLS-1$
+    	UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.combo.pattern"), Activator.getResourceString("easyshell.menu.editor.dialog.combo.tooltip.pattern"));
         // draw combo
         nameTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
+        nameTypeCombo.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.combo.tooltip.pattern"));
         nameTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         //commandCombo.setEditable(false);
         nameTypeCombo.setItems(getAllNameTypesAsComboNames());
@@ -629,21 +655,6 @@ public class MenuDataDialog extends StatusDialog {
                 return;
             }
         }
-    }
-
-    private Text createTextField(Composite parent, String labelText, String editValue, boolean editable) {
-        // draw label
-        if (labelText != null) {
-            Label label = new Label(parent,SWT.LEFT);
-            label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-            label.setText(labelText);    //$NON-NLS-1$
-        }
-        // draw textfield
-        Text text = new Text(parent,SWT.BORDER);
-        text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        text.setText(editValue);
-        text.setEditable(editable);
-        return text;
     }
 
 }

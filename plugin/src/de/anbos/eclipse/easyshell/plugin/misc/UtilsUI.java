@@ -17,6 +17,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
@@ -44,6 +45,23 @@ public class UtilsUI {
         Event event = new Event();
         event.item = null;
         widget.notifyListeners(SWT.Selection, event);
+    }
+
+    static public Text createTextField(Composite parent, String labelText, String labelTooltip, String editValue, boolean emptyLabel) {
+        // draw label
+        if (labelText != null) {
+            UtilsUI.createLabel(parent, labelText, labelTooltip);
+        }
+        if (emptyLabel) {
+            UtilsUI.createLabel(parent, "", null);
+        }
+        // draw textfield
+        Text text = new Text(parent,SWT.BORDER);
+        text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        text.setText(editValue);
+        text.setEditable(true);
+        text.setToolTipText(labelTooltip);
+        return text;
     }
 
 }

@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 public class TypedComboBox<T> {
@@ -41,6 +42,7 @@ public class TypedComboBox<T> {
 	public TypedComboBox(Composite parent) {
 		this.viewer = new ComboViewer(parent, SWT.READ_ONLY);
 		this.viewer.setContentProvider(ArrayContentProvider.getInstance());
+		this.viewer.getCombo().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override
