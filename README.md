@@ -119,6 +119,8 @@ If path to your tool is not added to PATH variable, please add it or adapt the c
 Preferences:
 ------------
 
+![preferences_general](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_general.png "Preferences - General")
+
 ![preferences_menu](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_menu_linux.png "Preferences - Menu")
 
 ![preferences_menu_edit](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_menu_edit.png "Preferences - Menu 'Edit'")
@@ -136,33 +138,33 @@ parameters or execute the tool you want.
 
 The following substitution variables are available for building the command:
 
-- ${easyshell:resource_loc} = absolute path of file or directory
-- ${easyshell:resource_name} = name of file or directory
-- ${easyshell:resource_basename} = name of file without extension
-- ${easyshell:resource_extension} = extension of file name (without '.')
-- ${easyshell:resource_path} = relative path to workspace of file or directory
-- ${easyshell:container_loc} = absolute path of file directory or directory itself
-- ${easyshell:container_name} = name of file directory or directory itself
-- ${easyshell:container_path} = relative path to workspace of file directory or directory itself
-- ${easyshell:parent_loc} = absolute path of parent directory, for files it's equal to ${easyshell:container_loc}
-- ${easyshell:parent_name} = name of parent directory, for files it's equal to ${easyshell:container_name}
-- ${easyshell:parent_path} = relative path to workspace of parent directory, for files it's equal to ${easyshell:container_path}
-- ${easyshell:project_loc} = absolute path of project
-- ${easyshell:project_name} = name of project
-- ${easyshell:project_path} = relative path to workspace of project
-- ${easyshell:windows_drive} = drive letter of file or directory on Windows
-- ${easyshell:qualified_name} = full qualified (class) name
-- ${easyshell:line_separator} = line separator, e.g. '\\n' (Unix) or '\\r\\n' (Windows)
-- ${easyshell:path_separator} = path separator, e.g. ':' (Unix) or ';' (Windows)
-- ${easyshell:file_separator} = file separator, e.g. '/' (Unix) or '\\' (Windows)
-- ${easyshell:script_bash} = Bash script (internal)
+- ```${easyshell:resource_loc}``` = absolute path of file or directory
+- ```${easyshell:resource_name}``` = name of file or directory
+- ```${easyshell:resource_basename}``` = name of file without extension
+- ```${easyshell:resource_extension}``` = extension of file name (without '.')
+- ```${easyshell:resource_path}``` = relative path to workspace of file or directory
+- ```${easyshell:container_loc}``` = absolute path of file directory or directory itself
+- ```${easyshell:container_name}``` = name of file directory or directory itself
+- ```${easyshell:container_path}``` = relative path to workspace of file directory or directory itself
+- ```${easyshell:parent_loc}``` = absolute path of parent directory, for files it's equal to ${easyshell:container_loc}
+- ```${easyshell:parent_name}``` = name of parent directory, for files it's equal to ${easyshell:container_name}
+- ```${easyshell:parent_path}``` = relative path to workspace of parent directory, for files it's equal to ${easyshell:container_path}
+- ```${easyshell:project_loc}``` = absolute path of project
+- ```${easyshell:project_name}``` = name of project
+- ```${easyshell:project_path}``` = relative path to workspace of project
+- ```${easyshell:windows_drive}``` = drive letter of file or directory on Windows
+- ```${easyshell:qualified_name}``` = full qualified (class) name
+- ```${easyshell:line_separator}``` = line separator, e.g. '\\n' (Unix) or '\\r\\n' (Windows)
+- ```${easyshell:path_separator}``` = path separator, e.g. ':' (Unix) or ';' (Windows)
+- ```${easyshell:file_separator}``` = file separator, e.g. '/' (Unix) or '\\' (Windows)
+- ```${easyshell:script_bash}``` = Bash script (internal)
 - and all other available variables in Eclipse
 
 The following substitution variables are available for building the menu name:
-- ${easyshell:command_category} = command category
-- ${easyshell:command_type} = command type
-- ${easyshell:command_name} = command name
-- ${easyshell:command_os} = command operating system
+- ```${easyshell:command_category}``` = command category
+- ```${easyshell:command_type}``` = command type
+- ```${easyshell:command_name}``` = command name
+- ```${easyshell:command_os}``` = command operating system
 
 License:
 --------
