@@ -19,6 +19,7 @@ Features:
 The plugin is platform independent in principal. It just launches a (configurable) system command to open the shell, file explorer or other user defined command. It also copies path etc. to clipboard. Just open context menu for an Eclipse editor or selected resource in some view:
 
 ![context_menu_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_context_menu_windows.png "Context Menu @ Windows")
+![context_menu_Linux](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_context_menu_linux.png "Context Menu @ Linux")
 
 Keyboard-shortcuts:
 -------------------
@@ -30,10 +31,13 @@ Keyboard-shortcuts:
 **Alt + Shift + E**: execute multiple commands for selection(s)
 
 ![multi_selection_dialog_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+Shift+E)")
+![multi_selection_dialog_linux](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_multi-selection_dialog_linux.png "Dialog for multiple tool selection @ Linux (Alt+Shift+E)")
 
 Shortcuts that executes the command directly if only one defined or opens a popup menu like Alt + E reduced for category:
 
 **Alt + O**: Open Here (shell)
+
+![popup_menu_linux](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_popup_menu_linux.png "Popup Menu @ Linux (Alt+O)")
 
 **Alt + R**: Run with (shell)
 
@@ -117,16 +121,18 @@ Preferences:
 
 ![preferences_menu](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu.png "Preferences - Menu")
 
-![preferences_menu_new](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new.png "Preferences - Menu 'New'")
+![preferences_menu_edit](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_menu_edit.png "Preferences - Menu 'Edit'")
 
-![preferences_menu_new_content_assist](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu_new_content_assist.png "Preferences - Menu 'New' with content assist")
+![preferences_menu_edit_filter](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_menu_edit_filter.png "Preferences - Menu 'Edit' with filter")
+
+![preferences_menu_edit_content_assist](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_menu_edit_content_assist.png "Preferences - Menu 'Edit' with content assist")
 
 But you can configure any shell or command you like as long as you can figure out how to run a command to open the shell with given
 parameters or execute the tool you want.
 
 ![preferences_command](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command.png "Preferences - Command")
 
-![preferences_command_new_content_assist](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command_new.png "Preferences - Command 'New' with content assist")
+![preferences_command_new_content_assist](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_command_new.png "Preferences - Command 'New' with content assist")
 
 The following substitution variables are available for building the command:
 
