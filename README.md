@@ -119,7 +119,7 @@ If path to your tool is not added to PATH variable, please add it or adapt the c
 Preferences:
 ------------
 
-![preferences_menu](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_menu.png "Preferences - Menu")
+![preferences_menu](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_menu_linux.png "Preferences - Menu")
 
 ![preferences_menu_edit](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_menu_edit.png "Preferences - Menu 'Edit'")
 
@@ -130,7 +130,7 @@ Preferences:
 But you can configure any shell or command you like as long as you can figure out how to run a command to open the shell with given
 parameters or execute the tool you want.
 
-![preferences_command](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_preferences_command.png "Preferences - Command")
+![preferences_command](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_command_linux.png "Preferences - Command")
 
 ![preferences_command_new_content_assist](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_preferences_command_new.png "Preferences - Command 'New' with content assist")
 
