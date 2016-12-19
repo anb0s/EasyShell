@@ -22,7 +22,12 @@ public class General extends Exception {
 	}
 
 	public void logInternalError() {
-		Activator.log("", this);
+		if (logEnabled()) {
+			Activator.logError(Activator.getResourceString("easyshell.message.error.store.load"), this);
+		}
 	}
 
+	public boolean logEnabled() {
+		return true;
+	}
 }

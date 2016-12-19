@@ -122,6 +122,7 @@ public class Activator extends AbstractUIPlugin {
             addImageToRegistry(registry, bundle, iconPath, iconName);
         }
         addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_EASYSHELL, Constants.IMAGE_EASYSHELL);
+        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_ECLIPSE, Constants.IMAGE_ECLIPSE);
      }
 
     protected void addImageToRegistry(ImageRegistry registry, Bundle bundle, String imagePath, String image_id) {

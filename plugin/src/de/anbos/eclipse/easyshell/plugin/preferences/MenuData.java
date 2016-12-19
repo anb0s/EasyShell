@@ -221,7 +221,7 @@ public class MenuData extends Data {
     	if (data != null) {
     		return data;
     	} else {
-    		throw new UnknownCommandID(commandIdStr);
+    		throw new UnknownCommandID(commandIdStr, true);
     	}
     }
 

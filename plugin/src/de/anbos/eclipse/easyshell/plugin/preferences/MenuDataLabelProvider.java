@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.Constants;
 import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 
 public class MenuDataLabelProvider extends LabelProvider implements ITableLabelProvider {
@@ -30,11 +31,11 @@ public class MenuDataLabelProvider extends LabelProvider implements ITableLabelP
 	            case 0:
 	                return new Image(null, Activator.getImageDescriptor(data.getCommandData().getCategory().getIcon()).getImageData());
 	            default:
-	                return null;
+	            	return new Image(null, Activator.getImageDescriptor(Constants.IMAGE_ECLIPSE).getImageData());
 	        }
 		} catch (UnknownCommandID e) {
 			e.logInternalError();
-			return null;
+			return new Image(null, Activator.getImageDescriptor(Constants.IMAGE_ECLIPSE).getImageData());
 		}
     }
 
@@ -54,7 +55,7 @@ public class MenuDataLabelProvider extends LabelProvider implements ITableLabelP
 	        }
 		} catch (UnknownCommandID e) {
 			e.logInternalError();
-			return null;
+			return "Unknown ID: " + e.getID();
 		}
 
     }
