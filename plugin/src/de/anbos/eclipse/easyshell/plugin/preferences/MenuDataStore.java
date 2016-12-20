@@ -119,6 +119,21 @@ public class MenuDataStore extends DataStore<MenuData> {
     	loadInternal(null);
     }
 
+    private boolean verifyInternal() {
+    	boolean valid = true;
+        Iterator<MenuData> dataIterator = getDataList().iterator();
+        while(valid && dataIterator.hasNext()) {
+            MenuData data = (MenuData)dataIterator.next();
+   			valid = data.verify();
+        }
+        return valid;
+    }
+
+    @Override
+    public boolean verify() {
+    	return super.verify() && verifyInternal();
+    }
+
     public MenuDataList getRefencedBy(String id) {
         MenuDataList ref = new MenuDataList();
         Iterator<MenuData> dataIterator = getDataList().iterator();

@@ -29,7 +29,7 @@ public class MenuData extends Data {
     // copy of or reference to command
     private String commandId = null;
 
-    public MenuData(String id, boolean enabled, MenuNameType nameType, String namePattern,String commandId) {
+    public MenuData(String id, boolean enabled, MenuNameType nameType, String namePattern, String commandId) {
         super(id);
         setEnabled(enabled);
         setNameType(nameType);
@@ -261,5 +261,14 @@ public class MenuData extends Data {
             break;
         }
     }
+
+    @Override
+	public boolean verify() {
+		try {
+			return super.verify() && commandId != null && getCommandData() != null;
+		} catch (UnknownCommandID e) {
+			return false;
+		}
+	}
 
 }

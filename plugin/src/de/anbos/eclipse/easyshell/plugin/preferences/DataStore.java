@@ -93,6 +93,7 @@ public class DataStore<ITEMS_TYPE extends Data> extends Store implements IDataSt
     public void save() {
         sort();
         renumber();
+        super.save();
     }
 
     @Override

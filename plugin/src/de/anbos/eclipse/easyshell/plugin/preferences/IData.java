@@ -23,4 +23,5 @@ public interface IData {
 
     void setId(String id);
 
+    boolean verify();
 }

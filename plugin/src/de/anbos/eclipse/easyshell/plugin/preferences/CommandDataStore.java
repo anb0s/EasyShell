@@ -11,6 +11,8 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
+import java.util.Iterator;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -82,11 +84,11 @@ public class CommandDataStore extends DataStore<CommandData> {
 
     @Override
     public void save() {
-        super.save();
         // do not safe the presets
         //getStore().setValue(Constants.PREF_COMMANDS_PRESET,PreferenceValueConverter.asCommandDataString(getPresetCommands(false), false));
         getStore().setValue(Constants.PREF_COMMANDS_MODIFY,PreferenceValueConverter.asCommandDataString(getPresetCommands(true), true));
         getStore().setValue(Constants.PREF_COMMANDS_USER,PreferenceValueConverter.asCommandDataString(getUserCommands(), false));
+        super.save();
     }
 
     @Override
@@ -120,8 +122,8 @@ public class CommandDataStore extends DataStore<CommandData> {
             		arrayPreset[j].addOrRemoveModifyData(arrayModify[i]);
             		break;
             	}
-            }        	
-        }    	
+            }
+        }
 	}
 
 	public CommandData getCommandDataByName(String name) {
@@ -131,6 +133,21 @@ public class CommandDataStore extends DataStore<CommandData> {
             }
         }
         return null;
+    }
+
+    private boolean verifyInternal() {
+    	boolean valid = true;
+        Iterator<CommandData> dataIterator = getDataList().iterator();
+        while(valid && dataIterator.hasNext()) {
+        	CommandData data = (CommandData)dataIterator.next();
+   			valid = data.verify();
+        }
+        return valid;
+    }
+
+    @Override
+    public boolean verify() {
+    	return super.verify() && verifyInternal();
     }
 
 }

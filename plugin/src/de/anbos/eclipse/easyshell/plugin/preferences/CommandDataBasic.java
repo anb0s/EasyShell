@@ -151,7 +151,7 @@ public class CommandDataBasic {
 	    setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
 	    setWorkingDirectory(tokenizer.nextToken());
 		// command
-	    String commandTokenizer = CommandTokenizer.commandTokenizerSpaces.toString();	    
+	    String commandTokenizer = CommandTokenizer.commandTokenizerSpaces.toString();
         if (version.getId() >= Version.v2_1_001.getId()) {
         	String oldCommandTokenizer = tokenizer.nextToken();
         	if (version.getId() >= Version.v2_1_003.getId()) {
@@ -188,5 +188,9 @@ public class CommandDataBasic {
     public String serialize(String delimiter) {
         return serialize(Version.actual, delimiter);
     }
+
+	public boolean verify() {
+		return id != null;
+	}
 
 }

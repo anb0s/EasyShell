@@ -11,13 +11,19 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+
 public interface IStore {
 
-    void save();
+    IPreferenceStore getStore();
+
+    void load();
 
     void loadDefaults();
 
-    void load();
+    boolean verify();
+
+    void save();
 
     boolean isMigrated();
 

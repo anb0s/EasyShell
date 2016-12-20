@@ -44,25 +44,16 @@ public class Data implements IData {
         this(null, true);
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IData#getPosition()
-     */
     @Override
     public int getPosition() {
 		return position;
 	}
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IData#getId()
-     */
     @Override
     public String getId() {
         return id;
     }
 
-	/* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IData#equals(java.lang.Object)
-     */
 	@Override
     public boolean equals(Object object) {
     	if(!(object instanceof Data)) {
@@ -78,20 +69,19 @@ public class Data implements IData {
     	return false;
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IData#setPosition(int)
-     */
     @Override
     public void setPosition(int position) {
         this.position = position;
     }
 
-    /* (non-Javadoc)
-     * @see de.anbos.eclipse.easyshell.plugin.preferences.IData#setId(java.lang.String)
-     */
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+	public boolean verify() {
+    	return id != null && !id.isEmpty();
     }
 
 }

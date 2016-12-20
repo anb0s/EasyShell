@@ -35,7 +35,7 @@ public class CommandData extends Data {
     private CommandType commandType = CommandType.commandTypeUnknown;
     private CommandDataBasic modifyData = null;
     // internal
-    private boolean selected = true; 
+    private boolean selected = true;
 
     public CommandData(String id, CommandDataBasic basicData, PresetType presetType, OS os, Category category, CommandType cmdType, CommandDataBasic modifyData) {
         super(id);
@@ -179,7 +179,7 @@ public class CommandData extends Data {
         	addModifyData(modifyData);
         } else {
             removeModifyData();
-        }    	
+        }
     }
 
 /*
@@ -376,6 +376,11 @@ public class CommandData extends Data {
 
 	public boolean isSelected() {
 		return this.selected;
+	}
+
+    @Override
+	public boolean verify() {
+		return super.verify() && basicData != null && basicData.verify();
 	}
 
 }
