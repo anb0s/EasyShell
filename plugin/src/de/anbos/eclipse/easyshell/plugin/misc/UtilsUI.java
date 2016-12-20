@@ -47,7 +47,7 @@ public class UtilsUI {
         widget.notifyListeners(SWT.Selection, event);
     }
 
-    static public Text createTextField(Composite parent, String labelText, String labelTooltip, String editValue, boolean emptyLabel) {
+    static public Text createTextField(Composite parent, String labelText, String labelTooltip, String editValue, boolean emptyLabel, boolean editable) {
         // draw label
         if (labelText != null) {
             UtilsUI.createLabel(parent, labelText, labelTooltip);
@@ -59,7 +59,7 @@ public class UtilsUI {
         Text text = new Text(parent,SWT.BORDER);
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         text.setText(editValue);
-        text.setEditable(true);
+        text.setEditable(editable);
         text.setToolTipText(labelTooltip);
         return text;
     }

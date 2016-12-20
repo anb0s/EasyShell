@@ -166,14 +166,14 @@ public class CommandDataDialog extends StatusDialog {
         // create command type combo
         createCommandTypeCombo(pageGroupCommand);
         //create input nameText field
-        nameText = UtilsUI.createTextField(pageGroupCommand, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.name"), data.getName(), true);
+        nameText = UtilsUI.createTextField(pageGroupCommand, Activator.getResourceString("easyshell.command.editor.dialog.label.name"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.name"), data.getName(), true, true);
         // create directory checkbox
         createDirCheckBox(pageGroupCommand);
         // create input dirText field and add content assist
-        dirText = UtilsUI.createTextField(pageGroupCommand, null, Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.useworkdir") + Activator.getResourceString("easyshell.command.editor.dialog.tooltip.content.assists"), data.getWorkingDirectory(), false);
+        dirText = UtilsUI.createTextField(pageGroupCommand, null, Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.useworkdir") + Activator.getResourceString("easyshell.command.editor.dialog.tooltip.content.assists"), data.getWorkingDirectory(), false, true);
         dirTextAssist = addContentAssist(dirText);
         // create input valueText field and add content assist
-        valueText = UtilsUI.createTextField(pageGroupCommand, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.value") + Activator.getResourceString("easyshell.command.editor.dialog.tooltip.content.assists"), data.getCommand(), true);
+        valueText = UtilsUI.createTextField(pageGroupCommand, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.value") + Activator.getResourceString("easyshell.command.editor.dialog.tooltip.content.assists"), data.getCommand(), true, true);
         valueTextAssist = addContentAssist(valueText);
         valueTextAssist.setEnabled(true);
         // create tokenizer combo

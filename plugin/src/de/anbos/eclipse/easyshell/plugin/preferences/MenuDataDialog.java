@@ -201,7 +201,7 @@ public class MenuDataDialog extends StatusDialog {
 			e1.logInternalError();
 			commandStr = "Unknown ID: " + e1.getID();
 		}
-        commandText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.command"), commandStr, false);
+        commandText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.command"), commandStr, false, false);
 
         //createLabel(parent, "");createLabel(parent, "");
         createCopyButton(parent);
@@ -214,7 +214,7 @@ public class MenuDataDialog extends StatusDialog {
         // type combo
         createNameTypeCombo(parent);//UtilsUI.createLabel(parent, "", null);
         // create input nameText field
-        namePatternText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.pattern"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.pattern"), menuData.getNamePattern(), false);
+        namePatternText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.pattern"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.pattern"), menuData.getNamePattern(), false, true);
         namePatternTextAssist = addContentAssistExtended(namePatternText);
         namePatternText.addModifyListener(new ModifyListener() {
             @Override
@@ -229,7 +229,7 @@ public class MenuDataDialog extends StatusDialog {
         });
         //UtilsUI.createLabel(parent, "", null);
         // create output menuNameText field
-        menuNameText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.name"), menuData.getNameExpanded(), false);
+        menuNameText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.name"), menuData.getNameExpanded(), false, false);
         //UtilsUI.createLabel(parent, "", null);
     }
 
