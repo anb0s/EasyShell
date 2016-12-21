@@ -31,7 +31,7 @@ public class MenuDataLabelProvider extends LabelProvider implements ITableLabelP
 	            case 0:
 	                return new Image(null, Activator.getImageDescriptor(data.getCommandData().getCategory().getIcon()).getImageData());
 	            default:
-	            	return new Image(null, Activator.getImageDescriptor(Constants.IMAGE_ECLIPSE).getImageData());
+	            	return null;
 	        }
 		} catch (UnknownCommandID e) {
 			e.logInternalError();
