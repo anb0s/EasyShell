@@ -26,7 +26,7 @@ public class CommandDataLabelProvider extends LabelProvider implements ITableLab
         CommandData data = (CommandData)element;
         switch(columnIndex) {
             case 0:
-                return new Image(null, Activator.getImageDescriptor(data.getCategory().getIcon()).getImageData());
+                return Activator.getImage(data.getImageId());
             default:
                 return null;
         }

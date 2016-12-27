@@ -128,7 +128,7 @@
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?after=group.open">
          <menu
-               icon="icons/easyshell.png"
+               icon="images/easyshell.png"
                id="de.anbos.eclipse.easyshell.plugin.menu"
                label="EasyShell">
             <visibleWhen
@@ -145,7 +145,7 @@
             </visibleWhen>
          </menu>
          <menu
-               icon="icons/easyshell.png"
+               icon="images/easyshell.png"
                id="de.anbos.eclipse.easyshell.plugin.menu.file"
                label="EasyShell">
             <visibleWhen
@@ -162,7 +162,7 @@
             </visibleWhen>
          </menu>
          <menu
-               icon="icons/easyshell.png"
+               icon="images/easyshell.png"
                id="de.anbos.eclipse.easyshell.plugin.menu.directory"
                label="EasyShell">
             <visibleWhen

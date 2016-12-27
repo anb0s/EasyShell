@@ -14,6 +14,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
+import de.anbos.eclipse.easyshell.plugin.Constants;
 import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.MenuNameType;
@@ -26,18 +27,20 @@ public class MenuData extends Data {
     private boolean enabled = true;
     private MenuNameType nameType = MenuNameType.menuNameTypeUnknown;
     private String namePattern = "";
+    private String imageId = Constants.IMAGE_NONE;
     // copy of or reference to command
     private String commandId = null;
 
-    public MenuData(String id, boolean enabled, MenuNameType nameType, String namePattern, String commandId) {
+    public MenuData(String id, boolean enabled, MenuNameType nameType, String namePattern, String imageId, String commandId) {
         super(id);
         setEnabled(enabled);
         setNameType(nameType);
         setNamePattern(namePattern);
+        setImageId(imageId);
         setCommandId(commandId);
     }
 
-    public MenuData(String newId, String commandId) {
+	public MenuData(String newId, String commandId) {
         super(newId);
         setNameType(MenuNameType.menuNameTypeGeneric1);
         setCommandId(commandId);
@@ -90,6 +93,22 @@ public class MenuData extends Data {
         return getNameExpanded();
     }
 
+    public String getImageId() {
+    	if (!imageId.equals(Constants.IMAGE_NONE)) {
+    		return imageId;
+    	} else {
+    		try {
+				return getCommandData().getImageId();
+			} catch (UnknownCommandID e) {
+				return Constants.IMAGE_NONE;
+			}
+    	}
+    }
+
+    public String getImageIdOwn() {
+    	return imageId;
+    }
+
     public String getCommandId() {
         return commandId;
     }
@@ -128,12 +147,15 @@ public class MenuData extends Data {
             nameType = MenuNameType.getFromEnum(tokenizer.nextToken());
         }
         String namePatternReaded = tokenizer.nextToken();
+        String imageIdStr = Constants.IMAGE_NONE;
         // -------------------------------------------------
-        // read new id
+        // read new imageId and commandId
         if (version.getId() >= Version.v2_0_003.getId()) {
+		    if (version.getId() >= Version.v2_1_005.getId()) {
+		    	imageIdStr = tokenizer.nextToken();
+		    }
             // read the new one
             setCommandId(tokenizer.nextToken());
-            setNameType(nameType);
         } else {
             // read previous command data members
             CommandData oldData = new CommandData();
@@ -141,9 +163,7 @@ public class MenuData extends Data {
             setCommandId(oldData.getId());
             // menu name type handling
             // set name type and read the old name as pattern and convert to new
-            if (version.getId() >= Version.v2_0_002.getId()) {
-                setNameType(nameType);
-            } else {
+            if (version.getId() < Version.v2_0_002.getId()) {
                 // check if readed name is the same, like expanded from patterns
                 for (MenuNameType type : MenuNameType.getAsList()) {
                     setNamePattern(type.getPattern()); // set temporary
@@ -152,9 +172,9 @@ public class MenuData extends Data {
                         break;
                     }
                 }
-                setNameType(nameType);
             }
         }
+        setNameType(nameType);
         if (nameType == MenuNameType.menuNameTypeUser) {
             setNamePattern(namePatternReaded);
         } else if (version.getId() < Version.v2_0_004.getId()) {
@@ -163,6 +183,7 @@ public class MenuData extends Data {
                 setNameTypeFromCategory();
             }
         }
+        setImageId(imageIdStr);
         return true;
     }
 
@@ -179,6 +200,9 @@ public class MenuData extends Data {
         }
         ret += getNamePattern() + delimiter;
         if (version.getId() >= Version.v2_0_003.getId()) {
+            if (version.getId() >= Version.v2_1_005.getId()) {
+            	ret += getImageIdOwn() + delimiter;
+            }
             ret += getCommandId() + delimiter;
         } else {
             try {
@@ -211,6 +235,14 @@ public class MenuData extends Data {
         }
     }
 
+    public void setImageId(String imageId) {
+    	if (imageId != null) {
+    		this.imageId = imageId;
+    	} else {
+    		this.imageId = Constants.IMAGE_NONE;
+    	}
+	}
+
     public void setCommandId(String commandId) {
         this.commandId = commandId;
     }
@@ -223,6 +255,15 @@ public class MenuData extends Data {
     	} else {
     		throw new UnknownCommandID(commandIdStr, true);
     	}
+    }
+
+    public String getCommand() {
+    	try {
+			return getCommandData().getCommand();
+		} catch (UnknownCommandID e) {
+			e.logInternalError();
+			return "Unknown ID: " + e.getID();
+		}
     }
 
     public void setNameTypeFromCategory() {

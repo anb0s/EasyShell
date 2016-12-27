@@ -12,8 +12,8 @@
 package de.anbos.eclipse.easyshell.plugin.misc;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -33,11 +33,34 @@ public class UtilsUI {
         }
     }
 
-    static public Label createImageLabel(Composite parent, String image) {
+    static public Label createLabel(Composite parent, String imageId, String text, String tooltip) {
         Label label = new Label(parent, SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-        label.setImage(new Image(null, Activator.getImageDescriptor(image).getImageData()));
+    	if (text != null) {
+    		label.setText(text);
+    		label.setToolTipText(tooltip);
+    	}
+        label.setImage(Activator.getImage(imageId));
         return label;
+    }
+
+    static public Label createImageLabel(Composite parent, String imageId) {
+    	return createLabel(parent, imageId, null, null);
+    }
+
+    static public Button createButton(Composite parent, String imageId, String text, String tooltip) {
+    	Button button = new Button(parent, SWT.LEFT);
+    	button.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+    	if (text!=null) {
+    		button.setText(text);
+    		button.setToolTipText(tooltip);
+    	}
+    	button.setImage(Activator.getImage(imageId));
+        return button;
+    }
+
+    static public Button createImageButton(Composite parent, String imageId) {
+    	return createButton(parent, imageId, null, null);
     }
 
     static public void refreshWidget(Widget widget) {

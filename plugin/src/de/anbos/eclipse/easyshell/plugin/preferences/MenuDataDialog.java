@@ -68,6 +68,7 @@ public class MenuDataDialog extends StatusDialog {
     private Combo   nameTypeCombo;
     private Text    namePatternText;
     ContentProposalAdapter namePatternTextAssist;
+    private Button  categoryImageButton;
     private Text    menuNameText;
     private Text    commandText;
 
@@ -172,7 +173,7 @@ public class MenuDataDialog extends StatusDialog {
 		pageGroupMenu.setText(Activator.getResourceString("easyshell.menu.editor.dialog.title.group.menu"));
 		pageGroupMenu.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.title.group.tooltip.menu"));
 	    GridLayout layoutMenu = new GridLayout();
-	    layoutMenu.numColumns = 2;
+	    layoutMenu.numColumns = 3;
 	    layoutMenu.makeColumnsEqualWidth = false;
 	    layoutMenu.marginWidth = 5;
 	    layoutMenu.marginHeight = 4;
@@ -195,12 +196,7 @@ public class MenuDataDialog extends StatusDialog {
 
         // create input commandText field
         String commandStr;
-		try {
-			commandStr = menuData.getCommandData().getCommand();
-		} catch (UnknownCommandID e1) {
-			e1.logInternalError();
-			commandStr = "Unknown ID: " + e1.getID();
-		}
+		commandStr = menuData.getCommand();
         commandText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.command"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.command"), commandStr, false, false);
 
         //createLabel(parent, "");createLabel(parent, "");
@@ -212,9 +208,9 @@ public class MenuDataDialog extends StatusDialog {
 
     public void createNameControls(Composite parent) {
         // type combo
-        createNameTypeCombo(parent);//UtilsUI.createLabel(parent, "", null);
+        createNameTypeCombo(parent);
         // create input nameText field
-        namePatternText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.pattern"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.pattern"), menuData.getNamePattern(), false, true);
+        namePatternText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.pattern"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.pattern"), menuData.getNamePattern(), true, true);
         namePatternTextAssist = addContentAssistExtended(namePatternText);
         namePatternText.addModifyListener(new ModifyListener() {
             @Override
@@ -227,10 +223,21 @@ public class MenuDataDialog extends StatusDialog {
                 }
             }
         });
-        //UtilsUI.createLabel(parent, "", null);
         // create output menuNameText field
-        menuNameText = UtilsUI.createTextField(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.name"), menuData.getNameExpanded(), false, false);
-        //UtilsUI.createLabel(parent, "", null);
+        UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.name"), Activator.getResourceString("easyshell.menu.editor.dialog.label.tooltip.name"));
+        //categoryImage = UtilsUI.createImageLabel(parent, Category.categoryDefault.getIcon());
+        categoryImageButton = UtilsUI.createImageButton(parent, Category.categoryDefault.getImageId());
+        categoryImageButton.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				//imageDialog();
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
+        menuNameText = UtilsUI.createTextField(parent, null, null, menuData.getNameExpanded(), false, false);
     }
 
     private void createRemoveButton(Composite parent) {
@@ -499,7 +506,6 @@ public class MenuDataDialog extends StatusDialog {
         enabledCheckBox = new Button(parent,SWT.CHECK);
         enabledCheckBox.setSelection(this.menuData.isEnabled());
         UtilsUI.createLabel(parent, "", null);
-        //UtilsUI.createLabel(parent, "", null);
     }
 
     private String[] getAllNameTypesAsComboNames() {
@@ -536,7 +542,6 @@ public class MenuDataDialog extends StatusDialog {
             }
         });
         searchText.setToolTipText(Activator.getResourceString("easyshell.command.page.text.tooltip.search"));
-        //createLabel(parent, "");
     }
 
     private void createCommandCombo(Composite parent) {
@@ -555,13 +560,15 @@ public class MenuDataDialog extends StatusDialog {
 				}
 				String commandStr = null;
 				PresetType presetType = PresetType.presetPlugin;
+				Category category = Category.categoryUnknown;
 				try {
-					commandStr = menuData.getCommandData().getCommand();
+					commandStr = menuData.getCommand();
 					presetType = menuData.getCommandData().getPresetType();
+					category   = menuData.getCommandData().getCategory();
 				} catch (UnknownCommandID e) {
 					e.logInternalError();
-					commandStr = "Unknown ID: " + e.getID();
 				}
+				categoryImageButton.setImage(Activator.getImage(category.getImageId()));
 				commandText.setText(commandStr);
 				boolean presetSelected =  presetType == PresetType.presetPlugin;
 				removeButton.setEnabled(!presetSelected);
@@ -586,7 +593,7 @@ public class MenuDataDialog extends StatusDialog {
 
             @Override
             public Image getImage(CommandData element) {
-                return element.getCategoryImage();
+                return Activator.getImage(element.getImageId());
             }
 
         });
@@ -622,6 +629,7 @@ public class MenuDataDialog extends StatusDialog {
 
     private void createNameTypeCombo(Composite parent) {
     	UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.menu.editor.dialog.label.combo.pattern"), Activator.getResourceString("easyshell.menu.editor.dialog.combo.tooltip.pattern"));
+    	UtilsUI.createLabel(parent, "", null);
         // draw combo
         nameTypeCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         nameTypeCombo.setToolTipText(Activator.getResourceString("easyshell.menu.editor.dialog.combo.tooltip.pattern"));

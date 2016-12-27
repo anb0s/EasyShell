@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.Bundle;
@@ -110,19 +111,23 @@ public class Activator extends AbstractUIPlugin {
         return getDefault().getImageRegistry().getDescriptor(id);
     }
 
+    public static Image getImage(String id) {
+        return getDefault().getImageRegistry().get(id);
+    }
+
     protected void initializeImageRegistry(ImageRegistry registry) {
         Bundle bundle = Platform.getBundle(Constants.PLUGIN_ID);
         OS os = Utils.getOS();
-        for (String iconName : Category.getIconsAsList()) {
-            String iconPath = Constants.IMAGE_PATH + os.getId() + "/" + iconName;
-            URL url = bundle.getEntry(iconPath);
+        for (String imageId : Category.getImageIdsAsList()) {
+            String imagePath = Constants.IMAGE_PATH + os.getId() + "/" + imageId + Constants.IMAGE_EXT;
+            URL url = bundle.getEntry(imagePath);
             if (url == null) {
-                iconPath = Constants.IMAGE_PATH + iconName;
+            	imagePath = Constants.IMAGE_PATH + imageId + Constants.IMAGE_EXT;
             }
-            addImageToRegistry(registry, bundle, iconPath, iconName);
+            addImageToRegistry(registry, bundle, imagePath, imageId);
         }
-        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_EASYSHELL, Constants.IMAGE_EASYSHELL);
-        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_ECLIPSE, Constants.IMAGE_ECLIPSE);
+        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_EASYSHELL + Constants.IMAGE_EXT, Constants.IMAGE_EASYSHELL);
+        addImageToRegistry(registry, bundle, Constants.IMAGE_PATH + Constants.IMAGE_ECLIPSE + Constants.IMAGE_EXT, Constants.IMAGE_ECLIPSE);
      }
 
     protected void addImageToRegistry(ImageRegistry registry, Bundle bundle, String imagePath, String image_id) {

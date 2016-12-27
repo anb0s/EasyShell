@@ -19,7 +19,7 @@ import java.util.Map;
 import de.anbos.eclipse.easyshell.plugin.Constants;
 
 public enum Category {
-    categoryUnknown(-1, "Unknown", Constants.IMAGE_UNKNOWN),
+    categoryUnknown(-1, "Unknown", Constants.IMAGE_NONE),
     categoryDefault(0, "Default", Constants.IMAGE_DEFAULT),
     categoryOpen(1, "Open", Constants.IMAGE_OPEN),
     categoryRun(2, "Run", Constants.IMAGE_RUN),
@@ -29,12 +29,12 @@ public enum Category {
     // attributes
     private final int id;
     private final String name;
-    private final String icon;
+    private final String imageId;
     // construct
-    Category(int id, String name, String icon) {
+    Category(int id, String name, String imageId) {
         this.id = id;
         this.name = name;
-        this.icon = icon;
+        this.imageId = imageId;
     }
     public int getId() {
         return id;
@@ -42,8 +42,8 @@ public enum Category {
     public String getName() {
         return name;
     }
-    public String getIcon() {
-        return icon;
+    public String getImageId() {
+        return imageId;
     }
     public static Category getFromId(int id) {
         Category ret = categoryUnknown;
@@ -102,11 +102,11 @@ public enum Category {
         }
         return arr;
     }
-    public static List<String> getIconsAsList() {
+    public static List<String> getImageIdsAsList() {
         List<String> list = new ArrayList<String>();
         for(int i = 0; i < Category.values().length; i++) {
             if (Category.values()[i] != categoryUnknown) {
-                list.add(Category.values()[i].getIcon());
+                list.add(Category.values()[i].getImageId());
             }
         }
         return list;

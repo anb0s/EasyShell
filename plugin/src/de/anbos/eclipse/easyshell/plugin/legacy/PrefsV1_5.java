@@ -302,7 +302,7 @@ public class PrefsV1_5 {
                     openCmdList.add(openCmd);
                     CommandData cmdDataOpen = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces, PrefsV1_4.migrateCommandVariables(openCmd));
                     cmdDataList.add(cmdDataOpen);
-                    MenuData menuDataOpen = new MenuData(cmdDataOpen.getId(), true, MenuNameType.menuNameTypeOpenHere, null, cmdDataOpen.getId());
+                    MenuData menuDataOpen = new MenuData(cmdDataOpen.getId(), true, MenuNameType.menuNameTypeOpenHere, null, null, cmdDataOpen.getId());
                     menuDataOpen.setPosition(position++);
                     menuDataOpen.setNamePattern(menuDataOpen.getNamePattern() + postfix);
                     menuDataOpen.setNameType(MenuNameType.menuNameTypeUser);
@@ -314,7 +314,7 @@ public class PrefsV1_5 {
                     runCmdList.add(runCmd);
                     CommandData cmdDataRun = new CommandData(null, PresetType.presetUser, os, command.getConsole(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces, PrefsV1_4.migrateCommandVariables(runCmd));
                     cmdDataList.add(cmdDataRun);
-                    MenuData menuDataRun = new MenuData(cmdDataRun.getId(), true, MenuNameType.menuNameTypeRunWith, null, cmdDataRun.getId());
+                    MenuData menuDataRun = new MenuData(cmdDataRun.getId(), true, MenuNameType.menuNameTypeRunWith, null, null, cmdDataRun.getId());
                     menuDataRun.setPosition(position++);
                     menuDataRun.setNamePattern(menuDataRun.getNamePattern() + postfix);
                     menuDataRun.setNameType(MenuNameType.menuNameTypeUser);
@@ -326,7 +326,7 @@ public class PrefsV1_5 {
                     exploreCmdList.add(exploreCmd);
                     CommandData cmdDataExplore = new CommandData(null, PresetType.presetUser, os, command.getExplorer(), ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces, PrefsV1_4.migrateCommandVariables(exploreCmd));
                     cmdDataList.add(cmdDataExplore);
-                    MenuData menuDataExplore = new MenuData(cmdDataExplore.getId(), true, MenuNameType.menuNameTypeShowIn, null, cmdDataExplore.getId());
+                    MenuData menuDataExplore = new MenuData(cmdDataExplore.getId(), true, MenuNameType.menuNameTypeShowIn, null, null, cmdDataExplore.getId());
                     menuDataExplore.setPosition(position++);
                     menuDataExplore.setNamePattern(menuDataExplore.getNamePattern() + postfix);
                     menuDataExplore.setNameType(MenuNameType.menuNameTypeUser);
@@ -338,7 +338,7 @@ public class PrefsV1_5 {
                     copyPathList.add(copyPathCmd);
                     CommandData cmdDataCopyPath = new CommandData(null, PresetType.presetUser, os, "Full Path", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpaces, PrefsV1_4.migrateCommandVariables(copyPathCmd));
                     cmdDataList.add(cmdDataCopyPath);
-                    MenuData menuDataCopyPath = new MenuData(cmdDataCopyPath.getId(), true, MenuNameType.menuNameTypeCopyToClipboard, null, cmdDataCopyPath.getId());
+                    MenuData menuDataCopyPath = new MenuData(cmdDataCopyPath.getId(), true, MenuNameType.menuNameTypeCopyToClipboard, null, null, cmdDataCopyPath.getId());
                     menuDataCopyPath.setPosition(position++);
                     menuDataCopyPath.setNamePattern(menuDataCopyPath.getNamePattern() + postfix);
                     menuDataCopyPath.setNameType(MenuNameType.menuNameTypeUser);

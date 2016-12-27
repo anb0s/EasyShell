@@ -30,7 +30,6 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -441,7 +440,7 @@ public class CommandDataDialog extends StatusDialog {
     private void createCategoryCombo(Composite parent) {
         // draw label
         UtilsUI.createLabel(parent, Activator.getResourceString("easyshell.command.editor.dialog.label.combo.category"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.category"));
-        categoryImage = UtilsUI.createImageLabel(parent, Category.categoryDefault.getIcon());
+        categoryImage = UtilsUI.createImageLabel(parent, Category.categoryUnknown.getImageId());
         // draw combo
         categoryCombo = new Combo(parent,SWT.BORDER | SWT.READ_ONLY);
         categoryCombo.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.combo.tooltip.category"));
@@ -452,7 +451,7 @@ public class CommandDataDialog extends StatusDialog {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 String text = categoryCombo.getItem(categoryCombo.getSelectionIndex());
-                categoryImage.setImage(new Image(null, Activator.getImageDescriptor(Category.getFromName(text).getIcon()).getImageData()));
+                categoryImage.setImage(Activator.getImage(Category.getFromName(text).getImageId()));
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {

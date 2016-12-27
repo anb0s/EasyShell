@@ -14,9 +14,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
-import org.eclipse.swt.graphics.Image;
-
-import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.Constants;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
@@ -32,23 +30,25 @@ public class CommandData extends Data {
     private PresetType presetType = PresetType.presetUnknown;
     private OS os = OS.osUnknown;
     private Category category = Category.categoryUnknown;
+    private String imageId = Constants.IMAGE_NONE;
     private CommandType commandType = CommandType.commandTypeUnknown;
     private CommandDataBasic modifyData = null;
     // internal
     private boolean selected = true;
 
-    public CommandData(String id, CommandDataBasic basicData, PresetType presetType, OS os, Category category, CommandType cmdType, CommandDataBasic modifyData) {
+    public CommandData(String id, CommandDataBasic basicData, PresetType presetType, OS os, Category category, String imageId, CommandType cmdType, CommandDataBasic modifyData) {
         super(id);
         setBasicData(basicData);
         setPresetType(presetType);
         setOs(os);
         setCategory(category);
+        setImageId(imageId);
         setCommandType(cmdType);
         setModifyData(modifyData);
     }
 
     public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, Category category, CommandType cmdType, CommandTokenizer tokenizer, String command) {
-        this(id, new CommandDataBasic(null, name, resType, useWorkingDirectory, workingDirectory, tokenizer, command), presetType, os, category, cmdType, null);
+        this(id, new CommandDataBasic(null, name, resType, useWorkingDirectory, workingDirectory, tokenizer, command), presetType, os, category, null, cmdType, null);
     }
 
     public CommandData(String id, PresetType presetType, OS os, String name, ResourceType resType, Category category, CommandType cmdType, String command) {
@@ -56,7 +56,7 @@ public class CommandData extends Data {
     }
 
     public CommandData(CommandData commandData, String newId) {
-        this(newId, commandData.getBasicData(), commandData.getPresetType(), commandData.getOs(), commandData.getCategory(), commandData.getCommandType(), commandData.getModifyData());
+        this(newId, commandData.getBasicData(), commandData.getPresetType(), commandData.getOs(), commandData.getCategory(), commandData.getImageIdOwn(), commandData.getCommandType(), commandData.getModifyData());
     }
 
     public CommandData(CommandData commandData, boolean generateNewId) {
@@ -139,8 +139,16 @@ public class CommandData extends Data {
         }
     }
 
-    public Image getCategoryImage() {
-        return new Image(null, Activator.getImageDescriptor(getCategory().getIcon()).getImageData());
+    public String getImageId() {
+    	if (!imageId.equals(Constants.IMAGE_NONE)) {
+    		return imageId;
+    	} else {
+   			return getCategory().getImageId();
+    	}
+    }
+
+    public String getImageIdOwn() {
+    	return imageId;
     }
 
     public String getCommandAsComboName() {
@@ -182,15 +190,6 @@ public class CommandData extends Data {
         }
     }
 
-/*
-	public void setName(String name) {
-	    if (getPresetType() == PresetType.presetPluginModify) {
-	        modifyData.setName(name);
-	    } else {
-	        basicData.setName(name);
-	    }
-	}
-*/
     public void setOs(OS os) {
         this.os = os;
     }
@@ -198,55 +197,23 @@ public class CommandData extends Data {
     public void setPresetType(PresetType presetType) {
         this.presetType = presetType;
     }
-/*
-    public void setResourceType(ResourceType resType) {
-        if (getPresetType() == PresetType.presetPluginAndUser) {
-            modifyData.setResourceType(resType);
-        } else {
-            basicData.setResourceType(resType);
-        }
-    }
 
-    public void setUseWorkingDirectory(boolean useWorkingDirectory) {
-        if (getPresetType() == PresetType.presetPluginAndUser) {
-            modifyData.setUseWorkingDirectory(useWorkingDirectory);
-        } else {
-            basicData.setUseWorkingDirectory(useWorkingDirectory);
-        }
-    }
-
-    public void setWorkingDirectory(String workingDirectory) {
-        if (getPresetType() == PresetType.presetPluginAndUser) {
-            modifyData.setWorkingDirectory(workingDirectory);
-        } else {
-            basicData.setWorkingDirectory(workingDirectory);
-        }
-    }
-*/
     public void setCategory(Category category) {
         this.category = category;
     }
 
+    private void setImageId(String imageId) {
+    	if (imageId != null) {
+    		this.imageId = imageId;
+    	} else {
+    		this.imageId = Constants.IMAGE_NONE;
+    	}
+	}
+
     public void setCommandType(CommandType cmdType) {
         this.commandType = cmdType;
     }
-/*
-    public void setCommandTokenizer(CommandTokenizer commandTokenizer) {
-        if (getPresetType() == PresetType.presetPluginAndUser) {
-            modifyData.setCommandTokenizer(commandTokenizer);
-        } else {
-            basicData.setCommandTokenizer(commandTokenizer);
-        }
-    }
 
-	public void setCommand(String command) {
-        if (getPresetType() == PresetType.presetPluginAndUser) {
-            modifyData.setCommand(command);
-        } else {
-            basicData.setCommand(command);
-        }
-	}
-*/
 	public boolean equals(Object object) {
     	if(!(object instanceof CommandData)) {
     		return false;
@@ -290,7 +257,8 @@ public class CommandData extends Data {
             resourceTypeStr = "resourceTypeDirectory";
         }
         basicData.setResourceType(ResourceType.getFromEnum(resourceTypeStr));
-		// handling of working directory
+		// handling of working directory, category and imageId
+        String imageIdStr = Constants.IMAGE_NONE;
 		if (version.getId() >= Version.v2_0_003.getId()) {
 		    basicData.setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
 		    basicData.setWorkingDirectory(tokenizer.nextToken());
@@ -299,6 +267,9 @@ public class CommandData extends Data {
 		        categoryStr = "categoryUser";
 		    }
 		    setCategory(Category.getFromEnum(categoryStr));
+		    if (version.getId() >= Version.v2_1_005.getId()) {
+		    	imageIdStr = tokenizer.nextToken();
+		    }
 		    setCommandType(CommandType.getFromEnum(tokenizer.nextToken()));
 		} else {
 		    basicData.setUseWorkingDirectory(false);
@@ -307,6 +278,7 @@ public class CommandData extends Data {
 		    setCategory(Category.getFromDeprecatedCommandTypeEnum(commandTypeStr));
 		    setCommandType(CommandType.getFromDeprecatedCommandTypeEnum(commandTypeStr));
 		}
+		setImageId(imageIdStr);
 		// go on compatible
 	    String commandTokenizer = CommandTokenizer.commandTokenizerSpaces.toString();
         if (version.getId() >= Version.v2_1_001.getId()) {
@@ -350,6 +322,9 @@ public class CommandData extends Data {
             ret += Boolean.toString(basicData.isUseWorkingDirectory()) + delimiter;
             ret += basicData.getWorkingDirectory() + delimiter;
             ret += getCategory().toString() + delimiter;
+            if (version.getId() >= Version.v2_1_005.getId()) {
+            	ret += getImageIdOwn() + delimiter;
+            }
         }
         ret += getCommandType().toString() + delimiter;
         if (version.getId() >= Version.v2_1_001.getId()) {

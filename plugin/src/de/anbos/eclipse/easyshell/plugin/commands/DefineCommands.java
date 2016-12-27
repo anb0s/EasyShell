@@ -49,7 +49,7 @@ public class DefineCommands extends ExtensionContributionFactory {
 						|| (resTypeSupported == resTypeWanted)) {
 					addItem(serviceLocator, additions, item.getNameExpanded(),
 							"de.anbos.eclipse.easyshell.plugin.commands.execute",
-							Utils.getParameterMapFromMenuData(item), item.getCommandData().getCategory().getIcon(),
+							Utils.getParameterMapFromMenuData(item), item.getImageId(),
 							true);
 				}
 			} catch (UnknownCommandID e) {

@@ -16,21 +16,20 @@ public interface Constants {
     // Plugin
     public static final String PLUGIN_ID = "de.anbos.eclipse.easyshell.plugin";
 
-    // Images
-    //public static final String IMAGE_EXT         = "gif";
-    public static final String IMAGE_EXT         = "png";
-    public static final String IMAGE_PATH        = "icons/";
+    // Icons
+    public static final String IMAGE_EXT         = ".png";
+    public static final String IMAGE_PATH        = "images/";
     // categories
-    public static final String IMAGE_UNKNOWN     = "unknown." + IMAGE_EXT;
-    public static final String IMAGE_DEFAULT     = "default." + IMAGE_EXT;
-    public static final String IMAGE_OPEN        = "open." + IMAGE_EXT;
-    public static final String IMAGE_RUN         = "run." + IMAGE_EXT;
-    public static final String IMAGE_EXPLORE     = "explore." + IMAGE_EXT;
-    public static final String IMAGE_CLIPBOARD   = "clipboard." + IMAGE_EXT;
-    public static final String IMAGE_USER        = "user." + IMAGE_EXT;
+    public static final String IMAGE_NONE        = "none";
+    public static final String IMAGE_DEFAULT     = "default";
+    public static final String IMAGE_OPEN        = "open";
+    public static final String IMAGE_RUN         = "run";
+    public static final String IMAGE_EXPLORE     = "explore";
+    public static final String IMAGE_CLIPBOARD   = "clipboard";
+    public static final String IMAGE_USER        = "user";
     // other
-    public static final String IMAGE_EASYSHELL   = "easyshell." + IMAGE_EXT;
-    public static final String IMAGE_ECLIPSE     = "eclipse." + IMAGE_EXT;
+    public static final String IMAGE_EASYSHELL   = "easyshell";
+    public static final String IMAGE_ECLIPSE     = "eclipse";
 
 	// Preferences
     public static final String PREF_COMMANDS_PRESET = "COMMANDS_PRESET";
