@@ -13,6 +13,8 @@ package de.anbos.eclipse.easyshell.plugin;
 
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -49,6 +51,8 @@ public class Activator extends AbstractUIPlugin {
 
     //Resource bundle.
     private ResourceBundle resourceBundle;
+
+    private List<String> imageNames;
 
     /**
      * Storage for preferences.
@@ -116,6 +120,7 @@ public class Activator extends AbstractUIPlugin {
     }
 
     protected void initializeImageRegistry(ImageRegistry registry) {
+    	imageNames = new ArrayList<String>();
         Bundle bundle = Platform.getBundle(Constants.PLUGIN_ID);
         OS os = Utils.getOS();
         for (String imageId : Category.getImageIdsAsList()) {
@@ -135,9 +140,14 @@ public class Activator extends AbstractUIPlugin {
         URL url = FileLocator.find(bundle, path, null);
         ImageDescriptor desc = ImageDescriptor.createFromURL(url);
         registry.put(image_id, desc);
+        imageNames.add(image_id);
     }
 
-    public ResourceBundle getResourceBundle() {
+    public static List<String> getImageNames() {
+		return getDefault().imageNames;
+	}
+
+	public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
 

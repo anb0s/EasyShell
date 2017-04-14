@@ -20,6 +20,9 @@ import java.util.Map;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -41,6 +44,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
@@ -230,7 +234,7 @@ public class MenuDataDialog extends StatusDialog {
         categoryImageButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				//imageDialog();
+				imageDialog();
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -433,6 +437,78 @@ public class MenuDataDialog extends StatusDialog {
             removeCommand(data);
         }
     }
+
+	private void imageDialog() {
+	    ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new ILabelProvider() {
+
+			@Override
+			public void removeListener(ILabelProviderListener listener) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public boolean isLabelProperty(Object element, String property) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void dispose() {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void addListener(ILabelProviderListener listener) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public String getText(Object element) {
+				return "";
+			}
+
+			@Override
+			public Image getImage(Object element) {
+				return Activator.getImage((String)element);
+			}
+		}, new ITreeContentProvider() {
+
+			@Override
+			public boolean hasChildren(Object element) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public Object getParent(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Object[] getElements(Object inputElement) {
+				return ((List<?>)inputElement).toArray();
+			}
+
+			@Override
+			public Object[] getChildren(Object parentElement) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		});
+	    dialog.setTitle("Image Selection");
+	    dialog.setMessage("Select the image from the tree:");
+	    dialog.setInput(Activator.getImageNames());
+        dialog.open();
+        Object res[] = dialog.getResult();
+	}
+
+	private void imageDialog2() {
+
+	}
 
     private void refreshCommandCombo() {
     	try {
