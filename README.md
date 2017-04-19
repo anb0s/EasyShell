@@ -1,4 +1,4 @@
-# EasyShell [![Chat @ gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/anb0s/Lobby) [![Build Status](https://travis-ci.org/anb0s/EasyShell.svg)](https://travis-ci.org/anb0s/EasyShell) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
+# EasyShell [![Chat @ gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/anb0s/Lobby) [![Build Status](https://travis-ci.org/anb0s/EasyShell.svg)](https://travis-ci.org/anb0s/EasyShell) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
 This Eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. Additionally it is possible to run selected file in the shell, copy file or directory path or run user defined external tools. Key shortcuts and multiple selections are also supported!
 
 Installation:
