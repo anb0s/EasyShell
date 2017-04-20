@@ -64,6 +64,27 @@ public class CommandDataDefaultCollectionWindows {
                 "\"C:\\Program Files\\Git\\git-bash.exe\""));
         list.add(new CommandData("03e6678b-f67f-42ed-b65f-6b6f06ec0e8f", PresetType.presetPlugin, OS.osWindows, "Git Bash v2.x", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 "\"C:\\Program Files\\Git\\git-bash.exe\" -c ./\"${easyshell:resource_name}\""));
+        // MSYS2: http://www.msys2.org
+        list.add(new CommandData("0494f4e4-d0ea-4700-86eb-ea9ac58cb74f", PresetType.presetPlugin, OS.osWindows, "MSYS2 Bash", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "msys2 /bin/bash -c \"exec bash\""));
+        list.add(new CommandData("fe0192d8-e884-4463-bc93-2746f44be0a3", PresetType.presetPlugin, OS.osWindows, "MSYS2 Bash", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "msys2 /bin/bash -c \"./'${easyshell:resource_name}'\""));
+        list.add(new CommandData("fefa90d8-3b72-4313-bc48-e743ca5d903e", PresetType.presetPlugin, OS.osWindows, "MSYS2 Bash (hold)", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "msys2 /bin/bash -c \"./'${easyshell:resource_name}';exec bash\""));
+        // MinGW32
+        list.add(new CommandData("6e08abbc-d9ee-407a-a7ad-5e14dafc0fa2", PresetType.presetPlugin, OS.osWindows, "MinGW32 Bash", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "mingw32 /bin/bash -c \"exec bash\""));
+        list.add(new CommandData("6c528020-02c1-4245-9eab-60dff12f89b0", PresetType.presetPlugin, OS.osWindows, "MinGW32 Bash", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "mingw32 /bin/bash -c \"./'${easyshell:resource_name}'\""));
+        list.add(new CommandData("22da92a3-05df-4179-b9a5-3b75131a4e0b", PresetType.presetPlugin, OS.osWindows, "MinGW32 Bash (hold)", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "mingw32 /bin/bash -c \"./'${easyshell:resource_name}';exec bash\""));
+        // MinGW64
+        list.add(new CommandData("4bfb0295-476e-4503-af55-e9eb89eb72ab", PresetType.presetPlugin, OS.osWindows, "MinGW64 Bash", ResourceType.resourceTypeFileOrDirectory, true, "${easyshell:container_loc}", Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "mingw64 /bin/bash -c \"exec bash\""));
+        list.add(new CommandData("f01bbb14-70ae-4b24-a112-73a71496c6b8", PresetType.presetPlugin, OS.osWindows, "MinGW64 Bash", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "mingw64 /bin/bash -c \"./'${easyshell:resource_name}'\""));
+        list.add(new CommandData("ce55f175-74a3-447d-9bba-9b24aeaa2b0d", PresetType.presetPlugin, OS.osWindows, "MinGW64 Bash (hold)", ResourceType.resourceTypeFile, true, "${easyshell:container_loc}", Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "mingw64 /bin/bash -c \"./'${easyshell:resource_name}';exec bash\""));
         // Windows Console
         // Console2: https://sourceforge.net/projects/console/
         // ConsoleZ: https://github.com/cbucher/console
