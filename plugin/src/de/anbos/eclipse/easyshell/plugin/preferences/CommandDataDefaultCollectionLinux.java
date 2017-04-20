@@ -193,12 +193,17 @@ public class CommandDataDefaultCollectionLinux {
         // Linux Caja (MATE): http://manpages.ubuntu.com/manpages/wily/man1/caja.1.html
         list.add(new CommandData("f2b970ed-ef98-4ce2-861c-20f44a471f49", PresetType.presetPlugin, OS.osLinux, "Caja", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "caja ${easyshell:container_loc}"));
-        // Linux Krusader: https://krusader.org/get-krusader/
+        // Linux Krusader: https://krusader.org/get-krusader
         // https://askubuntu.com/questions/92516/start-krusader-in-a-directory-from-command-line
         list.add(new CommandData("d93cd39e-1f78-47e2-90d3-88b8c8495c61", PresetType.presetPlugin, OS.osLinux, "Krusader (left panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "krusader --left=${easyshell:container_loc}"));
         list.add(new CommandData("1df6da5c-5455-4372-a2ae-6b1b3f910e76", PresetType.presetPlugin, OS.osLinux, "Krusader (right panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "krusader --right=${easyshell:container_loc}"));
+        // GNOME Commander: https://gcmd.github.io
+        list.add(new CommandData("a9eb9cc0-948b-4ca7-b86c-ad5116396c3f", PresetType.presetPlugin, OS.osLinux, "GNOME Commander (left panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+                "gnome-commander --start-left-dir ${easyshell:container_loc}"));
+        list.add(new CommandData("7f8492a5-3423-4ffe-9e4c-0aa76319475a", PresetType.presetPlugin, OS.osLinux, "GNOME Commander (right panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+                "gnome-commander --start-right-dir ${easyshell:container_loc}"));
     }
 
     private static void addCommandsClipboard(CommandDataList list) {
