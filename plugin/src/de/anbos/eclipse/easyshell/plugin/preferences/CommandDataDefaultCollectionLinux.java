@@ -204,6 +204,11 @@ public class CommandDataDefaultCollectionLinux {
                 "gnome-commander --start-left-dir ${easyshell:container_loc}"));
         list.add(new CommandData("7f8492a5-3423-4ffe-9e4c-0aa76319475a", PresetType.presetPlugin, OS.osLinux, "GNOME Commander (right panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "gnome-commander --start-right-dir ${easyshell:container_loc}"));
+        // Sunflower: http://sunflower-fm.org
+        list.add(new CommandData("fdf63c8c-f6c1-4392-8f09-c3bdef6ffe34", PresetType.presetPlugin, OS.osLinux, "Sunflower (left tab)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+                "sunflower --left-tab ${easyshell:container_loc}"));
+        list.add(new CommandData("48722b08-dc70-4059-915b-a3454a75eca9", PresetType.presetPlugin, OS.osLinux, "Sunflower (right tab)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+                "sunflower --right-tab ${easyshell:container_loc}"));
     }
 
     private static void addCommandsClipboard(CommandDataList list) {
