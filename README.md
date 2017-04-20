@@ -3,13 +3,13 @@ This Eclipse plugin allows to open a shell window or file manager from the popup
 
 Installation:
 -------------
-Use update site: http://anb0s.github.io/EasyShell
-
-OR
-
 Eclipse Markeplace: http://marketplace.eclipse.org/content/easyshell
 
 <a href="http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=974" class="drag" title="Drag to your running Eclipse* workspace. *Requires Eclipse Marketplace Client"><img class="img-responsive" src="https://marketplace.eclipse.org/sites/all/themes/solstice/public/images/marketplace/btn-install.png" alt="Drag to your running Eclipse* workspace. *Requires Eclipse Marketplace Client" /></a>
+
+OR
+
+Use update site: http://anb0s.github.io/EasyShell
 
 OR
 
@@ -62,20 +62,19 @@ The following platform, shell combinations and tools are supported as selections
 - Terminals
   - Command prompt (known as DOS shell or cmd.exe)
   - PowerShell
-  - Bash (Cygwin, Git for Windows 1.x/2.x, etc.)
-    http://cygwin.com, https://git-for-windows.github.io
-  - Console
-    https://sourceforge.net/projects/console
-  - ConEmu 
-    https://code.google.com/p/conemu-maximus5
-  - Cmder
-    https://github.com/cmderdev/cmder
-  - PowerCmd
-    http://www.powercmd.com
+  - Bash
+    - Cygwin: http://cygwin.com
+    - Git for Windows 1.x/2.x: https://git-for-windows.github.io
+  - Console:
+    - Console2: https://sourceforge.net/projects/console
+    - ConsoleZ: https://github.com/cbucher/console
+  - ConEmu: https://code.google.com/p/conemu-maximus5
+  - Cmder: https://github.com/cmderdev/cmder
+  - PowerCmd: http://www.powercmd.com
 - File Browsers
   - Explorer
-  - TotalCommander
-    http://www.ghisler.com  
+  - TotalCommander: http://www.ghisler.com
+  - DoubleCommander: http://doublecmd.sourceforge.net/
 
 **Linux:**
 - Terminals
@@ -100,6 +99,9 @@ The following platform, shell combinations and tools are supported as selections
   - Thunar
   - Caja
   - Krusader
+  - DoubleCommander: http://doublecmd.sourceforge.net/
+  - Midnight Commander: http://midnight-commander.org/
+  - Sunflower: http://sunflower-fm.org/
 
 **MAC OS X**
 - Terminals
