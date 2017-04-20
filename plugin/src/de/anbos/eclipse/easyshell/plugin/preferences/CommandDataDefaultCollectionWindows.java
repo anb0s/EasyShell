@@ -87,13 +87,27 @@ public class CommandDataDefaultCollectionWindows {
         // Windows Explorer
         list.add(new CommandData("ae0e5b6e-0b20-4c52-9708-ba7e317d1dee", PresetType.presetPlugin, OS.osWindows, "Explorer", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 "explorer.exe /select, ${easyshell:resource_loc}"));
-        // Windows TotalCommander
-        list.add(new CommandData("e487327c-dfdb-42e7-bf16-3b81a34e5703", PresetType.presetPlugin, OS.osWindows, "TotalCommander", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
-                "cmd.exe /C totalcmd64.exe /O /T ${easyshell:container_loc}"));
-        list.add(new CommandData("d13ad020-aeb8-4b48-acc6-4e09dea4913a", PresetType.presetPlugin, OS.osWindows, "TotalCommander (left)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
-                "cmd.exe /C totalcmd64.exe /O /L=${easyshell:container_loc}"));
-        list.add(new CommandData("a6728fb1-89f3-4c3a-8ab0-5c57b6d7ee48", PresetType.presetPlugin, OS.osWindows, "TotalCommander (right)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
-                "cmd.exe /C totalcmd64.exe /O /R=${easyshell:container_loc}"));
+        // Windows TotalCommander: https://www.ghisler.com
+        // http://www.ghisler.ch/wiki/index.php/Command_line_parameters
+        // !!! Sets the active panel at program start: /P=L left, /P=R right. Overrides wincmd.ini option ActiveRight=0. Unfortunately this does not work with the Parameter /O currently. !!!
+        list.add(new CommandData("e487327c-dfdb-42e7-bf16-3b81a34e5703", PresetType.presetPlugin, OS.osWindows, "TotalCommander (left new)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "cmd.exe /C totalcmd64.exe /O /T /P=L /L=${easyshell:container_loc}"));
+        list.add(new CommandData("d13ad020-aeb8-4b48-acc6-4e09dea4913a", PresetType.presetPlugin, OS.osWindows, "TotalCommander (left replace)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "cmd.exe /C totalcmd64.exe /O /P=L /L=${easyshell:container_loc}"));
+        list.add(new CommandData("2cfc91d5-4449-46ed-bc6e-0e2ea300aadb", PresetType.presetPlugin, OS.osWindows, "TotalCommander (right new)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "cmd.exe /C totalcmd64.exe /O /T /P=R /R=${easyshell:container_loc}"));
+        list.add(new CommandData("a6728fb1-89f3-4c3a-8ab0-5c57b6d7ee48", PresetType.presetPlugin, OS.osWindows, "TotalCommander (right replace)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "cmd.exe /C totalcmd64.exe /O /P=R /R=${easyshell:container_loc}"));
+        // DoubleCommander: http://doublecmd.sourceforge.net
+        // https://doublecmd.sourceforge.io/mediawiki/index.php/Changes_in_version_0.5.5
+        list.add(new CommandData("1cb91d59-02b7-4245-b783-fd963d597c47", PresetType.presetPlugin, OS.osWindows, "DoubleCommander (left new)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "cmd.exe /C doublecmd.exe -T -P L -L ${easyshell:container_loc}"));
+        list.add(new CommandData("b3f7360a-6a37-4eb9-9b70-9387caffe969", PresetType.presetPlugin, OS.osWindows, "DoubleCommander (left replace)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "cmd.exe /C doublecmd.exe -P L -L ${easyshell:container_loc}"));
+        list.add(new CommandData("53455bec-58b3-4d21-ab6f-bdfb4fb1a950", PresetType.presetPlugin, OS.osWindows, "DoubleCommander (right new)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "cmd.exe /C doublecmd.exe -T -P R -R ${easyshell:container_loc}"));
+        list.add(new CommandData("4d7c100b-3918-4fc9-9f39-9c3d188abd0b", PresetType.presetPlugin, OS.osWindows, "DoubleCommander (right replace)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "cmd.exe /C doublecmd.exe -P R -R ${easyshell:container_loc}"));
     }
 
 }
