@@ -293,18 +293,21 @@ public class Resource {
         }
     }
 
-	public String getScriptBash(String parameter) {
-		String prefix = "scripts/";
-		URL fileURL = Activator.getDefault().getBundle().getEntry(prefix + parameter);
-		File file = null;
-		try {
-		    file = new File(FileLocator.resolve(fileURL).toURI().normalize());
-		} catch (URISyntaxException e1) {
-		    e1.printStackTrace();
-		} catch (IOException e1) {
-		    e1.printStackTrace();
-		}
-		return file.exists() ? file.getAbsolutePath() : "file not exists";
-	}
+    public String getScriptBash(String parameter) {
+        String prefix = "scripts/";
+        URL fileURL = Activator.getDefault().getBundle().getEntry(prefix + parameter);
+        File file = null;
+        try {
+            URL resolvedFileURL = FileLocator.resolve(fileURL);
+            if (resolvedFileURL != null) {
+                file = new File(resolvedFileURL.toURI().normalize());
+            }
+        } catch (URISyntaxException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return file != null && file.exists() ? file.getAbsolutePath() : "file does not exists";
+    }
 
 }
