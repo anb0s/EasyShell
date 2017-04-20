@@ -195,19 +195,19 @@ public class CommandDataDefaultCollectionLinux {
                 "caja ${easyshell:container_loc}"));
         // Linux Krusader: https://krusader.org/get-krusader
         // https://askubuntu.com/questions/92516/start-krusader-in-a-directory-from-command-line
-        list.add(new CommandData("d93cd39e-1f78-47e2-90d3-88b8c8495c61", PresetType.presetPlugin, OS.osLinux, "Krusader (left panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+        list.add(new CommandData("d93cd39e-1f78-47e2-90d3-88b8c8495c61", PresetType.presetPlugin, OS.osLinux, "Krusader (left)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "krusader --left=${easyshell:container_loc}"));
-        list.add(new CommandData("1df6da5c-5455-4372-a2ae-6b1b3f910e76", PresetType.presetPlugin, OS.osLinux, "Krusader (right panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+        list.add(new CommandData("1df6da5c-5455-4372-a2ae-6b1b3f910e76", PresetType.presetPlugin, OS.osLinux, "Krusader (right)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "krusader --right=${easyshell:container_loc}"));
         // GNOME Commander: https://gcmd.github.io
-        list.add(new CommandData("a9eb9cc0-948b-4ca7-b86c-ad5116396c3f", PresetType.presetPlugin, OS.osLinux, "GNOME Commander (left panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+        list.add(new CommandData("a9eb9cc0-948b-4ca7-b86c-ad5116396c3f", PresetType.presetPlugin, OS.osLinux, "GNOME Commander (left)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "gnome-commander --start-left-dir ${easyshell:container_loc}"));
-        list.add(new CommandData("7f8492a5-3423-4ffe-9e4c-0aa76319475a", PresetType.presetPlugin, OS.osLinux, "GNOME Commander (right panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+        list.add(new CommandData("7f8492a5-3423-4ffe-9e4c-0aa76319475a", PresetType.presetPlugin, OS.osLinux, "GNOME Commander (right)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "gnome-commander --start-right-dir ${easyshell:container_loc}"));
         // Sunflower: http://sunflower-fm.org
-        list.add(new CommandData("fdf63c8c-f6c1-4392-8f09-c3bdef6ffe34", PresetType.presetPlugin, OS.osLinux, "Sunflower (left tab)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+        list.add(new CommandData("fdf63c8c-f6c1-4392-8f09-c3bdef6ffe34", PresetType.presetPlugin, OS.osLinux, "Sunflower (left)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "sunflower --left-tab ${easyshell:container_loc}"));
-        list.add(new CommandData("48722b08-dc70-4059-915b-a3454a75eca9", PresetType.presetPlugin, OS.osLinux, "Sunflower (right tab)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
+        list.add(new CommandData("48722b08-dc70-4059-915b-a3454a75eca9", PresetType.presetPlugin, OS.osLinux, "Sunflower (right)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "sunflower --right-tab ${easyshell:container_loc}"));
     }
 
