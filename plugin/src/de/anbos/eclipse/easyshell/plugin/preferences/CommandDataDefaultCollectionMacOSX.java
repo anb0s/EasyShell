@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 - 2016 Andre Bossert.
+ * Copyright (c) 2014 - 2017 Andre Bossert.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,16 +21,17 @@ import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 public class CommandDataDefaultCollectionMacOSX {
 
     static public void addCommandsAll(CommandDataList list) {
-    	addCommandsConsole(list);
-    	addCommandsFileBrowser(list);
+        addCommandsConsole(list);
+        addCommandsFileBrowser(list);
+        addCommandsClipboard(list);
     }
 
     static public void addCommandsDefault(CommandDataList list) {
-    	CommandDataList allList = new CommandDataList();
-    	addCommandsAll(allList);
-    	Utils.addNotNull(list, Utils.getCommandData(allList, "Terminal", Category.categoryOpen));
-    	Utils.addNotNull(list, Utils.getCommandData(allList, "Terminal", Category.categoryRun));
-    	Utils.addNotNull(list, Utils.getCommandData(allList, "Finder", Category.categoryExplore));
+        CommandDataList allList = new CommandDataList();
+        addCommandsAll(allList);
+        Utils.addNotNull(list, Utils.getCommandData(allList, "Terminal", Category.categoryOpen));
+        Utils.addNotNull(list, Utils.getCommandData(allList, "Terminal", Category.categoryRun));
+        Utils.addNotNull(list, Utils.getCommandData(allList, "Finder", Category.categoryExplore));
     }
 
     private static void addCommandsConsole(CommandDataList list) {
@@ -44,13 +45,16 @@ public class CommandDataDefaultCollectionMacOSX {
         list.add(new CommandData("40eee8f2-b29e-490b-8612-59c2b76a704d", PresetType.presetPlugin, OS.osMacOSX, "iTerm", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "open -a iTerm ${easyshell:container_loc}"));
         //list.add(new CommandData("db61d61e-8bf4-41d0-a1d8-00379e4d1db1", PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
-        //        "open -a Terminal ${easyshell:container_loc}"));    	
+        //        "open -a Terminal ${easyshell:container_loc}"));
     }
-    
+
     private static void addCommandsFileBrowser(CommandDataList list) {
         // MAC OS X Finder
         list.add(new CommandData("f6bcdd71-4687-46d8-bf34-2780bafd762a", PresetType.presetPlugin, OS.osMacOSX, "Finder", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
-                "open -R ${easyshell:resource_loc}"));    	
+                "open -R ${easyshell:resource_loc}"));
+    }
+
+    private static void addCommandsClipboard(CommandDataList list) {
     }
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 - 2016 Andre Bossert.
+ * Copyright (c) 2014 - 2017 Andre Bossert.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ public class CommandDataDefaultCollectionLinux {
     static public void addCommandsAll(CommandDataList list) {
         addCommandsConsole(list);
         addCommandsFileBrowser(list);
+        addCommandsClipboard(list);
     }
 
     static public void addCommandsDefault(CommandDataList list) {
@@ -192,11 +193,15 @@ public class CommandDataDefaultCollectionLinux {
         // Linux Caja (MATE): http://manpages.ubuntu.com/manpages/wily/man1/caja.1.html
         list.add(new CommandData("f2b970ed-ef98-4ce2-861c-20f44a471f49", PresetType.presetPlugin, OS.osLinux, "Caja", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "caja ${easyshell:container_loc}"));
-        // Linux Krusader:
+        // Linux Krusader: https://krusader.org/get-krusader/
+        // https://askubuntu.com/questions/92516/start-krusader-in-a-directory-from-command-line
         list.add(new CommandData("d93cd39e-1f78-47e2-90d3-88b8c8495c61", PresetType.presetPlugin, OS.osLinux, "Krusader (left panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "krusader --left=${easyshell:container_loc}"));
         list.add(new CommandData("1df6da5c-5455-4372-a2ae-6b1b3f910e76", PresetType.presetPlugin, OS.osLinux, "Krusader (right panel)", ResourceType.resourceTypeFileOrDirectory, Category.categoryExplore, CommandType.commandTypeExecute,
                 "krusader --right=${easyshell:container_loc}"));
+    }
+
+    private static void addCommandsClipboard(CommandDataList list) {
     }
 
 }
