@@ -41,12 +41,12 @@ public class CommandDataDefaultCollectionAllOS {
 
     private static void addCommandsFileBrowser(CommandDataList list) {
         OS os = Utils.getOS();
-        // DoubleCommander: http://doublecmd.sourceforge.net
-        // https://doublecmd.sourceforge.io/mediawiki/index.php/Changes_in_version_0.5.5
         String cmdPrefix = "";
         if (os == OS.osWindows) {
             cmdPrefix = "cmd.exe /C ";
         }
+        // DoubleCommander: http://doublecmd.sourceforge.net
+        // https://doublecmd.sourceforge.io/mediawiki/index.php/Changes_in_version_0.5.5
         list.add(new CommandData("1cb91d59-02b7-4245-b783-fd963d597c47", PresetType.presetPlugin, os, "DoubleCommander (left new)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 cmdPrefix + "doublecmd -T -P L -L ${easyshell:container_loc}"));
         list.add(new CommandData("b3f7360a-6a37-4eb9-9b70-9387caffe969", PresetType.presetPlugin, os, "DoubleCommander (left replace)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
@@ -55,6 +55,9 @@ public class CommandDataDefaultCollectionAllOS {
                 cmdPrefix + "doublecmd -T -P R -R ${easyshell:container_loc}"));
         list.add(new CommandData("4d7c100b-3918-4fc9-9f39-9c3d188abd0b", PresetType.presetPlugin, os, "DoubleCommander (right replace)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 cmdPrefix + "doublecmd -P R -R ${easyshell:container_loc}"));
+        // Midnight Commander: http://midnight-commander.org
+        list.add(new CommandData("5ca27361-092a-4955-b8b4-0db7b6d6f1ba", PresetType.presetPlugin, os, "Midnight Commander", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                cmdPrefix + "mc ${easyshell:container_loc}"));
     }
 
     private static void addCommandsClipboard(CommandDataList list) {

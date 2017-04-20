@@ -97,13 +97,12 @@ b3f7360a-6a37-4eb9-9b70-9387caffe969
 cd32fa5a-34d7-4551-8bd0-3aae0dc444d0 // reused: was MAC OS X clipboard before (in alpha or beta of 2.0)
 e6de32cc-342a-46a0-a766-ac74e7e4000d
 95cacf98-9dfc-473f-b5d3-fe4961e66ae1
-
+5ca27361-092a-4955-b8b4-0db7b6d6f1ba
 
 Do not use
 -
 
 Free
-5ca27361-092a-4955-b8b4-0db7b6d6f1ba
 0494f4e4-d0ea-4700-86eb-ea9ac58cb74f
 fefa90d8-3b72-4313-bc48-e743ca5d903e
 6e08abbc-d9ee-407a-a7ad-5e14dafc0fa2
