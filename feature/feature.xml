@@ -3,7 +3,8 @@
       id="de.anbos.eclipse.easyshell.feature"
       label="EasyShell"
       version="2.1.0.qualifier"
-      provider-name="Andre Bossert">
+      provider-name="Andre Bossert"
+      plugin="de.anbos.eclipse.easyshell.plugin">
 
    <description url="https://github.com/anb0s/EasyShell">
       EasyShell - This Eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. Additionally it is possible to run selected file in the shell, copy file or directory path or run user defined external tools. Key shortcuts and multiple selections are also supported!
