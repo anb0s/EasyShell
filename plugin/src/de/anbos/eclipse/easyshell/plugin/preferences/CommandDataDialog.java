@@ -96,17 +96,17 @@ public class CommandDataDialog extends StatusDialog {
     }
 
     public Control createDialogArea(Composite parent) {
-    	Composite pageComponent = createPageComponent(parent);
+        Composite pageComponent = createPageComponent(parent);
 
         createCommandControls(pageComponent);
 
-    	if (showVariablesInfo) {
-    	    createVariablesOverview(pageComponent);
-    	}
+        if (showVariablesInfo) {
+            createVariablesOverview(pageComponent);
+        }
 
-    	if (showConvertersInfo) {
-    	    createConvertersOverview(pageComponent);
-    	}
+        if (showConvertersInfo) {
+            createConvertersOverview(pageComponent);
+        }
 
         setHelpAvailable(showHelpButton);
 
@@ -124,8 +124,8 @@ public class CommandDataDialog extends StatusDialog {
     }
 
     public Composite createPageComponent(Composite parent) {
-    	Font font = parent.getFont();
-    	Composite pageComponent = new Composite(parent,SWT.NULL);
+        Font font = parent.getFont();
+        Composite pageComponent = new Composite(parent,SWT.NULL);
         GridLayout layout0 = new GridLayout();
         layout0.numColumns = 1;
         layout0.makeColumnsEqualWidth = false;
@@ -140,10 +140,10 @@ public class CommandDataDialog extends StatusDialog {
     }
 
     public Group createGroupCommand(Composite parent) {
-    	Font font = parent.getFont();
-    	Group pageGroupCommand = new Group(parent, SWT.SHADOW_ETCHED_IN);
-    	pageGroupCommand.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group1"));
-    	pageGroupCommand.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group1"));
+        Font font = parent.getFont();
+        Group pageGroupCommand = new Group(parent, SWT.SHADOW_ETCHED_IN);
+        pageGroupCommand.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group1"));
+        pageGroupCommand.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group1"));
         GridLayout layoutCommand = new GridLayout();
         layoutCommand.numColumns = 3;
         layoutCommand.makeColumnsEqualWidth = false;
@@ -157,7 +157,7 @@ public class CommandDataDialog extends StatusDialog {
     }
 
     private void createCommandControls(Composite parent) {
-    	Group pageGroupCommand = createGroupCommand(parent);
+        Group pageGroupCommand = createGroupCommand(parent);
         // create resource type combo
         createResourceTypeCombo(pageGroupCommand);
         // create category combo
@@ -229,7 +229,7 @@ public class CommandDataDialog extends StatusDialog {
     }
 
     private void createVariablesOverview(Composite parent) {
-    	Font font = parent.getFont();
+        Font font = parent.getFont();
         Group pageGroup2 = new Group(parent, SWT.SHADOW_ETCHED_IN);
         pageGroup2.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group2"));
         pageGroup2.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group2"));
@@ -252,7 +252,7 @@ public class CommandDataDialog extends StatusDialog {
     }
 
     private void createConvertersOverview(Composite parent) {
-    	Font font = parent.getFont();
+        Font font = parent.getFont();
         Group pageGroup3 = new Group(parent, SWT.SHADOW_ETCHED_IN);
         pageGroup3.setText(Activator.getResourceString("easyshell.command.editor.dialog.title.group3"));
         pageGroup3.setToolTipText(Activator.getResourceString("easyshell.command.editor.dialog.tooltip.group3"));
@@ -345,7 +345,7 @@ public class CommandDataDialog extends StatusDialog {
                 break;
             case presetPlugin:
             case presetPluginModify:
-            	data.addOrRemoveModifyData(cmdDataBasic);
+                data.addOrRemoveModifyData(cmdDataBasic);
                 break;
             default:
                 break;
@@ -355,7 +355,7 @@ public class CommandDataDialog extends StatusDialog {
 
     private boolean validateValues() {
 
-    	final String title = Activator.getResourceString("easyshell.command.editor.dialog.error.title.incompletedata");
+        final String title = Activator.getResourceString("easyshell.error.title.incompletedata");
 
         // check resource
         if ( (resourceTypeCombo.getText() == null) || (resourceTypeCombo.getText().length() <= 0)) {
@@ -369,13 +369,13 @@ public class CommandDataDialog extends StatusDialog {
             return false;
         }
 
-    	// check command type
+        // check command type
         if ( (commandTypeCombo.getText() == null) || (commandTypeCombo.getText().length() <= 0)) {
-        	MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.command.editor.dialog.error.text.type"));
-        	return false;
+            MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.command.editor.dialog.error.text.type"));
+            return false;
         }
 
-    	boolean valid = true;
+        boolean valid = true;
 
         // check name
         String text  = Activator.getResourceString("easyshell.command.editor.dialog.error.text.name");
@@ -393,9 +393,9 @@ public class CommandDataDialog extends StatusDialog {
 
         // check value
         if (valid) {
-        	text  = Activator.getResourceString("easyshell.command.editor.dialog.error.text.value");
+            text  = Activator.getResourceString("easyshell.command.editor.dialog.error.text.value");
             if ( (valueText.getText() == null) || (valueText.getText().length() <= 0)) {
-            	valid = false;
+                valid = false;
             }
         }
 
@@ -419,14 +419,14 @@ public class CommandDataDialog extends StatusDialog {
         resourceTypeCombo.select(0);
         resourceTypeCombo.addSelectionListener(new SelectionListener() {
             @Override
-			public void widgetSelected(SelectionEvent e) {
-				//String text = resourceTypeCombo.getItem(resourceTypeCombo.getSelectionIndex());
-			}
+            public void widgetSelected(SelectionEvent e) {
+                //String text = resourceTypeCombo.getItem(resourceTypeCombo.getSelectionIndex());
+            }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // TODO Auto-generated method stub
             }
-		});
+        });
         String[] items = resourceTypeCombo.getItems();
         for(int i = 0 ; i < items.length ; i++) {
             if(items[i].equals(this.data.getResourceType().getName())) {
@@ -485,9 +485,9 @@ public class CommandDataDialog extends StatusDialog {
                 String text = commandTypeCombo.getItem(commandTypeCombo.getSelectionIndex());
                 CommandType commandType = CommandType.getFromName(text);
                 boolean enabledTokenizer = commandType == CommandType.commandTypeExecute;
-            	tokenizerCombo.setEnabled(enabledTokenizer);
-            	String tokenizerName = enabledTokenizer ? null : CommandTokenizer.commandTokenizerDisabled.getName();
-           		selectTokenizerCombo(tokenizerName);
+                tokenizerCombo.setEnabled(enabledTokenizer);
+                String tokenizerName = enabledTokenizer ? null : CommandTokenizer.commandTokenizerDisabled.getName();
+                   selectTokenizerCombo(tokenizerName);
             }
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -532,9 +532,9 @@ public class CommandDataDialog extends StatusDialog {
     private void selectTokenizerCombo(String altName) {
         String[] items = tokenizerCombo.getItems();
         for(int i = 0 ; i < items.length ; i++) {
-        	String name = altName != null ? altName : this.data.getCommandTokenizer().getName();
+            String name = altName != null ? altName : this.data.getCommandTokenizer().getName();
             if(items[i].equals(name)) {
-            	tokenizerCombo.select(i);
+                tokenizerCombo.select(i);
                 break;
             }
         }

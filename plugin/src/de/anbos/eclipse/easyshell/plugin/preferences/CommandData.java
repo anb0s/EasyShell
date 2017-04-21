@@ -140,15 +140,19 @@ public class CommandData extends Data {
     }
 
     public String getImageId() {
-    	if (!imageId.equals(Constants.IMAGE_NONE)) {
-    		return imageId;
-    	} else {
-   			return getCategory().getImageId();
-    	}
+        if (imageId.equals(Constants.IMAGE_NONE)) {
+            return getCategoryImageId();
+        } else {
+            return imageId;
+        }
+    }
+
+    public String getCategoryImageId() {
+        return getCategory().getImageId();
     }
 
     public String getImageIdOwn() {
-    	return imageId;
+        return imageId;
     }
 
     public String getCommandAsComboName() {
@@ -184,7 +188,7 @@ public class CommandData extends Data {
 
     public void addOrRemoveModifyData(CommandDataBasic modifyData) {
         if (checkIfUserDataOverridesPreset(modifyData)) {
-        	addModifyData(modifyData);
+            addModifyData(modifyData);
         } else {
             removeModifyData();
         }
@@ -203,37 +207,37 @@ public class CommandData extends Data {
     }
 
     private void setImageId(String imageId) {
-    	if (imageId != null) {
-    		this.imageId = imageId;
-    	} else {
-    		this.imageId = Constants.IMAGE_NONE;
-    	}
-	}
+        if (imageId == null || imageId.equals(Constants.IMAGE_NONE) || imageId.equals(getCategoryImageId())) {
+            this.imageId = Constants.IMAGE_NONE;
+        } else {
+            this.imageId = imageId;
+        }
+    }
 
     public void setCommandType(CommandType cmdType) {
         this.commandType = cmdType;
     }
 
-	public boolean equals(Object object) {
-    	if(!(object instanceof CommandData)) {
-    		return false;
-    	}
-    	CommandData data = (CommandData)object;
-    	if(data.getId().equals(this.getId())
-    	   /*data.getPosition() == this.getPosition() &&
-    	     data.getBasicData().equals(this.getBasicData()) &&
-    	     data.getPresetType() == this.getPresetType() &&
-    	     data.getOS() == this.getOS() &&
-    	     data.getCategory() == this.getCategory() &&
-    	     data.getCommandType() == this.getCommandType() &&*/
-    	  )
-    	{
-    		return true;
-    	}
-    	return false;
+    public boolean equals(Object object) {
+        if(!(object instanceof CommandData)) {
+            return false;
+        }
+        CommandData data = (CommandData)object;
+        if(data.getId().equals(this.getId())
+           /*data.getPosition() == this.getPosition() &&
+             data.getBasicData().equals(this.getBasicData()) &&
+             data.getPresetType() == this.getPresetType() &&
+             data.getOS() == this.getOS() &&
+             data.getCategory() == this.getCategory() &&
+             data.getCommandType() == this.getCommandType() &&*/
+          )
+        {
+            return true;
+        }
+        return false;
     }
 
-	public boolean deserialize(Version version, String value, StringTokenizer tokenizer, String delimiter) {
+    public boolean deserialize(Version version, String value, StringTokenizer tokenizer, String delimiter) {
         if((value == null || value.length() <= 0) && tokenizer == null) {
             return false;
         }
@@ -242,11 +246,11 @@ public class CommandData extends Data {
         }
         // set internal members
         setPosition(Integer.parseInt(tokenizer.nextToken()));
-		setId(tokenizer.nextToken());
-		// set command data members
-		String presetTypeStr = tokenizer.nextToken();
+        setId(tokenizer.nextToken());
+        // set command data members
+        String presetTypeStr = tokenizer.nextToken();
         if (version.getId() < Version.v2_1_001.getId() && presetTypeStr.equals("presetPluginAndUser")) {
-        	presetTypeStr = "presetPluginModify";
+            presetTypeStr = "presetPluginModify";
         }
         presetType = PresetType.getFromEnum(presetTypeStr);
         setOs(OS.getFromEnum(tokenizer.nextToken()));
@@ -257,49 +261,49 @@ public class CommandData extends Data {
             resourceTypeStr = "resourceTypeDirectory";
         }
         basicData.setResourceType(ResourceType.getFromEnum(resourceTypeStr));
-		// handling of working directory, category and imageId
+        // handling of working directory, category and imageId
         String imageIdStr = Constants.IMAGE_NONE;
-		if (version.getId() >= Version.v2_0_003.getId()) {
-		    basicData.setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
-		    basicData.setWorkingDirectory(tokenizer.nextToken());
-		    String categoryStr = tokenizer.nextToken();
-		    if (version.getId() < Version.v2_0_005.getId() && categoryStr.equals("categoryOther")) {
-		        categoryStr = "categoryUser";
-		    }
-		    setCategory(Category.getFromEnum(categoryStr));
-		    if (version.getId() >= Version.v2_1_005.getId()) {
-		    	imageIdStr = tokenizer.nextToken();
-		    }
-		    setCommandType(CommandType.getFromEnum(tokenizer.nextToken()));
-		} else {
-		    basicData.setUseWorkingDirectory(false);
-		    basicData.setWorkingDirectory("${easyshell:container_loc}");
-		    String commandTypeStr = tokenizer.nextToken();
-		    setCategory(Category.getFromDeprecatedCommandTypeEnum(commandTypeStr));
-		    setCommandType(CommandType.getFromDeprecatedCommandTypeEnum(commandTypeStr));
-		}
-		setImageId(imageIdStr);
-		// go on compatible
-	    String commandTokenizer = CommandTokenizer.commandTokenizerSpaces.toString();
+        if (version.getId() >= Version.v2_0_003.getId()) {
+            basicData.setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
+            basicData.setWorkingDirectory(tokenizer.nextToken());
+            String categoryStr = tokenizer.nextToken();
+            if (version.getId() < Version.v2_0_005.getId() && categoryStr.equals("categoryOther")) {
+                categoryStr = "categoryUser";
+            }
+            setCategory(Category.getFromEnum(categoryStr));
+            if (version.getId() >= Version.v2_1_005.getId()) {
+                imageIdStr = tokenizer.nextToken();
+            }
+            setCommandType(CommandType.getFromEnum(tokenizer.nextToken()));
+        } else {
+            basicData.setUseWorkingDirectory(false);
+            basicData.setWorkingDirectory("${easyshell:container_loc}");
+            String commandTypeStr = tokenizer.nextToken();
+            setCategory(Category.getFromDeprecatedCommandTypeEnum(commandTypeStr));
+            setCommandType(CommandType.getFromDeprecatedCommandTypeEnum(commandTypeStr));
+        }
+        setImageId(imageIdStr);
+        // go on compatible
+        String commandTokenizer = CommandTokenizer.commandTokenizerSpaces.toString();
         if (version.getId() >= Version.v2_1_001.getId()) {
-        	String oldCommandTokenizer = tokenizer.nextToken();
-        	if (version.getId() >= Version.v2_1_003.getId()) {
-        		commandTokenizer = oldCommandTokenizer;
-        	}
+            String oldCommandTokenizer = tokenizer.nextToken();
+            if (version.getId() >= Version.v2_1_003.getId()) {
+                commandTokenizer = oldCommandTokenizer;
+            }
         }
         basicData.setCommandTokenizer(CommandTokenizer.getFromEnum(commandTokenizer));
-		basicData.setCommand(tokenizer.nextToken());
-		if (version.getId() >= Version.v2_0_005.getId()) {
-			if (version.getId() < Version.v2_1_001.getId()) {
-		        // let read modifyData if there
-		        if (getPresetType() == PresetType.presetPluginModify) {
-		            setModifyData(new CommandDataBasic(getId()));
-		            modifyData.deserialize(version, null, tokenizer, delimiter);
-		        }
-			}
-		}
-		return true;
-	}
+        basicData.setCommand(tokenizer.nextToken());
+        if (version.getId() >= Version.v2_0_005.getId()) {
+            if (version.getId() < Version.v2_1_001.getId()) {
+                // let read modifyData if there
+                if (getPresetType() == PresetType.presetPluginModify) {
+                    setModifyData(new CommandDataBasic(getId()));
+                    modifyData.deserialize(version, null, tokenizer, delimiter);
+                }
+            }
+        }
+        return true;
+    }
 
     public boolean deserialize(String value, StringTokenizer tokenizer, String delimiter) {
         return deserialize(Version.actual, value, tokenizer, delimiter);
@@ -310,9 +314,9 @@ public class CommandData extends Data {
         ret += getId() + delimiter;
         PresetType presetTypeTemp = getPresetType();
         if (version.getId() >= Version.v2_1_001.getId()) {
-        	if (presetTypeTemp == PresetType.presetPluginModify) {
-        		presetTypeTemp = PresetType.presetPlugin;
-        	}
+            if (presetTypeTemp == PresetType.presetPluginModify) {
+                presetTypeTemp = PresetType.presetPlugin;
+            }
         }
         ret += presetTypeTemp.toString() + delimiter;
         ret += getOs().toString() + delimiter;
@@ -323,20 +327,20 @@ public class CommandData extends Data {
             ret += basicData.getWorkingDirectory() + delimiter;
             ret += getCategory().toString() + delimiter;
             if (version.getId() >= Version.v2_1_005.getId()) {
-            	ret += getImageIdOwn() + delimiter;
+                ret += getImageIdOwn() + delimiter;
             }
         }
         ret += getCommandType().toString() + delimiter;
         if (version.getId() >= Version.v2_1_001.getId()) {
-        	ret += basicData.getCommandTokenizer().toString() + delimiter;
+            ret += basicData.getCommandTokenizer().toString() + delimiter;
         }
         ret += basicData.getCommand() + delimiter;
         if (version.getId() >= Version.v2_0_005.getId()) {
-        	if (version.getId() < Version.v2_1_001.getId()) {
-	            if (getPresetType() == PresetType.presetPluginModify) {
-	                ret += modifyData.serialize(version, delimiter);
-	            }
-        	}
+            if (version.getId() < Version.v2_1_001.getId()) {
+                if (getPresetType() == PresetType.presetPluginModify) {
+                    ret += modifyData.serialize(version, delimiter);
+                }
+            }
         }
         return ret;
     }
@@ -345,17 +349,17 @@ public class CommandData extends Data {
         return serialize(Version.actual, delimiter);
     }
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
-	public boolean isSelected() {
-		return this.selected;
-	}
+    public boolean isSelected() {
+        return this.selected;
+    }
 
     @Override
-	public boolean verify() {
-		return super.verify() && basicData != null && basicData.verify();
-	}
+    public boolean verify() {
+        return super.verify() && basicData != null && basicData.verify();
+    }
 
 }

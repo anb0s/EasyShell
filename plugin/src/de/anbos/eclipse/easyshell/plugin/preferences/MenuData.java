@@ -40,7 +40,7 @@ public class MenuData extends Data {
         setCommandId(commandId);
     }
 
-	public MenuData(String newId, String commandId) {
+    public MenuData(String newId, String commandId) {
         super(newId);
         setNameType(MenuNameType.menuNameTypeGeneric1);
         setCommandId(commandId);
@@ -55,6 +55,7 @@ public class MenuData extends Data {
         this.enabled = data.isEnabled();
         this.nameType = data.getNameType();
         this.namePattern = data.getNamePattern();
+        this.imageId = data.getImageIdOwn();
     }
 
     public MenuData(MenuData data, boolean generateNewId) {
@@ -64,9 +65,9 @@ public class MenuData extends Data {
     public MenuData() {
     }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
     public MenuNameType getNameType() {
         return nameType;
@@ -80,11 +81,11 @@ public class MenuData extends Data {
         String expanded = namePattern;
         for (Variable variable : Variable.getInternalVariables()) {
             try {
-				expanded = expanded.replace(variable.getFullVariableName(), variable.getResolver().resolve(getCommandData(), null));
-			} catch (UnknownCommandID e) {
-				e.logInternalError();
-				break;
-			}
+                expanded = expanded.replace(variable.getFullVariableName(), variable.getResolver().resolve(getCommandData(), null));
+            } catch (UnknownCommandID e) {
+                e.logInternalError();
+                break;
+            }
         }
         return expanded;
     }
@@ -94,39 +95,43 @@ public class MenuData extends Data {
     }
 
     public String getImageId() {
-    	if (!imageId.equals(Constants.IMAGE_NONE)) {
-    		return imageId;
-    	} else {
-    		try {
-				return getCommandData().getImageId();
-			} catch (UnknownCommandID e) {
-				return Constants.IMAGE_NONE;
-			}
-    	}
+        if (imageId.equals(Constants.IMAGE_NONE)) {
+            return getCommandImageId();
+        } else {
+            return imageId;
+        }
+    }
+
+    public String getCommandImageId() {
+        try {
+            return getCommandData().getImageId();
+        } catch (UnknownCommandID e) {
+            return Constants.IMAGE_NONE;
+        }
     }
 
     public String getImageIdOwn() {
-    	return imageId;
+        return imageId;
     }
 
     public String getCommandId() {
         return commandId;
     }
 
-	public boolean equals(Object object) {
-    	if(!(object instanceof MenuData)) {
-    		return false;
-    	}
-    	MenuData data = (MenuData)object;
-    	if( data.getId().equals(this.getId())
-    	    /*data.getPosition() == this.getPosition() &&
-    	    data.getName().equals(this.getName()) &&
-    	    data.getCommandData().equals(this.getCommandData())*/
-    	  )
-    	{
-    		return true;
-    	}
-    	return false;
+    public boolean equals(Object object) {
+        if(!(object instanceof MenuData)) {
+            return false;
+        }
+        MenuData data = (MenuData)object;
+        if( data.getId().equals(this.getId())
+            /*data.getPosition() == this.getPosition() &&
+            data.getName().equals(this.getName()) &&
+            data.getCommandData().equals(this.getCommandData())*/
+          )
+        {
+            return true;
+        }
+        return false;
     }
 
     public boolean deserialize(Version version, String value, StringTokenizer tokenizer, String delimiter) {
@@ -151,9 +156,9 @@ public class MenuData extends Data {
         // -------------------------------------------------
         // read new imageId and commandId
         if (version.getId() >= Version.v2_0_003.getId()) {
-		    if (version.getId() >= Version.v2_1_005.getId()) {
-		    	imageIdStr = tokenizer.nextToken();
-		    }
+            if (version.getId() >= Version.v2_1_005.getId()) {
+                imageIdStr = tokenizer.nextToken();
+            }
             // read the new one
             setCommandId(tokenizer.nextToken());
         } else {
@@ -201,15 +206,15 @@ public class MenuData extends Data {
         ret += getNamePattern() + delimiter;
         if (version.getId() >= Version.v2_0_003.getId()) {
             if (version.getId() >= Version.v2_1_005.getId()) {
-            	ret += getImageIdOwn() + delimiter;
+                ret += getImageIdOwn() + delimiter;
             }
             ret += getCommandId() + delimiter;
         } else {
             try {
-				ret += getCommandData().serialize(version, delimiter);
-			} catch (UnknownCommandID e) {
-				e.logInternalError();
-			}
+                ret += getCommandData().serialize(version, delimiter);
+            } catch (UnknownCommandID e) {
+                e.logInternalError();
+            }
         }
         return ret;
     }
@@ -236,42 +241,42 @@ public class MenuData extends Data {
     }
 
     public void setImageId(String imageId) {
-    	if (imageId != null) {
-    		this.imageId = imageId;
-    	} else {
-    		this.imageId = Constants.IMAGE_NONE;
-    	}
-	}
+        if (imageId == null || imageId.equals(Constants.IMAGE_NONE) || imageId.equals(getCommandImageId())) {
+            this.imageId = Constants.IMAGE_NONE;
+        } else {
+            this.imageId = imageId;
+        }
+    }
 
     public void setCommandId(String commandId) {
         this.commandId = commandId;
     }
 
     public CommandData getCommandData() throws UnknownCommandID {
-    	String commandIdStr = getCommandId();
-    	CommandData data = CommandDataStore.instance().getById(commandIdStr);
-    	if (data != null) {
-    		return data;
-    	} else {
-    		throw new UnknownCommandID(commandIdStr, true);
-    	}
+        String commandIdStr = getCommandId();
+        CommandData data = CommandDataStore.instance().getById(commandIdStr);
+        if (data != null) {
+            return data;
+        } else {
+            throw new UnknownCommandID(commandIdStr, true);
+        }
     }
 
     public String getCommand() {
-    	try {
-			return getCommandData().getCommand();
-		} catch (UnknownCommandID e) {
-			e.logInternalError();
-			return "Unknown ID: " + e.getID();
-		}
+        try {
+            return getCommandData().getCommand();
+        } catch (UnknownCommandID e) {
+            e.logInternalError();
+            return "Unknown ID: " + e.getID();
+        }
     }
 
     public void setNameTypeFromCategory() {
-		try {
-			setNameTypeFromCategory(getCommandData().getCategory());
-		} catch (UnknownCommandID e) {
-			e.logInternalError();
-		}
+        try {
+            setNameTypeFromCategory(getCommandData().getCategory());
+        } catch (UnknownCommandID e) {
+            e.logInternalError();
+        }
     }
 
     public void setNameTypeFromCategory(Category category) {
@@ -304,12 +309,12 @@ public class MenuData extends Data {
     }
 
     @Override
-	public boolean verify() {
-		try {
-			return super.verify() && commandId != null && getCommandData() != null;
-		} catch (UnknownCommandID e) {
-			return false;
-		}
-	}
+    public boolean verify() {
+        try {
+            return super.verify() && commandId != null && getCommandData() != null;
+        } catch (UnknownCommandID e) {
+            return false;
+        }
+    }
 
 }

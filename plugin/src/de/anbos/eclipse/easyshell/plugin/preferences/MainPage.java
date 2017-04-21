@@ -39,7 +39,7 @@ import de.anbos.eclipse.easyshell.plugin.types.Tooltip;
 public class MainPage extends PreferencePage implements IWorkbenchPreferencePage {
 
     private IWorkbench workbench;
-    
+
     private Button 	debug;
     private Button 	toolTipAll;
     private Button 	toolTipClipboard;
@@ -63,10 +63,10 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
 
     @Override
     public boolean performOk() {
-    	if (!validateValues()) {
-    		return false;
-    	}
-    	boolean save = true;
+        if (!validateValues()) {
+            return false;
+        }
+        boolean save = true;
         if (!GeneralDataStore.instance().isMigrated()) {
             String title = Activator.getResourceString("easyshell.main.page.dialog.migration.title");
             String question = Activator.getResourceString("easyshell.main.page.dialog.migration.question");
@@ -77,17 +77,17 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
                     1); // no is the default
             int result = dialog.open();
             if (result == 0) {
-            	GeneralDataStore.instance().setMigrated(true);
+                GeneralDataStore.instance().setMigrated(true);
             } else {
                 save = false;
             }
         }
         if (save) {
-        	GeneralDataStore.instance().getData().setDebug(debug.getSelection() ? Debug.debugYes : Debug.debugNo);
-        	GeneralDataStore.instance().getData().setToolTipAll(toolTipAll.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
-        	GeneralDataStore.instance().getData().setToolTipClipboard(toolTipClipboard.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
-        	GeneralDataStore.instance().getData().setToolTipError(toolTipError.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
-        	GeneralDataStore.instance().save();
+            GeneralDataStore.instance().getData().setDebug(debug.getSelection() ? Debug.debugYes : Debug.debugNo);
+            GeneralDataStore.instance().getData().setToolTipAll(toolTipAll.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
+            GeneralDataStore.instance().getData().setToolTipClipboard(toolTipClipboard.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
+            GeneralDataStore.instance().getData().setToolTipError(toolTipError.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
+            GeneralDataStore.instance().save();
         }
         return save;
     }
@@ -98,7 +98,7 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
     }
 
     private boolean validateValues() {
-    	//final String title = Activator.getResourceString("easyshell.main.page.error.title.incompletedata");
+        //final String title = Activator.getResourceString("easyshell.error.title.incompletedata");
         // check resource
         /*if ( (debugCombo.getText() == null) || (debugCombo.getText().length() <= 0)) {
             MessageDialog.openError(getShell(), title, Activator.getResourceString("easyshell.main.page.error.text.debug"));
@@ -125,16 +125,16 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
 
     @Override
     protected Control createContents(Composite parent) {
-    	// forward to menu page
+        // forward to menu page
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("preferencePageId","de.anbos.eclipse.easyshell.plugin.preferences.MenuPage");
         Utils.executeCommand(workbench, "org.eclipse.ui.window.preferences", params, true);
-        
+
         // create own
         Composite pageComponent = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout(3, false);
         pageComponent.setLayout(layout);
-        createGroup(pageComponent);       
+        createGroup(pageComponent);
         return pageComponent;
     }
 
@@ -144,10 +144,10 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         refreshWidgets();
     }
 
-	private Group createGroup1(Composite pageComponent) {
-    	Group pageGroup = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
-    	pageGroup.setText(Activator.getResourceString("easyshell.main.page.title.group1"));
-    	pageGroup.setToolTipText(Activator.getResourceString("easyshell.main.page.tooltip.group1"));
+    private Group createGroup1(Composite pageComponent) {
+        Group pageGroup = new Group(pageComponent, SWT.SHADOW_ETCHED_IN);
+        pageGroup.setText(Activator.getResourceString("easyshell.main.page.title.group1"));
+        pageGroup.setToolTipText(Activator.getResourceString("easyshell.main.page.tooltip.group1"));
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
         layout.makeColumnsEqualWidth = false;
@@ -157,12 +157,12 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         pageGroup.setLayoutData(data);
         pageGroup.setFont(pageComponent.getFont());
-		return pageGroup;
-	}
+        return pageGroup;
+    }
 
-	private Composite createGroup1_1(Composite pageComponent) {
-		// define group1
-		Composite pageGroup = new Composite(pageComponent, SWT.NONE);
+    private Composite createGroup1_1(Composite pageComponent) {
+        // define group1
+        Composite pageGroup = new Composite(pageComponent, SWT.NONE);
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         layout.makeColumnsEqualWidth = false;
@@ -172,11 +172,11 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         pageGroup.setLayoutData(data);
         pageGroup.setFont(pageComponent.getFont());
-		return pageGroup;
-	}
+        return pageGroup;
+    }
 
     private void createWidgets(Composite parent) {
-    	createCheckBoxDebug(parent);
+        createCheckBoxDebug(parent);
         createCheckBoxToolTipAll(parent);
         Composite group1_1 = createGroup1_1(parent);
         createCheckBoxToolTipClipboard(group1_1);
@@ -184,15 +184,15 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
     }
 
     private void refreshWidgets() {
-        UtilsUI.refreshWidget(debug);        
-        UtilsUI.refreshWidget(toolTipAll);        
+        UtilsUI.refreshWidget(debug);
+        UtilsUI.refreshWidget(toolTipAll);
         UtilsUI.refreshWidget(toolTipClipboard);
-        UtilsUI.refreshWidget(toolTipError);    	
+        UtilsUI.refreshWidget(toolTipError);
     }
 
     private void createCheckBoxDebug(Composite parent) {
         // draw label
-    	//UtilsUI.createLabel(parent, "", null);
+        //UtilsUI.createLabel(parent, "", null);
         // draw checkbox
         GeneralData data = GeneralDataStore.instance().getData();
         debug = new Button(parent,SWT.CHECK);
@@ -212,7 +212,7 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
 
     private void createCheckBoxToolTipAll(Composite parent) {
         // draw label
-    	//UtilsUI.createLabel(parent, "", null);
+        //UtilsUI.createLabel(parent, "", null);
         // draw checkbox
         GeneralData data = GeneralDataStore.instance().getData();
         toolTipAll = new Button(parent,SWT.CHECK);
@@ -236,7 +236,7 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
 
     private void createCheckBoxToolTipClipboard(Composite parent) {
         // draw label
-    	UtilsUI.createLabel(parent, "", null);
+        UtilsUI.createLabel(parent, "", null);
         // draw checkbox
         GeneralData data = GeneralDataStore.instance().getData();
         toolTipClipboard = new Button(parent,SWT.CHECK);
@@ -256,7 +256,7 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
 
     private void createCheckBoxToolTipError(Composite parent) {
         // draw label
-    	UtilsUI.createLabel(parent, "", null);
+        UtilsUI.createLabel(parent, "", null);
         // draw checkbox
         GeneralData data = GeneralDataStore.instance().getData();
         toolTipError = new Button(parent,SWT.CHECK);

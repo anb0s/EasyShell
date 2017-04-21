@@ -29,38 +29,40 @@ public class UtilsUI {
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
         label.setText(name);
         if (tooltip != null) {
-        	label.setToolTipText(tooltip);
+            label.setToolTipText(tooltip);
         }
     }
 
     static public Label createLabel(Composite parent, String imageId, String text, String tooltip) {
         Label label = new Label(parent, SWT.LEFT);
         label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-    	if (text != null) {
-    		label.setText(text);
-    		label.setToolTipText(tooltip);
-    	}
+        if (text != null) {
+            label.setText(text);
+            label.setToolTipText(tooltip);
+        }
         label.setImage(Activator.getImage(imageId));
         return label;
     }
 
     static public Label createImageLabel(Composite parent, String imageId) {
-    	return createLabel(parent, imageId, null, null);
+        return createLabel(parent, imageId, null, null);
     }
 
     static public Button createButton(Composite parent, String imageId, String text, String tooltip) {
-    	Button button = new Button(parent, SWT.LEFT);
-    	button.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-    	if (text!=null) {
-    		button.setText(text);
-    		button.setToolTipText(tooltip);
-    	}
-    	button.setImage(Activator.getImage(imageId));
+        Button button = new Button(parent, SWT.LEFT);
+        button.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+        if (text!=null) {
+            button.setText(text);
+        }
+        if (tooltip != null) {
+            button.setToolTipText(tooltip);
+        }
+        button.setImage(Activator.getImage(imageId));
         return button;
     }
 
-    static public Button createImageButton(Composite parent, String imageId) {
-    	return createButton(parent, imageId, null, null);
+    static public Button createImageButton(Composite parent, String imageId, String tooltip) {
+        return createButton(parent, imageId, null, tooltip);
     }
 
     static public void refreshWidget(Widget widget) {
