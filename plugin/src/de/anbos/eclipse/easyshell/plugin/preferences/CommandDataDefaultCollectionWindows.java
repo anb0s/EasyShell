@@ -120,6 +120,9 @@ public class CommandDataDefaultCollectionWindows {
                 "cmd.exe /C totalcmd64.exe /O /T /P=R /R=${easyshell:container_loc}"));
         list.add(new CommandData("a6728fb1-89f3-4c3a-8ab0-5c57b6d7ee48", PresetType.presetPlugin, OS.osWindows, "TotalCommander (right replace)", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 "cmd.exe /C totalcmd64.exe /O /P=R /R=${easyshell:container_loc}"));
+        // Q-Dir (Quad Explorer): http://www.softwareok.de/?seite=Freeware/Q-Dir
+        list.add(new CommandData("a2a9c831-bb20-42db-bbe1-c71b6b5019c7", PresetType.presetPlugin, OS.osWindows, "Q-Dir", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryExplore, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpaces,
+                "cmd.exe /C start \"${easyshell:project_name}\" \"%programfiles%\\Q-Dir\\Q-Dir.exe\" \"${easyshell:container_loc}\""));
     }
 
     private static void addCommandsClipboard(CommandDataList list) {
