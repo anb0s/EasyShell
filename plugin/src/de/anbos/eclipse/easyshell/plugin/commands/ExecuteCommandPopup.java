@@ -47,7 +47,9 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
         for (Character ch='a';ch<='z';ch++) {
             chars.add(ch);
         }
-        int charsSize = menuDataList.size();
+        int charsSize = chars.size();
+        if (menuDataList.size() < charsSize)
+            charsSize = menuDataList.size();
         String info = "use '0'";
         if (charsSize > 1) {
             if( charsSize <= 10) {
@@ -71,7 +73,7 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
         listView.addKeyListener(this);
         for (int i=0;i<menuDataList.size();i++) {
             MenuData item = menuDataList.get(i);
-            String prefix = Character.toString(chars.get(i)) + ": ";
+            String prefix = (i < chars.size() ? Character.toString(chars.get(i)) : "?") + ": ";
             listView.add(prefix + item.getNameExpanded());
         }
         listView.select(0);
@@ -87,7 +89,7 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
             index = selIndex;
         }
         if (index < 0 || index >= menuDataList.size()) {
-        	//Activator.logError("executeCommandFromList: bad index " + index, null);
+            //Activator.logError("executeCommandFromList: bad index " + index, null);
             return;
         }
         listView.setSelection(index);
@@ -121,7 +123,7 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
                 executeCommandFromList((e.keyCode - 'a') + ('9' - '0' + 1));
             }
         } else {
-        	//Activator.logError("keyPressed", null);
+            //Activator.logError("keyPressed", null);
         }
     }
 
