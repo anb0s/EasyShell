@@ -65,6 +65,7 @@ The following platform, shell combinations and tools are supported as selections
   - Bash
     - Cygwin: http://cygwin.com
     - Git for Windows 1.x/2.x: https://git-for-windows.github.io
+    - Msys2 / MinGW32 / MinGW64: http://www.msys2.org
   - Console:
     - Console2: https://sourceforge.net/projects/console
     - ConsoleZ: https://github.com/cbucher/console
@@ -74,7 +75,8 @@ The following platform, shell combinations and tools are supported as selections
 - File Browsers
   - Explorer
   - TotalCommander: http://www.ghisler.com
-  - DoubleCommander: http://doublecmd.sourceforge.net/
+  - DoubleCommander: http://doublecmd.sourceforge.net
+  - Q-Dir (Quad Explorer): http://www.softwareok.de/?seite=Freeware/Q-Dir
 
 **Linux:**
 - Terminals
@@ -99,9 +101,9 @@ The following platform, shell combinations and tools are supported as selections
   - Thunar
   - Caja
   - Krusader
-  - DoubleCommander: http://doublecmd.sourceforge.net/
-  - Midnight Commander: http://midnight-commander.org/
-  - Sunflower: http://sunflower-fm.org/
+  - DoubleCommander: http://doublecmd.sourceforge.net
+  - Midnight Commander: http://midnight-commander.org
+  - Sunflower: http://sunflower-fm.org
 
 **MAC OS X**
 - Terminals
