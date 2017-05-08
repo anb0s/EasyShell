@@ -13,6 +13,7 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
+import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
 import de.anbos.eclipse.easyshell.plugin.types.PresetType;
@@ -41,11 +42,19 @@ public class CommandDataDefaultCollectionMacOSX {
         // MAC OS X Terminal
         list.add(new CommandData("e6918fe0-38b8-450b-a4be-d9eecc0dc0b4", PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "open -a Terminal ${easyshell:container_loc}"));
+        // https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/open.1.html
+        // http://stackoverflow.com/questions/32675804/how-do-i-execute-a-command-in-an-iterm-window-from-the-command-line
+        list.add(new CommandData("db61d61e-8bf4-41d0-a1d8-00379e4d1db1", PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "open -a Terminal ${easyshell:container_loc} --args \"./${easyshell:resource_loc}; exit\""));
+        list.add(new CommandData("ee2db486-4df3-42c1-b19e-03761ffac105", PresetType.presetPlugin, OS.osMacOSX, "Terminal (hold)", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "open -a Terminal ${easyshell:container_loc} --args \"./${easyshell:resource_loc}\""));
         // MAC OS X iTerm
         list.add(new CommandData("40eee8f2-b29e-490b-8612-59c2b76a704d", PresetType.presetPlugin, OS.osMacOSX, "iTerm", ResourceType.resourceTypeFileOrDirectory, Category.categoryOpen, CommandType.commandTypeExecute,
                 "open -a iTerm ${easyshell:container_loc}"));
-        //list.add(new CommandData("db61d61e-8bf4-41d0-a1d8-00379e4d1db1", PresetType.presetPlugin, OS.osMacOSX, "Terminal", ResourceType.resourceTypeFile, Category.categoryRun, CommandType.commandTypeExecute,
-        //        "open -a Terminal ${easyshell:container_loc}"));
+        list.add(new CommandData("e7d89190-95b3-4f03-bb79-c742597d1f6d", PresetType.presetPlugin, OS.osMacOSX, "iTerm", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "open -a iTerm ${easyshell:container_loc} --args \"./${easyshell:resource_loc}; exit\""));
+        list.add(new CommandData("427b93dd-18b1-4ff1-bbea-daed164b7b93", PresetType.presetPlugin, OS.osMacOSX, "iTerm (hold)", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "open -a iTerm ${easyshell:container_loc} --args \"./${easyshell:resource_loc}\""));
     }
 
     private static void addCommandsFileBrowser(CommandDataList list) {
