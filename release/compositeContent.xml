@@ -3,10 +3,11 @@
 <repository name='EasyShell Release Versions' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.atomic.composite.loading' value='true'/>
-    <property name='p2.timestamp' value='1475167327729'/>
+    <property name='p2.timestamp' value='1478099715027'/>
   </properties>
-  <children size='2'>
+  <children size='3'>
     <child location='1.4'/>
     <child location='2.0'/>
+    <child location='2.1'/>
   </children>
 </repository>
