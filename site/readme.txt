@@ -8,6 +8,8 @@ https://raw.githubusercontent.com/anb0s/EasyShell/v2_0/site/updates/release
 2. copy target\site to composite\site_x_y !!! Only one site with one / last plugin version !!!
 3. adapt compositeArtifacts.xml and compositeContent.xml
 
-source: http://stackoverflow.com/questions/20951842/combine-aggregate-eclipse-p2-repositories-extendable-p2-repository
+source:
+http://stackoverflow.com/questions/20951842/combine-aggregate-eclipse-p2-repositories-extendable-p2-repository
+http://www.lorenzobettini.it/2015/01/creating-p2-composite-repositories-during-the-build/
 
 03.06.2016 anb0s
