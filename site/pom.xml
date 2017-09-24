@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>de.anbos.eclipse.easyshell.site</artifactId>
-	<packaging>eclipse-repository</packaging>
-	<name>EasyShell Site</name>
+    <artifactId>de.anbos.eclipse.easyshell.site</artifactId>
+    <packaging>eclipse-repository</packaging>
+    <name>EasyShell Site</name>
 
-	<parent>
-		<groupId>de.anbos.eclipse.easyshell.group</groupId>
-		<artifactId>de.anbos.eclipse.easyshell</artifactId>
-		<version>2.1.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>de.anbos.eclipse.easyshell.group</groupId>
+        <artifactId>de.anbos.eclipse.easyshell</artifactId>
+        <version>2.1.1-SNAPSHOT</version>
+    </parent>
 
-	<properties>
-		<site.dir>testing</site.dir>
-	</properties>
+    <properties>
+        <site.dir>testing</site.dir>
+    </properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho.extras</groupId>
-				<artifactId>tycho-eclipserun-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-				    <!-- IMPORTANT: DO NOT split the arg line -->
-					<appArgLine>-application org.eclipse.ant.core.antRunner -buildfile packaging-p2composite.ant p2.composite.add -Dsite.label="EasyShell" -Dsite.dir=${site.dir} -Dproject.build.directory=${project.build.directory} -DunqualifiedVersion=${unqualifiedVersion} -DbuildQualifier=${buildQualifier}</appArgLine>
-					<repositories>
-						<repository>
-							<id>Mars</id>
-							<layout>p2</layout>
-							<url>http://download.eclipse.org/releases/mars</url>
-						</repository>
-					</repositories>
-					<dependencies>
-						<dependency>
-							<artifactId>org.eclipse.ant.core</artifactId>
-							<type>eclipse-plugin</type>
-						</dependency>
-						<dependency>
-							<artifactId>org.apache.ant</artifactId>
-							<type>eclipse-plugin</type>
-						</dependency>
-						<dependency>
-							<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
-							<type>eclipse-plugin</type>
-						</dependency>
-						<dependency>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho.extras</groupId>
+                <artifactId>tycho-eclipserun-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <!-- IMPORTANT: DO NOT split the arg line -->
+                    <appArgLine>-application org.eclipse.ant.core.antRunner -buildfile packaging-p2composite.ant p2.composite.add -Dsite.label="EasyShell" -Dsite.dir=${site.dir} -Dproject.build.directory=${project.build.directory} -DunqualifiedVersion=${unqualifiedVersion} -DbuildQualifier=${buildQualifier}</appArgLine>
+                    <repositories>
+                        <repository>
+                            <id>Mars</id>
+                            <layout>p2</layout>
+                            <url>http://download.eclipse.org/releases/mars</url>
+                        </repository>
+                    </repositories>
+                    <dependencies>
+                        <dependency>
+                            <artifactId>org.eclipse.ant.core</artifactId>
+                            <type>eclipse-plugin</type>
+                        </dependency>
+                        <dependency>
+                            <artifactId>org.apache.ant</artifactId>
+                            <type>eclipse-plugin</type>
+                        </dependency>
+                        <dependency>
+                            <artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
+                            <type>eclipse-plugin</type>
+                        </dependency>
+                        <dependency>
                             <artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
                             <type>eclipse-feature</type>
                         </dependency>
@@ -59,19 +59,19 @@
                             <artifactId>org.eclipse.equinox.ds</artifactId>
                             <type>eclipse-plugin</type>
                         </dependency>
-					</dependencies>
-				</configuration>
-				<executions>
-					<execution>
-						<id>add-p2-composite-repository</id>
-						<phase>package</phase>
-						<goals>
-							<goal>eclipse-run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+                    </dependencies>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>add-p2-composite-repository</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>eclipse-run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
