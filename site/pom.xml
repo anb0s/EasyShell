@@ -29,9 +29,9 @@
                     <appArgLine>-application org.eclipse.ant.core.antRunner -buildfile packaging-p2composite.ant p2.composite.add -Dsite.label="EasyShell" -Dsite.dir=${site.dir} -Dproject.build.directory=${project.build.directory} -DunqualifiedVersion=${unqualifiedVersion} -DbuildQualifier=${buildQualifier}</appArgLine>
                     <repositories>
                         <repository>
-                            <id>Mars</id>
+                            <id>Oxygen</id>
                             <layout>p2</layout>
-                            <url>http://download.eclipse.org/releases/mars</url>
+                            <url>http://download.eclipse.org/releases/oxygen</url>
                         </repository>
                     </repositories>
                     <dependencies>
