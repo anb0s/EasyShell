@@ -29,6 +29,10 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.osgi.framework.Bundle;
+import org.eclipse.cdt.internal.core.model.ExternalTranslationUnit;
+import org.eclipse.cdt.internal.core.model.IncludeReference;
+import org.eclipse.cdt.internal.ui.cview.IncludeReferenceProxy;
+import org.eclipse.cdt.core.model.IIncludeReference;
 
 
 @SuppressWarnings("restriction")
@@ -120,6 +124,23 @@ public class ResourceUtils {
                             .getPackageFragmentRoot()));
                 } else if (adaptable instanceof JarPackageFragmentRoot) {
                     return new Resource(getJarFile(adaptable));
+                }
+            }
+            // optional org.eclipse.cdt.core
+            bundle = Platform.getBundle("org.eclipse.cdt.core");
+            if (bundle != null) {
+                IPath path = null;
+                if (adaptable instanceof IncludeReferenceProxy) {
+                    IIncludeReference includeRef = ((IncludeReferenceProxy) adaptable).getReference();
+                    path = includeRef.getPath();
+                } else if (adaptable instanceof IncludeReference) {
+                    IIncludeReference includeRef = ((IncludeReference) adaptable);
+                    path = includeRef.getPath();
+                } else if (adaptable instanceof ExternalTranslationUnit) {
+                    path = ((ExternalTranslationUnit) adaptable).getLocation();
+                }
+                if (path != null) {
+                    return new Resource(path.toFile());
                 }
             }
             // File

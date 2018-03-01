@@ -11,7 +11,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.core.expressions,
  org.eclipse.core.variables,
- org.eclipse.jdt.core;resolution:=optional
+ org.eclipse.jdt.core;resolution:=optional,
+ org.eclipse.cdt.ui;resolution:=optional,
+ org.eclipse.cdt.core;resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: target/easyshell-library.jar
