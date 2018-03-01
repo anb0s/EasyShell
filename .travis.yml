@@ -1,8 +1,15 @@
 language: java
+
 jdk:
   - openjdk8
   - oraclejdk8
 
-before_script:
+env:
+  - ECLIPSE_TARGET_PLATFORM=Eclipse-3.8
+  - ECLIPSE_TARGET_PLATFORM=Eclipse-4.4
+  - ECLIPSE_TARGET_PLATFORM=Eclipse-4.5
+  - ECLIPSE_TARGET_PLATFORM=Eclipse-4.6
+  - ECLIPSE_TARGET_PLATFORM=Eclipse-4.7
+  - ECLIPSE_TARGET_PLATFORM=Eclipse-4.8
 
-script: mvn clean verify
+script: mvn -Dtarget.platform=$ECLIPSE_TARGET_PLATFORM clean verify
