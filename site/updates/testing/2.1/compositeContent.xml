@@ -2,10 +2,10 @@
 <?compositeMetadataRepository version='1.0.0'?>
 <repository name='EasyShell 2.1' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1494269100584'/>
+    <property name='p2.timestamp' value='1520181128412'/>
     <property name='p2.atomic.composite.loading' value='true'/>
   </properties>
-  <children size='9'>
+  <children size='10'>
     <child location='2.1.0.v20161102-1515'/>
     <child location='2.1.0.v20161103-2010'/>
     <child location='2.1.0.v20161203-1029'/>
@@ -15,5 +15,6 @@
     <child location='2.1.0.v20161220-2025'/>
     <child location='2.1.0.v20170421-1258'/>
     <child location='2.1.0.v20170508-1844'/>
+    <child location='2.1.1.v20180304-1631'/>
   </children>
 </repository>
