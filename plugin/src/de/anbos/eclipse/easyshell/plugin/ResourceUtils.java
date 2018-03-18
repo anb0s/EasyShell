@@ -32,6 +32,7 @@ import org.osgi.framework.Bundle;
 import org.eclipse.cdt.internal.core.model.ExternalTranslationUnit;
 import org.eclipse.cdt.internal.core.model.IncludeReference;
 import org.eclipse.cdt.internal.ui.cview.IncludeReferenceProxy;
+import org.eclipse.cdt.internal.ui.includebrowser.IBNode;
 import org.eclipse.cdt.core.model.IIncludeReference;
 
 
@@ -138,6 +139,8 @@ public class ResourceUtils {
                     path = includeRef.getPath();
                 } else if (adaptable instanceof ExternalTranslationUnit) {
                     path = ((ExternalTranslationUnit) adaptable).getLocation();
+                } else if (adaptable instanceof IBNode) {
+                    path = ((IBNode) adaptable).getRepresentedPath();
                 }
                 if (path != null) {
                     return new Resource(path.toFile());
