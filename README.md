@@ -1,5 +1,4 @@
-![][logo]
-# EasyShell [![Version](https://img.shields.io/github/release/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/releases) [![Issues](https://img.shields.io/github/issues/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/issues) [![Chat @ gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/anb0s/Lobby) [![Build Status](https://travis-ci.org/anb0s/eclox.svg)](https://travis-ci.org/anb0s/EasyShell) [![License](https://img.shields.io/badge/License-EPL%201.0-blue.svg)](https://eclipse.org/org/documents/epl-v10.html)
+# *![][logo] EasyShell [![Version](https://img.shields.io/github/release/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/releases) [![Issues](https://img.shields.io/github/issues/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/issues) [![Chat @ gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/anb0s/Lobby) [![Build Status](https://travis-ci.org/anb0s/eclox.svg)](https://travis-ci.org/anb0s/EasyShell) [![License](https://img.shields.io/badge/License-EPL%201.0-blue.svg)](https://eclipse.org/org/documents/epl-v10.html)
 
 This Eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. Additionally it is possible to run selected file in the shell, copy file or directory path or run user defined external tools. Key shortcuts and multiple selections are also supported!
 
@@ -185,4 +184,4 @@ https://eclipse.org/org/documents/epl-v10.html
 <img alt="with-Eclipse logo" src="http://with-eclipse.github.io/with-eclipse-0.jpg" />
 </a>
 
-[logo]: https://github.com/anb0s/EasyShell/blob/master/plugin/images/easyshell100.png "EasyShell Logo"
+[logo]: https://github.com/anb0s/EasyShell/blob/master/plugin/images/easyshell32.png "EasyShell Logo"
