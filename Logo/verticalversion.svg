@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="378px" height="356px" viewBox="0 0 378 356" enable-background="new 0 0 378 356" xml:space="preserve">
+<g>
+	<g>
+		<path stroke="#0000FF" stroke-width="4" stroke-miterlimit="10" d="M297.939,86.955H144.208c0.438-0.951,0.688-2.007,0.688-3.123
+			v-9.995c0-4.14-3.355-7.497-7.496-7.497H93.671c-4.14,0-7.496,3.356-7.496,7.497v9.995c0,1.116,0.251,2.172,0.688,3.123H68.06
+			c-4.14,0-7.496,3.356-7.496,7.496V240c0,4.141,3.356,7.496,7.496,7.496h229.88c4.141,0,7.496-3.355,7.496-7.496V94.451
+			C305.436,90.311,302.08,86.955,297.939,86.955z"/>
+		<g>
+			<polygon fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" points="169.625,167.219 158.456,156.049 158.448,156.055 
+				109.868,107.475 98.697,118.645 147.278,167.227 98.697,215.807 109.868,226.977 158.448,178.397 158.456,178.403 
+				169.625,167.233 169.618,167.227 			"/>
+			<rect x="182.792" y="210.588" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="84.511" height="15.797"/>
+		</g>
+	</g>
+	<text transform="matrix(1 0 0 1 43.3257 307.417)" font-family="'TrebuchetMS-Bold'" font-size="60.2598">Easy Shell</text>
+</g>
+</svg>
