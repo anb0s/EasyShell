@@ -185,5 +185,3 @@ https://eclipse.org/org/documents/epl-v10.html
 <a href="http://with-eclipse.github.io/" target="_blank">
 <img alt="with-Eclipse logo" src="http://with-eclipse.github.io/with-eclipse-0.jpg" />
 </a>
-
-[logo]: https://github.com/anb0s/EasyShell/blob/master/plugin/images/easyshell32.png "EasyShell Logo"
