@@ -1,4 +1,4 @@
-<p align="center"><img src="Logo/horizontalversion.png" alt="EasyShell" height="100px"></p>
+<p align="center"><img src="https://github.com/anb0s/EasyShell/blob/master/Logo/horizontalversion.png" alt="EasyShell" height="100px"></p>
 
 [![Version](https://img.shields.io/github/release/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/releases) [![Issues](https://img.shields.io/github/issues/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/issues) [![Chat @ gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/anb0s/Lobby) [![Build Status](https://travis-ci.org/anb0s/eclox.svg)](https://travis-ci.org/anb0s/EasyShell) [![License](https://img.shields.io/badge/License-EPL%201.0-blue.svg)](https://eclipse.org/org/documents/epl-v10.html)
 
