@@ -10,6 +10,7 @@ jdk:
 env:
   - ECLIPSE_TARGET_PLATFORM=Eclipse-4.7
   - ECLIPSE_TARGET_PLATFORM=Eclipse-4.8
+  - ECLIPSE_TARGET_PLATFORM=Eclipse-4.9
 
 install: true
 
