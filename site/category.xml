@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/de.anbos.eclipse.easyshell.feature_2.1.1.qualifier.jar" id="de.anbos.eclipse.easyshell.feature" version="2.1.1.qualifier">
+   <feature url="features/de.anbos.eclipse.easyshell.feature_2.2.0.qualifier.jar" id="de.anbos.eclipse.easyshell.feature" version="2.2.0.qualifier">
       <category name="EasyShell-2.x"/>
    </feature>
    <category-def name="EasyShell-2.x" label="EasyShell 2.x">

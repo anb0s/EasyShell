@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EasyShell
 Bundle-SymbolicName: de.anbos.eclipse.easyshell.plugin;singleton:=true
-Bundle-Version: 2.1.1.qualifier
+Bundle-Version: 2.2.0.qualifier
 Bundle-Activator: de.anbos.eclipse.easyshell.plugin.Activator
 Bundle-Vendor: Andre Bossert
 Require-Bundle: org.eclipse.ui,
@@ -14,6 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.core;resolution:=optional,
  org.eclipse.cdt.ui;resolution:=optional,
  org.eclipse.cdt.core;resolution:=optional
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: target/easyshell-library.jar
+Automatic-Module-Name: de.anbos.eclipse.easyshell.plugin
