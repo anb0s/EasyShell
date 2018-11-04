@@ -1,17 +1,17 @@
 http://www.ghisler.ch/wiki/index.php/Command_line_parameters
 
 Command line parameters
- 
+
 Total Commander can be called with one or two directories as command line parameters. This will set these directories in one or both of the file windows. This allows you to create multiple icons for Total Commander in progman or the start menu, which start Total Commander in different directories or even with packed files. Furthermore a different ini file than the default wincmd.ini can be specified to allow multiple users on the same machine to have different settings in Total Commander.
- 
+
 Syntax:
- 
+
 totalcmd.exe [/o] [/n] [Drive1:\Directory1 [Drive2:\Directory2]] [/i=name.ini] [/f=ftpname.ini]
 or:
 totalcmd.exe [/o] [/n] [/L=Drive1:\Directory1] [/R=Drive2:\Directory2] [/i=name.ini] [/f=ftpname.ini]
- 
+
 Parameters:
- 
+
 Drive:\Directory Loads the first directory passed to Total Commander into the left window, and the second into the right window. Directory names containing spaces must be put in double quotes! Always specify the full path name including the drive! To open a stored FTP connection, use FTPOPEN:stored_ftp_name as path.
 /O If Total Commander is already running, activate it and pass the path(s) in the command line to that instance (overrides the settings in the configuration dialog to have multiple windows)
 /N Opens in any case a new Total Commander window (overrides the settings in the configuration dialog to allow only one copy of Total Commander at a time)
@@ -41,11 +41,11 @@ If the parameter begins with an equal sign "=", e.g. /S=S:=SettingsName, the com
 /INSTALLDRIVERQ Like /INSTALLDRIVER, but silent installation
 /REMOVEDRIVER (Windows NT-based systems) Removes the driver installed with the switch /INSTALLDRIVER
 /REMOVEDRIVERQ Like /REMOVEDRIVER, but silent removal
- 
+
 The switches are NOT case sensitive.
- 
+
 Examples:
- 
+
 totalcmd.exe c:\windows left window is loaded with c:\windows
 totalcmd.exe d:\data c:\programs left: d:\data, right: c:\programs
 totalcmd.exe /R=d:\data right window: d:\data

@@ -25,7 +25,7 @@ public class ExecuteCommandLabelProvider extends LabelProvider {
             return null;
         }
         MenuData data = (MenuData)element;
-		return Activator.getImage(data.getImageId());
+        return Activator.getImage(data.getImageId());
     }
 
     @Override

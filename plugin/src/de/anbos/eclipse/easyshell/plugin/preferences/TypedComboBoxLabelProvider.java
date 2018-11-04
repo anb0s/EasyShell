@@ -7,10 +7,10 @@
  *
  * Contributors:
  *    Andre Bossert - initial API and implementation and/or initial documentation
- *    
+ *
  *    adapted code from:
  *    http://stackoverflow.com/questions/12511959/is-there-swt-combo-box-with-any-object-as-data-and-labelprovider-for-display
- *    
+ *
  *******************************************************************************/
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
@@ -22,7 +22,7 @@ public interface TypedComboBoxLabelProvider<T> {
     public String getSelectedLabel(T element);
 
     public String getListLabel(T element);
-    
+
     public Image getImage(T element);
 
 }

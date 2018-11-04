@@ -45,7 +45,7 @@ public class CommandDataLabelProvider extends LabelProvider implements ITableLab
             case 2:
                 return data.getPresetType().getName();
             case 3:
-            	return data.getCommand();
+                return data.getCommand();
             default:
                 return "";
         }

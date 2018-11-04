@@ -20,7 +20,7 @@ import de.anbos.eclipse.easyshell.plugin.Constants;
 
 public class GeneralDataStore extends Store {
 
-	private GeneralData data = null;
+    private GeneralData data = null;
 
     private static GeneralDataStore instance = null;
 
@@ -38,7 +38,7 @@ public class GeneralDataStore extends Store {
             public void propertyChange(PropertyChangeEvent event) {
                 if (event.getProperty().equals(Constants.PREF_GENERAL)
                 ) {
-                	loadInternal((String)event.getNewValue());
+                    loadInternal((String)event.getNewValue());
                 }
             }
         });
@@ -52,10 +52,10 @@ public class GeneralDataStore extends Store {
     }
 
     public GeneralData getData() {
-		return data;
-	}
+        return data;
+    }
 
-	@Override
+    @Override
     public void loadDefaults() {
         getStore().setToDefault(Constants.PREF_GENERAL);
         load();
@@ -63,7 +63,7 @@ public class GeneralDataStore extends Store {
 
     private void loadInternal(String pref) {
         if (pref == null) {
-        	pref = getStore().getString(Constants.PREF_GENERAL);
+            pref = getStore().getString(Constants.PREF_GENERAL);
         }
         data = PreferenceValueConverter.asGeneralData(pref);
         super.load();
@@ -71,7 +71,7 @@ public class GeneralDataStore extends Store {
 
     @Override
     public void load() {
-    	loadInternal(null);
+        loadInternal(null);
     }
 
 }

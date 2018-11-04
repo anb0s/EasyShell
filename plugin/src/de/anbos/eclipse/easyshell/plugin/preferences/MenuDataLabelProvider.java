@@ -28,7 +28,7 @@ public class MenuDataLabelProvider extends LabelProvider implements ITableLabelP
             case 0:
                 return Activator.getImage(data.getImageId());
             default:
-            	return null;
+                return null;
         }
     }
 
@@ -41,7 +41,7 @@ public class MenuDataLabelProvider extends LabelProvider implements ITableLabelP
             case 0:
                 return data.getNameExpanded();
             case 1:
-            	return data.getCommand();
+                return data.getCommand();
             default:
                 return ""; //$NON-NLS-1$
         }

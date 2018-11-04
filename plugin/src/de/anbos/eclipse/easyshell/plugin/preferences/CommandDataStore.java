@@ -38,8 +38,8 @@ public class CommandDataStore extends DataStore<CommandData> {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
                 if (event.getProperty().equals(Constants.PREF_COMMANDS_USER) 	||
-                	event.getProperty().equals(Constants.PREF_COMMANDS_PRESET)	||
-                	event.getProperty().equals(Constants.PREF_COMMANDS_MODIFY)
+                    event.getProperty().equals(Constants.PREF_COMMANDS_PRESET)	||
+                    event.getProperty().equals(Constants.PREF_COMMANDS_MODIFY)
                 ) {
                     load();
                 }
@@ -61,9 +61,9 @@ public class CommandDataStore extends DataStore<CommandData> {
     private CommandDataList getPresetCommands(boolean modifyOnly) {
         CommandDataList presetItems = new CommandDataList();
         for (CommandData data : getDataList()) {
-        	if ( ( modifyOnly && (data.getPresetType() == PresetType.presetPluginModify)) ||
-        	     (!modifyOnly && (data.getPresetType() == PresetType.presetPlugin || data.getPresetType() == PresetType.presetPluginModify))
-        	   ) {
+            if ( ( modifyOnly && (data.getPresetType() == PresetType.presetPluginModify)) ||
+                 (!modifyOnly && (data.getPresetType() == PresetType.presetPlugin || data.getPresetType() == PresetType.presetPluginModify))
+               ) {
                 presetItems.add(data);
             }
         }
@@ -118,15 +118,15 @@ public class CommandDataStore extends DataStore<CommandData> {
     private void addModifyToPreset(CommandDataBasic[] arrayModify, CommandData[] arrayPreset) {
         for(int i = 0 ; i < arrayModify.length ; i++) {
             for(int j = 0 ; j < arrayPreset.length ; j++) {
-            	if (arrayModify[i].getId().equals(arrayPreset[j].getId())) {
-            		arrayPreset[j].addOrRemoveModifyData(arrayModify[i]);
-            		break;
-            	}
+                if (arrayModify[i].getId().equals(arrayPreset[j].getId())) {
+                    arrayPreset[j].addOrRemoveModifyData(arrayModify[i]);
+                    break;
+                }
             }
         }
-	}
+    }
 
-	public CommandData getCommandDataByName(String name) {
+    public CommandData getCommandDataByName(String name) {
         for (CommandData data : getDataList()) {
             if (data.getName().equals(name)) {
                 return data;
@@ -136,18 +136,18 @@ public class CommandDataStore extends DataStore<CommandData> {
     }
 
     private boolean verifyInternal() {
-    	boolean valid = true;
+        boolean valid = true;
         Iterator<CommandData> dataIterator = getDataList().iterator();
         while(valid && dataIterator.hasNext()) {
-        	CommandData data = (CommandData)dataIterator.next();
-   			valid = data.verify();
+            CommandData data = (CommandData)dataIterator.next();
+               valid = data.verify();
         }
         return valid;
     }
 
     @Override
     public boolean verify() {
-    	return super.verify() && verifyInternal();
+        return super.verify() && verifyInternal();
     }
 
 }

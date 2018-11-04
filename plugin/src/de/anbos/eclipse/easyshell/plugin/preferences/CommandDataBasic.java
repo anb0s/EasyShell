@@ -20,7 +20,7 @@ import de.anbos.eclipse.easyshell.plugin.types.Version;
 public class CommandDataBasic {
 
     // command
-	private String id = null;
+    private String id = null;
     private String name = "";
     private ResourceType resourceType = ResourceType.resourceTypeUnknown;
     private boolean useWorkingDirectory = false;
@@ -30,7 +30,7 @@ public class CommandDataBasic {
 
     public CommandDataBasic(String id, String name, ResourceType resType, boolean useWorkingDirectory, String workingDirectory, CommandTokenizer tokenizer, String command) {
         setId(id);
-    	setName(name);
+        setName(name);
         setResourceType(resType);
         setUseWorkingDirectory(useWorkingDirectory);
         setWorkingDirectory(workingDirectory);
@@ -38,12 +38,12 @@ public class CommandDataBasic {
         setCommand(command);
     }
 
-	public CommandDataBasic(CommandDataBasic commandData) {
+    public CommandDataBasic(CommandDataBasic commandData) {
         this(commandData.getId(), commandData.getName(), commandData.getResourceType(), commandData.isUseWorkingDirectory(), commandData.getWorkingDirectory(), commandData.getCommandTokenizer(), commandData.getCommand());
     }
 
     public CommandDataBasic(String id) {
-    	setId(id);
+        setId(id);
     }
 
     public CommandDataBasic() {
@@ -70,7 +70,7 @@ public class CommandDataBasic {
     }
 
     public CommandTokenizer getCommandTokenizer() {
-    	return commandTokenizer;
+        return commandTokenizer;
     }
 
     public String getCommand() {
@@ -81,9 +81,9 @@ public class CommandDataBasic {
         this.id = id;
     }
 
-	public void setName(String name) {
-	    this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void setResourceType(ResourceType resType) {
         this.resourceType = resType;
@@ -102,43 +102,43 @@ public class CommandDataBasic {
     }
 
     public void setCommandTokenizer(CommandTokenizer commandTokenizer) {
-    	this.commandTokenizer = commandTokenizer;
-	}
-
-	public void setCommand(String command) {
-		this.command = command;
-	}
-
-	public boolean equals(Object object) {
-    	if(!(object instanceof CommandDataBasic)) {
-    		return false;
-    	}
-    	CommandDataBasic data = (CommandDataBasic)object;
-    	if(data.getName().equals(this.getName()) &&
-    	   data.getResourceType() == this.getResourceType() &&
-    	   data.isUseWorkingDirectory() == this.isUseWorkingDirectory() &&
-    	   data.getWorkingDirectory().equals(this.getWorkingDirectory()) &&
-    	   data.getCommandTokenizer() == this.getCommandTokenizer() &&
-    	   data.getCommand().equals(this.getCommand())
-    	  )
-    	{
-    		return true;
-    	}
-    	return false;
+        this.commandTokenizer = commandTokenizer;
     }
 
-	public boolean deserialize(Version version, String value, StringTokenizer tokenizer, String delimiter) {
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
+    public boolean equals(Object object) {
+        if(!(object instanceof CommandDataBasic)) {
+            return false;
+        }
+        CommandDataBasic data = (CommandDataBasic)object;
+        if(data.getName().equals(this.getName()) &&
+           data.getResourceType() == this.getResourceType() &&
+           data.isUseWorkingDirectory() == this.isUseWorkingDirectory() &&
+           data.getWorkingDirectory().equals(this.getWorkingDirectory()) &&
+           data.getCommandTokenizer() == this.getCommandTokenizer() &&
+           data.getCommand().equals(this.getCommand())
+          )
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deserialize(Version version, String value, StringTokenizer tokenizer, String delimiter) {
         if((value == null || value.length() <= 0) && tokenizer == null) {
             return false;
         }
         if (tokenizer == null) {
             tokenizer = new StringTokenizer(value,delimiter);
         }
-		// set command data members
+        // set command data members
         if (version.getId() >= Version.v2_1_001.getId()) {
-	        if (getId() == null) {
-	        	setId(tokenizer.nextToken());
-	        }
+            if (getId() == null) {
+                setId(tokenizer.nextToken());
+            }
         }
         setName(tokenizer.nextToken());
         // handling of resource Type
@@ -146,22 +146,22 @@ public class CommandDataBasic {
         if (version.getId() < Version.v2_0_006.getId() && resourceTypeStr.equals("resourceTypeFolder")) {
             resourceTypeStr = "resourceTypeDirectory";
         }
-		setResourceType(ResourceType.getFromEnum(resourceTypeStr));
-		// handling of working directory
-	    setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
-	    setWorkingDirectory(tokenizer.nextToken());
-		// command
-	    String commandTokenizer = CommandTokenizer.commandTokenizerSpaces.toString();
+        setResourceType(ResourceType.getFromEnum(resourceTypeStr));
+        // handling of working directory
+        setUseWorkingDirectory(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
+        setWorkingDirectory(tokenizer.nextToken());
+        // command
+        String commandTokenizer = CommandTokenizer.commandTokenizerSpaces.toString();
         if (version.getId() >= Version.v2_1_001.getId()) {
-        	String oldCommandTokenizer = tokenizer.nextToken();
-        	if (version.getId() >= Version.v2_1_003.getId()) {
-        		commandTokenizer = oldCommandTokenizer;
-        	}
+            String oldCommandTokenizer = tokenizer.nextToken();
+            if (version.getId() >= Version.v2_1_003.getId()) {
+                commandTokenizer = oldCommandTokenizer;
+            }
         }
         setCommandTokenizer(CommandTokenizer.getFromEnum(commandTokenizer));
-		setCommand(tokenizer.nextToken());
-		return true;
-	}
+        setCommand(tokenizer.nextToken());
+        return true;
+    }
 
     public boolean deserialize(String value, StringTokenizer tokenizer, String delimiter) {
         return deserialize(Version.actual, value, tokenizer, delimiter);
@@ -170,16 +170,16 @@ public class CommandDataBasic {
     public String serialize(Version version, String delimiter) {
         String ret = getId();
         if (ret != null) {
-        	ret += delimiter;
+            ret += delimiter;
         } else {
-        	ret = "";
+            ret = "";
         }
         ret += getName() + delimiter;
         ret += getResourceType().toString() + delimiter;
         ret += Boolean.toString(isUseWorkingDirectory()) + delimiter;
         ret += getWorkingDirectory() + delimiter;
         if (version.getId() >= Version.v2_1_001.getId()) {
-        	ret += getCommandTokenizer().toString() + delimiter;
+            ret += getCommandTokenizer().toString() + delimiter;
         }
         ret += getCommand() + delimiter;
         return ret;
@@ -189,8 +189,8 @@ public class CommandDataBasic {
         return serialize(Version.actual, delimiter);
     }
 
-	public boolean verify() {
-		return id != null;
-	}
+    public boolean verify() {
+        return id != null;
+    }
 
 }

@@ -21,7 +21,7 @@ public enum LinuxDesktop {
     desktopGnome(2, "Gnome"),
     desktopCinnamon(3, "Cinnamon"),
     desktopMate(4, "MATE"),
-	desktopLxde(5, "LXDE");
+    desktopLxde(5, "LXDE");
     // attributes
     private final int id;
     private final String name;

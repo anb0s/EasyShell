@@ -31,19 +31,19 @@ public interface Constants {
     public static final String IMAGE_EASYSHELL   = "easyshell";
     public static final String IMAGE_ECLIPSE     = "eclipse";
 
-	// Preferences
+    // Preferences
     public static final String PREF_COMMANDS_PRESET = "COMMANDS_PRESET";
     public static final String PREF_COMMANDS_MODIFY = "COMMANDS_MODIFY";
-	public static final String PREF_COMMANDS_USER   = "COMMANDS_USER";
-	public static final String PREF_COMMANDS_OLD	= "COMMANDS";
-	public static final String PREF_GENERAL   		= "GENERAL";
-	public static final String PREF_MENU            = "MENU";
-	public static final String PREF_MIGRATED        = "MIGRATED";
+    public static final String PREF_COMMANDS_USER   = "COMMANDS_USER";
+    public static final String PREF_COMMANDS_OLD	= "COMMANDS";
+    public static final String PREF_GENERAL   		= "GENERAL";
+    public static final String PREF_MENU            = "MENU";
+    public static final String PREF_MIGRATED        = "MIGRATED";
 
-	// Actions
-	public static final String ACTION_UNKNOWN    = "de.anbos.eclipse.easyshell.plugin.commands.Unknown";
-	public static final String ACTION_EXECUTE    = "de.anbos.eclipse.easyshell.plugin.commands.Execute";
-	public static final String ACTION_CLIPBOARD  = "de.anbos.eclipse.easyshell.plugin.commands.Clipboard";
+    // Actions
+    public static final String ACTION_UNKNOWN    = "de.anbos.eclipse.easyshell.plugin.commands.Unknown";
+    public static final String ACTION_EXECUTE    = "de.anbos.eclipse.easyshell.plugin.commands.Execute";
+    public static final String ACTION_CLIPBOARD  = "de.anbos.eclipse.easyshell.plugin.commands.Clipboard";
 
 
 }

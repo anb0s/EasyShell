@@ -20,27 +20,27 @@ public class MenuDataMover extends DataMover implements SelectionListener {
 
     private Table table;
 
-	public MenuDataMover(Table table, IDataStore store) {
-	    super(store);
-	    this.table = table;
-	    this.table.addSelectionListener(this);
-	}
+    public MenuDataMover(Table table, IDataStore store) {
+        super(store);
+        this.table = table;
+        this.table.addSelectionListener(this);
+    }
 
-	public void widgetDefaultSelected(SelectionEvent e) {
-	}
+    public void widgetDefaultSelected(SelectionEvent e) {
+    }
 
-	public void widgetSelected(SelectionEvent e) {
-		TableItem item = null;
-		try {
-			item = table.getSelection()[0];
-		} catch(Throwable t) {
-		    setData(null);
-			return;
-		}
-		if(item == null || !(item.getData() instanceof MenuData)) {
-		    setData(null);
-			return;
-		}
-		setData((IData)item.getData());
-	}
+    public void widgetSelected(SelectionEvent e) {
+        TableItem item = null;
+        try {
+            item = table.getSelection()[0];
+        } catch(Throwable t) {
+            setData(null);
+            return;
+        }
+        if(item == null || !(item.getData() instanceof MenuData)) {
+            setData(null);
+            return;
+        }
+        setData((IData)item.getData());
+    }
 }

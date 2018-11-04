@@ -27,7 +27,7 @@ public class CommandDataDefaultCollection {
         CommandDataList list = getCommandsNativeDefault();
         MenuDataList ret = new MenuDataList();
         for (int i=0;i<list.size();i++) {
-            CommandData cmdData = list.get(i);            
+            CommandData cmdData = list.get(i);
             MenuData newData = new MenuData(cmdData.getId(), cmdData.getId()); // use the same id like the default command to have same defaults
             newData.setNameTypeFromCategory(cmdData.getCategory());
             if (sorted) {
@@ -39,10 +39,10 @@ public class CommandDataDefaultCollection {
     }
 
     CommandDataDefaultCollection() {
-    	CommandDataDefaultCollectionWindows.addCommandsAll(list);
-    	CommandDataDefaultCollectionLinux.addCommandsAll(list);
-    	CommandDataDefaultCollectionMacOSX.addCommandsAll(list);
-    	CommandDataDefaultCollectionAllOS.addCommandsAll(list);
+        CommandDataDefaultCollectionWindows.addCommandsAll(list);
+        CommandDataDefaultCollectionLinux.addCommandsAll(list);
+        CommandDataDefaultCollectionMacOSX.addCommandsAll(list);
+        CommandDataDefaultCollectionAllOS.addCommandsAll(list);
     }
 
     public CommandDataList getCommands() {
@@ -64,13 +64,13 @@ public class CommandDataDefaultCollection {
             case osUnknown:
                 break;
             case osWindows:
-            	CommandDataDefaultCollectionWindows.addCommandsDefault(listDefault);
+                CommandDataDefaultCollectionWindows.addCommandsDefault(listDefault);
                 break;
             case osLinux:
-            	CommandDataDefaultCollectionLinux.addCommandsDefault(listDefault);
+                CommandDataDefaultCollectionLinux.addCommandsDefault(listDefault);
                 break;
             case osMacOSX:
-            	CommandDataDefaultCollectionMacOSX.addCommandsDefault(listDefault);
+                CommandDataDefaultCollectionMacOSX.addCommandsDefault(listDefault);
                 break;
             case osUnix:
                 // no op

@@ -58,28 +58,28 @@ public class ResourceUtils {
         return selection;
     }
 
-	static public Resource getResource(Object myObj) {
+    static public Resource getResource(Object myObj) {
         Object object = null;
 
         // handle IEditorPart
         if (myObj instanceof IEditorPart) {
             IEditorPart editorPart = (IEditorPart)myObj;
             IEditorInput input = editorPart.getEditorInput();
-        	if (input instanceof IFileEditorInput) {
-        		object = ((IFileEditorInput)input).getFile();
-        	} else {
-	            Object adapter = input.getAdapter(IFile.class);
-	            if(adapter instanceof IFile){
-	                object = (IFile) adapter;
-	            } else {
-	                adapter = editorPart.getAdapter(IFile.class);
-	                if(adapter instanceof IFile){
-	                    object = (IFile) adapter;
-	                } else {
-	                    object = input;
-	                }
-	            }
-        	}
+            if (input instanceof IFileEditorInput) {
+                object = ((IFileEditorInput)input).getFile();
+            } else {
+                Object adapter = input.getAdapter(IFile.class);
+                if(adapter instanceof IFile){
+                    object = (IFile) adapter;
+                } else {
+                    adapter = editorPart.getAdapter(IFile.class);
+                    if(adapter instanceof IFile){
+                        object = (IFile) adapter;
+                    } else {
+                        object = input;
+                    }
+                }
+            }
         } else {
             object = myObj;
         }
@@ -155,7 +155,7 @@ public class ResourceUtils {
         return null;
     }
 
-	static private File getJarFile(IAdaptable adaptable) {
+    static private File getJarFile(IAdaptable adaptable) {
         JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
         File file = (File)jpfr.getPath().makeAbsolute().toFile();
         if (!((File)file).exists()) {

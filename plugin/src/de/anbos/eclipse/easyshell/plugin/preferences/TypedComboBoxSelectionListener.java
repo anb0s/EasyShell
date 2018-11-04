@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Andre Bossert - initial API and implementation and/or initial documentation
- *    
+ *
  *    adapted code from:
  *    http://stackoverflow.com/questions/12511959/is-there-swt-combo-box-with-any-object-as-data-and-labelprovider-for-display
  *

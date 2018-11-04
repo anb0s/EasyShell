@@ -16,40 +16,40 @@ import java.util.Map;
 
 public class UnknownCommandID extends General {
 
-	private static final long serialVersionUID = -934375852865621734L;
-	private String  id;
-	private boolean logOnce;
-	static private Map<String, Boolean> map = null;
+    private static final long serialVersionUID = -934375852865621734L;
+    private String  id;
+    private boolean logOnce;
+    static private Map<String, Boolean> map = null;
 
-	public UnknownCommandID(String commandID, boolean logOnce) {
-		super("Cannot find command data with id '" + commandID + "'");
-		this.id = commandID;
-		this.logOnce = logOnce;
-		UnknownCommandID.addUniqueID(commandID);
-	}
+    public UnknownCommandID(String commandID, boolean logOnce) {
+        super("Cannot find command data with id '" + commandID + "'");
+        this.id = commandID;
+        this.logOnce = logOnce;
+        UnknownCommandID.addUniqueID(commandID);
+    }
 
-	public String getID() {
-		return id;
-	}
+    public String getID() {
+        return id;
+    }
 
-	static void addUniqueID(String commandID) {
-		if (map == null) {
-			map = new HashMap<String, Boolean>();
-		}
-		if (!map.containsKey(commandID)) {
-			map.put(commandID, true);
-		}
-	}
+    static void addUniqueID(String commandID) {
+        if (map == null) {
+            map = new HashMap<String, Boolean>();
+        }
+        if (!map.containsKey(commandID)) {
+            map.put(commandID, true);
+        }
+    }
 
-	public boolean logEnabled() {
-		boolean enabled = true;
-		if (logOnce) {
-			enabled = map.get(id);
-			if (enabled) {
-				map.put(id, false);
-			}
-		}
-		return enabled;
-	}
+    public boolean logEnabled() {
+        boolean enabled = true;
+        if (logOnce) {
+            enabled = map.get(id);
+            if (enabled) {
+                map.put(id, false);
+            }
+        }
+        return enabled;
+    }
 
 }

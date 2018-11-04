@@ -21,7 +21,7 @@ public enum Quotes {
     quotesDouble(2, "Double"),
     quotesAuto(3, "Double (automatic)"), // check if no quotes and space in string, then add
     quotesAutoSingle(4, "Single (automatic)"), // check if no quotes and space in string, then add
-	quotesEscape(5, "Escape"); // check if no quotes and space in string, then escape
+    quotesEscape(5, "Escape"); // check if no quotes and space in string, then escape
     // attributes
     private final int id;
     private final String name;

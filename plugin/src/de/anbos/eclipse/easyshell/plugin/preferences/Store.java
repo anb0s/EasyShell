@@ -35,16 +35,16 @@ public class Store implements IStore {
     }
 
     public boolean verify() {
-    	return store != null;
+        return store != null;
     }
 
     public void save() {
         if (store.needsSaving() && store instanceof IPersistentPreferenceStore) {
-        	try {
-				((IPersistentPreferenceStore)store).save();
-			} catch (IOException e) {
-				Activator.logError(Activator.getResourceString("easyshell.message.error.store.save"), e);
-			}
+            try {
+                ((IPersistentPreferenceStore)store).save();
+            } catch (IOException e) {
+                Activator.logError(Activator.getResourceString("easyshell.message.error.store.save"), e);
+            }
         }
     }
 

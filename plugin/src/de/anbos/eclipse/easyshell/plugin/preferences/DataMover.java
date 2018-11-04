@@ -13,44 +13,44 @@ package de.anbos.eclipse.easyshell.plugin.preferences;
 
 public class DataMover {
 
-	private IDataStore store;
-	private IData data;
+    private IDataStore store;
+    private IData data;
 
-	public DataMover(IDataStore store) {
-		this.store = store;
-	}
+    public DataMover(IDataStore store) {
+        this.store = store;
+    }
 
-	public void setData(IData data) {
-	    this.data = data;
-	}
+    public void setData(IData data) {
+        this.data = data;
+    }
 
-	public void moveCurrentSelectionUp() {
-		if(data == null) {
-			return;
-		}
-		IData previousElement = store.getPreviousElement(data);
-		if(previousElement == null) {
-			return;
-		}
-		int newPosition = previousElement.getPosition();
-		int oldPosition = data.getPosition();
-		previousElement.setPosition(oldPosition);
-		data.setPosition(newPosition);
-		store.sort();
-	}
+    public void moveCurrentSelectionUp() {
+        if(data == null) {
+            return;
+        }
+        IData previousElement = store.getPreviousElement(data);
+        if(previousElement == null) {
+            return;
+        }
+        int newPosition = previousElement.getPosition();
+        int oldPosition = data.getPosition();
+        previousElement.setPosition(oldPosition);
+        data.setPosition(newPosition);
+        store.sort();
+    }
 
-	public void moveCurrentSelectionDown() {
-		if(data == null) {
-			return;
-		}
-		IData nextElement = store.getNextElement(data);
-		if(nextElement == null) {
-			return;
-		}
-		int newPosition = nextElement.getPosition();
-		int oldPosition = data.getPosition();
-		nextElement.setPosition(oldPosition);
-		data.setPosition(newPosition);
-		store.sort();
-	}
+    public void moveCurrentSelectionDown() {
+        if(data == null) {
+            return;
+        }
+        IData nextElement = store.getNextElement(data);
+        if(nextElement == null) {
+            return;
+        }
+        int newPosition = nextElement.getPosition();
+        int oldPosition = data.getPosition();
+        nextElement.setPosition(oldPosition);
+        data.setPosition(newPosition);
+        store.sort();
+    }
 }

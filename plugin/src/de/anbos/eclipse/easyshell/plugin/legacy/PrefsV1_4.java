@@ -86,28 +86,28 @@ public class PrefsV1_4 {
                         "{2}{5}"
         ),
         cmdKonsoleKDEDolphin(8, "Linux", "KDE Konsole", "Dolphin", null,
-		                "konsole --workdir {1}",
-		                "konsole --workdir {1} --noclose -e {2}",
-		                "dolphin --select {2}",
-		                "{2}{5}"
+                        "konsole --workdir {1}",
+                        "konsole --workdir {1} --noclose -e {2}",
+                        "dolphin --select {2}",
+                        "{2}{5}"
         ),
         cmdWinConsole(9, 	"Windows", "Console", "Explorer", null,
-		                "console.exe -w \"{4}\" -d {1}",
-		                "console.exe -w \"{4}\" -d {1} -r \"/k\\\"{3}\\\"\"",
-		                "explorer.exe /select, {2}",
-		                "{2}{5}"
+                        "console.exe -w \"{4}\" -d {1}",
+                        "console.exe -w \"{4}\" -d {1} -r \"/k\\\"{3}\\\"\"",
+                        "explorer.exe /select, {2}",
+                        "{2}{5}"
         ),
         cmdWinTotalCommander(10, 	"Windows", "DOS-Shell", "TotalCommander", null,
-		                "cmd.exe /C start \"{4}\" /D {1} cmd.exe /K",
-		                "cmd.exe /C start \"{4}\" /D {1} {3}",
-		                "totalcmd.exe /O /T {1}",
-		                "{2}{5}"
+                        "cmd.exe /C start \"{4}\" /D {1} cmd.exe /K",
+                        "cmd.exe /C start \"{4}\" /D {1} {3}",
+                        "totalcmd.exe /O /T {1}",
+                        "{2}{5}"
         ),
         cmdWinGitBash(11,	"Windows", "Git-Bash", "Explorer", null,
-		                "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i",
-		                "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''{3}''",
-		                "explorer.exe /select, {2} ",
-		                "{2}{5}"
+                        "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i",
+                        "cmd.exe /C start \"{4}\" /D {1} \"C:\\Program Files (x86)\\Git\\bin\\bash.exe\" --login -i -c ./''{3}''",
+                        "explorer.exe /select, {2} ",
+                        "{2}{5}"
         ),
         cmdWinConEmu(12,	"Windows", "ConEmu", "Explorer", null,
                 "ConEmu.exe /Title \"{4}\" /Dir \"{1}\" /Single /cmd cmd",

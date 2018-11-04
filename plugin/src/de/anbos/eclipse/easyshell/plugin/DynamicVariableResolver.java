@@ -28,16 +28,16 @@ public class DynamicVariableResolver implements IDynamicVariableResolver {
     static private Resource resource = null;
     static Quotes quotes = Quotes.quotesNo;
 
-	@Override
-	public String resolveValue(IDynamicVariable variable, String argument)
-			throws CoreException {
-	    String variableName = variable.getName();
-		if (variableName.equals("easyshell")) {
-		    return handleOwnVariable(argument);
-		} else {
+    @Override
+    public String resolveValue(IDynamicVariable variable, String argument)
+            throws CoreException {
+        String variableName = variable.getName();
+        if (variableName.equals("easyshell")) {
+            return handleOwnVariable(argument);
+        } else {
             return handleEclipseVariable(variableName, argument);
         }
-	}
+    }
 
     private String handleOwnVariable(String argument) {
         String variableArg = argument;
@@ -58,10 +58,10 @@ public class DynamicVariableResolver implements IDynamicVariableResolver {
         // find converter
         IConverter converter = null;
         if (variableArgExt != null) {
-        	converter = Converters.getMap().get(variableArgExt);
+            converter = Converters.getMap().get(variableArgExt);
         }
         if (converter != null) {
-        	variableArgExt = null;
+            variableArgExt = null;
         } else {
             converter = Converter.converterUnknown.getConverterImpl();
         }

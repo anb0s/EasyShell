@@ -24,95 +24,95 @@ Prev		Next
 3.1. Double Quotes
 
 
-	The double quote (") character is the simplest of the quoting characters. It is most commonly used to group space-separated words together so that Bash treats them as if they were one word. For instance, if you need to refer to a file that has spaces in its name, you can use double quotes, as follows:
+  The double quote (") character is the simplest of the quoting characters. It is most commonly used to group space-separated words together so that Bash treats them as if they were one word. For instance, if you need to refer to a file that has spaces in its name, you can use double quotes, as follows:
 
 
 
 cat "meeting agenda.txt"
-	  
 
-	In the above command, the cat program will be passed a single filename, meeting agenda.txt. Had the double quotes been omitted, the cat command would have been passed two filenames, meeting and agenda.txt. It's important to understand that the cat program receives this single argument:
+
+  In the above command, the cat program will be passed a single filename, meeting agenda.txt. Had the double quotes been omitted, the cat command would have been passed two filenames, meeting and agenda.txt. It's important to understand that the cat program receives this single argument:
 
 
 meeting agenda.txt
 
 
-	Notice that there are no double quotes in the argument that cat receives, but there are double quotes in the command. Quote characters are metacharacters, which means they are removed by Bash before the command is executed. Even though metacharacters are removed, they are not ignored by Bash. In the above cat command, the double quotes change how Bash passes the arguments to the program, even though the cat program never sees the double quotes!
+  Notice that there are no double quotes in the argument that cat receives, but there are double quotes in the command. Quote characters are metacharacters, which means they are removed by Bash before the command is executed. Even though metacharacters are removed, they are not ignored by Bash. In the above cat command, the double quotes change how Bash passes the arguments to the program, even though the cat program never sees the double quotes!
 
 
-	Double quotes (and their cousins, single quotes and backquotes) must occur in pairs within a command. Unfortunately, if you accidentally use an odd number of double quotes in a command, Bash will not report an error. This happens because you can use double quotes to group words that span a newline character. Try this command in your interactive shell:
+  Double quotes (and their cousins, single quotes and backquotes) must occur in pairs within a command. Unfortunately, if you accidentally use an odd number of double quotes in a command, Bash will not report an error. This happens because you can use double quotes to group words that span a newline character. Try this command in your interactive shell:
 
 
 
 echo "This output occupies
 two lines"
-	  
-
-	When you press the ENTER key after typing the first line of that command, your interactive shell doesn't execute the command. Instead, it notices that you have not typed a closing double quote, and prompts you to continue entering the command. Only when a complete command — with a balanced set of double quotes — has been entered, will pressing the ENTER key execute the command. You can write the above command in a shell script too, and it will behave the same way.
 
 
-	When writing a script, one common mistake is to leave out a closing quote. As a result, you end up quoting the remainder of the script -- perhaps dozens or hundreds of lines of code! Bash detects the error only when it reaches the end of the script and fails to find the matching quote. The error message will look like this:
+  When you press the ENTER key after typing the first line of that command, your interactive shell doesn't execute the command. Instead, it notices that you have not typed a closing double quote, and prompts you to continue entering the command. Only when a complete command — with a balanced set of double quotes — has been entered, will pressing the ENTER key execute the command. You can write the above command in a shell script too, and it will behave the same way.
+
+
+  When writing a script, one common mistake is to leave out a closing quote. As a result, you end up quoting the remainder of the script -- perhaps dozens or hundreds of lines of code! Bash detects the error only when it reaches the end of the script and fails to find the matching quote. The error message will look like this:
 
 
 
 scriptname: line 3: unexpected EOF while looking for matching `"'
-	  
-
-	The line number indicates the line on which the opening quote appears, so you won't have much trouble locating your mistake.
 
 
-	Double quotes are also used to prevent Bash from giving special meaning to certain metacharacters. If you want your script to output an asterisk, you might attempt to do it with this command:
+  The line number indicates the line on which the opening quote appears, so you won't have much trouble locating your mistake.
+
+
+  Double quotes are also used to prevent Bash from giving special meaning to certain metacharacters. If you want your script to output an asterisk, you might attempt to do it with this command:
 
 
 
 echo *
-	  
 
-	But the above command outputs the names of all files and directories in the script's current working directory, which is not what you intended. This happens because the asterisk is a Bash wildcard metacharacter, and Bash replaces each word containing an asterisk with a list of matching file and directory names before executing the command. You want Bash to treat the asterisk as if it were just an ordinary character — not a metacharacter. To do this, you use double quotes to escape (or quote) the asterisk as follows:
+
+  But the above command outputs the names of all files and directories in the script's current working directory, which is not what you intended. This happens because the asterisk is a Bash wildcard metacharacter, and Bash replaces each word containing an asterisk with a list of matching file and directory names before executing the command. You want Bash to treat the asterisk as if it were just an ordinary character — not a metacharacter. To do this, you use double quotes to escape (or quote) the asterisk as follows:
 
 
 
 echo "*"
-	  
-
-	From now on, we'll use the more technical term escape instead of quote to mean using one metacharacter to remove the special meaning of another metacharacter. Let's be clear exactly which metacharacters double quotes escape. Double quotes escape the following Bash metacharacters.
 
 
-	 Wildcard characters: *, ?, [...]
+  From now on, we'll use the more technical term escape instead of quote to mean using one metacharacter to remove the special meaning of another metacharacter. Let's be clear exactly which metacharacters double quotes escape. Double quotes escape the following Bash metacharacters.
 
 
-	 The home directory character: ~
+   Wildcard characters: *, ?, [...]
 
 
-	 Single quotes: '...'
+   The home directory character: ~
 
 
-	 The background job creation character: &
+   Single quotes: '...'
 
 
-	 I/O Redirection characters: >, <, >>, <<, <<<, >&, and |
+   The background job creation character: &
 
 
-	From this list, you can see that the double quote metacharacter does not escape itself. What if you want to output some text surrounded by double quotes from a Bash script? In other words, how would you write a script so that the output of the script includes double quote characters? A command of this form doesn't work:
+   I/O Redirection characters: >, <, >>, <<, <<<, >&, and |
+
+
+  From this list, you can see that the double quote metacharacter does not escape itself. What if you want to output some text surrounded by double quotes from a Bash script? In other words, how would you write a script so that the output of the script includes double quote characters? A command of this form doesn't work:
 
 
 
 echo Now type "start-backup".
-	  
 
-	Try the above command in an interactive Bash shell. The double quotes do not appear, because Bash removes them before executing the echo command. Instead, you must escape the double quotes. That is, you must make Bash treat the double quote characters as if they are ordinary characters and not metacharacters. You cannot use double quotes to escape the double quotes, like this:
+
+  Try the above command in an interactive Bash shell. The double quotes do not appear, because Bash removes them before executing the echo command. Instead, you must escape the double quotes. That is, you must make Bash treat the double quote characters as if they are ordinary characters and not metacharacters. You cannot use double quotes to escape the double quotes, like this:
 
 
 
 echo Now type ""start-backup"".
-	  
 
-	The double quotes in the above command are paired with each other in the order they appear. The two pairs of double quotes each quote an empty string. They are removed by Bash before the echo command executes. Instead, we need a different quote metacharacter. We need to use single quotes.
+
+  The double quotes in the above command are paired with each other in the order they appear. The two pairs of double quotes each quote an empty string. They are removed by Bash before the echo command executes. Instead, we need a different quote metacharacter. We need to use single quotes.
 
 3.2. Single Quotes
 
 
-	Single quotes are similar to double quotes, but they have a greater power to escape other metacharacters. Other than that one difference, single quotes are used just like double quotes. An advantage to having two different quote characters is that you can use one kind of quote character to escape the other, as Example 5 shows.
+  Single quotes are similar to double quotes, but they have a greater power to escape other metacharacters. Other than that one difference, single quotes are used just like double quotes. An advantage to having two different quote characters is that you can use one kind of quote character to escape the other, as Example 5 shows.
 
 
 Example 5. Mixing Single and Double Quotes
@@ -125,17 +125,17 @@ Example 5. Mixing Single and Double Quotes
 echo "'This text is surrounded by single quotes.'"
 echo '"This text is surrounded by double quotes."'
 echo "Welcome to Frodo's Place."
-	    
 
-	The output of the above script is:
+
+  The output of the above script is:
 
 
 'This text is surrounded by single quotes.'
 "This text is surrounded by double quotes."
 Welcome to Frodo's Place.
-	  
 
-	The above example shows that you need two different quote characters so that they can be used to quote each other, but there's another important difference between double and single quotes. Single quotes escape more metacharacters than double quotes do. In fact, single quotes escape absolutely every metacharacter, except themselves. Example 6 shows how double quotes and single quotes escape metacharacters differently.
+
+  The above example shows that you need two different quote characters so that they can be used to quote each other, but there's another important difference between double and single quotes. Single quotes escape more metacharacters than double quotes do. In fact, single quotes escape absolutely every metacharacter, except themselves. Example 6 shows how double quotes and single quotes escape metacharacters differently.
 
 
 Example 6. Differences Between Single and Double Quotes
@@ -146,9 +146,9 @@ echo "My home directory is $HOME"
 echo 'My home directory is $HOME'
 echo "*"
 echo '*'
-	    
 
-	The output of the above script is:
+
+  The output of the above script is:
 
 
 
@@ -156,17 +156,17 @@ My home directory is /home/franl
 My home directory is $HOME
 *
 *
-	  
-
-	As you can see, both single and double quotes escape the "*" metacharacter, but only single quotes are powerful enough to escape the "$" metacharacter (which is used to expand variables — we'll cover variables in Section 4).
 
 
-	Which metacharacters do single quotes escape? The answer is: all of them except for single-quotes. If you try to use a single quote in the middle of a single-quoted string, you end up with an odd number of single quotes, which is not valid Bash syntax.
+  As you can see, both single and double quotes escape the "*" metacharacter, but only single quotes are powerful enough to escape the "$" metacharacter (which is used to expand variables — we'll cover variables in Section 4).
+
+
+  Which metacharacters do single quotes escape? The answer is: all of them except for single-quotes. If you try to use a single quote in the middle of a single-quoted string, you end up with an odd number of single quotes, which is not valid Bash syntax.
 
 3.3. Backquotes
 
 
-	The fourth kind of quotes are backquotes: `...`. Backquotes have the same quoting properties as double quotes, but with one very big difference. The text between a pair of backquotes is executed by your shell and is then replaced by the output of that execution! Example 7 shows backquotes in action.
+  The fourth kind of quotes are backquotes: `...`. Backquotes have the same quoting properties as double quotes, but with one very big difference. The text between a pair of backquotes is executed by your shell and is then replaced by the output of that execution! Example 7 shows backquotes in action.
 
 
 Example 7. Using Backquotes
@@ -176,20 +176,20 @@ Example 7. Using Backquotes
 echo The current working directory is: `pwd`
 echo The current date and time is: `date`
 
-	The output of the above script is:
+  The output of the above script is:
 
 
 
 The current working directory is: /home/franl/examples
 The current date and time is: Thu Jan 30 20:43:42 EST 2003
-	  
 
-	You can put any valid Bash command inside backquotes. You can even put multiple commands separates by ';' characters inside backquotes. If you find you are writing a long sequence of commands within backquotes, you probably should create a separate shell script to contain those commands (or you might want to create a shell function, which is an advanced Bash scripting topic not covered by this HOWTO).
+
+  You can put any valid Bash command inside backquotes. You can even put multiple commands separates by ';' characters inside backquotes. If you find you are writing a long sequence of commands within backquotes, you probably should create a separate shell script to contain those commands (or you might want to create a shell function, which is an advanced Bash scripting topic not covered by this HOWTO).
 
 3.4. Backslash
 
 
-	The third kind of quoting character is the backslash: \. The backslash is unlike the other kinds of quoting characters in that it does not occur in pairs. A backslash behaves exactly like the single quote, but it only escapes the character immediately following the backslash. Example 8 shows an example of how to use backslashes:
+  The third kind of quoting character is the backslash: \. The backslash is unlike the other kinds of quoting characters in that it does not occur in pairs. A backslash behaves exactly like the single quote, but it only escapes the character immediately following the backslash. Example 8 shows an example of how to use backslashes:
 
 
 Example 8. Using Backslashes
@@ -198,21 +198,21 @@ Example 8. Using Backslashes
 #!/bin/bash
 echo The price of the item is \$15.79
 echo Welcome to Frodo\'s Place!
-	    
 
-	The output of the above script is:
+
+  The output of the above script is:
 
 
 
 The price of the item is $15.79
 Welcome to Frodo's Place!
-	  
+
 Prev	Home	Next
 Getting Started	 	Variables
 / Linux Reviews / Beginners: Learn Linux / Bash Scripting Introduction
 
 
- 
+
 Meet new people
 
 Guanxi - Asian Business and Friend Network

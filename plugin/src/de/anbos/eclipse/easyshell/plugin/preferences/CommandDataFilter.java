@@ -19,8 +19,8 @@ public class CommandDataFilter extends ViewerFilter {
     private String searchString;
 
     public void setSearchText(String s) {
-    	// remove not valid chars
-    	s = s.replaceAll("[\\*|\\.|\\(|\\)|\\?]","");
+        // remove not valid chars
+        s = s.replaceAll("[\\*|\\.|\\(|\\)|\\?]","");
         // add pre and post fix that it can be used for case-insensitive matching
         this.searchString = "(?i).*" + s + ".*";
     }
@@ -32,8 +32,8 @@ public class CommandDataFilter extends ViewerFilter {
         }
         CommandData data = (CommandData) element;
         boolean selected = isSelected(data);
-       	data.setSelected(selected);
-       	return selected;
+           data.setSelected(selected);
+           return selected;
     }
 
     private boolean isSelected(CommandData data) {
@@ -52,6 +52,6 @@ public class CommandDataFilter extends ViewerFilter {
         if (data.getCommand().matches(searchString)) {
             return true;
         }
-        return false;    	
+        return false;
     }
 }

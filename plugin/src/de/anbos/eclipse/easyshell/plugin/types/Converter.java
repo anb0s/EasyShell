@@ -41,7 +41,7 @@ public enum Converter {
             return result;
         }
     }),
-	converterLineSeparatorLF(2, OS.osUnix, "lf", "converts line separator to Unix '\\n'", new IConverter() {
+    converterLineSeparatorLF(2, OS.osUnix, "lf", "converts line separator to Unix '\\n'", new IConverter() {
         @Override
         public String convert(String input) {
             return input.replace("\r\n", "\n");
@@ -103,7 +103,7 @@ public enum Converter {
         return converterImpl;
     }
     public static Converter getFromId(int id) {
-    	Converter ret = converterUnknown;
+        Converter ret = converterUnknown;
         for(int i = 0; i < Converter.values().length; i++) {
             if (Converter.values()[i].getId() == id) {
                 ret = Converter.values()[i];

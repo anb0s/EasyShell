@@ -19,12 +19,12 @@ import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class PreferenceValueConverter {
 
-	// Constant ----------------------------------------------------------------
+    // Constant ----------------------------------------------------------------
 
-	public static String VALUE_DELIMITER	= "|"; //$NON-NLS-1$
-	public static String ITEM_DELIMITER		= "#"; //$NON-NLS-1$
+    public static String VALUE_DELIMITER	= "|"; //$NON-NLS-1$
+    public static String ITEM_DELIMITER		= "#"; //$NON-NLS-1$
 
-	// Static ------------------------------------------------------------------
+    // Static ------------------------------------------------------------------
 
     public static String asCommandDataBasicString(List<CommandDataBasic> items) {
         StringBuffer buffer = new StringBuffer();
@@ -54,24 +54,24 @@ public class PreferenceValueConverter {
     }
 
     public static final String asCommandDataBasicString(CommandDataBasic data) {
-   		return data.serialize(VALUE_DELIMITER);
+           return data.serialize(VALUE_DELIMITER);
     }
 
     public static final String asCommandDataString(CommandData data, boolean modifyDataOnly) {
-    	if (modifyDataOnly) {
-    		return asCommandDataBasicString(data.getModifyData());
-    	} else {
-    		return data.serialize(VALUE_DELIMITER);
-    	}
+        if (modifyDataOnly) {
+            return asCommandDataBasicString(data.getModifyData());
+        } else {
+            return data.serialize(VALUE_DELIMITER);
+        }
     }
 
     public static final String asMenuDataString(MenuData data) {
         return data.serialize(VALUE_DELIMITER);
     }
 
-	public static String asGeneralDataString(GeneralData data) {
-		return data.serialize(VALUE_DELIMITER);
-	}
+    public static String asGeneralDataString(GeneralData data) {
+        return data.serialize(VALUE_DELIMITER);
+    }
 
     public static CommandData[] asCommandDataArray(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value,ITEM_DELIMITER);
@@ -118,11 +118,11 @@ public class PreferenceValueConverter {
         return data;
     }
 
-	public static GeneralData asGeneralData(String value) {
-		GeneralData data = new GeneralData();
+    public static GeneralData asGeneralData(String value) {
+        GeneralData data = new GeneralData();
         data.deserialize(value, null, VALUE_DELIMITER);
         return data;
-	}
+    }
 
     public static CommandData migrateCommandData(Version version, String value) {
         CommandData data = new CommandData();
@@ -138,7 +138,7 @@ public class PreferenceValueConverter {
     }
 
     public static CommandDataBasic migrateCommandDataBasic(Version version, String value) {
-    	CommandDataBasic data = new CommandDataBasic();
+        CommandDataBasic data = new CommandDataBasic();
         data.deserialize(version, value, null, VALUE_DELIMITER);
         return data;
     }

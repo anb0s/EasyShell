@@ -16,10 +16,10 @@ import java.util.List;
 
 public enum CommandTokenizer {
     commandTokenizerUnknown(-1, "Unknown"),
-	commandTokenizerDisabled(0, "Disabled"),
-	commandTokenizerSpaces(1, "Split spaces only"),
-	commandTokenizerSpacesAndQuotes(2, "Split spaces and remove outer quotes"),
-	commandTokenizerSpacesAndQuotesSkip(3, "Split spaces and skip quotes");
+    commandTokenizerDisabled(0, "Disabled"),
+    commandTokenizerSpaces(1, "Split spaces only"),
+    commandTokenizerSpacesAndQuotes(2, "Split spaces and remove outer quotes"),
+    commandTokenizerSpacesAndQuotesSkip(3, "Split spaces and skip quotes");
     // attributes
     private final int id;
     private final String name;
@@ -35,7 +35,7 @@ public enum CommandTokenizer {
         return name;
     }
     public static CommandTokenizer getFromId(int id) {
-    	CommandTokenizer ret = commandTokenizerUnknown;
+        CommandTokenizer ret = commandTokenizerUnknown;
         for(int i = 0; i < CommandTokenizer.values().length; i++) {
             if (CommandTokenizer.values()[i].getId() == id) {
                 ret = CommandTokenizer.values()[i];

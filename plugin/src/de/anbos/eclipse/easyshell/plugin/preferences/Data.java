@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class Data implements IData {
 
-	// internal
+    // internal
     private int position = 0;
     private String id = null;
 
@@ -46,27 +46,27 @@ public class Data implements IData {
 
     @Override
     public int getPosition() {
-		return position;
-	}
+        return position;
+    }
 
     @Override
     public String getId() {
         return id;
     }
 
-	@Override
+    @Override
     public boolean equals(Object object) {
-    	if(!(object instanceof Data)) {
-    		return false;
-    	}
-    	IData data = (IData)object;
-    	if( data.getId().equals(this.getId())
-    	    /*data.getPosition() == this.getPosition()*/
-    	  )
-    	{
-    		return true;
-    	}
-    	return false;
+        if(!(object instanceof Data)) {
+            return false;
+        }
+        IData data = (IData)object;
+        if( data.getId().equals(this.getId())
+            /*data.getPosition() == this.getPosition()*/
+          )
+        {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -80,8 +80,8 @@ public class Data implements IData {
     }
 
     @Override
-	public boolean verify() {
-    	return id != null && !id.isEmpty();
+    public boolean verify() {
+        return id != null && !id.isEmpty();
     }
 
 }

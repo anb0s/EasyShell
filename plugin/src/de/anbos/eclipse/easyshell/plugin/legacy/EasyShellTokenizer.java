@@ -15,8 +15,8 @@ package de.anbos.eclipse.easyshell.plugin.legacy;
  * Tokenizer.
  */
 public enum EasyShellTokenizer {
-	EasyShellTokenizerNo(0, "No"),
-	EasyShellTokenizerYes(1, "Yes");
+    EasyShellTokenizerNo(0, "No"),
+    EasyShellTokenizerYes(1, "Yes");
     // attributes
     private final int id;
     private final String mode;
@@ -32,7 +32,7 @@ public enum EasyShellTokenizer {
         return mode;
     }
     public static EasyShellTokenizer getFromId(int id) {
-    	EasyShellTokenizer ret = EasyShellTokenizerYes;
+        EasyShellTokenizer ret = EasyShellTokenizerYes;
         for(int i = 0; i < EasyShellTokenizer.values().length; i++) {
             if (EasyShellTokenizer.values()[i].getId() == id) {
                 ret = EasyShellTokenizer.values()[i];

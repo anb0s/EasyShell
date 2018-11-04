@@ -39,7 +39,7 @@ public class MenuDataStore extends DataStore<MenuData> {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
                 if (event.getProperty().equals(Constants.PREF_MENU)) {
-                	loadInternal((String)event.getNewValue());
+                    loadInternal((String)event.getNewValue());
                 }
             }
         });
@@ -63,13 +63,13 @@ public class MenuDataStore extends DataStore<MenuData> {
         Iterator<MenuData> dataIterator = getDataList().iterator();
         while(dataIterator.hasNext()) {
             MenuData data = (MenuData)dataIterator.next();
-    		try {
+            try {
                 if(data.isEnabled() && (category == Category.categoryUnknown || data.getCommandData().getCategory() == category)) {
                     checkedItems.add(data);
                 }
-    		} catch (UnknownCommandID e) {
-    			e.logInternalError();
-    		}
+            } catch (UnknownCommandID e) {
+                e.logInternalError();
+            }
         }
         return checkedItems;
     }
@@ -81,7 +81,7 @@ public class MenuDataStore extends DataStore<MenuData> {
     public MenuData[] getEnabledCommandMenuDataArray() {
         MenuDataList checkedItems = getEnabledCommandMenuDataList();
         if(checkedItems.size() <= 0) {
-        	return new MenuData[0];
+            return new MenuData[0];
         }
         MenuData[] checked = new MenuData[checkedItems.size()];
         for(int i = 0 ; i < checked.length ; i++) {
@@ -116,22 +116,22 @@ public class MenuDataStore extends DataStore<MenuData> {
 
     @Override
     public void load() {
-    	loadInternal(null);
+        loadInternal(null);
     }
 
     private boolean verifyInternal() {
-    	boolean valid = true;
+        boolean valid = true;
         Iterator<MenuData> dataIterator = getDataList().iterator();
         while(valid && dataIterator.hasNext()) {
             MenuData data = (MenuData)dataIterator.next();
-   			valid = data.verify();
+               valid = data.verify();
         }
         return valid;
     }
 
     @Override
     public boolean verify() {
-    	return super.verify() && verifyInternal();
+        return super.verify() && verifyInternal();
     }
 
     public MenuDataList getRefencedBy(String id) {

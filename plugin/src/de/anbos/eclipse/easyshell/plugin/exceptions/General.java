@@ -15,19 +15,19 @@ import de.anbos.eclipse.easyshell.plugin.Activator;
 
 public class General extends Exception {
 
-	private static final long serialVersionUID = -4388439082977608451L;
+    private static final long serialVersionUID = -4388439082977608451L;
 
-	public General(String string) {
-		super(string);
-	}
+    public General(String string) {
+        super(string);
+    }
 
-	public void logInternalError() {
-		if (logEnabled()) {
-			Activator.logError(Activator.getResourceString("easyshell.message.error.store.load"), this);
-		}
-	}
+    public void logInternalError() {
+        if (logEnabled()) {
+            Activator.logError(Activator.getResourceString("easyshell.message.error.store.load"), this);
+        }
+    }
 
-	public boolean logEnabled() {
-		return true;
-	}
+    public boolean logEnabled() {
+        return true;
+    }
 }

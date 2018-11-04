@@ -21,8 +21,8 @@ public class MenuDataFilter extends ViewerFilter {
     private String searchString;
 
     public void setSearchText(String s) {
-    	// remove not valid chars
-    	s = s.replaceAll("[\\*|\\.|\\(|\\)|\\?]","");
+        // remove not valid chars
+        s = s.replaceAll("[\\*|\\.|\\(|\\)|\\?]","");
         // add pre and post fix that it can be used for case-insensitive matching
         this.searchString = "(?i).*" + s + ".*";
     }
@@ -36,16 +36,16 @@ public class MenuDataFilter extends ViewerFilter {
         if (data.getNameExpanded().matches(searchString)) {
             return true;
         }
-		try {
-	        if (data.getCommandData().getName().matches(searchString)) {
-	            return true;
-	        }
-	        if (data.getCommandData().getCommand().matches(searchString)) {
-	            return true;
-	        }
-		} catch (UnknownCommandID e) {
-			e.logInternalError();
-		}
+        try {
+            if (data.getCommandData().getName().matches(searchString)) {
+                return true;
+            }
+            if (data.getCommandData().getCommand().matches(searchString)) {
+                return true;
+            }
+        } catch (UnknownCommandID e) {
+            e.logInternalError();
+        }
         return false;
     }
 

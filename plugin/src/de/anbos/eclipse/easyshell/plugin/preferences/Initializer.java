@@ -29,19 +29,19 @@ import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 public class Initializer extends AbstractPreferenceInitializer {
 
-	private int migrateState = -1; // -1 = old store not found, 0 (Yes) = migrated, 1 (No) = no migration wanted by user, 2 (Cancel) = try to migrate again
-	private Version migrateVersion = Version.vUnknown;
+    private int migrateState = -1; // -1 = old store not found, 0 (Yes) = migrated, 1 (No) = no migration wanted by user, 2 (Cancel) = try to migrate again
+    private Version migrateVersion = Version.vUnknown;
 
-	public void initializeDefaultPreferences() {
-	    // get the actual preference store
-		Store store = new Store(Activator.getDefault().getPreferenceStore());
-	    // set default values
-		setDefaults(store);
-		// migrate from old store
+    public void initializeDefaultPreferences() {
+        // get the actual preference store
+        Store store = new Store(Activator.getDefault().getPreferenceStore());
+        // set default values
+        setDefaults(store);
+        // migrate from old store
         migrate(store);
         // verify and repair migrated store
         if (!verify(store)) {
-        	repair(store);
+            repair(store);
         }
         // inform user
         inform(store);
@@ -49,9 +49,9 @@ public class Initializer extends AbstractPreferenceInitializer {
         apply(store);
         // save (write) the store to disk
         save(store);
-	}
+    }
 
-	private void setDefaults(IStore store) {
+    private void setDefaults(IStore store) {
         String defaultCommandsPreset = PreferenceValueConverter.asCommandDataString(CommandDataDefaultCollection.getCommandsNativeAll(null), false);
         String defaultCommandsModify = "";
         String defaultCommands = "";
@@ -66,7 +66,7 @@ public class Initializer extends AbstractPreferenceInitializer {
     }
 
     private void migrate(IStore store) {
-    	migrateState = -1;
+        migrateState = -1;
         if (!store.getStore().getBoolean(Constants.PREF_MIGRATED)) {
             for (int i=Version.values().length-2; (i > 0) && (migrateState == -1); i--) {
                 migrateVersion = Version.values()[i];
@@ -80,63 +80,63 @@ public class Initializer extends AbstractPreferenceInitializer {
     }
 
     private boolean verify(IStore store) {
-    	boolean verified = true;
-    	if (!store.getStore().getBoolean(Constants.PREF_MIGRATED)) {
-    		verified = CommandDataStore.instance().verify() && MenuDataStore.instance().verify();
-    	}
-    	return verified;
+        boolean verified = true;
+        if (!store.getStore().getBoolean(Constants.PREF_MIGRATED)) {
+            verified = CommandDataStore.instance().verify() && MenuDataStore.instance().verify();
+        }
+        return verified;
     }
 
     private void repair(IStore store) {
         for (int i=Version.values().length-2; i > 0; i--) {
-        	// try to load the old commands
-        	Version reMigratedversion = Version.values()[i];
-        	boolean reMigrated = true;
+            // try to load the old commands
+            Version reMigratedversion = Version.values()[i];
+            boolean reMigrated = true;
             if (migrateVersion.toString().startsWith("v1_")) {
-            	reMigrated = reMigrate_from_v1(store, reMigratedversion);
+                reMigrated = reMigrate_from_v1(store, reMigratedversion);
             } else {
-            	reMigrated = reMigrate_from_v2(store, reMigratedversion);
+                reMigrated = reMigrate_from_v2(store, reMigratedversion);
             }
-        	if (reMigrated) {
-        		break;
-        	}
+            if (reMigrated) {
+                break;
+            }
         }
-	}
+    }
 
     private void apply(IStore store) {
-    	if (!store.isMigrated()) {
+        if (!store.isMigrated()) {
             // do not set migration flag if user canceled and want to do it later
             if (migrateState != 2) {
                 store.setMigrated(true);
             }
-    	}
+        }
     }
 
     private void save(IStore store) {
-    	store.save();
+        store.save();
     }
 
     private void inform(IStore store) {
-    	if (!store.getStore().getBoolean(Constants.PREF_MIGRATED)) {
-	        switch(migrateState) {
-		        // we have first startup without old store
-		        case -1:
-		            Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), Activator.getResourceString("easyshell.message.warning.migrated.default"));
-		        break;
-		        case 0: Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), MessageFormat.format(
-		                     Activator.getResourceString("easyshell.message.warning.migrated.yes"),
-		                     migrateVersion.getName()));
-		        break;
-		        case 1: Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), MessageFormat.format(
-		                    Activator.getResourceString("easyshell.message.warning.migrated.no"),
-		                    migrateVersion.getName()));
-		        break;
-		        case 2: Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), MessageFormat.format(
-		                    Activator.getResourceString("easyshell.message.warning.migrated.cancel"),
-		                    migrateVersion.getName()));
-		        break;
-	        }
-    	}
+        if (!store.getStore().getBoolean(Constants.PREF_MIGRATED)) {
+            switch(migrateState) {
+                // we have first startup without old store
+                case -1:
+                    Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), Activator.getResourceString("easyshell.message.warning.migrated.default"));
+                break;
+                case 0: Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), MessageFormat.format(
+                             Activator.getResourceString("easyshell.message.warning.migrated.yes"),
+                             migrateVersion.getName()));
+                break;
+                case 1: Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), MessageFormat.format(
+                            Activator.getResourceString("easyshell.message.warning.migrated.no"),
+                            migrateVersion.getName()));
+                break;
+                case 2: Utils.showToolTipWarning(null, Activator.getResourceString("easyshell.plugin.name"), MessageFormat.format(
+                            Activator.getResourceString("easyshell.message.warning.migrated.cancel"),
+                            migrateVersion.getName()));
+                break;
+            }
+        }
     }
 
     private void migrate_from_v2(IStore store, Version version) {
@@ -146,31 +146,31 @@ public class Initializer extends AbstractPreferenceInitializer {
         migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS_PRESET)));
         String oldPresetsModified = null;
         if (migrateState == 0) {
-        	oldPresetsModified = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getStore().getString(Constants.PREF_COMMANDS_PRESET), true);
+            oldPresetsModified = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getStore().getString(Constants.PREF_COMMANDS_PRESET), true);
             store.getStore().setValue(Constants.PREF_COMMANDS_MODIFY, oldPresetsModified);
         }
         // get the new modify
         migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS_MODIFY)));
         if (migrateState == 0) {
-        	String newPresetsModified = PreferenceValueConverter.migrateCommandDataBasicList(version, oldStore.getStore().getString(Constants.PREF_COMMANDS_MODIFY));
-        	if (oldPresetsModified == null || oldPresetsModified.isEmpty()) {
-        		store.getStore().setValue(Constants.PREF_COMMANDS_MODIFY, newPresetsModified);
-        	}
+            String newPresetsModified = PreferenceValueConverter.migrateCommandDataBasicList(version, oldStore.getStore().getString(Constants.PREF_COMMANDS_MODIFY));
+            if (oldPresetsModified == null || oldPresetsModified.isEmpty()) {
+                store.getStore().setValue(Constants.PREF_COMMANDS_MODIFY, newPresetsModified);
+            }
         }
         // get old user commands
         migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS_OLD)));
         String oldUserCommands = null;
         if (migrateState == 0) {
-        	oldUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getStore().getString(Constants.PREF_COMMANDS_OLD), false);
+            oldUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getStore().getString(Constants.PREF_COMMANDS_OLD), false);
             store.getStore().setValue(Constants.PREF_COMMANDS_USER, oldUserCommands);
         }
         // get new user commands
         migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_COMMANDS_USER)));
         if (migrateState == 0) {
-        	String newUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getStore().getString(Constants.PREF_COMMANDS_USER), false);
-        	if (oldUserCommands == null || oldUserCommands.isEmpty()) {
-        		store.getStore().setValue(Constants.PREF_COMMANDS_USER, newUserCommands);
-        	}
+            String newUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getStore().getString(Constants.PREF_COMMANDS_USER), false);
+            if (oldUserCommands == null || oldUserCommands.isEmpty()) {
+                store.getStore().setValue(Constants.PREF_COMMANDS_USER, newUserCommands);
+            }
         }
         // get menus
         migrate_check_pref_and_ask_user(oldStore, version, new ArrayList<String>(Arrays.asList(Constants.PREF_MENU)));
@@ -181,7 +181,7 @@ public class Initializer extends AbstractPreferenceInitializer {
 
     private void migrate_from_v1(IStore store, Version version) {
         // get the old v1_5 store
-    	Store oldStore = new Store(Activator.getDefault().getLegacyPreferenceStore());
+        Store oldStore = new Store(Activator.getDefault().getLegacyPreferenceStore());
         // check if we want version 1.5 or 1.4
         if (version == Version.v1_5) {
             // check preferences for default values
@@ -198,43 +198,43 @@ public class Initializer extends AbstractPreferenceInitializer {
             // check preferences for default values
             migrate_check_pref_and_ask_user(oldStore, version, PrefsV1_4.getPreferenceList());
             if (migrateState == 0) {
-	            CommandDataList cmdDataList = new CommandDataList();
-	            MenuDataList menuDataList = CommandDataDefaultCollection.getCommandsNativeAsMenu(true);
-	            if (PrefsV1_4.loadStore(oldStore.getStore(), Utils.getOS(), cmdDataList, menuDataList)) {
-	                store.getStore().setValue(Constants.PREF_COMMANDS_USER, PreferenceValueConverter.asCommandDataString(cmdDataList, false));
-	                store.getStore().setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
-	            }
+                CommandDataList cmdDataList = new CommandDataList();
+                MenuDataList menuDataList = CommandDataDefaultCollection.getCommandsNativeAsMenu(true);
+                if (PrefsV1_4.loadStore(oldStore.getStore(), Utils.getOS(), cmdDataList, menuDataList)) {
+                    store.getStore().setValue(Constants.PREF_COMMANDS_USER, PreferenceValueConverter.asCommandDataString(cmdDataList, false));
+                    store.getStore().setValue(Constants.PREF_MENU, PreferenceValueConverter.asMenuDataString(menuDataList));
+                }
             }
         }
     }
 
     private boolean reMigrate_from_v1(IStore store, Version version) {
-    	boolean reMigrated = false;
-    	return reMigrated;
+        boolean reMigrated = false;
+        return reMigrated;
     }
 
     private boolean reMigrate_from_v2(IStore store, Version version) {
-    	boolean reMigrated = false;
+        boolean reMigrated = false;
         // get the old v2 store
         IPreferenceStore oldStore = Activator.getDefault().getPreferenceStoreByVersion(version.name());
         // get old user commands
         String oldUserCommands = null;
         if (migrateState == 0) {
-        	oldUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getString(Constants.PREF_COMMANDS_OLD), false);
-        	if (oldUserCommands != null && !oldUserCommands.isEmpty()) {
-	            store.getStore().setValue(Constants.PREF_COMMANDS_USER, oldUserCommands);
-	            reMigrated = true;
-        	}
+            oldUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getString(Constants.PREF_COMMANDS_OLD), false);
+            if (oldUserCommands != null && !oldUserCommands.isEmpty()) {
+                store.getStore().setValue(Constants.PREF_COMMANDS_USER, oldUserCommands);
+                reMigrated = true;
+            }
         }
         // get new user commands
         if (migrateState == 0) {
-        	String newUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getString(Constants.PREF_COMMANDS_USER), false);
-        	if ((oldUserCommands == null || oldUserCommands.isEmpty()) && (newUserCommands != null && !newUserCommands.isEmpty())) {
-        		store.getStore().setValue(Constants.PREF_COMMANDS_USER, newUserCommands);
-        		reMigrated = true;
-        	}
+            String newUserCommands = PreferenceValueConverter.migrateCommandDataList(version, oldStore.getString(Constants.PREF_COMMANDS_USER), false);
+            if ((oldUserCommands == null || oldUserCommands.isEmpty()) && (newUserCommands != null && !newUserCommands.isEmpty())) {
+                store.getStore().setValue(Constants.PREF_COMMANDS_USER, newUserCommands);
+                reMigrated = true;
+            }
         }
-    	return reMigrated;
+        return reMigrated;
     }
 
     private void migrate_check_pref_and_ask_user(IStore store, Version version, List<String> prefList) {

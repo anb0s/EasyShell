@@ -47,7 +47,7 @@ import de.anbos.eclipse.easyshell.plugin.types.Version;
 public class Activator extends AbstractUIPlugin {
 
     // The shared instance
-	private static Activator plugin;
+    private static Activator plugin;
 
     //Resource bundle.
     private ResourceBundle resourceBundle;
@@ -59,19 +59,19 @@ public class Activator extends AbstractUIPlugin {
      */
     private IPreferenceStore myPreferenceStore;
 
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-	}
+    /**
+     * The constructor
+     */
+    public Activator() {
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+     */
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        plugin = this;
         try {
             //resourceBundle = Platform.getResourceBundle(context.getBundle());
             resourceBundle = ResourceBundle.getBundle(Constants.PLUGIN_ID + ".UIMessages"); //$NON-NLS-1$
@@ -79,38 +79,38 @@ public class Activator extends AbstractUIPlugin {
             resourceBundle = null;
         }
         getImageRegistry();
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     */
+    public void stop(BundleContext context) throws Exception {
+        plugin = null;
+        super.stop(context);
+    }
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
+    /**
+     * Returns the shared instance
+     *
+     * @return the shared instance
+     */
+    public static Activator getDefault() {
+        return plugin;
+    }
 
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	/*
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(Constants.PLUGIN_ID, path);
-	}
-	*/
+    /**
+     * Returns an image descriptor for the image file at the given
+     * plug-in relative path
+     *
+     * @param path the path
+     * @return the image descriptor
+     */
+    /*
+    public static ImageDescriptor getImageDescriptor(String path) {
+        return imageDescriptorFromPlugin(Constants.PLUGIN_ID, path);
+    }
+    */
     public static ImageDescriptor getImageDescriptor(String id) {
         return getDefault().getImageRegistry().getDescriptor(id);
     }
@@ -120,14 +120,14 @@ public class Activator extends AbstractUIPlugin {
     }
 
     protected void initializeImageRegistry(ImageRegistry registry) {
-    	imageNames = new ArrayList<String>();
+        imageNames = new ArrayList<String>();
         Bundle bundle = Platform.getBundle(Constants.PLUGIN_ID);
         OS os = Utils.getOS();
         for (String imageId : Category.getImageIdsAsList()) {
             String imagePath = Constants.IMAGE_PATH + os.getId() + "/" + imageId + Constants.IMAGE_EXT;
             URL url = bundle.getEntry(imagePath);
             if (url == null) {
-            	imagePath = Constants.IMAGE_PATH + imageId + Constants.IMAGE_EXT;
+                imagePath = Constants.IMAGE_PATH + imageId + Constants.IMAGE_EXT;
             }
             addImageToRegistry(registry, bundle, imagePath, imageId);
         }
@@ -144,10 +144,10 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static List<String> getImageNames() {
-		return getDefault().imageNames;
-	}
+        return getDefault().imageNames;
+    }
 
-	public ResourceBundle getResourceBundle() {
+    public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
 
@@ -241,9 +241,9 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static void logDebug(String string) {
-    	Debug debug = GeneralDataStore.instance().getData().getDebug();
+        Debug debug = GeneralDataStore.instance().getData().getDebug();
         if (debug == Debug.debugYes) {
-        	logInfo(string, null);
+            logInfo(string, null);
         }
     }
 
