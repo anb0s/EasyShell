@@ -43,7 +43,8 @@ public class Resource {
     //Activator.logDebug("file_name  : >" + fileName + "<");
 
     public Resource(Resource myRes) {
-        file = myRes.getFile();
+        this.file = myRes.getFile();
+        this.resource = myRes.getResource();
     }
 
     public Resource(File file, IResource resource) {
