@@ -5,7 +5,7 @@ jdk:
   - oraclejdk8
   - oraclejdk9
   - openjdk10
-  - oraclejdk10
+  - openjdk11
 
 env:
   - ECLIPSE_TARGET_PLATFORM=Eclipse-4.7
