@@ -4,14 +4,12 @@
   <target name="getMajorMinorVersion">
     <script language="javascript">
       <![CDATA[
-
-                  // getting the value
-                  buildnumber = project.getProperty("unqualifiedVersion");
-                  index = buildnumber.lastIndexOf(".");
-                  counter = buildnumber.substring(0, index);
-            project.setProperty("majorMinorVersion",counter);
-
-              ]]>
+        // getting the value
+        buildnumber = project.getProperty("unqualifiedVersion");
+        index = buildnumber.lastIndexOf(".");
+        counter = buildnumber.substring(0, index);
+        project.setProperty("majorMinorVersion",counter);
+      ]]>
     </script>
   </target>
 
@@ -22,7 +20,6 @@
   <scriptdef language="javascript" name="upper">
     <attribute name="string" />
     <attribute name="to" />
-
       project.setProperty( attributes.get( "to" ),
                            attributes.get( "string" ).toUpperCase() );
   </scriptdef>
@@ -30,7 +27,6 @@
   <scriptdef language="javascript" name="lower">
     <attribute name="string" />
     <attribute name="to" />
-
       project.setProperty( attributes.get( "to" ),
                            attributes.get( "string" ).toLowerCase() );
   </scriptdef>
@@ -38,7 +34,6 @@
   <scriptdef language="javascript" name="ucfirst">
     <attribute name="string" />
     <attribute name="to" />
-
       var the_string = attributes.get( "string" );
       project.setProperty( attributes.get( "to" ),
                   the_string.substr(0,1).toUpperCase() + the_string.substr(1) );
@@ -47,7 +42,6 @@
   <scriptdef language="javascript" name="capitalize">
     <attribute name="string" />
     <attribute name="to" />
-
       var s = new String( attributes.get( "string" ) );
       project.setProperty( attributes.get( "to" ),
               s.toLowerCase().replace( /^.|\s\S/g,
@@ -74,11 +68,8 @@
 
   <target name="p2.composite.add" depends="compute.child.repository.data">
     <property name="source.repository" location="${project.build.directory}/repository"/>
-
     <echo message=" " />
-
     <echo message="Source repository path: ${source.repository}" />
-
     <echo message="Copying to ${child.repository.directory}..." />
 
     <mkdir dir="${child.repository.directory}"/>

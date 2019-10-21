@@ -18,9 +18,9 @@
   </modules>
 
   <properties>
-    <new.version>2.2.0-SNAPSHOT</new.version>
-    <tycho.version>1.4.0</tycho.version>
-    <target.platform>Eclipse-2019-06</target.platform>
+    <new.version>2.3.0-SNAPSHOT</new.version>
+    <tycho.version>1.5.0</tycho.version>
+    <target.platform>Eclipse-2019-09</target.platform>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -93,11 +93,6 @@
         <configuration>
           <newVersion>${new.version}</newVersion>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.10</version>
       </plugin>
     </plugins>
   </build>
