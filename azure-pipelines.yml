@@ -9,6 +9,17 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+strategy:
+  matrix:
+    eclipse_4_8:
+      ECLIPSE_TARGET_PLATFORM: 'Eclipse-4.8'
+    eclipse_2018_12:
+      ECLIPSE_TARGET_PLATFORM: 'Eclipse-2018-12'
+    eclipse_2019_06:
+      ECLIPSE_TARGET_PLATFORM: 'Eclipse-2019-06'
+    eclipse_2019_09:
+      ECLIPSE_TARGET_PLATFORM: 'Eclipse-2019-09'
+
 steps:
 - task: Maven@3
   inputs:
@@ -19,4 +30,4 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'verify'
+    goals: '-Dtarget.platform=$(ECLIPSE_TARGET_PLATFORM) clean verify'
