@@ -178,10 +178,6 @@ The following substitution variables are available for building the menu name:
 - ```${easyshell:command_name}``` = command name
 - ```${easyshell:command_os}``` = command operating system
 
-License:
---------
-https://www.eclipse.org/legal/epl-2.0
-
 <a href="http://with-eclipse.github.io/" target="_blank">
 <img alt="with-Eclipse logo" src="http://with-eclipse.github.io/with-eclipse-0.jpg" />
 </a>
