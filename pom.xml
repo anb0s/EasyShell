@@ -20,7 +20,7 @@
   <properties>
     <new.version>2.3.0-SNAPSHOT</new.version>
     <tycho.version>1.5.0</tycho.version>
-    <target.platform>Eclipse-2019-12</target.platform>
+    <target.platform>Eclipse-2020-06</target.platform>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
