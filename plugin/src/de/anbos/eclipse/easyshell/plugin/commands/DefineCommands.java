@@ -47,7 +47,7 @@ public class DefineCommands extends ExtensionContributionFactory {
                 resTypeSupported = item.getCommandData().getResourceType();
                 if ((resTypeSupported == ResourceType.resourceTypeFileOrDirectory)
                         || (resTypeSupported == resTypeWanted)) {
-                    addItem(serviceLocator, additions, item.getNameExpanded(),
+                    addItem(serviceLocator, additions, item.getNameExpanded(), item.getCommand(),
                             "de.anbos.eclipse.easyshell.plugin.commands.execute",
                             Utils.getParameterMapFromMenuData(item), item.getImageId(),
                             true);
@@ -58,11 +58,12 @@ public class DefineCommands extends ExtensionContributionFactory {
         }
     }
 
-    private void addItem(IServiceLocator serviceLocator, IContributionRoot additions, String commandLabel,
+    private void addItem(IServiceLocator serviceLocator, IContributionRoot additions, String commandLabel, String commandToolTip,
             String commandId, Map<String, Object> commandParamametersMap, String commandImageId, boolean visible) {
         CommandContributionItemParameter param = new CommandContributionItemParameter(serviceLocator, "", commandId,
                 SWT.PUSH);
         param.label = commandLabel;
+        param.tooltip = commandToolTip;
         param.icon = Activator.getImageDescriptor(commandImageId);
         param.parameters = commandParamametersMap;
         CommandContributionItem item = new CommandContributionItem(param);
