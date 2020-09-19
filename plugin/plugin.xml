@@ -65,11 +65,6 @@
       </command>
       <command
             categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
-            id="de.anbos.eclipse.easyshell.plugin.commands.clipboard"
-            name="EasyShell Run">
-      </command>
-      <command
-            categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
             id="de.anbos.eclipse.easyshell.plugin.commands.user"
             name="EasyShell User">
       </command>
