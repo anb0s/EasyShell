@@ -31,6 +31,10 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.osgi.framework.Bundle;
+
+import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
+import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+
 import org.eclipse.cdt.internal.core.model.ExternalTranslationUnit;
 import org.eclipse.cdt.internal.core.model.IncludeReference;
 import org.eclipse.cdt.internal.ui.cview.IncludeReferenceProxy;
@@ -165,6 +169,42 @@ public class ResourceUtils {
             file = new File(projectFile.getParent() + file.toString());
         }
         return file;
+    }
+
+    static public ActionDelegate getActionCommonResourceType(IWorkbenchPart part, ResourceType resType) {
+        ISelection selection = getResourceSelection(part);
+        if (selection != null) {
+            ActionDelegate action = new ActionDelegate();
+            action.selectionChanged(null, selection);
+            if (action.isEnabled(ResourceType.resourceTypeFileOrDirectory) && resType == action.getCommonResourceType()) {
+                return action;
+            }
+        }
+        return null;
+    }
+
+    static public ActionDelegate getActionExactResourceType(IWorkbenchPart part, ResourceType resType) {
+        ISelection selection = getResourceSelection(part);
+        if (selection != null) {
+            ActionDelegate action = new ActionDelegate();
+            action.selectionChanged(null, selection);
+            if (action.isEnabled(resType)) {
+                return action;
+            }
+        }
+        return null;
+    }
+
+    static public ResourceType getCommonResourceType(IWorkbenchPart part) {
+        ISelection selection = getResourceSelection(part);
+        if (selection != null) {
+            ActionDelegate action = new ActionDelegate();
+            action.selectionChanged(null, selection);
+            if (action.isEnabled(ResourceType.resourceTypeFileOrDirectory)) {
+                return action.getCommonResourceType();
+            }
+        }
+        return null;
     }
 
 }

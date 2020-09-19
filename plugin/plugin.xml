@@ -121,73 +121,14 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="popup:org.eclipse.ui.popup.any?after=group.open">
-         <menu
-               icon="images/easyshell.png"
-               id="de.anbos.eclipse.easyshell.plugin.menu"
-               label="EasyShell">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="activePart">
-                  <test
-                        args="resourceType"
-                        forcePluginActivation="true"
-                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection"
-                        value="resourceTypeFileOrDirectory">
-                  </test>
-               </with>
-            </visibleWhen>
-         </menu>
-         <menu
-               icon="images/easyshell.png"
-               id="de.anbos.eclipse.easyshell.plugin.menu.file"
-               label="EasyShell">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="activePart">
-                  <test
-                        args="resourceType"
-                        forcePluginActivation="true"
-                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection"
-                        value="resourceTypeFile">
-                  </test>
-               </with>
-            </visibleWhen>
-         </menu>
-         <menu
-               icon="images/easyshell.png"
-               id="de.anbos.eclipse.easyshell.plugin.menu.directory"
-               label="EasyShell">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="activePart">
-                  <test
-                        args="resourceType"
-                        forcePluginActivation="true"
-                        property="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester.hasResourceSelection"
-                        value="resourceTypeDirectory">
-                  </test>
-               </with>
-            </visibleWhen>
-         </menu>
-      </menuContribution>
-      <menuContribution
             allPopups="true"
             class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommands"
-            locationURI="popup:de.anbos.eclipse.easyshell.plugin.menu">
+            locationURI="popup:org.eclipse.ui.popup.any?after=group.open">
       </menuContribution>
       <menuContribution
             allPopups="true"
-            class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommandsForFile"
-            locationURI="popup:de.anbos.eclipse.easyshell.plugin.menu.file">
-      </menuContribution>
-      <menuContribution
-            allPopups="true"
-            class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommandsForDirectory"
-            locationURI="popup:de.anbos.eclipse.easyshell.plugin.menu.directory">
+            class="de.anbos.eclipse.easyshell.plugin.commands.DefineCommandsForResourceNavigator"
+            locationURI="popup:org.eclipse.ui.popup.any">
       </menuContribution>
    </extension>
    <extension

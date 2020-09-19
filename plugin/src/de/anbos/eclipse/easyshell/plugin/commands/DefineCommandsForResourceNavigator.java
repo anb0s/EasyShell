@@ -13,12 +13,9 @@
 
 package de.anbos.eclipse.easyshell.plugin.commands;
 
-import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
+public class DefineCommandsForResourceNavigator extends DefineCommands {
 
-public class DefineCommandsForFile extends DefineCommands {
-
-    public ResourceType getWantedResourceType() {
-        return ResourceType.resourceTypeFile;
+    public boolean isForResourceNavigator() {
+        return true;
     }
-
 }

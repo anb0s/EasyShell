@@ -21,7 +21,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
-import de.anbos.eclipse.easyshell.plugin.EditorPropertyTester;
+import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.actions.Action;
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
@@ -39,7 +39,7 @@ public class Execute extends AbstractHandler {
             String commandValue = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.value");
             String commandWorkingDir = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir");
             CommandTokenizer commandTokenizer = CommandTokenizer.getFromEnum(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.tokenizer"));
-            ActionDelegate action = EditorPropertyTester.getActionExactResourceType(activePart, resourceType);
+            ActionDelegate action = ResourceUtils.getActionExactResourceType(activePart, resourceType);
             if (action != null) {
                 action.setResourceType(resourceType);
                 action.setCommandType(commandType);

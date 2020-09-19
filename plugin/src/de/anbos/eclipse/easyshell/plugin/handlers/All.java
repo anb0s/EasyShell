@@ -22,7 +22,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
-import de.anbos.eclipse.easyshell.plugin.EditorPropertyTester;
+import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
 import de.anbos.eclipse.easyshell.plugin.commands.ExecuteCommandPopup;
 import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
@@ -44,7 +44,7 @@ public class All extends AbstractHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         // get resource type
         IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-        ActionDelegate action = EditorPropertyTester.getActionExactResourceType(activePart,
+        ActionDelegate action = ResourceUtils.getActionExactResourceType(activePart,
                 ResourceType.resourceTypeFileOrDirectory);
         if (action != null) {
             // load the preferences

@@ -40,10 +40,6 @@ public class Resource {
     // resolved
     private String projectName = Activator.getResourceString("easyshell.plugin.name");
 
-    //Activator.logDebug("full_path  : >" + fullPath + "<");
-    //Activator.logDebug("parent_path: >" + parentPath + "<");
-    //Activator.logDebug("file_name  : >" + fileName + "<");
-
     public Resource(Resource myRes) {
         this.file = myRes.getFile();
         this.resource = myRes.getResource();
