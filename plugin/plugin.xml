@@ -158,16 +158,6 @@
       </initializer>
    </extension>
    <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester"
-            id="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester"
-            namespace="de.anbos.eclipse.easyshell.plugin.EditorPropertyTester"
-            properties="hasResourceSelection"
-            type="org.eclipse.ui.IWorkbenchPart">
-      </propertyTester>
-   </extension>
-   <extension
          point="org.eclipse.core.variables.dynamicVariables">
       <variable
             description="EasyShell Variables"
