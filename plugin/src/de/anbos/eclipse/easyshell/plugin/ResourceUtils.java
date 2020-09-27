@@ -15,6 +15,8 @@ package de.anbos.eclipse.easyshell.plugin;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -25,11 +27,14 @@ import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.ui.part.MultiPageEditorPart;
 import org.osgi.framework.Bundle;
 
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
@@ -49,8 +54,24 @@ public class ResourceUtils {
         ISelection selection = null;
         if (part != null) {
             if (part instanceof IEditorPart) {
+                // get file from part (can be only one)
                 Resource file = getResource((IEditorPart)part);
-                if (file != null) {
+                ITextEditor editor = null;
+                if (part instanceof ITextEditor) {
+                    editor = (ITextEditor) part;
+                } else if (part instanceof MultiPageEditorPart) {
+                    Object page = ((MultiPageEditorPart) part).getSelectedPage();
+                    if (page instanceof ITextEditor) {
+                        editor = (ITextEditor) page;
+                    }
+                }
+                if (editor != null) {
+                    ITextSelection sel = (ITextSelection)editor.getSelectionProvider().getSelection();
+                    String text = sel.getText();
+                    selection = getSelectionFromText(file, text);
+                }
+                // fallback to the selected part if no selection
+                if ((selection == null) && (file != null)) {
                     selection = new StructuredSelection(file);
                 }
             } else {
@@ -59,6 +80,28 @@ public class ResourceUtils {
                 } catch(Exception e) {
                     // no op
                 }
+            }
+        }
+        return selection;
+    }
+
+    private static ISelection getSelectionFromText(Resource partFile, String text) {
+        ISelection selection = null;
+        if (text != null && !text.isEmpty()) {
+            String lines[] = text.split("\\r?\\n");
+            List<Resource> resources = new ArrayList<Resource>();
+            for (String line : lines) {
+                String fileName = line.trim();
+                if (fileName != null && !fileName.isEmpty()) {
+                    File file = new File(fileName);
+                    if (!file.isAbsolute()) {
+                        file = new File(partFile.getParentLocation(), file.getPath());
+                    }
+                    resources.add(new Resource(file));
+                }
+            }
+            if (!resources.isEmpty()) {
+                selection = new StructuredSelection(resources);
             }
         }
         return selection;
