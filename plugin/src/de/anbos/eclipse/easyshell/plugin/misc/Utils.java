@@ -45,7 +45,7 @@ import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.LinuxDesktop;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
-import de.anbos.eclipse.easyshell.plugin.types.Tooltip;
+import de.anbos.eclipse.easyshell.plugin.types.CheckBox;
 
 public class Utils {
 
@@ -218,7 +218,7 @@ public class Utils {
     }
 
     public static void showToolTip(Control control, int style, String title, String message) {
-        if (GeneralDataStore.instance().getData().getToolTipAll() != Tooltip.tooltipYes) {
+        if (GeneralDataStore.instance().getData().getToolTipAll() != CheckBox.yes) {
             return;
         }
         if (control == null) {

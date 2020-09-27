@@ -27,15 +27,17 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.misc.UtilsUI;
 import de.anbos.eclipse.easyshell.plugin.types.Debug;
-import de.anbos.eclipse.easyshell.plugin.types.Tooltip;
+import de.anbos.eclipse.easyshell.plugin.types.CheckBox;
 
 
 public class MainPage extends PreferencePage implements IWorkbenchPreferencePage {
@@ -43,9 +45,14 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
     private IWorkbench workbench;
 
     private Button 	debug;
+
     private Button 	toolTipAll;
     private Button 	toolTipClipboard;
     private Button 	toolTipError;
+
+    private Button  menuAll;
+    private Button  menuMain;
+    private Button  menuPopup;
 
     public MainPage() {
     }
@@ -86,9 +93,12 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         }
         if (save) {
             GeneralDataStore.instance().getData().setDebug(debug.getSelection() ? Debug.debugYes : Debug.debugNo);
-            GeneralDataStore.instance().getData().setToolTipAll(toolTipAll.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
-            GeneralDataStore.instance().getData().setToolTipClipboard(toolTipClipboard.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
-            GeneralDataStore.instance().getData().setToolTipError(toolTipError.getSelection() ? Tooltip.tooltipYes : Tooltip.tooltipNo);
+            GeneralDataStore.instance().getData().setToolTipAll(toolTipAll.getSelection() ? CheckBox.yes : CheckBox.no);
+            GeneralDataStore.instance().getData().setToolTipClipboard(toolTipClipboard.getSelection() ? CheckBox.yes : CheckBox.no);
+            GeneralDataStore.instance().getData().setToolTipError(toolTipError.getSelection() ? CheckBox.yes : CheckBox.no);
+            GeneralDataStore.instance().getData().setMenuAll(menuAll.getSelection() ? CheckBox.yes : CheckBox.no);
+            GeneralDataStore.instance().getData().setMenuPopup(menuPopup.getSelection() ? CheckBox.yes : CheckBox.no);
+            GeneralDataStore.instance().getData().setMenuMain(menuMain.getSelection() ? CheckBox.yes : CheckBox.no);
             GeneralDataStore.instance().save();
         }
         return save;
@@ -183,6 +193,10 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         Composite group1_1 = createGroup1_1(parent);
         createCheckBoxToolTipClipboard(group1_1);
         createCheckBoxToolTipError(group1_1);
+        createCheckBoxMenuAll(parent);
+        Composite group1_2 = createGroup1_1(parent);
+        createCheckBoxMenuPopup(group1_2);
+        createCheckBoxMenuMain(group1_2);
     }
 
     private void refreshWidgets() {
@@ -190,11 +204,12 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         UtilsUI.refreshWidget(toolTipAll);
         UtilsUI.refreshWidget(toolTipClipboard);
         UtilsUI.refreshWidget(toolTipError);
+        UtilsUI.refreshWidget(menuAll);
+        UtilsUI.refreshWidget(menuPopup);
+        UtilsUI.refreshWidget(menuMain);
     }
 
     private void createCheckBoxDebug(Composite parent) {
-        // draw label
-        //UtilsUI.createLabel(parent, "", null);
         // draw checkbox
         GeneralData data = GeneralDataStore.instance().getData();
         debug = new Button(parent,SWT.CHECK);
@@ -218,7 +233,7 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         // draw checkbox
         GeneralData data = GeneralDataStore.instance().getData();
         toolTipAll = new Button(parent,SWT.CHECK);
-        toolTipAll.setSelection(data.getToolTipAll() == Tooltip.tooltipYes);
+        toolTipAll.setSelection(data.getToolTipAll() == CheckBox.yes);
         toolTipAll.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -236,13 +251,41 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         toolTipAll.setEnabled(true);
     }
 
+    private void createCheckBoxMenuAll(Composite parent) {
+        // draw label
+        //UtilsUI.createLabel(parent, "", null);
+        // draw checkbox
+        GeneralData data = GeneralDataStore.instance().getData();
+        menuAll = new Button(parent,SWT.CHECK);
+        menuAll.setSelection(data.getMenuAll() == CheckBox.yes);
+        menuAll.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                boolean enabled = menuAll.getSelection();
+                menuPopup.setEnabled(enabled);
+                menuMain.setEnabled(enabled);
+                boolean enabledMain = menuMain.getSelection();
+                if ((enabled && enabledMain) != (GeneralDataStore.instance().getData().getMenuAll() == CheckBox.yes && GeneralDataStore.instance().getData().getMenuMain() == CheckBox.yes)) {
+                    restartEclipse();
+                }
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // TODO Auto-generated method stub
+            }
+        });
+        menuAll.setText(Activator.getResourceString("easyshell.main.page.label.button.menuall"));
+        menuAll.setToolTipText(Activator.getResourceString("easyshell.main.page.label.button.tooltip.menuall"));
+        menuAll.setEnabled(true);
+    }
+
     private void createCheckBoxToolTipClipboard(Composite parent) {
         // draw label
         UtilsUI.createLabel(parent, "", null);
         // draw checkbox
         GeneralData data = GeneralDataStore.instance().getData();
         toolTipClipboard = new Button(parent,SWT.CHECK);
-        toolTipClipboard.setSelection(data.getToolTipClipboard() == Tooltip.tooltipYes);
+        toolTipClipboard.setSelection(data.getToolTipClipboard() == CheckBox.yes);
         toolTipClipboard.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -256,13 +299,33 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         toolTipClipboard.setEnabled(true);
     }
 
+    private void createCheckBoxMenuPopup(Composite parent) {
+        // draw label
+        UtilsUI.createLabel(parent, "", null);
+        // draw checkbox
+        GeneralData data = GeneralDataStore.instance().getData();
+        menuPopup = new Button(parent,SWT.CHECK);
+        menuPopup.setSelection(data.getMenuPopup() == CheckBox.yes);
+        menuPopup.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
+        menuPopup.setText(Activator.getResourceString("easyshell.main.page.label.button.menupopup"));
+        menuPopup.setToolTipText(Activator.getResourceString("easyshell.main.page.label.button.tooltip.menupopup"));
+        menuPopup.setEnabled(true);
+    }
+
     private void createCheckBoxToolTipError(Composite parent) {
         // draw label
         UtilsUI.createLabel(parent, "", null);
         // draw checkbox
         GeneralData data = GeneralDataStore.instance().getData();
         toolTipError = new Button(parent,SWT.CHECK);
-        toolTipError.setSelection(data.getToolTipError() == Tooltip.tooltipYes);
+        toolTipError.setSelection(data.getToolTipError() == CheckBox.yes);
         toolTipError.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -276,4 +339,47 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         toolTipError.setEnabled(true);
     }
 
+    private void createCheckBoxMenuMain(Composite parent) {
+        // draw label
+        UtilsUI.createLabel(parent, "", null);
+        // draw checkbox
+        GeneralData data = GeneralDataStore.instance().getData();
+        menuMain = new Button(parent,SWT.CHECK);
+        menuMain.setSelection(data.getMenuMain() == CheckBox.yes);
+        menuMain.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                boolean enabled = menuMain.getSelection();
+                if (enabled != (GeneralDataStore.instance().getData().getMenuMain() == CheckBox.yes)) {
+                    restartEclipse();
+                }
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
+        menuMain.setText(Activator.getResourceString("easyshell.main.page.label.button.menumain"));
+        menuMain.setToolTipText(Activator.getResourceString("easyshell.main.page.label.button.tooltip.menumain"));
+        menuMain.setEnabled(true);
+    }
+
+    private void restartEclipse() {
+        String title = Activator.getResourceString("easyshell.main.page.dialog.restart.title");
+        String question = Activator.getResourceString("easyshell.main.page.dialog.restart.question");
+        MessageDialog dialog = new MessageDialog(
+                null, title, null, question,
+                MessageDialog.WARNING,
+                new String[] {"Yes", "No"},
+                1); // no is the default
+        int result = dialog.open();
+        if (result == 0) {
+            performOk();
+            Display.getDefault().asyncExec(new Runnable(){
+                @Override
+                public void run() {
+                    PlatformUI.getWorkbench().restart();
+              }
+            });
+        }
+    }
 }

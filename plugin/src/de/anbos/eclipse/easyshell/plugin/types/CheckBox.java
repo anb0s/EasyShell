@@ -19,15 +19,15 @@ import java.util.List;
 /**
  * Debug.
  */
-public enum Tooltip {
-    tooltipUnknown(-1, "Unknown"),
-    tooltipNo(0, "No"),
-    tooltipYes(1, "Yes");
+public enum CheckBox {
+    unknown(-1, "Unknown"),
+    no(0, "No"),
+    yes(1, "Yes");
     // attributes
     private final int id;
     private final String name;
     // construct
-    Tooltip(int id, String name) {
+    CheckBox(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -37,34 +37,34 @@ public enum Tooltip {
     public String getName() {
         return name;
     }
-    public static Tooltip getFromId(int id) {
-        Tooltip ret = tooltipUnknown;
-        for(int i = 0; i < Tooltip.values().length; i++) {
-            if (Tooltip.values()[i].getId() == id) {
-                ret = Tooltip.values()[i];
+    public static CheckBox getFromId(int id) {
+        CheckBox ret = unknown;
+        for(int i = 0; i < CheckBox.values().length; i++) {
+            if (CheckBox.values()[i].getId() == id) {
+                ret = CheckBox.values()[i];
                 break;
             }
         }
         return ret;
     }
-    public static Tooltip getFromName(String name) {
-        Tooltip ret = tooltipUnknown;
-        for(int i = 0; i < Tooltip.values().length; i++) {
-            if (Tooltip.values()[i].getName().equals(name)) {
-                ret = Tooltip.values()[i];
+    public static CheckBox getFromName(String name) {
+        CheckBox ret = unknown;
+        for(int i = 0; i < CheckBox.values().length; i++) {
+            if (CheckBox.values()[i].getName().equals(name)) {
+                ret = CheckBox.values()[i];
                 break;
             }
         }
         return ret;
     }
-    public static Tooltip getFromEnum(String name) {
-        return Tooltip.valueOf(name);
+    public static CheckBox getFromEnum(String name) {
+        return CheckBox.valueOf(name);
     }
     public static List<String> getNamesAsList() {
         List<String> list = new ArrayList<String>();
-        for(int i = 0; i < Tooltip.values().length; i++) {
-            if (Tooltip.values()[i] != tooltipUnknown) {
-                list.add(Tooltip.values()[i].getName());
+        for(int i = 0; i < CheckBox.values().length; i++) {
+            if (CheckBox.values()[i] != unknown) {
+                list.add(CheckBox.values()[i].getName());
             }
         }
         return list;

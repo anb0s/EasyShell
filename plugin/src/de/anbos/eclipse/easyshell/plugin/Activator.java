@@ -40,7 +40,7 @@ import de.anbos.eclipse.easyshell.plugin.preferences.GeneralDataStore;
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 import de.anbos.eclipse.easyshell.plugin.types.Debug;
 import de.anbos.eclipse.easyshell.plugin.types.OS;
-import de.anbos.eclipse.easyshell.plugin.types.Tooltip;
+import de.anbos.eclipse.easyshell.plugin.types.CheckBox;
 import de.anbos.eclipse.easyshell.plugin.types.Version;
 
 /**
@@ -201,7 +201,7 @@ public class Activator extends AbstractUIPlugin {
 
     public static void logError(String title, String msg, Exception e, boolean tooltip) {
         log(Status.ERROR, title != null ? title + ": " + msg : msg, e);
-        if (tooltip && (GeneralDataStore.instance().getData().getToolTipError() == Tooltip.tooltipYes)) {
+        if (tooltip && (GeneralDataStore.instance().getData().getToolTipError() == CheckBox.yes)) {
             tooltipError(title, msg);
         }
     }

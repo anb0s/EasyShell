@@ -15,6 +15,7 @@ package de.anbos.eclipse.easyshell.plugin.commands;
 
 public class DefineCommandsForResourceNavigator extends DefineCommands {
 
+    @Override
     public boolean isForResourceNavigator() {
         return true;
     }

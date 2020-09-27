@@ -29,10 +29,11 @@ import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.Constants;
 import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
+import de.anbos.eclipse.easyshell.plugin.preferences.GeneralDataStore;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataStore;
-
+import de.anbos.eclipse.easyshell.plugin.types.CheckBox;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 
 public class DefineCommands extends ExtensionContributionFactory {
@@ -42,6 +43,9 @@ public class DefineCommands extends ExtensionContributionFactory {
 
     @Override
     public void createContributionItems(IServiceLocator serviceLocator, IContributionRoot additions) {
+        if (GeneralDataStore.instance().getData().getMenuPopup() != CheckBox.yes) {
+            return;
+        }
         IWorkbenchPart activePart = serviceLocator.getService(IWorkbenchPart.class);
         boolean isResourceNavigator = false;
         isResourceNavigator = activePart instanceof org.eclipse.ui.views.navigator.ResourceNavigator;
@@ -57,8 +61,15 @@ public class DefineCommands extends ExtensionContributionFactory {
         return false;
     }
 
-    private void createContributionItemsForResType(ResourceType resType, IServiceLocator serviceLocator, IContributionRoot additions) {
-        MenuManager submenu = new MenuManager("EasyShell", Activator.getImageDescriptor(Constants.IMAGE_EASYSHELL), "de.anbos.eclipse.easyshell.plugin.menu");
+    public boolean showMenuImage() {
+        return true;
+    }
+
+    protected void createContributionItemsForResType(ResourceType resType, IServiceLocator serviceLocator, IContributionRoot additions) {
+        if (GeneralDataStore.instance().getData().getMenuAll() != CheckBox.yes) {
+            return;
+        }
+        MenuManager submenu = new MenuManager("EasyShell", showMenuImage() ? Activator.getImageDescriptor(Constants.IMAGE_EASYSHELL) : null, "de.anbos.eclipse.easyshell.plugin.menu");
         MenuDataList items = MenuDataStore.instance().getEnabledCommandMenuDataList();
         for (MenuData item : items) {
             ResourceType resTypeSupported;

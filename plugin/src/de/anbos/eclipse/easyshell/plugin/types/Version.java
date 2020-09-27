@@ -31,7 +31,8 @@ public enum Version {
     v2_1_002(9, "v2.1 alpha 2"),
     v2_1_003(10, "v2.1 beta 1 / 2"),
     v2_1_004(11, "v2.1 beta 3"),
-    v2_1_005(12, "v2.1 beta 4 / RC1");
+    v2_1_005(12, "v2.1 beta 4 / RC1"),
+    v2_2_001(13, "v2.2");
     // actual version is always the last one!
     public static Version actual =  Version.values()[Version.values().length-1];
     // attributes

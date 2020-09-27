@@ -36,7 +36,7 @@ import de.anbos.eclipse.easyshell.plugin.preferences.GeneralDataStore;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Quotes;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
-import de.anbos.eclipse.easyshell.plugin.types.Tooltip;
+import de.anbos.eclipse.easyshell.plugin.types.CheckBox;
 import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;
 
 public class ActionDelegate implements IObjectActionDelegate {
@@ -136,7 +136,7 @@ public class ActionDelegate implements IObjectActionDelegate {
         // handling copy to clipboard
         if ((commandType == CommandType.commandTypeClipboard) && (cmdAll != null) && (cmdAll.length() != 0)) {
             Utils.copyToClipboard(cmdAll);
-            if (GeneralDataStore.instance().getData().getToolTipClipboard() == Tooltip.tooltipYes) {
+            if (GeneralDataStore.instance().getData().getToolTipClipboard() == CheckBox.yes) {
                 Activator.tooltipInfo(Activator.getResourceString("easyshell.message.copytoclipboard"), cmdAll);
             }
         }
