@@ -187,7 +187,6 @@ public class CommandDataDialog extends StatusDialog {
         try {
             keyStroke = KeyStroke.getInstance("Ctrl+Space");
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         // assume that myTextControl has already been created in some way

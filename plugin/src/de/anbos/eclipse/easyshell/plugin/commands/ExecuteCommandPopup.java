@@ -33,14 +33,16 @@ import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog implements SelectionListener, KeyListener {
 
     private IWorkbench workbench;
+    private Object trigger;
     private MenuDataList menuDataList;
     private org.eclipse.swt.widgets.List listView;
     private List<Character> chars;
 
-    public ExecuteCommandPopup(Shell parent, IWorkbench workbench, MenuDataList menuDataList, String title)
+    public ExecuteCommandPopup(Shell parent, IWorkbench workbench, Object trigger, MenuDataList menuDataList, String title)
     {
         super(parent, INFOPOPUP_SHELLSTYLE, true, false, false, false, false, title, "...");
         this.workbench = workbench;
+        this.trigger = trigger;
         this.menuDataList = menuDataList;
         chars = new ArrayList<Character>();
         for (Character ch='0';ch<='9';ch++) {
@@ -50,8 +52,9 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
             chars.add(ch);
         }
         int charsSize = chars.size();
-        if (menuDataList.size() < charsSize)
+        if (menuDataList.size() < charsSize) {
             charsSize = menuDataList.size();
+        }
         String info = "use '0'";
         if (charsSize > 1) {
             if( charsSize <= 10) {
@@ -111,7 +114,7 @@ public class ExecuteCommandPopup extends org.eclipse.jface.dialogs.PopupDialog i
             e.printStackTrace();
         }
         // execute
-        Utils.executeCommand(workbench, menuDataList.get(index), true);
+        Utils.executeCommand(workbench, trigger, menuDataList.get(index), true);
     }
 
     @Override

@@ -18,6 +18,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
@@ -27,12 +28,14 @@ import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.osgi.framework.Bundle;
@@ -50,12 +53,12 @@ import org.eclipse.cdt.core.model.IIncludeReference;
 @SuppressWarnings("restriction")
 public class ResourceUtils {
 
-    static public ISelection getResourceSelection(IWorkbenchPart part) {
+    static public ISelection getResourceSelection(Object obj) {
         ISelection selection = null;
-        if (part != null) {
-            if (part instanceof IEditorPart) {
-                // get file from part (can be only one)
-                Resource file = getResource((IEditorPart)part);
+        if (obj != null) {
+            Resource resource = getResource(obj);
+            if (obj instanceof IEditorPart) {
+                IEditorPart part = (IEditorPart)obj;
                 ITextEditor editor = null;
                 if (part instanceof ITextEditor) {
                     editor = (ITextEditor) part;
@@ -68,18 +71,18 @@ public class ResourceUtils {
                 if (editor != null) {
                     ITextSelection sel = (ITextSelection)editor.getSelectionProvider().getSelection();
                     String text = sel.getText();
-                    selection = getSelectionFromText(file, text);
+                    selection = getSelectionFromText(resource, text);
                 }
-                // fallback to the selected part if no selection
-                if ((selection == null) && (file != null)) {
-                    selection = new StructuredSelection(file);
-                }
-            } else {
+            } else if (obj instanceof IWorkbenchPart) {
                 try {
-                    selection = part.getSite().getSelectionProvider().getSelection();
+                    selection = ((IWorkbenchPart)obj).getSite().getSelectionProvider().getSelection();
                 } catch(Exception e) {
                     // no op
                 }
+            }
+            // fallback to the selected part if still no selection
+            if ((selection == null) && (resource != null)) {
+                selection = new StructuredSelection(resource);
             }
         }
         return selection;
@@ -138,10 +141,13 @@ public class ResourceUtils {
             return new Resource((Resource)object);
         }
         if (object instanceof IFile) {
-            return new Resource(((IFile) object));
+            return new Resource((IFile)object);
+        }
+        if (object instanceof IPath) {
+            return new Resource(((IPath)object).toFile());
         }
         if (object instanceof File) {
-            return new Resource((File) object);
+            return new Resource((File)object);
         }
 
         // still adaptable
@@ -214,8 +220,8 @@ public class ResourceUtils {
         return file;
     }
 
-    static public ActionDelegate getActionCommonResourceType(IWorkbenchPart part, ResourceType resType) {
-        ISelection selection = getResourceSelection(part);
+    static public ActionDelegate getActionCommonResourceType(Object obj, ResourceType resType) {
+        ISelection selection = getResourceSelection(obj);
         if (selection != null) {
             ActionDelegate action = new ActionDelegate();
             action.selectionChanged(null, selection);
@@ -226,8 +232,8 @@ public class ResourceUtils {
         return null;
     }
 
-    static public ActionDelegate getActionExactResourceType(IWorkbenchPart part, ResourceType resType) {
-        ISelection selection = getResourceSelection(part);
+    static public ActionDelegate getActionExactResourceType(Object obj, ResourceType resType) {
+        ISelection selection = getResourceSelection(obj);
         if (selection != null) {
             ActionDelegate action = new ActionDelegate();
             action.selectionChanged(null, selection);
@@ -238,8 +244,8 @@ public class ResourceUtils {
         return null;
     }
 
-    static public ResourceType getCommonResourceType(IWorkbenchPart part) {
-        ISelection selection = getResourceSelection(part);
+    static public ResourceType getCommonResourceType(Object obj) {
+        ISelection selection = getResourceSelection(obj);
         if (selection != null) {
             ActionDelegate action = new ActionDelegate();
             action.selectionChanged(null, selection);
@@ -248,6 +254,18 @@ public class ResourceUtils {
             }
         }
         return null;
+    }
+
+    public static Object getEventData(ExecutionEvent event) {
+        Object triggerEventData = null;
+        Object trigger = event.getTrigger();
+        if ((trigger != null) && (trigger instanceof Event)) {
+            triggerEventData = ((Event)trigger).data;
+        }
+        if (triggerEventData == null) {
+            triggerEventData = HandlerUtil.getActivePart(event);
+        }
+        return triggerEventData;
     }
 
 }

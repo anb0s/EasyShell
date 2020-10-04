@@ -71,12 +71,12 @@
       <command
             categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
             id="de.anbos.eclipse.easyshell.plugin.commands.all"
-            name="EasyShell Single Selection Popup">
+            name="EasyShell Single Selection">
       </command>
       <command
             categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
             id="de.anbos.eclipse.easyshell.plugin.commands.allmulti"
-            name="EasyShell Multi Selection Dialog">
+            name="EasyShell Multi Selection">
       </command>
    </extension>
    <extension
@@ -213,6 +213,23 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M2+M3+E">
       </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            default="false"
+            icon="images/easyshell.png"
+            id="de.anbos.eclipse.easyshell.plugin.editor"
+            launcher="de.anbos.eclipse.easyshell.plugin.editor.LauncherAll"
+            name="EasyShell Single Selection">
+      </editor>
+      <editor
+            default="false"
+            icon="images/easyshell.png"
+            id="de.anbos.eclipse.easyshell.plugin.editor"
+            launcher="de.anbos.eclipse.easyshell.plugin.editor.LauncherAllMulti"
+            name="EasyShell Multi Selection">
+      </editor>
    </extension>
 
 </plugin>

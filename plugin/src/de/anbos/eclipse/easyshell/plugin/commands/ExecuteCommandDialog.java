@@ -28,8 +28,9 @@ import de.anbos.eclipse.easyshell.plugin.preferences.MenuDataList;
 public class ExecuteCommandDialog extends ElementListSelectionDialog {
 
     private IWorkbench workbench;
+    private Object trigger;
 
-    public ExecuteCommandDialog(Shell parent, IWorkbench workbench, MenuDataList menuDataList, String title)
+    public ExecuteCommandDialog(Shell parent, IWorkbench workbench, Object trigger, MenuDataList menuDataList, String title)
     {
         super(parent, new ExecuteCommandLabelProvider());
         setTitle(title);
@@ -40,7 +41,7 @@ public class ExecuteCommandDialog extends ElementListSelectionDialog {
         setMatchEmptyString(true);
         setMultipleSelection(true);
         setImage(Activator.getImage(Constants.IMAGE_EASYSHELL));
-        init(workbench, menuDataList);
+        init(workbench, trigger, menuDataList);
     }
 
     @Override
@@ -51,8 +52,9 @@ public class ExecuteCommandDialog extends ElementListSelectionDialog {
         //this.close();
     }
 
-    void init(IWorkbench workbench, MenuDataList menuDataList) {
+    void init(IWorkbench workbench, Object trigger, MenuDataList menuDataList) {
         this.workbench = workbench;
+        this.trigger = trigger;
         Object[] elements = new MenuData[menuDataList.size()];
         for (int i=0;i<menuDataList.size();i++) {
             MenuData item = menuDataList.get(i);
@@ -67,7 +69,7 @@ public class ExecuteCommandDialog extends ElementListSelectionDialog {
         for (Object element : objects) {
             menues.add((MenuData)element);
         }
-        Utils.executeCommands(workbench, menues, true);
+        Utils.executeCommands(workbench, trigger, menues, true);
     }
 
 }

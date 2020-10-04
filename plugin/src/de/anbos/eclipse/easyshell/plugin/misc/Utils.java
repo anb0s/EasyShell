@@ -30,6 +30,7 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ToolTip;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -270,44 +271,44 @@ public class Utils {
         return params;
     }
 
-    public static void executeCommand(final IWorkbench workbench, final MenuData menuData, boolean asynch) {
+    public static void executeCommand(final IWorkbench workbench, final Object trigger, final MenuData menuData, boolean asynch) {
         //Activator.logInfo("executeCommand: " + menuData.getNameExpanded() + ", " + asynch, null);
-        executeCommand(workbench, "de.anbos.eclipse.easyshell.plugin.commands.execute", getParameterMapFromMenuData(menuData), asynch);
+        executeCommand(workbench, trigger, "de.anbos.eclipse.easyshell.plugin.commands.execute", getParameterMapFromMenuData(menuData), asynch);
     }
 
-    public static void executeCommand(final IWorkbench workbench, final String commandName, final Map<String, Object> params, boolean asynch) {
+    public static void executeCommand(final IWorkbench workbench, final Object trigger, final String commandName, final Map<String, Object> params, boolean asynch) {
         if (asynch) {
             Display display = workbench == null ? Display.getDefault() : workbench.getDisplay();
             display.asyncExec( new Runnable(){
                 @Override
                 public void run() {
-                    executeCommand(workbench, commandName, params);
+                    executeCommand(workbench, trigger, commandName, params);
                 }
             });
         } else {
-            executeCommand(workbench, commandName, params);
+            executeCommand(workbench, trigger, commandName, params);
         }
     }
 
-    public static void executeCommands(final IWorkbench workbench, final List<MenuData> menuData, boolean asynch) {
+    public static void executeCommands(final IWorkbench workbench, Object trigger, final List<MenuData> menuData, boolean asynch) {
         if (asynch) {
             Display display = workbench == null ? Display.getDefault() : workbench.getDisplay();
             display.asyncExec( new Runnable(){
                 @Override
                 public void run() {
                     for (MenuData element : menuData) {
-                        executeCommand(workbench, element, false);
+                        executeCommand(workbench, trigger, element, false);
                     }
                 }
             });
         } else {
             for (MenuData element : menuData) {
-                executeCommand(workbench, element, false);
+                executeCommand(workbench, trigger, element, false);
             }
         }
     }
 
-    private static void executeCommand(IWorkbench workbench, String commandName, Map<String, Object> params) {
+    private static void executeCommand(IWorkbench workbench, Object trigger, String commandName, Map<String, Object> params) {
         if (workbench == null) {
             workbench = PlatformUI.getWorkbench();
         }
@@ -321,7 +322,7 @@ public class Utils {
         if (command != null && handlerService != null) {
             ParameterizedCommand paramCommand = ParameterizedCommand.generateCommand(command, params);
             try {
-                handlerService.executeCommand(paramCommand, null);
+                handlerService.executeCommand(paramCommand, (Event)trigger);
             } catch (Exception e) {
                 Activator.logError(Activator.getResourceString("easyshell.message.error.handlerservice.execution"), paramCommand.toString(), e, true);
             }

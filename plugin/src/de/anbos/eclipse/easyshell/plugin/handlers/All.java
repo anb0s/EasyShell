@@ -43,16 +43,18 @@ public class All extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         // get resource type
-        IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-        ActionDelegate action = ResourceUtils.getActionExactResourceType(activePart,
+        Object triggerEventData = ResourceUtils.getEventData(event);
+        ActionDelegate action = ResourceUtils.getActionExactResourceType(triggerEventData,
                 ResourceType.resourceTypeFileOrDirectory);
         if (action != null) {
             // load the preferences
             list = getMenuDataList(action.getCommonResourceType());
             if (list.size() > 0) {
+                IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
+                Object trigger = event.getTrigger();
                 IWorkbenchWindow workbenchWindow = activePart.getSite().getWorkbenchWindow();
                 if (list.size() == 1) {
-                    Utils.executeCommand(workbenchWindow.getWorkbench(), list.get(0), false);
+                    Utils.executeCommand(workbenchWindow.getWorkbench(), trigger, list.get(0), false);
                 } else {
                     // create and open a new dialog
                     // close the old dialog
@@ -62,10 +64,10 @@ public class All extends AbstractHandler {
                     }
                     if (usePopup) {
                         dialog = new ExecuteCommandPopup(workbenchWindow.getShell(), workbenchWindow.getWorkbench(),
-                                list, getTitle());
+                                trigger, list, getTitle());
                     } else {
                         dialog = new ExecuteCommandDialog(workbenchWindow.getShell(), workbenchWindow.getWorkbench(),
-                                list, getTitle());
+                                trigger, list, getTitle());
                     }
                     dialog.open();
                 }

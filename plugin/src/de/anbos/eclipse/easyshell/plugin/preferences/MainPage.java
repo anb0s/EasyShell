@@ -140,7 +140,7 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
         // forward to menu page
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("preferencePageId","de.anbos.eclipse.easyshell.plugin.preferences.MenuPage");
-        Utils.executeCommand(workbench, "org.eclipse.ui.window.preferences", params, true);
+        Utils.executeCommand(workbench, null, "org.eclipse.ui.window.preferences", params, true);
 
         // create own
         Composite pageComponent = new Composite(parent, SWT.NONE);

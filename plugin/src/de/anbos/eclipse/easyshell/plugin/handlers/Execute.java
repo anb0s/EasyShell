@@ -17,8 +17,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
@@ -31,15 +29,15 @@ import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;
 public class Execute extends AbstractHandler {
 
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-        if (activePart != null) {
+        Object triggerEventData = ResourceUtils.getEventData(event);
+        if (triggerEventData != null) {
             String commandID  = event.getCommand().getId();
             ResourceType resourceType = ResourceType.getFromEnum(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.resource"));
             CommandType commandType = CommandType.getFromAction(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.type"));
             String commandValue = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.value");
             String commandWorkingDir = event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.workingdir");
             CommandTokenizer commandTokenizer = CommandTokenizer.getFromEnum(event.getParameter("de.anbos.eclipse.easyshell.plugin.commands.parameter.tokenizer"));
-            ActionDelegate action = ResourceUtils.getActionExactResourceType(activePart, resourceType);
+            ActionDelegate action = ResourceUtils.getActionExactResourceType(triggerEventData, resourceType);
             if (action != null) {
                 action.setResourceType(resourceType);
                 action.setCommandType(commandType);
