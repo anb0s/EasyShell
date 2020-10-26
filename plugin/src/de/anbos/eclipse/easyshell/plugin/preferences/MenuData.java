@@ -149,9 +149,9 @@ public class MenuData extends Data {
         // set menu data members
         setEnabled(Boolean.valueOf(tokenizer.nextToken()).booleanValue());
         // menu name type handling
-        MenuNameType nameType = MenuNameType.menuNameTypeUser;
+        MenuNameType nameTypeSer = MenuNameType.menuNameTypeUser;
         if (version.getId() >= Version.v2_0_002.getId()) {
-            nameType = MenuNameType.getFromEnum(tokenizer.nextToken());
+            nameTypeSer = MenuNameType.getFromEnum(tokenizer.nextToken());
         }
         String namePatternReaded = tokenizer.nextToken();
         String imageIdStr = Constants.IMAGE_NONE;
@@ -175,18 +175,18 @@ public class MenuData extends Data {
                 for (MenuNameType type : MenuNameType.getAsList()) {
                     setNamePattern(type.getPattern()); // set temporary
                     if (getNameExpanded().equals(namePatternReaded)) {
-                        nameType = type;
+                        nameTypeSer = type;
                         break;
                     }
                 }
             }
         }
-        setNameType(nameType);
-        if (nameType == MenuNameType.menuNameTypeUser) {
+        setNameType(nameTypeSer);
+        if (nameTypeSer == MenuNameType.menuNameTypeUser) {
             setNamePattern(namePatternReaded);
         } else if (version.getId() < Version.v2_0_004.getId()) {
             // convert to new names types
-            if (nameType == MenuNameType.menuNameTypeGeneric1) {
+            if (nameTypeSer == MenuNameType.menuNameTypeGeneric1) {
                 setNameTypeFromCategory();
             }
         }
