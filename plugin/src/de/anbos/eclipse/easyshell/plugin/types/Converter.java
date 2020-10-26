@@ -139,4 +139,4 @@ public enum Converter {
     public static int getFirstIndex() {
         return 0;
     }
-};
+}
