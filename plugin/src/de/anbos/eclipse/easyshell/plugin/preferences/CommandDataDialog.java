@@ -187,7 +187,7 @@ public class CommandDataDialog extends StatusDialog {
         try {
             keyStroke = KeyStroke.getInstance("Ctrl+Space");
         } catch (ParseException e) {
-            e.printStackTrace();
+            Activator.logError("ContentProposalAdapter", e);
         }
         // assume that myTextControl has already been created in some way
         List<Variable> variables = Variable.getVisibleVariables();
