@@ -75,7 +75,6 @@ public class CommandDataDialog extends StatusDialog {
     private ContentProposalAdapter dirTextAssist;
     private Text    valueText;
     private Combo   tokenizerCombo;
-    private ContentProposalAdapter valueTextAssist;
 
     @Override
     public void create() {
@@ -175,7 +174,7 @@ public class CommandDataDialog extends StatusDialog {
         dirTextAssist = addContentAssist(dirText);
         // create input valueText field and add content assist
         valueText = UtilsUI.createTextField(pageGroupCommand, Activator.getResourceString("easyshell.command.editor.dialog.label.value"), Activator.getResourceString("easyshell.command.editor.dialog.label.tooltip.value") + Activator.getResourceString("easyshell.command.editor.dialog.tooltip.content.assists"), data.getCommand(), true, true);
-        valueTextAssist = addContentAssist(valueText);
+        ContentProposalAdapter valueTextAssist = addContentAssist(valueText);
         valueTextAssist.setEnabled(true);
         // create tokenizer combo
         createTokenizerCombo(pageGroupCommand);

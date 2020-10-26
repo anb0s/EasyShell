@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -179,28 +180,28 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static void logSuccess(String title, String msg, Exception e, boolean tooltip) {
-        log(Status.OK, title != null ? title + ": " + msg : msg, e);
+        log(IStatus.OK, title != null ? title + ": " + msg : msg, e);
         if (tooltip) {
             tooltipSuccess(title, msg);
         }
     }
 
     public static void logInfo(String title, String msg, Exception e, boolean tooltip) {
-        log(Status.INFO, title != null ? title + ": " + msg : msg, e);
+        log(IStatus.INFO, title != null ? title + ": " + msg : msg, e);
         if (tooltip) {
             tooltipInfo(title, msg);
         }
     }
 
     public static void logWarning(String title, String msg, Exception e, boolean tooltip) {
-        log(Status.WARNING, title != null ? title + ": " + msg : msg, e);
+        log(IStatus.WARNING, title != null ? title + ": " + msg : msg, e);
         if (tooltip) {
             tooltipWarning(title, msg);
         }
     }
 
     public static void logError(String title, String msg, Exception e, boolean tooltip) {
-        log(Status.ERROR, title != null ? title + ": " + msg : msg, e);
+        log(IStatus.ERROR, title != null ? title + ": " + msg : msg, e);
         if (tooltip && (GeneralDataStore.instance().getData().getToolTipError() == CheckBox.yes)) {
             tooltipError(title, msg);
         }
@@ -223,7 +224,7 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static void log(int status, String msg, Exception e) {
-        getDefault().getLog().log(new Status(status, Constants.PLUGIN_ID, Status.OK, msg, e));
+        getDefault().getLog().log(new Status(status, Constants.PLUGIN_ID, IStatus.OK, msg, e));
      }
 
     public static void tooltipSuccess(String title, String msg) {

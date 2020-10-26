@@ -40,7 +40,7 @@ public class DataStore<ITEMS_TYPE extends Data> extends Store implements IDataSt
             IData item = (IData)items.get(i);
             if(item.equals(data)) {
                 try {
-                    return (IData)items.get(i - 1);
+                    return items.get(i - 1);
                 } catch(Throwable t) {
                     return null;
                 }
