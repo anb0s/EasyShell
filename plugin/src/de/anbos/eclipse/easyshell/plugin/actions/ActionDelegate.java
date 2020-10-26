@@ -94,9 +94,9 @@ public class ActionDelegate implements IObjectActionDelegate {
 
     public void run(IAction action) {
         // String for all commands in case of clipboard
-        String cmdAll = null;
+        StringBuilder cmdAllBuilder = null;
         if (commandType == CommandType.commandTypeClipboard) {
-            cmdAll = new String();
+            cmdAllBuilder = new StringBuilder();
         }
         // get the manager for variables expansion
         IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
@@ -118,7 +118,7 @@ public class ActionDelegate implements IObjectActionDelegate {
                     if (commandType == CommandType.commandTypeClipboard) {
                         String cmd = variableManager.performStringSubstitution(commandValue, false);
                         Activator.logDebug("clp:>" + cmd + "<");
-                        cmdAll += cmd;
+                        cmdAllBuilder.append(cmd);
                     }
                     // handling command line
                     else {
@@ -134,7 +134,8 @@ public class ActionDelegate implements IObjectActionDelegate {
             }
         }
         // handling copy to clipboard
-        if ((commandType == CommandType.commandTypeClipboard) && (cmdAll != null) && (cmdAll.length() != 0)) {
+        if ((commandType == CommandType.commandTypeClipboard) && (cmdAllBuilder != null) && (cmdAllBuilder.length() != 0)) {
+            String cmdAll = cmdAllBuilder.toString();
             Utils.copyToClipboard(cmdAll);
             if (GeneralDataStore.instance().getData().getToolTipClipboard() == CheckBox.yes) {
                 Activator.tooltipInfo(Activator.getResourceString("easyshell.message.copytoclipboard"), cmdAll);

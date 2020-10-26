@@ -117,12 +117,8 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         int dialogImageType = MessageDialog.QUESTION;
         if (menus.size() >= 0) {
             dialogImageType = MessageDialog.WARNING;
-            String menuNames = "";
-            for (MenuData menu : menus) {
-                menuNames += menu.getNameExpanded() + "\n";
-            }
             question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.defaults.menu.question"),
-                    menuNames);
+                    Utils.getMenuNames(menus));
         }
         MessageDialog dialog = new MessageDialog(
                 null, title, null, question,
@@ -428,14 +424,16 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
             menus.addAll(menusForOne);
         }
         // ask user
-        String commandNames = "";
+        StringBuilder commandNamesBuilder = new StringBuilder();
         PresetType type = PresetType.presetUnknown;
         for (CommandData command : commands) {
             if (type == PresetType.presetUnknown) {
                 type = command.getPresetType();
             }
-            commandNames += command.getCommandAsComboName() + "\n";
+            commandNamesBuilder.append(command.getCommandAsComboName());
+            commandNamesBuilder.append("\n");
         }
+        String commandNames = commandNamesBuilder.toString();
         String title = null;
         String question = null;
         if (type == PresetType.presetPluginModify) {
@@ -452,10 +450,7 @@ public class CommandPage extends org.eclipse.jface.preference.PreferencePage
         int dialogImageType = MessageDialog.QUESTION;
         if (menus.size() > 0) {
             dialogImageType = MessageDialog.WARNING;
-            String menuNames = "";
-            for (MenuData menu : menus) {
-                menuNames += menu.getNameExpanded() + "\n";
-            }
+            String menuNames = Utils.getMenuNames(menus);
             if (type == PresetType.presetPluginModify) {
                 title = Activator.getResourceString("easyshell.command.page.dialog.remove.menu.user.title");
                 question = MessageFormat.format(Activator.getResourceString("easyshell.command.page.dialog.remove.menu.user.question"),

@@ -52,6 +52,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 
 public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         implements IWorkbenchPreferencePage {
@@ -430,12 +431,8 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         }
         if (menus.size() > 0) {
             String title = Activator.getResourceString("easyshell.menu.page.dialog.remove.title");
-            String menuNames = "";
-            for (MenuData menu : menus) {
-                menuNames += menu.getNameExpanded() + "\n";
-            }
             String question = MessageFormat.format(Activator.getResourceString("easyshell.menu.page.dialog.remove.question"),
-                    menuNames);
+                    Utils.getMenuNames(menus));
             MessageDialog dialog = new MessageDialog(
                     null, title, null, question,
                     MessageDialog.QUESTION,

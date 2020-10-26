@@ -432,4 +432,12 @@ public class Utils {
         return listOut;
     }
 
+    public static String getMenuNames(List<MenuData> menus) {
+        StringBuilder menuStringBld = new StringBuilder();
+        for (MenuData menu : menus) {
+            menuStringBld.append(menu.getNameExpanded());
+            menuStringBld.append("\n");
+        }
+        return menuStringBld.toString();
+    }
 }

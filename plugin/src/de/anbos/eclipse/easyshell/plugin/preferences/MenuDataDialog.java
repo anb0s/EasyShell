@@ -422,10 +422,7 @@ public class MenuDataDialog extends StatusDialog {
         int dialogImageType = MessageDialog.QUESTION;
         if (menus.size() > 0) {
             dialogImageType = MessageDialog.WARNING;
-            String menuNames = "";
-            for (MenuData menu : menus) {
-                menuNames += menu.getNameExpanded() + "\n";
-            }
+            String menuNames = Utils.getMenuNames(menus);
             if (data.getPresetType() == PresetType.presetPluginModify) {
                 title = Activator.getResourceString("easyshell.menu.editor.dialog.title.remove.user.menu");
                 question = MessageFormat.format(Activator.getResourceString("easyshell.menu.editor.dialog.question.remove.user.menu"),
@@ -574,12 +571,8 @@ public class MenuDataDialog extends StatusDialog {
             if (menus.size() >0) {
                 title = Activator.getResourceString("easyshell.menu.editor.dialog.title.duplicate");
                 String commandNames = data.getCommandAsComboName();
-                String menuNames = "";
-                for (MenuData menu : menus) {
-                    menuNames += menu.getNameExpanded() + "\n";
-                }
                 String question = MessageFormat.format(Activator.getResourceString("easyshell.menu.editor.dialog.question.duplicate"),
-                        commandNames, menuNames);
+                        commandNames, Utils.getMenuNames(menus));
                 MessageDialog dialog = new MessageDialog(
                         null, title, null, question,
                         MessageDialog.WARNING,
