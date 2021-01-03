@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-package de.anbos.eclipse.easyshell.plugin;
+package de.anbos.eclipse.easyshell.plugin.misc;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IDynamicVariable;
@@ -22,6 +22,7 @@ import de.anbos.eclipse.easyshell.plugin.types.Converters;
 import de.anbos.eclipse.easyshell.plugin.types.IConverter;
 import de.anbos.eclipse.easyshell.plugin.types.IVariableResolver;
 import de.anbos.eclipse.easyshell.plugin.types.Quotes;
+import de.anbos.eclipse.easyshell.plugin.types.Resource;
 import de.anbos.eclipse.easyshell.plugin.types.Variable;
 import de.anbos.eclipse.easyshell.plugin.types.Variables;
 

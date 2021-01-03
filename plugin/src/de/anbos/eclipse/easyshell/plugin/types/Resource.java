@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-package de.anbos.eclipse.easyshell.plugin;
+package de.anbos.eclipse.easyshell.plugin.types;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,16 +20,10 @@ import java.net.URL;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
-import org.osgi.framework.Bundle;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.misc.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
-import de.anbos.eclipse.easyshell.plugin.types.OS;
 
 public class Resource {
 
@@ -138,11 +132,7 @@ public class Resource {
         if (resource != null) {
             return resource.getName();
         } else {
-            /*if (file.isDirectory()) {
-                resourceName = "";
-            } else {*/
             return file.getName();
-            //}
         }
     }
 
@@ -223,17 +213,9 @@ public class Resource {
 
     public String getFullQualifiedName() {
         if (resource != null) {
-            Bundle bundle = Platform.getBundle("org.eclipse.jdt.core");
-            if (bundle != null) {
-                IJavaElement element = JavaCore.create(resource);
-                if (element instanceof IPackageFragment) {
-                    return ((IPackageFragment)element).getElementName();
-                } else if (element instanceof ICompilationUnit) {
-                    IType type = ((ICompilationUnit)element).findPrimaryType();
-                    if (type != null) {
-                        return type.getFullyQualifiedName();
-                    }
-                }
+            String res = ResourceUtils.getFullQualifiedName(resource);
+            if (res != null) {
+                return res;
             }
         }
         return getFullQualifiedPathName();
@@ -242,16 +224,7 @@ public class Resource {
     public String getFullQualifiedPathName() {
         String fqcn = "";
         if (resource != null) {
-
             return resource.getFullPath().toString();
-            /*
-            String[] segments = iRes.getProjectRelativePath().segments();
-            for (int i=0;i<segments.length-1;i++) {
-                fqcn += segments[i] + ".";
-            }
-            fqcn += segments[segments.length-1];
-            */
-            //fqcn += segments[segments.length-1].replaceAll("(\\..*)", "");
         }
         return fqcn;
     }

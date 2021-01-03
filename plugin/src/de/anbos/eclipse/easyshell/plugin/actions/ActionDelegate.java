@@ -28,13 +28,13 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
-import de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver;
-import de.anbos.eclipse.easyshell.plugin.Resource;
-import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
+import de.anbos.eclipse.easyshell.plugin.misc.DynamicVariableResolver;
+import de.anbos.eclipse.easyshell.plugin.misc.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.preferences.GeneralDataStore;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.Quotes;
+import de.anbos.eclipse.easyshell.plugin.types.Resource;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 import de.anbos.eclipse.easyshell.plugin.types.CheckBox;
 import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;

@@ -23,7 +23,6 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.VariablesPlugin;
 
-import de.anbos.eclipse.easyshell.plugin.Resource;
 import de.anbos.eclipse.easyshell.plugin.preferences.CommandData;
 
 public enum Variable {

@@ -167,7 +167,7 @@
       <variable
             description="EasyShell Variables"
             name="easyshell"
-            resolver="de.anbos.eclipse.easyshell.plugin.DynamicVariableResolver"
+            resolver="de.anbos.eclipse.easyshell.plugin.misc.DynamicVariableResolver"
             supportsArgument="true">
       </variable>
    </extension>

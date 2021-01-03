@@ -19,9 +19,9 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.IAction;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
-import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.actions.Action;
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
+import de.anbos.eclipse.easyshell.plugin.misc.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.types.CommandType;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 import de.anbos.eclipse.easyshell.plugin.types.CommandTokenizer;

@@ -22,10 +22,10 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
-import de.anbos.eclipse.easyshell.plugin.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
 import de.anbos.eclipse.easyshell.plugin.commands.ExecuteCommandPopup;
 import de.anbos.eclipse.easyshell.plugin.exceptions.UnknownCommandID;
+import de.anbos.eclipse.easyshell.plugin.misc.ResourceUtils;
 import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import de.anbos.eclipse.easyshell.plugin.commands.ExecuteCommandDialog;
 import de.anbos.eclipse.easyshell.plugin.preferences.MenuData;

@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-package de.anbos.eclipse.easyshell.plugin;
+package de.anbos.eclipse.easyshell.plugin.misc;
 
 import java.io.File;
 import java.net.URI;
@@ -24,8 +24,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
-import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Event;
@@ -41,16 +39,9 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 import org.osgi.framework.Bundle;
 
 import de.anbos.eclipse.easyshell.plugin.actions.ActionDelegate;
+import de.anbos.eclipse.easyshell.plugin.types.Resource;
 import de.anbos.eclipse.easyshell.plugin.types.ResourceType;
 
-import org.eclipse.cdt.internal.core.model.ExternalTranslationUnit;
-import org.eclipse.cdt.internal.core.model.IncludeReference;
-import org.eclipse.cdt.internal.ui.cview.IncludeReferenceProxy;
-import org.eclipse.cdt.internal.ui.includebrowser.IBNode;
-import org.eclipse.cdt.core.model.IIncludeReference;
-
-
-@SuppressWarnings("restriction")
 public class ResourceUtils {
 
     static public ISelection getResourceSelection(Object obj) {
@@ -174,31 +165,17 @@ public class ResourceUtils {
             // optional org.eclipse.jdt.core
             Bundle bundle = Platform.getBundle("org.eclipse.jdt.core");
             if (bundle != null) {
-                if ( (adaptable instanceof PackageFragment) &&
-                     ( ((PackageFragment) adaptable).getPackageFragmentRoot() instanceof JarPackageFragmentRoot) ) {
-                    return new Resource(getJarFile(((PackageFragment) adaptable)
-                            .getPackageFragmentRoot()));
-                } else if (adaptable instanceof JarPackageFragmentRoot) {
-                    return new Resource(getJarFile(adaptable));
+                Resource res = ResourceUtilsJDT.getResource(adaptable);
+                if (res != null) {
+                    return res;
                 }
             }
             // optional org.eclipse.cdt.core
             bundle = Platform.getBundle("org.eclipse.cdt.core");
             if (bundle != null) {
-                IPath path = null;
-                if (adaptable instanceof IncludeReferenceProxy) {
-                    IIncludeReference includeRef = ((IncludeReferenceProxy) adaptable).getReference();
-                    path = includeRef.getPath();
-                } else if (adaptable instanceof IncludeReference) {
-                    IIncludeReference includeRef = ((IncludeReference) adaptable);
-                    path = includeRef.getPath();
-                } else if (adaptable instanceof ExternalTranslationUnit) {
-                    path = ((ExternalTranslationUnit) adaptable).getLocation();
-                } else if (adaptable instanceof IBNode) {
-                    path = ((IBNode) adaptable).getRepresentedPath();
-                }
-                if (path != null) {
-                    return new Resource(path.toFile());
+                Resource res = ResourceUtilsCDT.getResource(adaptable);
+                if (res != null) {
+                    return res;
                 }
             }
             // File
@@ -210,14 +187,22 @@ public class ResourceUtils {
         return null;
     }
 
-    static private File getJarFile(IAdaptable adaptable) {
-        JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
-        File file = (File)jpfr.getPath().makeAbsolute().toFile();
-        if (!((File)file).exists()) {
-            File projectFile = new File(jpfr.getJavaProject().getProject().getLocation().toOSString());
-            file = new File(projectFile.getParent() + file.toString());
+    static public String getFullQualifiedName(IResource resource) {
+        Bundle bundle = Platform.getBundle("org.eclipse.jdt.core");
+        if (bundle != null) {
+            String res = ResourceUtilsJDT.getFullQualifiedName(resource);
+            if (res != null) {
+                return res;
+            }
         }
-        return file;
+        bundle = Platform.getBundle("org.eclipse.cdt.core");
+        if (bundle != null) {
+            String res = ResourceUtilsCDT.getFullQualifiedName(resource);
+            if (res != null) {
+                return res;
+            }
+        }
+        return null;
     }
 
     static public ActionDelegate getActionCommonResourceType(Object obj, ResourceType resType) {
