@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2020 Andre Bossert <anb0s@anbos.de>.
+ * Copyright (c) 2014-2021 Andre Bossert <anb0s@anbos.de>.
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
