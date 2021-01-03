@@ -181,7 +181,7 @@
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.run"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+R">
+            sequence="M2+M3+R">
       </key>
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.explore"
