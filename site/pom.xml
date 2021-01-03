@@ -29,9 +29,9 @@
                     <appArgLine>-application org.eclipse.ant.core.antRunner -buildfile packaging-p2composite.ant p2.composite.add -Dsite.label="EasyShell" -Dsite.dir=${site.dir} -Dproject.build.directory=${project.build.directory} -DunqualifiedVersion=${unqualifiedVersion} -DbuildQualifier=${buildQualifier}</appArgLine>
                     <repositories>
                         <repository>
-                            <id>Eclipse-2020-06</id>
+                            <id>Eclipse-2020-09</id>
                             <layout>p2</layout>
-                            <url>http://download.eclipse.org/releases/2020-06</url>
+                            <url>http://download.eclipse.org/releases/2020-09</url>
                         </repository>
                     </repositories>
                     <dependencies>
