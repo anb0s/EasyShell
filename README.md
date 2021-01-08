@@ -41,7 +41,7 @@ Keyboard-shortcuts:
 ![multi_selection_dialog_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+Shift+E)")
 ![multi_selection_dialog_linux](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_multi-selection_dialog_linux.png "Dialog for multiple tool selection @ Linux (Alt+Shift+E)")
 
-Shortcuts that executes the command directly if only one defined or opens a popup menu like Alt + E reduced for category:
+Shortcuts that executes the command directly if only one defined or opens a popup menu like **Alt + E** reduced for category:
 
 **Alt + O**: Open Here (shell)
 
@@ -53,9 +53,11 @@ Shortcuts that executes the command directly if only one defined or opens a popu
 
 **Alt + C**: Copy to Clipboard
 
+Special and not available if no user defined categories are available:
+
 **Alt + U**: User defined category
 
-Special not available for all OS:
+Special and not available for all OS:
 
 **Alt + D**: Open with Default application
 
