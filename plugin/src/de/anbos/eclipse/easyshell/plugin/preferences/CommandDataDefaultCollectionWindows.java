@@ -45,6 +45,12 @@ public class CommandDataDefaultCollectionWindows {
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} ${easyshell:resource_name}"));
         list.add(new CommandData("213e0ae1-d548-4362-bb97-9b27e615d939", PresetType.presetPlugin, OS.osWindows, "Command Prompt (hold)", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} cmd.exe /K ${easyshell:resource_name}"));
+        list.add(new CommandData("25a6c5a2-b6fa-4f3e-be7b-9baad543f8cb", PresetType.presetPlugin, OS.osWindows, "Command Prompt as Admin", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "powershell.exe -command \"Start-Process cmd -Verb RunAs -ArgumentList '/K pushd ${easyshell:container_loc}'\""));
+        list.add(new CommandData("eb3f4c11-a629-4e48-a83a-3620b82f738e", PresetType.presetPlugin, OS.osWindows, "Command Prompt as Admin", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "powershell.exe -command \"Start-Process cmd -Verb RunAs -ArgumentList '/C pushd ${easyshell:container_loc} & ${easyshell:resource_name}'\""));
+        list.add(new CommandData("ded01a38-7f5e-4c06-94a4-c6c77373a056", PresetType.presetPlugin, OS.osWindows, "Command Prompt as Admin (hold)", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+                "powershell.exe -command \"Start-Process cmd -Verb RunAs -ArgumentList '/K pushd ${easyshell:container_loc} & ${easyshell:resource_name}'\""));
         // Windows PowerShell
         list.add(new CommandData("9cb0d29e-93aa-4139-93d2-079ba63ff726", PresetType.presetPlugin, OS.osWindows, "PowerShell", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 "powershell.exe -command \"Start-Process -WorkingDirectory '${easyshell:container_loc}' powershell\""));
