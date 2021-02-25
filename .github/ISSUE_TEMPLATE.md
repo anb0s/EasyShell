@@ -13,5 +13,5 @@
 - Eclipse Version: **{version}**
 - Java Version: **{version}**
 - Operating System Version: **{version}**
-- Desktop Version: **{version}**
-- External Tool Version: **{version}**
+- OPTIONAL: Linux Desktop Version: **{version}**
+- OPTIONAL: External Tool Version: **{version}**
