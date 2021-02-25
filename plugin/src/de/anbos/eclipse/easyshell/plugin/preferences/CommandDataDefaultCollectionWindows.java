@@ -47,11 +47,11 @@ public class CommandDataDefaultCollectionWindows {
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} cmd.exe /K ${easyshell:resource_name}"));
         // Windows PowerShell
         list.add(new CommandData("9cb0d29e-93aa-4139-93d2-079ba63ff726", PresetType.presetPlugin, OS.osWindows, "PowerShell", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
-                "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} powershell.exe"));
+                "powershell.exe -command \"Start-Process -WorkingDirectory '${easyshell:container_loc}' powershell\""));
         list.add(new CommandData("af2968d0-3a1a-40db-b3cb-e2e16293a285", PresetType.presetPlugin, OS.osWindows, "PowerShell", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
-                "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} powershell.exe -command ./\"${easyshell:resource_name}\""));
+                "powershell.exe -command \"Start-Process powershell -ArgumentList '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
         list.add(new CommandData("939ff127-1b7d-4528-8d40-bd9607f5b3d2", PresetType.presetPlugin, OS.osWindows, "PowerShell (hold)", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
-                "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} powershell.exe -noexit -command ./\"${easyshell:resource_name}\""));
+                "powershell.exe -command \"Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
         // Windows Cygwin (Bash)
         list.add(new CommandData("5b1e3806-a9ab-4866-b660-823ac388a575", PresetType.presetPlugin, OS.osWindows, "Cygwin Bash", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 "cmd.exe /C start \"${easyshell:project_name}\" /D ${easyshell:container_loc} \"C:\\cygwin64\\bin\\mintty.exe\""));
