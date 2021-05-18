@@ -32,32 +32,38 @@ The plugin is platform independent in principal. It just launches a (configurabl
 Keyboard-shortcuts:
 -------------------
 
-**Alt + E**: Main popup menu (Windows)
+**ATTENTION** For EasyShell **v2.2 and newer** all shortcuts are starting with **Alt + E** and after releasing one of the letters **A, E, C, D, X, O, R, U** must be used:
+
+![main_menu_dialog_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.2_main_menu_dialog_windows.png "Main menu dialog @ Windows (Alt+E)")
+
+**Alt + E, A**: Main popup menu shows all commands and multiple commands can be selected (EasyShell v2.1 and older: Alt + E)
+
+![multi_selection_dialog_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+E,M)")
+![multi_selection_dialog_linux](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_multi-selection_dialog_linux.png "Dialog for multiple tool selection @ Linux (Alt+E,M)")
+
+**Alt + E, E**: Main popup menu shows all commands and one commands can be directly selected (EasyShell v2.1 and older: Alt + Shift + E)
 
 ![popup_menu_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_popup_menu_windows.png "Popup Menu @ Windows (Alt+E)")
 
-**Alt + Shift + E**: execute multiple commands for selection(s)
+Shortcuts that executes the command directly if only one defined or opens a popup menu like **Alt + E, E** reduced for category:
 
-![multi_selection_dialog_windows](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+Shift+E)")
-![multi_selection_dialog_linux](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_multi-selection_dialog_linux.png "Dialog for multiple tool selection @ Linux (Alt+Shift+E)")
-
-Shortcuts that executes the command directly if only one defined or opens a popup menu like Alt + E reduced for category:
-
-**Alt + O**: Open Here (shell)
+**Alt + E, O**: Open - open or show in shell
 
 ![popup_menu_linux](https://raw.githubusercontent.com/anb0s/EasyShell/master/site/images/EasyShell_2.1_popup_menu_linux.png "Popup Menu @ Linux (Alt+O)")
 
-**Alt + R**: Run with (shell)
+**Alt + E, R**: Run - execute in shell
 
-**Alt + X**: Explore
+**Alt + E, X**: Explore - open and select in file browser
 
-**Alt + C**: Copy to Clipboard
+**Alt + E, C**: Clipboard - copy to clipboard
 
-**Alt + U**: User defined category
+Special and not available if no user defined categories are available:
 
-Special not available for all OS:
+**Alt + E, U**: User - user defined category
 
-**Alt + D**: Open with Default application
+Special and not available for all OS:
+
+**Alt + E, D**: Default - open with default application
 
 Supported OS and commands:
 --------------------------
@@ -66,8 +72,9 @@ The following platform, shell combinations and tools are supported as selections
 
 **Windows:**
 - Terminals
-  - Command prompt (known as DOS shell or cmd.exe)
-  - PowerShell
+  - Command prompt (known as DOS shell or cmd.exe) also as admin
+  - PowerShell (also as admin)
+  - Windows Terminal
   - Bash
     - Cygwin: http://cygwin.com
     - Git for Windows 1.x/2.x: https://git-for-windows.github.io
