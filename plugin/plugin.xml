@@ -71,12 +71,12 @@
       <command
             categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
             id="de.anbos.eclipse.easyshell.plugin.commands.all"
-            name="EasyShell Single Selection">
+            name="EasyShell All (Single Action)">
       </command>
       <command
             categoryId="de.anbos.eclipse.easyshell.plugin.commands.category"
             id="de.anbos.eclipse.easyshell.plugin.commands.allmulti"
-            name="EasyShell Multi Selection">
+            name="EasyShell All (Multiple Actions)">
       </command>
    </extension>
    <extension
@@ -176,42 +176,42 @@
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.open"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+O">
+            sequence="M3+E O">
       </key>
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.run"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M2+M3+R">
+            sequence="M3+E R">
       </key>
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.explore"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+X">
+            sequence="M3+E X">
       </key>
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.clipboard"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+C">
+            sequence="M3+E C">
       </key>
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.all"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+E">
+            sequence="M3+E E">
       </key>
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.default"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+D">
+            sequence="M3+E D">
       </key>
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.user"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+U">
+            sequence="M3+E U">
       </key>
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.allmulti"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M2+M3+E">
+            sequence="M3+E A">
       </key>
    </extension>
    <extension
@@ -221,14 +221,14 @@
             icon="images/easyshell.png"
             id="de.anbos.eclipse.easyshell.plugin.editor"
             launcher="de.anbos.eclipse.easyshell.plugin.editor.LauncherAll"
-            name="EasyShell Single Selection">
+            name="EasyShell All (Single Action)">
       </editor>
       <editor
             default="false"
             icon="images/easyshell.png"
             id="de.anbos.eclipse.easyshell.plugin.editor"
             launcher="de.anbos.eclipse.easyshell.plugin.editor.LauncherAllMulti"
-            name="EasyShell Multi Selection">
+            name="EasyShell All (Multiple Action)">
       </editor>
    </extension>
 

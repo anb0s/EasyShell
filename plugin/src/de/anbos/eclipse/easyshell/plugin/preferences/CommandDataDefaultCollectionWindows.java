@@ -64,6 +64,7 @@ public class CommandDataDefaultCollectionWindows {
                 "powershell.exe -command \"Start-Process powershell -Verb RunAs -ArgumentList '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
         list.add(new CommandData("160086ae-dd6d-46b2-8929-f4122048d04d", PresetType.presetPlugin, OS.osWindows, "PowerShell as Admin (hold)", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 "powershell.exe -command \"Start-Process powershell -Verb RunAs -ArgumentList '-NoExit', '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
+        // Windows Terminal
         list.add(new CommandData("1ba8590c-f331-4dd9-8473-e02989a6667a", PresetType.presetPlugin, OS.osWindows, "Windows Terminal", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
                 "wt new-tab -d \"${easyshell:container_loc}\" --title \"${easyshell:project_name}\""));
         list.add(new CommandData("fa674161-726b-435c-b18d-051ea1d808a2", PresetType.presetPlugin, OS.osWindows, "Windows Terminal", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
