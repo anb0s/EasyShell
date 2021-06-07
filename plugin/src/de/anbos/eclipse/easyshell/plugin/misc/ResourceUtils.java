@@ -101,7 +101,7 @@ public class ResourceUtils {
         return selection;
     }
 
-    static public Resource getResource(Object myObj) {
+    static private Resource getResourceInternal(Object myObj) {
         Object object = null;
 
         // handle IEditorPart
@@ -165,7 +165,7 @@ public class ResourceUtils {
             // optional org.eclipse.jdt.core
             Bundle bundle = Platform.getBundle("org.eclipse.jdt.core");
             if (bundle != null) {
-                Resource res = ResourceUtilsJDT.getResource(adaptable);
+                Resource res = ResourceUtilsJDTCore.getResource(adaptable);
                 if (res != null) {
                     return res;
                 }
@@ -173,7 +173,16 @@ public class ResourceUtils {
             // optional org.eclipse.cdt.core
             bundle = Platform.getBundle("org.eclipse.cdt.core");
             if (bundle != null) {
-                Resource res = ResourceUtilsCDT.getResource(adaptable);
+                Resource res = null;
+                // optional org.eclipse.cdt.ui
+                bundle = Platform.getBundle("org.eclipse.cdt.ui");
+                if (bundle != null) {
+                    res = ResourceUtilsCDTUI.getResource(adaptable);
+                }
+                if (res != null) {
+                    return res;
+                }
+                res = ResourceUtilsCDTCore.getResource(adaptable);
                 if (res != null) {
                     return res;
                 }
@@ -187,17 +196,26 @@ public class ResourceUtils {
         return null;
     }
 
+    static public Resource getResource(Object myObj) {
+        try {
+            return getResourceInternal(myObj);
+        } catch(Exception e) {
+            // no op
+        }
+        return null;
+    }
+
     static public String getFullQualifiedName(IResource resource) {
         Bundle bundle = Platform.getBundle("org.eclipse.jdt.core");
         if (bundle != null) {
-            String res = ResourceUtilsJDT.getFullQualifiedName(resource);
+            String res = ResourceUtilsJDTCore.getFullQualifiedName(resource);
             if (res != null) {
                 return res;
             }
         }
         bundle = Platform.getBundle("org.eclipse.cdt.core");
         if (bundle != null) {
-            String res = ResourceUtilsCDT.getFullQualifiedName(resource);
+            String res = ResourceUtilsCDTCore.getFullQualifiedName(resource);
             if (res != null) {
                 return res;
             }

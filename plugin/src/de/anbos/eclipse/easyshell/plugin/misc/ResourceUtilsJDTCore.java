@@ -28,7 +28,7 @@ import org.eclipse.jdt.internal.core.PackageFragment;
 import de.anbos.eclipse.easyshell.plugin.types.Resource;
 
 @SuppressWarnings("restriction")
-public class ResourceUtilsJDT {
+public class ResourceUtilsJDTCore {
 
     static private File getJarFile(IAdaptable adaptable) {
         JarPackageFragmentRoot jpfr = (JarPackageFragmentRoot) adaptable;
