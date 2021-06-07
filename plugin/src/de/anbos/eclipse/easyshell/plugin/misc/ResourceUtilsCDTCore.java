@@ -13,32 +13,25 @@
 
 package de.anbos.eclipse.easyshell.plugin.misc;
 
-import org.eclipse.cdt.core.model.IIncludeReference;
-import org.eclipse.cdt.internal.core.model.ExternalTranslationUnit;
-import org.eclipse.cdt.internal.core.model.IncludeReference;
-import org.eclipse.cdt.internal.ui.cview.IncludeReferenceProxy;
-import org.eclipse.cdt.internal.ui.includebrowser.IBNode;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.cdt.core.model.IIncludeReference;
+import org.eclipse.cdt.internal.core.model.ExternalTranslationUnit;
+import org.eclipse.cdt.internal.core.model.IncludeReference;
 
 import de.anbos.eclipse.easyshell.plugin.types.Resource;
 
 @SuppressWarnings("restriction")
-public class ResourceUtilsCDT {
+public class ResourceUtilsCDTCore {
 
     static public Resource getResource(IAdaptable adaptable) {
         IPath path = null;
-        if (adaptable instanceof IncludeReferenceProxy) {
-            IIncludeReference includeRef = ((IncludeReferenceProxy) adaptable).getReference();
-            path = includeRef.getPath();
-        } else if (adaptable instanceof IncludeReference) {
+        if (adaptable instanceof IncludeReference) {
             IIncludeReference includeRef = ((IncludeReference) adaptable);
             path = includeRef.getPath();
         } else if (adaptable instanceof ExternalTranslationUnit) {
             path = ((ExternalTranslationUnit) adaptable).getLocation();
-        } else if (adaptable instanceof IBNode) {
-            path = ((IBNode) adaptable).getRepresentedPath();
         }
         if (path != null) {
             return new Resource(path.toFile());
