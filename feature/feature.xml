@@ -2,7 +2,7 @@
 <feature
       id="de.anbos.eclipse.easyshell.feature"
       label="EasyShell"
-      version="2.2.1.qualifier"
+      version="2.2.2.qualifier"
       provider-name="Andre Bossert"
       plugin="de.anbos.eclipse.easyshell.plugin">
 
