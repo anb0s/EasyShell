@@ -50,8 +50,8 @@ import de.anbos.eclipse.easyshell.plugin.types.CheckBox;
 
 public class Utils {
 
-    /* tooltip display parameters */
-    static boolean TOOLTIP_USE_SWT_JFACE = true; /*bug: https://github.com/anb0s/EasyShell/issues/103*/
+    // tooltip display parameters
+    static boolean TOOLTIP_USE_SWT_JFACE = true; // bug: https://github.com/anb0s/EasyShell/issues/103
     static int TOOLTIP_HIDE_DELAY = 3000;
 
     public static OS getOS() {
@@ -225,13 +225,16 @@ public class Utils {
         if (control == null) {
             control = Display.getDefault().getActiveShell();
         }
-        /*bug: https://github.com/anb0s/EasyShell/issues/103*/
-        if (TOOLTIP_USE_SWT_JFACE) {
-            // the SWT JFace tooltip (hide delay customization)
-            showToolTipSWTJface(control, style, title, message);
-        } else {
-            // the SWT to OS tooltip control (fixed delay)
-            showToolTipSWTwidget(control, style, title, message);
+        // prevent NPE, see: https://github.com/anb0s/EasyShell/issues/197
+        if (control != null) {
+          // issue: https://github.com/anb0s/EasyShell/issues/103
+          if (TOOLTIP_USE_SWT_JFACE) {
+              // the SWT JFace tooltip (hide delay customization)
+              showToolTipSWTJface(control, style, title, message);
+          } else {
+              // the SWT to OS tooltip control (fixed delay)
+              showToolTipSWTwidget(control, style, title, message);
+          }
         }
     }
 
