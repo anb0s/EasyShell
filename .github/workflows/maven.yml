@@ -14,10 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tp: ['Eclipse-4.8', 'Eclipse-2021-06', 'Eclipse-2021-09', 'Eclipse-2021-12']
+        target-platform: ['Eclipse-4.8', 'Eclipse-2021-06', 'Eclipse-2021-09', 'Eclipse-2021-12']
     runs-on: ubuntu-latest
-    env:
-      ECLIPSE_TARGET_PLATFORM:  ${{ matrix.tp }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -27,4 +25,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -Dtarget.platform=$(ECLIPSE_TARGET_PLATFORM) clean verify
+      run: mvn -Dtarget.platform=${{ matrix.target-platform }} clean verify
