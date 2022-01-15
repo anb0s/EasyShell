@@ -173,6 +173,10 @@
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
+      <sequenceModifier
+            find="M3"
+            replace="M3+M4"
+            platforms="cocoa,carbon" />
       <key
             commandId="de.anbos.eclipse.easyshell.plugin.commands.open"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
