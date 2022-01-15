@@ -13,12 +13,12 @@ strategy:
   matrix:
     eclipse_4_8:
       ECLIPSE_TARGET_PLATFORM: 'Eclipse-4.8'
-    eclipse_2021_03:
-      ECLIPSE_TARGET_PLATFORM: 'Eclipse-2021-03'
     eclipse_2021_06:
       ECLIPSE_TARGET_PLATFORM: 'Eclipse-2021-06'
     eclipse_2021_09:
       ECLIPSE_TARGET_PLATFORM: 'Eclipse-2021-09'
+    eclipse_2021_12:
+      ECLIPSE_TARGET_PLATFORM: 'Eclipse-2021-12'
 
 steps:
 - task: Maven@3
