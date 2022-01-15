@@ -39,6 +39,19 @@ public class CommandDataDefaultCollectionAllOS {
     }
 
     private static void addCommandsConsole(CommandDataList list) {
+      // Windows Pwsh - PowerShell 7
+      list.add(new CommandData("6245f20a-cfd0-457b-a101-a29eeefd22b5", PresetType.presetPlugin, OS.osWindows, "Pwsh - PowerShell 7", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+              "pwsh -command \"Start-Process -WorkingDirectory '${easyshell:container_loc}' pwsh\""));
+      list.add(new CommandData("9fbc5abb-0b82-4fbb-9907-99d6709d0126", PresetType.presetPlugin, OS.osWindows, "Pwsh - PowerShell 7", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+              "pwsh -command \"Start-Process pwsh -ArgumentList '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
+      list.add(new CommandData("5543176e-e29c-4a7a-b388-f393531d78dc", PresetType.presetPlugin, OS.osWindows, "Pwsh - PowerShell 7 (hold)", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+              "pwsh -command \"Start-Process pwsh -ArgumentList '-NoExit', '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
+      list.add(new CommandData("d84633fa-57cb-4965-b92e-2b164d47a6ed", PresetType.presetPlugin, OS.osWindows, "Pwsh - PowerShell 7 as Admin", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryOpen, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+              "pwsh -command \"Start-Process pwsh -Verb RunAs -ArgumentList '-NoExit', '-Command', 'cd ${easyshell:container_loc}'\""));
+      list.add(new CommandData("1e47f558-7e01-4c69-9ffb-927d67fcbff5", PresetType.presetPlugin, OS.osWindows, "Pwsh - PowerShell 7 as Admin", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+              "pwsh -command \"Start-Process pwsh -Verb RunAs -ArgumentList '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
+      list.add(new CommandData("d26d52ce-46b1-49bc-a84b-f5e5c6d7a705", PresetType.presetPlugin, OS.osWindows, "Pwsh - PowerShell 7 as Admin (hold)", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+              "pwsh -command \"Start-Process pwsh -Verb RunAs -ArgumentList '-NoExit', '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
     }
 
     private static void addCommandsFileBrowser(CommandDataList list) {
