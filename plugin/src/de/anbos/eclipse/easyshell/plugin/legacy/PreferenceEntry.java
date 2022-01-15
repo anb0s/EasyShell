@@ -45,7 +45,7 @@ public enum PreferenceEntry {
         if (instId == 0) {
             return getString();
         } else {
-            return getString() + (new Integer(instId)).toString();
+            return getString() + Integer.valueOf(instId).toString();
         }
     }
     public static PreferenceEntry getFromId(int id) {
