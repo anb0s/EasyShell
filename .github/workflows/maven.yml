@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target-platform: ['Eclipse-4.8', 'Eclipse-2021-06', 'Eclipse-2021-09', 'Eclipse-2021-12']
+        target-platform: ['Eclipse-4.8', 'Eclipse-2021-09', 'Eclipse-2021-12', 'Eclipse-2022-03']
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
