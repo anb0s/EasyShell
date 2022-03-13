@@ -19,7 +19,7 @@
 
   <properties>
     <new.version>2.3.0-SNAPSHOT</new.version>
-    <tycho.version>2.5.0</tycho.version>
+    <tycho.version>2.7.0</tycho.version>
     <target.platform>Eclipse-2021-12</target.platform>
     <target.platform.url>http://download.eclipse.org/releases/2021-12</target.platform.url>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
