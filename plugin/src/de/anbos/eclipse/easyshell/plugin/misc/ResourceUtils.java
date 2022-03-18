@@ -61,8 +61,11 @@ public class ResourceUtils {
                 }
                 if (editor != null) {
                     ITextSelection sel = (ITextSelection)editor.getSelectionProvider().getSelection();
-                    String text = sel.getText();
-                    selection = getSelectionFromText(resource, text);
+                    //String text = sel.getText();
+                    //selection = getSelectionFromText(resource, text);
+                    if (resource != null) {
+                      resource.setTextSelection(sel);
+                    }
                 }
             } else if (obj instanceof IWorkbenchPart) {
                 try {
@@ -79,7 +82,7 @@ public class ResourceUtils {
         return selection;
     }
 
-    private static ISelection getSelectionFromText(Resource partFile, String text) {
+    static public ISelection getSelectionFromText(Resource partFile, String text) {
         ISelection selection = null;
         if (text != null && !text.isEmpty()) {
             String lines[] = text.split("\\r?\\n");

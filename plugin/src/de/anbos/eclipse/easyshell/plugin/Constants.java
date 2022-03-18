@@ -25,6 +25,7 @@ public interface Constants {
     public static final String IMAGE_NONE        = "none";
     public static final String IMAGE_DEFAULT     = "default";
     public static final String IMAGE_OPEN        = "open";
+    public static final String IMAGE_EDIT        = "edit";
     public static final String IMAGE_RUN         = "run";
     public static final String IMAGE_EXPLORE     = "explore";
     public static final String IMAGE_CLIPBOARD   = "clipboard";

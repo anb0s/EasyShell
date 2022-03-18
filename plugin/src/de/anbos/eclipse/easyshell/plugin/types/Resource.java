@@ -20,6 +20,7 @@ import java.net.URL;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.jface.text.ITextSelection;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.misc.ResourceUtils;
@@ -30,6 +31,7 @@ public class Resource {
     // internal
     private File file = null;
     private IResource resource = null;
+    private ITextSelection textSelection = null;
 
     // resolved
     private String projectName = Activator.getResourceString("easyshell.plugin.name");
@@ -37,19 +39,21 @@ public class Resource {
     public Resource(Resource myRes) {
         this.file = myRes.getFile();
         this.resource = myRes.getResource();
+        this.textSelection = myRes.getTextSelection();
     }
 
-    public Resource(File file, IResource resource) {
+    public Resource(File file, IResource resource, ITextSelection textSelection) {
         this.file = file;
         this.resource = resource;
+        this.textSelection = textSelection;
     }
 
     public Resource(File file) {
-        this(file, null);
+        this(file, null, null);
     }
 
     public Resource(IResource resource) {
-        this(resource.getLocation().toFile(), resource);
+        this(resource.getLocation().toFile(), resource, null);
     }
 
     public File getFile() {
@@ -58,6 +62,10 @@ public class Resource {
 
     public IResource getResource() {
         return resource;
+    }
+
+    public ITextSelection getTextSelection() {
+      return textSelection;
     }
 
     public String getWindowsDrive() {
@@ -149,6 +157,41 @@ public class Resource {
             return resource.getFullPath().toString();
         }
         return "";
+    }
+
+    public String getSelectedTextStartLine() {
+      if (textSelection != null) {
+          return String.valueOf(textSelection.getStartLine()+1);
+      }
+      return "";
+    }
+
+    public String getSelectedTextEndLine() {
+      if (textSelection != null) {
+          return String.valueOf(textSelection.getEndLine()+1);
+      }
+      return "";
+    }
+
+    public String getSelectedTextLength() {
+      if (textSelection != null) {
+          return String.valueOf(textSelection.getLength());
+      }
+      return "";
+    }
+
+    public String getSelectedTextOffset() {
+      if (textSelection != null) {
+          return String.valueOf(textSelection.getOffset());
+      }
+      return "";
+    }
+
+    public String getSelectedText() {
+      if (textSelection != null) {
+          return textSelection.getText();
+      }
+      return "";
     }
 
     public String getProjectLocation() {
@@ -280,6 +323,10 @@ public class Resource {
             e1.printStackTrace();
         }
         return file != null && file.exists() ? file.getAbsolutePath() : "file does not exists";
+    }
+
+    public void setTextSelection(ITextSelection sel) {
+      textSelection = sel;
     }
 
 }

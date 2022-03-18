@@ -13,6 +13,9 @@
 
 package de.anbos.eclipse.easyshell.plugin.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -76,13 +79,13 @@ public class All extends AbstractHandler {
         return null;
     }
 
-    public MenuDataList getMenuDataList(Category category) {
-        MenuDataList menuDataList = MenuDataStore.instance().getEnabledCommandMenuDataListByCategory(category);
+    public MenuDataList getMenuDataList(List<Category> categories) {
+        MenuDataList menuDataList = MenuDataStore.instance().getEnabledCommandMenuDataListByCategories(categories);
         return menuDataList;
     }
 
     public MenuDataList getMenuDataList(ResourceType resTypeWanted) {
-        MenuDataList menuDataList = getMenuDataList(getCategory());
+        MenuDataList menuDataList = getMenuDataList(getCategories());
         MenuDataList menuDataListSupported = new MenuDataList();
         for (MenuData menuData : menuDataList) {
             ResourceType resTypeSupported;
@@ -101,6 +104,12 @@ public class All extends AbstractHandler {
 
     public Category getCategory() {
         return Category.categoryUnknown;
+    }
+
+    public List<Category> getCategories() {
+      List<Category> list = new ArrayList<Category>();
+      list.add(getCategory());
+      return list;
     }
 
     public String getTitle() {
