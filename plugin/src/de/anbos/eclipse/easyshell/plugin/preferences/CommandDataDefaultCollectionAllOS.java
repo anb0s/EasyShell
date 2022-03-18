@@ -26,6 +26,7 @@ public class CommandDataDefaultCollectionAllOS {
 
     static public void addCommandsAll(CommandDataList list) {
         addCommandsConsole(list);
+        addCommandsEditor(list);
         addCommandsFileBrowser(list);
         addCommandsClipboard(list);
     }
@@ -52,6 +53,13 @@ public class CommandDataDefaultCollectionAllOS {
               "pwsh -command \"Start-Process pwsh -Verb RunAs -ArgumentList '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
       list.add(new CommandData("d26d52ce-46b1-49bc-a84b-f5e5c6d7a705", PresetType.presetPlugin, OS.osWindows, "Pwsh - PowerShell 7 as Admin (hold)", ResourceType.resourceTypeFile, false, null, Category.categoryRun, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
               "pwsh -command \"Start-Process pwsh -Verb RunAs -ArgumentList '-NoExit', '-Command', 'cd ${easyshell:container_loc} ; ./${easyshell:resource_name}'\""));
+    }
+
+    private static void addCommandsEditor(CommandDataList list) {
+      OS os = Utils.getOS();
+      // Eclipse Editor
+      list.add(new CommandData("dc8dd567-6ac0-49ec-8fcd-ed61e677ea3d", PresetType.presetPlugin, os, "Eclipse", ResourceType.resourceTypeFile, false, null, Category.categoryEdit, CommandType.commandTypeExecute, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+              "eclipse -name Eclipse --launcher.openFile ${easyshell:resource_loc}:${easyshell:resource_line_number}"));
     }
 
     private static void addCommandsFileBrowser(CommandDataList list) {
@@ -92,6 +100,25 @@ public class CommandDataDefaultCollectionAllOS {
         // Clipboard - Qualified Name with quotes
         list.add(new CommandData("cd32fa5a-34d7-4551-8bd0-3aae0dc444d0", PresetType.presetPlugin, os, "\"Qualified Name\"", ResourceType.resourceTypeFileOrDirectory, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerDisabled,
                 "\"${easyshell:qualified_name}\"${easyshell:line_separator}"));
+        // Clipboard - Full Path with line number = selected text start line
+        list.add(new CommandData("434dfc65-4efd-42e1-be5a-f108661e51a1", PresetType.presetPlugin, os, "Full Path : line number", ResourceType.resourceTypeFile, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+            "${easyshell:resource_loc}:${easyshell:resource_line_number}"));
+        // Clipboard - Full Path with selected text end line
+        list.add(new CommandData("840831f3-fb2f-45f3-8db4-14007757d576", PresetType.presetPlugin, os, "Full Path : selected text end line", ResourceType.resourceTypeFile, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+            "${easyshell:resource_loc}:${easyshell:selected_text_end_line}"));
+        // Clipboard - Full Path with with selected text start and end line
+        list.add(new CommandData("65f40ff6-e920-4bd4-96d9-33e0a6fb8725", PresetType.presetPlugin, os, "Full Path : selected text start line : end line", ResourceType.resourceTypeFile, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+            "${easyshell:resource_loc}:${easyshell:selected_text_start_line}:${easyshell:selected_text_end_line}"));
+        // Clipboard - selected text length
+        list.add(new CommandData("74e122dc-64fa-4444-8f58-f4ab04ebc9e3", PresetType.presetPlugin, os, "Selected text length", ResourceType.resourceTypeFile, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+            "${easyshell:selected_text_length}"));
+        // Clipboard - selected text offset
+        list.add(new CommandData("ab5cb337-60da-429c-a0a7-0b37071b6a50", PresetType.presetPlugin, os, "Selected text offset", ResourceType.resourceTypeFile, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+            "${easyshell:selected_text_offset}"));
+        // Clipboard - selected text
+        list.add(new CommandData("93442258-28b7-4297-9611-34733fa76161", PresetType.presetPlugin, os, "Selected text", ResourceType.resourceTypeFile, false, null, Category.categoryClipboard, CommandType.commandTypeClipboard, CommandTokenizer.commandTokenizerSpacesAndQuotesSkip,
+            "${easyshell:selected_text}"));
+
         // Clipboard - Variables Test
         String varTestString = "";
         for(int i=Variable.getFirstIndex();i<Variable.values().length;i++) {

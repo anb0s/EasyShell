@@ -27,7 +27,8 @@ public enum Category {
     categoryRun(2, "Run", Constants.IMAGE_RUN),
     categoryExplore(3, "Explore", Constants.IMAGE_EXPLORE),
     categoryClipboard(4, "Clipboard", Constants.IMAGE_CLIPBOARD),
-    categoryUser(5, "User", Constants.IMAGE_USER);
+    categoryUser(5, "User", Constants.IMAGE_USER),
+    categoryEdit(6, "Edit", Constants.IMAGE_EDIT);
     // attributes
     private final int id;
     private final String name;

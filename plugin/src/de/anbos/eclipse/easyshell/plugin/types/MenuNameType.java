@@ -21,11 +21,12 @@ public enum MenuNameType {
     menuNameTypeUser(               0, "User defined", "${easyshell:command_name}"),
     menuNameTypeDefaultApplication( 1, "Open with default application", "Open with default Application"),
     menuNameTypeOpenHere(           2, "Open <name> Here", "Open ${easyshell:command_name} Here"),
-    menuNameTypeRunWith(            3, "Run with <name>", "Run with ${easyshell:command_name}"),
-    menuNameTypeShowIn(             4, "Show in <name>", "Show in ${easyshell:command_name}"),
-    menuNameTypeCopyToClipboard(    5, "Copy <name> to Clipboard", "Copy ${easyshell:command_name} to Clipboard"),
-    menuNameTypeGeneric1(           6, "<category>: <name>", "${easyshell:command_category}: ${easyshell:command_name}"),
-    menuNameTypeGeneric2(           7, "<category> with <name>", "${easyshell:command_category} with ${easyshell:command_name}"),
+    menuNameTypeOpenWith(           3, "Open with <name>", "Open with ${easyshell:command_name}"),
+    menuNameTypeRunWith(            4, "Run with <name>", "Run with ${easyshell:command_name}"),
+    menuNameTypeShowIn(             5, "Show in <name>", "Show in ${easyshell:command_name}"),
+    menuNameTypeCopyToClipboard(    6, "Copy <name> to Clipboard", "Copy ${easyshell:command_name} to Clipboard"),
+    menuNameTypeGeneric1(           7, "<category>: <name>", "${easyshell:command_category}: ${easyshell:command_name}"),
+    menuNameTypeGeneric2(           8, "<category> with <name>", "${easyshell:command_category} with ${easyshell:command_name}"),
     menuNameTypeGeneric3(           9, "<category> with <os> <name>", "${easyshell:command_category} with ${easyshell:command_os} ${easyshell:command_name}");
     // attributes
     private final int id;

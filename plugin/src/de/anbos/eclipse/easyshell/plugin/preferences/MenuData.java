@@ -289,8 +289,11 @@ public class MenuData extends Data {
         case categoryOpen:
             setNameType(MenuNameType.menuNameTypeOpenHere);
             break;
+        case categoryEdit:
+          setNameType(MenuNameType.menuNameTypeOpenWith);
+          break;
         case categoryRun:
-            setNameType(MenuNameType.menuNameTypeGeneric2);
+            setNameType(MenuNameType.menuNameTypeRunWith);
             break;
         case categoryExplore:
             setNameType(MenuNameType.menuNameTypeShowIn);

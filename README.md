@@ -127,6 +127,8 @@ The following platform, shell combinations and tools are supported as selections
   - Finder
 
 **All OS**
+- Open with / Edit
+  - Eclipse - Full Path : line number
 - Copy to clipboard:
   - Full Path
   - Full Path Unix (@Windows)
@@ -162,6 +164,12 @@ The following substitution variables are available for building the command:
 - ```${easyshell:resource_basename}``` = name of file without extension
 - ```${easyshell:resource_extension}``` = extension of file name (without '.')
 - ```${easyshell:resource_path}``` = relative path to workspace of file or directory
+- ```${easyshell:resource_line_number}``` = line number (within view or editor)
+- ```${easyshell:selected_text_start_line}``` = selected text start line (within view or editor), it's equal to ${easyshell:resource_line_number}
+- ```${easyshell:selected_text_end_line}``` = selected text end line (within view or editor)
+- ```${easyshell:selected_text_length}``` = selected text length (within view or editor)
+- ```${easyshell:selected_text_offset}``` = selected text offset (within view or editor)
+- ```${easyshell:selected_text}``` = selected text (within view or editor)
 - ```${easyshell:container_loc}``` = absolute path of file directory or directory itself
 - ```${easyshell:container_name}``` = name of file directory or directory itself
 - ```${easyshell:container_path}``` = relative path to workspace of file directory or directory itself

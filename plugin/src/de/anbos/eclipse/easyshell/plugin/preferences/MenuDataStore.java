@@ -13,7 +13,9 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -60,13 +62,13 @@ public class MenuDataStore extends DataStore<MenuData> {
         return allArray;
     }
 
-    public MenuDataList getEnabledCommandMenuDataListByCategory(Category category) {
+    public MenuDataList getEnabledCommandMenuDataListByCategories(List<Category> categories) {
         MenuDataList checkedItems = new MenuDataList();
         Iterator<MenuData> dataIterator = getDataList().iterator();
         while(dataIterator.hasNext()) {
             MenuData data = (MenuData)dataIterator.next();
             try {
-                if(data.isEnabled() && (category == Category.categoryUnknown || data.getCommandData().getCategory() == category)) {
+                if(data.isEnabled() && (categories.contains(Category.categoryUnknown) || categories.contains(data.getCommandData().getCategory()))) {
                     checkedItems.add(data);
                 }
             } catch (UnknownCommandID e) {
@@ -77,7 +79,9 @@ public class MenuDataStore extends DataStore<MenuData> {
     }
 
     public MenuDataList getEnabledCommandMenuDataList() {
-        return getEnabledCommandMenuDataListByCategory(Category.categoryUnknown);
+        List<Category> list = new ArrayList<Category>();
+        list.add(Category.categoryUnknown);
+        return getEnabledCommandMenuDataListByCategories(list);
     }
 
     public MenuData[] getEnabledCommandMenuDataArray() {

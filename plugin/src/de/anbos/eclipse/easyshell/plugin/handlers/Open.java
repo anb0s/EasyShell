@@ -13,6 +13,9 @@
 
 package de.anbos.eclipse.easyshell.plugin.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.anbos.eclipse.easyshell.plugin.types.Category;
 
 public class Open extends AllSingle {
@@ -20,6 +23,14 @@ public class Open extends AllSingle {
     @Override
     public Category getCategory() {
         return Category.categoryOpen;
+    }
+
+    @Override
+    public List<Category> getCategories() {
+      List<Category> list = new ArrayList<Category>();
+      list.add(getCategory());
+      list.add(Category.categoryEdit);
+      return list;
     }
 
 }
