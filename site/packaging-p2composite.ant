@@ -55,7 +55,8 @@
     buildQualifier		The build qualifier
   -->
   <target name="compute.child.repository.data" depends="getMajorMinorVersion">
-    <property name="site.parent.dir" location="updates" />
+  	<property name="parent.root.dir" location="../" />
+  	<property name="site.parent.dir" location="updates" />
     <property name="full.version" value="${unqualifiedVersion}.${buildQualifier}" />
     <property name="site.composite.name" value="${site.label} ${majorMinorVersion}" />
     <ucfirst string="${site.dir}" to="site.dir.ucfirst" />
@@ -89,6 +90,7 @@
       composite.repository.child="${majorMinorVersion}"
     />
 
+  	<copy file="${parent.root.dir}/README.md" tofile="${site.parent.dir}/index.md" overwrite="true"/>
   </target>
 
   <!-- = = = = = = = = = = = = = = = = =
