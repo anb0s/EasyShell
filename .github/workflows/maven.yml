@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  build-regression:
+  build-compatibility:
     strategy:
       fail-fast: false
       matrix:
@@ -46,3 +46,15 @@ jobs:
       with: 
         name: EasyShell-update-site-PR${{ github.event.pull_request.number }}
         path: site/target/repository
+    - name: Commit and push changes
+      if: contains(github.ref, 'refs/heads/testing')
+      uses: devops-infra/action-commit-push@v0.8.4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        commit_message: New testing build
+    - name: Deploy for Testing
+      if: contains(github.ref, 'refs/heads/testing')
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages
+        folder: updates
