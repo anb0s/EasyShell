@@ -60,6 +60,7 @@
   	<property name="build.version.unqualified" value="${unqualifiedVersion}" />
   	<property name="build.version.qualifier" value="${buildQualifier}" />
     <property name="build.version.full" value="${build.version.unqualified}.${build.version.qualifier}" />
+  	<property name="build.version.milestone" value="${buildMilestone}" />
   	<property name="build.version.file" location="${project.build.directory}/build.version.properties" />
     <property name="site.composite.name" value="${site.label} ${majorMinorVersion}" />
     <ucfirst string="${site.dir}" to="site.dir.ucfirst" />
@@ -96,6 +97,7 @@
   	<echo file="${build.version.file}" append="false" message="build_version_unqualified=${build.version.unqualified}${line.separator}"/>
   	<echo file="${build.version.file}" append="true"  message="build_version_qualifier=${build.version.qualifier}${line.separator}"/>
   	<echo file="${build.version.file}" append="true"  message="build_version_full=${build.version.full}${line.separator}"/>
+  	<echo file="${build.version.file}" append="true"  message="build_version_milestone=${build.version.milestone}${line.separator}"/>
 
   	<copy file="${parent.root.dir}/README.md" tofile="${site.parent.dir}/index.md" overwrite="true"/>
   </target>
