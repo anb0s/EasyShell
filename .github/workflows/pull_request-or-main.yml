@@ -11,6 +11,9 @@ on:
     branches:
       - main
 
+env:
+  DEFAULT_TARGET_PLATFORM: 'Eclipse-2021-12'
+
 jobs:
 
   platform:
@@ -28,12 +31,15 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: 'Build for platform: ${{ matrix.target-platform }}'
-      run: 'mvn -Dtarget.platform=${{ matrix.target-platform }} -Dsite.dir=testing clean verify'
-    - name: 'Deploy for PR${{ github.event.pull_request.number }}'
-      if: github.event_name == 'pull_request' && matrix.target-platform == 'Eclipse-2021-12'
+      run: 'mvn -Dtarget.platform=${{ matrix.target-platform }} -Dsite.dir=testing clean verify'        
+    - name: Assign build.version.properties to env variable
+      if: github.event_name == 'pull_request' && matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
+      run: cat site/target/build.version.properties >> $GITHUB_ENV
+    - name: 'Deploy build ${{ env.build_version_full }} for PR${{ github.event.pull_request.number }}'
+      if: github.event_name == 'pull_request' && matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
       uses: actions/upload-artifact@v2
-      with: 
-        name: EasyShell-update-site-PR${{ github.event.pull_request.number }}
+      with:
+        name: EasyShell-${{ env.build_version_full }}
         path: site/target/repository
 
   deploy-testing:
