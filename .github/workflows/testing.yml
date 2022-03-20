@@ -22,5 +22,26 @@ jobs:
         cache: maven
     - name: 'Build testing for default platform'
       run: 'mvn -Dsite.dir=testing clean verify'
+    - name: Assign build.version.properties to env variable
+      run: cat site/target/build.version.properties >> $GITHUB_ENV
     - name: 'Create Pull Request'
       uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: '[${{ env.build_version_unqualified }}] testing build ${{ env.build_version_full }}'
+        title: '[${{ env.build_version_unqualified }}] testing of build ${{ env.build_version_full }}'
+        body: |
+          ### Help wanted with testing of the build **${{ env.build_version_full }}**
+          
+          It is available at the testing update site now: http://anb0s.github.io/EasyShell/testing
+          Version: **EasyShell ${{ env.build_version_full }}**
+            
+          **Use "Help | Install New Software...", paste the link and select the right version!**
+            
+          ### All fixed issues 
+          
+          [milestone ${{ env.build_version_unqualified }}](https://github.com/anb0s/EasyShell/milestone/${{ env.build_version_milestone }}?closed=1)
+        labels: |
+          help wanted
+          Version ${{ env.build_version_unqualified }}
+        milestone: ${{ env.build_version_milestone }}
+        delete-branch: true
