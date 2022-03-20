@@ -37,12 +37,12 @@ jobs:
         path: site/target/repository
 
   deploy-testing:
+    if: github.event_name == 'pull_request' && contains(github.head_ref, 'testing')
     runs-on: ubuntu-latest
     needs: [platform]
     steps:
     - uses: actions/checkout@v2
     - name: Deploy for Testing
-      if: github.event_name == 'pull_request' && contains(github.head_ref, 'testing')
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages
