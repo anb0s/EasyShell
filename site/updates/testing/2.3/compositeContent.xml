@@ -2,11 +2,12 @@
 <?compositeMetadataRepository version='1.0.0'?>
 <repository name='EasyShell 2.3' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1647730229336'/>
+    <property name='p2.timestamp' value='1647944482027'/>
     <property name='p2.atomic.composite.loading' value='true'/>
   </properties>
-  <children size='2'>
+  <children size='3'>
     <child location='2.3.0.v20220115-1548'/>
     <child location='2.3.0.v20220319-2249'/>
+    <child location='2.3.0.v20220322-1021'/>
   </children>
 </repository>
