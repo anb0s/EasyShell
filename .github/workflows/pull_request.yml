@@ -1,12 +1,9 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Pull-Request or Main
+name: Pull-Request
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -33,24 +30,11 @@ jobs:
     - name: 'Build for platform: ${{ matrix.target-platform }}'
       run: 'mvn -Dtarget.platform=${{ matrix.target-platform }} -Dsite.dir=testing clean verify'        
     - name: Assign build.version.properties to env variable
-      if: github.event_name == 'pull_request' && matrix.target-platform == env.DEFAULT_TARGET_PLATFORM && !contains(github.head_ref, 'staging')
+      if: matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
       run: cat site/target/build.version.properties >> $GITHUB_ENV
     - name: 'Deploy build ${{ env.build_version_full }} for PR${{ github.event.pull_request.number }}'
-      if: github.event_name == 'pull_request' && matrix.target-platform == env.DEFAULT_TARGET_PLATFORM && !contains(github.head_ref, 'staging')
+      if: matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
       uses: actions/upload-artifact@v2
       with:
         name: EasyShell-${{ env.build_version_full }}
         path: site/target/repository
-
-  deploy-testing:
-    if: github.event_name == 'pull_request' && contains(github.head_ref, 'staging')
-    runs-on: ubuntu-latest
-    needs: [platform]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Deploy for Testing
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: gh-pages
-        folder: site/updates
-        clean: false
