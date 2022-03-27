@@ -6,8 +6,10 @@ name: Pre-Release
 on:
   push:
     tags:
-      - "v*.*.*-beta.*"
-      - "v*.*.*-rc.*"
+      - "v*.*.*-pre*"
+      - "v*.*.*-alpha*"
+      - "v*.*.*-beta*"
+      - "v*.*.*-rc*"
 
 jobs:
 
@@ -21,7 +23,22 @@ jobs:
         branch: gh-pages
         folder: site/updates
         clean: false
+    - name: Assign build.version.properties to env variable
+      run: cat site/updates/testing/build.version.properties >> $GITHUB_ENV
     - name: Pre-Release
       uses: softprops/action-gh-release@v1
       with:
         generate_release_notes: true
+        prerelease: true
+        body: |
+          ### Help wanted with testing of the build **${{ env.build_version_full }}**
+          
+          It is available at the testing update site now: http://anb0s.github.io/EasyShell/testing
+          Version: **EasyShell ${{ env.build_version_full }}**
+          
+          **Use "Help | Install New Software...", paste the link and select the right version!**
+          
+          ### All fixed issues 
+          
+          [milestone ${{ env.build_version_unqualified }}](https://github.com/anb0s/EasyShell/milestone/${{ env.build_version_milestone }}?closed=1)
+        artifacts: "${{ env.build_version_path }}"

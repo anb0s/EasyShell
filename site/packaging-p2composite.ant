@@ -55,20 +55,23 @@
     buildQualifier		The build qualifier
   -->
   <target name="compute.child.repository.data" depends="getMajorMinorVersion">
-  	<property name="parent.root.dir" location="../" />
-  	<property name="site.parent.dir" location="updates" />
-  	<property name="build.version.unqualified" value="${unqualifiedVersion}" />
-  	<property name="build.version.qualifier" value="${buildQualifier}" />
+    <property name="parent.root.dir" location="../" />
+    <property name="site.parent.dir" location="updates" />
+  	<property name="build.version.major_minor" value="${majorMinorVersion}" />
+    <property name="build.version.unqualified" value="${unqualifiedVersion}" />
+    <property name="build.version.qualifier" value="${buildQualifier}" />
     <property name="build.version.full" value="${build.version.unqualified}.${build.version.qualifier}" />
-  	<property name="build.version.milestone" value="${buildMilestone}" />
-  	<property name="build.version.file" location="${project.build.directory}/build.version.properties" />
+    <property name="build.version.milestone" value="${buildMilestone}" />
+    <property name="build.version.file" location="${project.build.directory}/build.version.properties" />
     <property name="site.composite.name" value="${site.label} ${majorMinorVersion}" />
     <ucfirst string="${site.dir}" to="site.dir.ucfirst" />
     <property name="main.site.composite.name" value="${site.label} ${site.dir.ucfirst} Versions" />
     <property name="main.composite.repository.directory" location="${site.parent.dir}/${site.dir}" />
+    <property name="site.build.version.file" location="${main.composite.repository.directory}/build.version.properties" />
     <property name="composite.repository.directory" value="${main.composite.repository.directory}/${majorMinorVersion}" />
     <property name="child.repository" value="${build.version.full}" />
     <property name="child.repository.directory" value="${composite.repository.directory}/${child.repository}/" />
+    <property name="build.version.path" value="${build.version.major_minor}/${build.version.full}" />
   </target>
 
   <target name="p2.composite.add" depends="compute.child.repository.data">
@@ -94,12 +97,15 @@
       composite.repository.child="${majorMinorVersion}"
     />
 
-  	<echo file="${build.version.file}" append="false" message="build_version_unqualified=${build.version.unqualified}${line.separator}"/>
-  	<echo file="${build.version.file}" append="true"  message="build_version_qualifier=${build.version.qualifier}${line.separator}"/>
-  	<echo file="${build.version.file}" append="true"  message="build_version_full=${build.version.full}${line.separator}"/>
-  	<echo file="${build.version.file}" append="true"  message="build_version_milestone=${build.version.milestone}${line.separator}"/>
+    <echo file="${build.version.file}" append="false" message="build_version_major_minor=${build.version.major_minor}${line.separator}"/>
+    <echo file="${build.version.file}" append="true"  message="build_version_unqualified=${build.version.unqualified}${line.separator}"/>
+    <echo file="${build.version.file}" append="true"  message="build_version_qualifier=${build.version.qualifier}${line.separator}"/>
+    <echo file="${build.version.file}" append="true"  message="build_version_full=${build.version.full}${line.separator}"/>
+    <echo file="${build.version.file}" append="true"  message="build_version_path=${build.version.path}${line.separator}"/>
+    <echo file="${build.version.file}" append="true"  message="build_version_milestone=${build.version.milestone}${line.separator}"/>
 
-  	<copy file="${parent.root.dir}/README.md" tofile="${site.parent.dir}/index.md" overwrite="true"/>
+    <copy file="${parent.root.dir}/README.md" tofile="${site.parent.dir}/index.md" overwrite="true"/>
+    <copy file="${build.version.file}" tofile="$site.build.version.file}" overwrite="true"/>
   </target>
 
   <!-- = = = = = = = = = = = = = = = = =
