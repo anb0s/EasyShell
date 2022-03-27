@@ -33,8 +33,9 @@ jobs:
         body: |
           ### Help wanted with testing of the build **${{ env.build_version_full }}**
           
-          It is available at the testing update site now: http://anb0s.github.io/EasyShell/testing
-          Version: **EasyShell ${{ env.build_version_full }}**
+          It is available at the testing update site now: `http://anb0s.github.io/EasyShell/testing`
+          Exact version only site: `http://anb0s.github.io/EasyShell/testing/${{ env.build_version_path }}`
+          Version: `EasyShell ${{ env.build_version_full }}`
           
           **Use "Help | Install New Software...", paste the link and select the right version!**
           

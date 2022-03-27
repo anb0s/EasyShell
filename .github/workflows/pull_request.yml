@@ -28,7 +28,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: 'Build for platform: ${{ matrix.target-platform }}'
-      run: 'mvn -Dtarget.platform=${{ matrix.target-platform }} -Dsite.dir=testing clean verify'        
+      run: 'mvn -Dtarget.platform=${{ matrix.target-platform }} -Dsite.dir=testing clean verify'
     - name: Assign build.version.properties to env variable
       if: matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
       run: cat site/target/build.version.properties >> $GITHUB_ENV

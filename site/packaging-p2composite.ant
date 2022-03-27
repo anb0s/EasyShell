@@ -105,7 +105,7 @@
     <echo file="${build.version.file}" append="true"  message="build_version_milestone=${build.version.milestone}${line.separator}"/>
 
     <copy file="${parent.root.dir}/README.md" tofile="${site.parent.dir}/index.md" overwrite="true"/>
-    <copy file="${build.version.file}" tofile="$site.build.version.file}" overwrite="true"/>
+    <copy file="${build.version.file}" tofile="${site.build.version.file}" overwrite="true"/>
   </target>
 
   <!-- = = = = = = = = = = = = = = = = =
