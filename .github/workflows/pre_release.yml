@@ -30,7 +30,6 @@ jobs:
       with:
         generate_release_notes: true
         prerelease: true
-        replacesArtifacts: true
         body: |
           ### Help wanted with testing of the build **${{ env.build_version_full }}**
           
