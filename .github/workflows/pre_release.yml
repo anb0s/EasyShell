@@ -25,25 +25,24 @@ jobs:
         clean: false
     - name: Assign build.version.properties to env variable
       run: cat site/updates/testing/build.version.properties >> $GITHUB_ENV
-    - name: 'Deploy build ${{ env.build_version_full }} for Pre-Release'
-      uses: actions/upload-artifact@v2
+    - name: 'Zip artifacts ${{ env.build_version_full }} for Pre-Release'
+      uses: papeloto/action-zip@v1
       with:
-        name: EasyShell-${{ env.build_version_full }}
-        path: site/updates/testing/${{ env.build_version_path }}
+        files: site/updates/testing/${{ env.build_version_path }}
+        dest: EasyShell-${{ env.build_version_full }}.zip
     - name: Pre-Release
       uses: softprops/action-gh-release@v1
       with:
         generate_release_notes: true
         prerelease: true
         body: |
-          ### Help wanted with testing of the build **${{ env.build_version_full }}**
+          ### Testing of the build **${{ env.build_version_full }}**
           
-          It is available at the testing update site now: `http://anb0s.github.io/EasyShell/testing`
-          Exact version only site: `http://anb0s.github.io/EasyShell/testing/${{ env.build_version_path }}`
+          All version testing update site: `http://anb0s.github.io/EasyShell/testing`
+          Exact version only update site: `http://anb0s.github.io/EasyShell/testing/${{ env.build_version_path }}`
           Version: `EasyShell ${{ env.build_version_full }}`
           
           **Use "Help | Install New Software...", paste the link and select the right version!**
           
-          ### All fixed issues 
-          
-          [milestone ${{ env.build_version_unqualified }}](https://github.com/anb0s/EasyShell/milestone/${{ env.build_version_milestone }}?closed=1)
+          [Milestone ${{ env.build_version_unqualified }}](https://github.com/anb0s/EasyShell/milestone/${{ env.build_version_milestone }}?closed=1)
+        files: EasyShell-${{ env.build_version_full }}.zip
