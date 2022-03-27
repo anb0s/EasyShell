@@ -20,11 +20,11 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: 'Build testing for default platform'
+    - name: Build testing for default platform
       run: 'mvn -Dsite.dir=testing clean verify'
     - name: Assign build.version.properties to env variable
       run: cat site/target/build.version.properties >> $GITHUB_ENV
-    - name: 'Create Pull Request'
+    - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
         commit-message: '[${{ env.build_version_unqualified }}] testing build ${{ env.build_version_full }}'
@@ -45,4 +45,5 @@ jobs:
           Version ${{ env.build_version_unqualified }}
         milestone: ${{ env.build_version_milestone }}
         delete-branch: true
+        branch: staging
         base: main
