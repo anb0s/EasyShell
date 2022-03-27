@@ -13,7 +13,6 @@ jobs:
 
   deploy-prerelease:
     runs-on: ubuntu-latest
-    needs: [platform]
     steps:
     - uses: actions/checkout@v2
     - name: Deploy for Testing
