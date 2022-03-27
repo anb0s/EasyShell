@@ -1,44 +1,42 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Pre-Release
+name: Release
 
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+-alpha*"
-      - "v[0-9]+.[0-9]+.[0-9]+-beta*"
-      - "v[0-9]+.[0-9]+.[0-9]+-rc*"
+      - "v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
 
-  deploy-prerelease:
+  deploy-release:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Deploy for Testing
+    - name: Deploy for Release
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages
         folder: site/updates
         clean: false
     - name: Assign build.version.properties to env variable
-      run: cat site/updates/testing/build.version.properties >> $GITHUB_ENV
-    - name: 'Zip artifacts ${{ env.build_version_full }} for Pre-Release'
+      run: cat site/updates/release/build.version.properties >> $GITHUB_ENV
+    - name: 'Zip artifacts ${{ env.build_version_full }} for Release'
       uses: papeloto/action-zip@v1
       with:
-        files: site/updates/testing/${{ env.build_version_path }}
+        files: site/updates/release/${{ env.build_version_path }}
         dest: EasyShell-${{ env.build_version_full }}.zip
-    - name: Pre-Release
+    - name: Release
       uses: softprops/action-gh-release@v1
       with:
         generate_release_notes: true
-        prerelease: true
+        prerelease: false
         body: |
-          ### Testing build **${{ env.build_version_full }}**
+          ### Release build **${{ env.build_version_full }}**
           
-          All versions update site: `http://anb0s.github.io/EasyShell/testing`
-          Exact version update site: `http://anb0s.github.io/EasyShell/testing/${{ env.build_version_path }}`
+          All versions update site: `http://anb0s.github.io/EasyShell`
+          Exact version update site: `http://anb0s.github.io/EasyShell/release/${{ env.build_version_path }}`
           Version: `EasyShell ${{ env.build_version_full }}`
           
           **Use "Help | Install New Software...", paste the update site link and select the right version!**

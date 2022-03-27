@@ -1,0 +1,39 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Build-Testing
+
+on:
+  push:
+    branches:
+      - 'testing*'
+
+jobs:
+
+  default:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build testing for default platform
+      run: 'mvn -Dsite.dir=testing clean verify'
+    - name: Assign build.version.properties to env variable
+      run: cat site/target/build.version.properties >> $GITHUB_ENV
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: '[${{ env.build_version_major_minor }}] testing build ${{ env.build_version_full }}'
+        title: '[${{ env.build_version_major_minor }}] testing build ${{ env.build_version_full }}'
+        body: |
+          [Milestone ${{ env.build_version_unqualified }}](https://github.com/anb0s/EasyShell/milestone/${{ env.build_version_milestone }}?closed=1)
+        labels: |
+          help wanted
+          Version ${{ env.build_version_unqualified }}
+        milestone: ${{ env.build_version_milestone }}
+        delete-branch: true
+        base: main
