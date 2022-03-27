@@ -20,11 +20,11 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: 'Build testing for default platform'
+    - name: Build testing for default platform
       run: 'mvn -Dsite.dir=testing clean verify'
     - name: Assign build.version.properties to env variable
       run: cat site/target/build.version.properties >> $GITHUB_ENV
-    - name: 'Create Pull Request'
+    - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
         commit-message: '[${{ env.build_version_unqualified }}] testing build ${{ env.build_version_full }}'
@@ -45,4 +45,16 @@ jobs:
           Version ${{ env.build_version_unqualified }}
         milestone: ${{ env.build_version_milestone }}
         delete-branch: true
-        base: main
+    - name: Enable Pull Request Automerge
+      if: steps.cpr.outputs.pull-request-operation == 'created'
+      uses: peter-evans/enable-pull-request-automerge@v2
+      with:
+        token: ${{ secrets.PAT }}
+        pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+        merge-method: rebase
+    - name: Auto approve
+      if: steps.cpr.outputs.pull-request-operation == 'created'
+      uses: juliangruber/approve-pull-request-action@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        number: ${{ steps.cpr.outputs.pull-request-number }}
