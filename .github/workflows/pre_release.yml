@@ -30,6 +30,7 @@ jobs:
       with:
         generate_release_notes: true
         prerelease: true
+        replacesArtifacts: true
         body: |
           ### Help wanted with testing of the build **${{ env.build_version_full }}**
           
@@ -42,4 +43,4 @@ jobs:
           ### All fixed issues 
           
           [milestone ${{ env.build_version_unqualified }}](https://github.com/anb0s/EasyShell/milestone/${{ env.build_version_milestone }}?closed=1)
-        artifacts: "${{ env.build_version_path }}"
+        artifacts: "site/updates/testing/${{ env.build_version_path }}"
