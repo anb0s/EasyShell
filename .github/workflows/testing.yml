@@ -27,8 +27,8 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
-        commit-message: '[${{ env.build_version_unqualified }}] testing build ${{ env.build_version_full }}'
-        title: '[${{ env.build_version_unqualified }}] testing of build ${{ env.build_version_full }}'
+        commit-message: '[${{ env.build_version_major_minor }}] testing build ${{ env.build_version_full }}'
+        title: '[${{ env.build_version_major_minor }}] testing of build ${{ env.build_version_full }}'
         body: |
           ### Fixed issues 
           
