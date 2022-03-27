@@ -33,17 +33,17 @@ jobs:
     - name: 'Build for platform: ${{ matrix.target-platform }}'
       run: 'mvn -Dtarget.platform=${{ matrix.target-platform }} -Dsite.dir=testing clean verify'        
     - name: Assign build.version.properties to env variable
-      if: github.event_name == 'pull_request' && matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
+      if: github.event_name == 'pull_request' && matrix.target-platform == env.DEFAULT_TARGET_PLATFORM && !contains(github.head_ref, 'staging')
       run: cat site/target/build.version.properties >> $GITHUB_ENV
     - name: 'Deploy build ${{ env.build_version_full }} for PR${{ github.event.pull_request.number }}'
-      if: github.event_name == 'pull_request' && matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
+      if: github.event_name == 'pull_request' && matrix.target-platform == env.DEFAULT_TARGET_PLATFORM && !contains(github.head_ref, 'staging')
       uses: actions/upload-artifact@v2
       with:
         name: EasyShell-${{ env.build_version_full }}
         path: site/target/repository
 
   deploy-testing:
-    if: github.event_name == 'pull_request' && contains(github.head_ref, 'testing')
+    if: github.event_name == 'pull_request' && contains(github.head_ref, 'staging')
     runs-on: ubuntu-latest
     needs: [platform]
     steps:
