@@ -1,17 +1,17 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Main
+name: Pre-Release
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v*.*.*-beta.*"
+      - "v*.*.*-rc.*"
 
 jobs:
 
-  deploy-testing:
-    if: contains(github.event.head_commit.message, 'testing build')
+  deploy-prerelease:
     runs-on: ubuntu-latest
     needs: [platform]
     steps:
@@ -22,3 +22,7 @@ jobs:
         branch: gh-pages
         folder: site/updates
         clean: false
+    - name: Pre-Release
+      uses: softprops/action-gh-release@v1
+      with:
+        generate_release_notes: true
