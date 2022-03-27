@@ -25,6 +25,11 @@ jobs:
         clean: false
     - name: Assign build.version.properties to env variable
       run: cat site/updates/testing/build.version.properties >> $GITHUB_ENV
+    - name: 'Deploy build ${{ env.build_version_full }} for Pre-Release'
+      uses: actions/upload-artifact@v2
+      with:
+        name: EasyShell-${{ env.build_version_full }}
+        path: site/updates/testing/${{ env.build_version_path }}
     - name: Pre-Release
       uses: softprops/action-gh-release@v1
       with:
@@ -42,4 +47,3 @@ jobs:
           ### All fixed issues 
           
           [milestone ${{ env.build_version_unqualified }}](https://github.com/anb0s/EasyShell/milestone/${{ env.build_version_milestone }}?closed=1)
-        artifacts: "site/updates/testing/${{ env.build_version_path }}"
