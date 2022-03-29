@@ -20,7 +20,9 @@ import java.net.URL;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.jface.text.IBlockTextSelection;
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.viewers.ISelection;
 
 import de.anbos.eclipse.easyshell.plugin.Activator;
 import de.anbos.eclipse.easyshell.plugin.misc.ResourceUtils;
@@ -31,7 +33,7 @@ public class Resource {
     // internal
     private File file = null;
     private IResource resource = null;
-    private ITextSelection textSelection = null;
+    private ISelection textSelection = null;
 
     // resolved
     private String projectName = Activator.getResourceString("easyshell.plugin.name");
@@ -42,7 +44,7 @@ public class Resource {
         this.textSelection = myRes.getTextSelection();
     }
 
-    public Resource(File file, IResource resource, ITextSelection textSelection) {
+    public Resource(File file, IResource resource, ISelection textSelection) {
         this.file = file;
         this.resource = resource;
         this.textSelection = textSelection;
@@ -56,6 +58,10 @@ public class Resource {
         this(resource.getLocation().toFile(), resource, null);
     }
 
+    public void setTextSelection(ISelection textSelection) {
+        this.textSelection = textSelection;
+    }
+
     public File getFile() {
         return file;
     }
@@ -64,7 +70,7 @@ public class Resource {
         return resource;
     }
 
-    public ITextSelection getTextSelection() {
+    public ISelection getTextSelection() {
       return textSelection;
     }
 
@@ -160,38 +166,46 @@ public class Resource {
     }
 
     public String getSelectedTextStartLine() {
-      if (textSelection != null) {
-          return String.valueOf(textSelection.getStartLine()+1);
-      }
-      return "";
+        if (textSelection != null && textSelection instanceof ITextSelection) {
+            return String.valueOf(((ITextSelection)textSelection).getStartLine()+1);
+        }
+        return "";
     }
 
     public String getSelectedTextEndLine() {
-      if (textSelection != null) {
-          return String.valueOf(textSelection.getEndLine()+1);
-      }
-      return "";
+        if (textSelection != null && textSelection instanceof ITextSelection) {
+            return String.valueOf(((ITextSelection)textSelection).getEndLine()+1);
+        }
+        return "";
     }
 
     public String getSelectedTextLength() {
-      if (textSelection != null) {
-          return String.valueOf(textSelection.getLength());
-      }
-      return "";
+        if (textSelection != null) {
+            if (textSelection instanceof IBlockTextSelection) {
+                return String.valueOf(((IBlockTextSelection)textSelection).getText().length());
+            } else {
+                return String.valueOf(((ITextSelection)textSelection).getLength());
+            }
+        }
+        return "";
     }
 
     public String getSelectedTextOffset() {
-      if (textSelection != null) {
-          return String.valueOf(textSelection.getOffset());
-      }
-      return "";
+        if (textSelection != null && textSelection instanceof ITextSelection) {
+            return String.valueOf(((ITextSelection)textSelection).getOffset());
+        }
+        return "";
     }
 
     public String getSelectedText() {
-      if (textSelection != null) {
-          return textSelection.getText();
-      }
-      return "";
+        if (textSelection != null) {
+            if (textSelection instanceof IBlockTextSelection) {
+                return ((IBlockTextSelection)textSelection).getText();
+            } else {
+                return ((ITextSelection)textSelection).getText();
+            }
+        }
+        return "";
     }
 
     public String getProjectLocation() {
@@ -323,10 +337,6 @@ public class Resource {
             e1.printStackTrace();
         }
         return file != null && file.exists() ? file.getAbsolutePath() : "file does not exists";
-    }
-
-    public void setTextSelection(ITextSelection sel) {
-      textSelection = sel;
     }
 
 }
