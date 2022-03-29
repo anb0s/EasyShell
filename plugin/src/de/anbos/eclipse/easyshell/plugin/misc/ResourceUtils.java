@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.text.IBlockTextSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -60,11 +61,10 @@ public class ResourceUtils {
                     }
                 }
                 if (editor != null) {
-                    ITextSelection sel = (ITextSelection)editor.getSelectionProvider().getSelection();
                     //String text = sel.getText();
                     //selection = getSelectionFromText(resource, text);
                     if (resource != null) {
-                      resource.setTextSelection(sel);
+                      resource.setTextSelection(editor.getSelectionProvider().getSelection());
                     }
                 }
             } else if (obj instanceof IWorkbenchPart) {
