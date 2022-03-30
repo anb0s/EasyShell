@@ -41,6 +41,7 @@ public class DefineCommands extends ExtensionContributionFactory {
     public DefineCommands() {
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void createContributionItems(IServiceLocator serviceLocator, IContributionRoot additions) {
         if (GeneralDataStore.instance().getData().getMenuPopup() != CheckBox.yes) {
