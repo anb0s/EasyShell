@@ -211,14 +211,11 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         // contentProvider
         tableViewer.setInput(MenuDataStore.instance());
 
-        // Layout the viewer
-        GridData gridData = new GridData();
-        gridData.verticalAlignment = GridData.FILL;
+        // Layout the table viewer
+        GridData gridData = new GridData(GridData.FILL_BOTH);
+        gridData.heightHint = table.getItemHeight() * 20;
         gridData.horizontalSpan = 2;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.grabExcessVerticalSpace = true;
-        gridData.horizontalAlignment = GridData.FILL;
-        tableViewer.getControl().setLayoutData(gridData);
+        table.setLayoutData(gridData);
 
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             @Override
