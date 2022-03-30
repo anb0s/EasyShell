@@ -1,9 +1,12 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Pull-Request
+name: Pull-Request-or-Main
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -32,7 +35,7 @@ jobs:
     - name: Assign build.version.properties to env variable
       if: matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
       run: cat site/target/build.version.properties >> $GITHUB_ENV
-    - name: 'Deploy build ${{ env.build_version_full }} for PR${{ github.event.pull_request.number }}'
+    - name: 'Upload update site artifact for build ${{ env.build_version_full }}'
       if: matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
       uses: actions/upload-artifact@v2
       with:
