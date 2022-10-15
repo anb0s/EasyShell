@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.FileLocator;
@@ -119,6 +121,45 @@ public class Resource {
         return "";
     }
 
+    public String getContainerLocPath() {
+        if (resource != null) {
+            Path basePath = Paths.get(resource.getProject().getRawLocation().toFile().getParentFile().toURI());
+            Path resourcePath = null;
+            if (resource.getType() == IResource.FILE) {
+                resourcePath = Paths.get(resource.getRawLocation().toFile().getParentFile().toURI());
+            } else {
+                resourcePath = Paths.get(resource.getRawLocationURI());
+            }
+            return basePath.relativize(resourcePath).toString();
+        }
+        return "";
+    }
+
+    public String getContainerProjectPath() {
+        if (resource != null) {
+            if (resource.getType() == IResource.FILE) {
+                return resource.getParent().getProjectRelativePath().toString();
+            } else {
+                return resource.getProjectRelativePath().toString();
+            }
+        }
+        return "";
+    }
+
+    public String getContainerProjectLocPath() {
+        if (resource != null) {
+            Path basePath = Paths.get(resource.getProject().getRawLocation().toFile().toURI());
+            Path resourcePath = null;
+            if (resource.getType() == IResource.FILE) {
+                resourcePath = Paths.get(resource.getRawLocation().toFile().getParentFile().toURI());
+            } else {
+                resourcePath = Paths.get(resource.getRawLocationURI());
+            }
+            return basePath.relativize(resourcePath).toString();
+        }
+        return "";
+    }
+
     public String getParentLocation() {
         return file.getParent();
     }
@@ -134,6 +175,31 @@ public class Resource {
     public String getParentPath() {
         if (resource != null) {
             return resource.getParent().getFullPath().toString();
+        }
+        return "";
+    }
+
+    public String getParentLocPath() {
+        if (resource != null) {
+            Path basePath = Paths.get(resource.getProject().getRawLocation().toFile().getParentFile().toURI());
+            Path resourcePath = Paths.get(resource.getRawLocation().toFile().getParentFile().toURI());
+            return basePath.relativize(resourcePath).toString();
+        }
+        return "";
+    }
+
+    public String getParentProjectPath() {
+        if (resource != null) {
+            return resource.getParent().getProjectRelativePath().toString();
+        }
+        return "";
+    }
+
+    public String getParentProjectLocPath() {
+        if (resource != null) {
+            Path basePath = Paths.get(resource.getProject().getRawLocation().toFile().toURI());
+            Path resourcePath = Paths.get(resource.getRawLocation().toFile().getParentFile().toURI());
+            return basePath.relativize(resourcePath).toString();
         }
         return "";
     }
@@ -161,6 +227,31 @@ public class Resource {
     public String getResourcePath() {
         if (resource != null) {
             return resource.getFullPath().toString();
+        }
+        return "";
+    }
+
+    public String getResourceLocPath() {
+        if (resource != null) {
+            Path basePath = Paths.get(resource.getProject().getRawLocation().toFile().getParentFile().toURI());
+            Path resourcePath = Paths.get(resource.getRawLocation().toFile().toURI());
+            return basePath.relativize(resourcePath).toString();
+        }
+        return "";
+    }
+
+    public String getResourceProjectPath() {
+        if (resource != null) {
+            return resource.getProjectRelativePath().toString();
+        }
+        return "";
+    }
+
+    public String getResourceProjectLocPath() {
+        if (resource != null) {
+            Path basePath = Paths.get(resource.getProject().getRawLocation().toFile().toURI());
+            Path resourcePath = Paths.get(resource.getRawLocation().toFile().toURI());
+            return basePath.relativize(resourcePath).toString();
         }
         return "";
     }
@@ -225,6 +316,27 @@ public class Resource {
     public String getProjectPath() {
         if (resource != null) {
             return resource.getProject().getFullPath().toString();
+        }
+        return "";
+    }
+
+    public String getProjectLocName() {
+        if (resource != null) {
+            return resource.getProject().getRawLocation().toFile().getName();
+        }
+        return "";
+    }
+
+    public String getProjectLocPath() {
+        if (resource != null) {
+            return resource.getProject().getRawLocation().toFile().getName();
+        }
+        return "";
+    }
+
+    public String getProjectParentLoc() {
+        if (resource != null) {
+            return resource.getProject().getLocation().toFile().getParent().toString();
         }
         return "";
     }
