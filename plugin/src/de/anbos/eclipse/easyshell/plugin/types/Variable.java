@@ -79,6 +79,33 @@ public enum Variable {
             return ((Resource)object).getResourcePath();
         };
     }),
+    // ${easyshell:resource_loc_path}
+    varResourceLocPath(true, false, "resource_loc_path", "relative location path of file or directory (to workspace)", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getResourceLocPath();
+        };
+    }),
+    // ${easyshell:resource_project_path}
+    varResourceProjectPath(true, false, "resource_project_path", "relative path of file or directory (to project)", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getResourceProjectPath();
+        };
+    }),
+    // ${easyshell:resource_project_loc_path}
+    varResourceProjectLocPath(true, false, "resource_project_loc_path", "relative location path of file or directory (to project)", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getResourceProjectLocPath();
+        };
+    }),
     // ${easyshell:resource_line_number}
     varResourceLineNumber(true, false, "resource_line_number", "selected text line number", new IVariableResolver() {
       public String resolve(Object object, Object parameter) {
@@ -160,6 +187,33 @@ public enum Variable {
             return ((Resource)object).getContainerPath();
         };
     }),
+    // ${easyshell:container_loc_path}
+    varContainerLocPath(true, false, "container_loc_path", "relative location path of file's parent directory or directory itself (to workspace)", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getContainerLocPath();
+        };
+    }),
+    // ${easyshell:container_project_path}
+    varContainerProjectPath(true, false, "container_project_path", "relative path of file's parent directory or directory itself (to project)", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getContainerProjectPath();
+        };
+    }),
+    // ${easyshell:container_project_loc_path}
+    varContainerProjectLocPath(true, false, "container_project_loc_path", "relative location path of file's parent directory or directory itself (to project)", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getContainerProjectLocPath();
+        };
+    }),
     // ${easyshell:parent_loc} for file it's equal to ${easyshell:container_loc}
     varParentLoc(true, false, "parent_loc", "absolute path of parent directory\n\nfor files it's equal to ${easyshell:container_loc}", new IVariableResolver() {
         public String resolve(Object object, Object parameter) {
@@ -187,6 +241,33 @@ public enum Variable {
             return ((Resource)object).getParentPath();
         };
     }),
+    // ${easyshell:parent_loc_path} for file it's equal to ${easyshell:container_loc_path}
+    varParentLocPath(true, false, "parent_loc_path", "relative location path of parent directory (to workspace)\n\nfor files it's equal to ${easyshell:container_loc_path}", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getParentLocPath();
+        };
+    }),
+    // ${easyshell:parent_project_path} for file it's equal to ${easyshell:container_project_path}
+    varParentProjectPath(true, false, "parent_project_path", "relative path of parent directory (to project)\n\nfor files it's equal to ${easyshell:container_project_path}", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getParentProjectPath();
+        };
+    }),
+    // ${easyshell:parent_project_loc_path} for file it's equal to ${easyshell:container_project_loc_path}
+    varParentProjectLocPath(true, false, "parent_project_loc_path", "relative location path of parent directory (to project)\n\nfor files it's equal to ${easyshell:container_project_loc_path}", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getParentProjectLocPath();
+        };
+    }),
     // ${easyshell:project_loc}
     varProjectLoc(true, false, "project_loc", "absolute path of project", new IVariableResolver() {
         public String resolve(Object object, Object parameter) {
@@ -211,6 +292,32 @@ public enum Variable {
             return ((Resource)object).getProjectPath();
         };
     }),
+    // ${easyshell:project_loc_name} == {4}
+    varProjectLocName(true, false, "project_loc_name", "location name (folder) of project", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            return ((Resource)object).getProjectLocName();
+        };
+    }),
+/*
+    // ${easyshell:project_loc_path}
+    varProjectLocPath(true, false, "project_loc_path", "relative location path of project (to workspace)", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getProjectLocPath();
+        };
+    }),
+*/
+    // ${easyshell:project_parent_loc}
+    varProjectParentLoc(true, false, "project_parent_loc", "absolute path of project's parent", new IVariableResolver() {
+        public String resolve(Object object, Object parameter) {
+            if(!(object instanceof Resource)) {
+                return "";
+            }
+            return ((Resource)object).getProjectParentLoc();
+        };
+    }),
     // ${easyshell:workspace_loc}
     varWorkspaceLoc(true, false, "workspace_loc", "absolute path of workspace", new IVariableResolver() {
         public String resolve(Object object, Object parameter) {
@@ -222,14 +329,14 @@ public enum Variable {
     }),
 /*
     // ${easyshell:workspace_name}
-    varWorkspaceName(true, false, "workspace_name", "name of workspace (same as workspace_foldername if not configured)", new IVariableResolver() {
+    varWorkspaceName(true, false, "workspace_name", "name of workspace (same as workspace_loc_name if not configured)", new IVariableResolver() {
         public String resolve(Object object, Object parameter) {
             return ((Resource)object).getWorkspaceName();
         };
     }),
 */
     // ${easyshell:workspace_loc_name}
-    varWorkspaceLocName(true, false, "workspace_loc_name", "name of workspace's folder", new IVariableResolver() {
+    varWorkspaceLocName(true, false, "workspace_loc_name", "location name (folder) of workspace", new IVariableResolver() {
         public String resolve(Object object, Object parameter) {
             return ((Resource)object).getWorkspaceLocName();
         };
