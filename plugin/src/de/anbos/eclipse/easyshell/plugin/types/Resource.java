@@ -36,7 +36,7 @@ public class Resource {
     private ISelection textSelection = null;
 
     // resolved
-    private String projectName = Activator.getResourceString("easyshell.plugin.name");
+    private String defaultName = Activator.getResourceString("easyshell.plugin.name");
 
     public Resource(Resource myRes) {
         this.file = myRes.getFile();
@@ -219,7 +219,7 @@ public class Resource {
         if (resource != null) {
             return resource.getProject().getName();
         }
-        return projectName;
+        return defaultName;
     }
 
     public String getProjectPath() {
@@ -227,6 +227,29 @@ public class Resource {
             return resource.getProject().getFullPath().toString();
         }
         return "";
+    }
+
+    public String getWorkspaceLocation() {
+        if (resource != null) {
+            return resource.getWorkspace().getRoot().getLocation().toFile().toString();
+        }
+        return "";
+    }
+
+/*
+    public String getWorkspaceName() {
+        if (resource != null) {
+            return resource.getWorkspace().getRoot().
+        }
+        return defaultName;
+    }
+*/
+
+    public String getWorkspaceLocName() {
+        if (resource != null) {
+            return resource.getWorkspace().getRoot().getLocation().toFile().getName();
+        }
+        return defaultName;
     }
 
     public String getLineSeparator(OS os) {
