@@ -12,7 +12,7 @@ on:
       - main
 
 env:
-  DEFAULT_TARGET_PLATFORM: 'Eclipse-2021-12'
+  DEFAULT_TARGET_PLATFORM: 'Eclipse-2022-09'
 
 jobs:
 
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target-platform: ['Eclipse-4.8', 'Eclipse-2021-09', 'Eclipse-2021-12', 'Eclipse-2022-03']
+        target-platform: ['Eclipse-4.8', 'Eclipse-2022-03', 'Eclipse-2022-06', 'Eclipse-2022-09']
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
