@@ -57,8 +57,13 @@
               <type>eclipse-feature</type>
             </dependency>
             <dependency>
-              <artifactId>org.eclipse.equinox.ds</artifactId>
+              <artifactId>org.apache.felix.scr</artifactId>
               <type>eclipse-plugin</type>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.nashorn</groupId>
+                <artifactId>nashorn-core</artifactId>
+                <version>15.1</version>
             </dependency>
           </dependencies>
         </configuration>
