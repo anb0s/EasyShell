@@ -41,7 +41,6 @@ public class DefineCommands extends ExtensionContributionFactory {
     public DefineCommands() {
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void createContributionItems(IServiceLocator serviceLocator, IContributionRoot additions) {
         if (GeneralDataStore.instance().getData().getMenuPopup() != CheckBox.yes) {
@@ -49,7 +48,7 @@ public class DefineCommands extends ExtensionContributionFactory {
         }
         IWorkbenchPart activePart = serviceLocator.getService(IWorkbenchPart.class);
         boolean isResourceNavigator = false;
-        isResourceNavigator = activePart instanceof org.eclipse.ui.views.navigator.ResourceNavigator;
+        isResourceNavigator = activePart != null && "org.eclipse.ui.views.navigator.ResourceNavigator".equals(activePart.getClass().getCanonicalName());
         if ((isResourceNavigator == isForResourceNavigator())) {
             ResourceType resType = ResourceUtils.getCommonResourceType(activePart);
             if (resType != null) {
