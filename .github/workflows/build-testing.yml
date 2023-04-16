@@ -21,7 +21,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build testing for default platform
-      run: 'mvn -Dsite.dir=testing clean verify'
+      run: 'mvn -ntp -Dsite.dir=testing clean verify'
     - name: Assign build.version.properties to env variable
       run: cat site/target/build.version.properties >> $GITHUB_ENV
     - name: Create Pull Request
