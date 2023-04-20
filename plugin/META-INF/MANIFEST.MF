@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.ui;resolution:=optional,
  org.eclipse.cdt.core;resolution:=optional,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.eclipse.debug.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: target/easyshell-library.jar
