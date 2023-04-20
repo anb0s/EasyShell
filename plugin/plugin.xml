@@ -235,5 +235,12 @@
             name="EasyShell All (Multiple Action)">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.debug.ui.stringVariablePresentations">
+      <variablePresentation
+            argumentSelector="de.anbos.eclipse.easyshell.plugin.misc.DynamicVariableSelector"
+            variableName="easyshell">
+      </variablePresentation>
+   </extension>
 
 </plugin>
