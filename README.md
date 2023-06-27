@@ -82,7 +82,7 @@ The following platform, shell combinations and tools are supported as selections
   - Console:
     - Console2: https://sourceforge.net/projects/console
     - ConsoleZ: https://github.com/cbucher/console
-  - ConEmu: https://code.google.com/p/conemu-maximus5
+  - ConEmu: https://conemu.github.io
   - Cmder: https://github.com/cmderdev/cmder
   - PowerCmd: https://www.powercmd.com
 - File Browsers
