@@ -1,3 +1,7 @@
+```diff
+- Project is discontinued and not maintained anymore!
+```
+
 <p align="center"><a href="https://anb0s.github.io/EasyShell"><img src="https://raw.githubusercontent.com/anb0s/EasyShell/main/platform/logo/horizontalversion.svg" alt="EasyShell" height="100px"></a></p>
 
 [![Version](https://img.shields.io/github/release/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/releases) [![Issues](https://img.shields.io/github/issues/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/issues) [![Chat @ gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/anb0s/Lobby) [![build](https://github.com/anb0s/EasyShell/actions/workflows/pull_request-or-main.yml/badge.svg)](https://github.com/anb0s/EasyShell/actions/workflows/pull_request-or-main.yml) [![License](https://img.shields.io/badge/License-EPL%202.0-blue.svg)](https://www.eclipse.org/legal/epl-2.0)
