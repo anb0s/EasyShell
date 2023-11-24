@@ -12,7 +12,7 @@ on:
       - main
 
 env:
-  DEFAULT_TARGET_PLATFORM: 'Eclipse-2022-09'
+  DEFAULT_TARGET_PLATFORM: 'Eclipse-2022-12'
 
 jobs:
 
@@ -20,14 +20,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target-platform: ['Eclipse-4.8', 'Eclipse-2022-03', 'Eclipse-2022-06', 'Eclipse-2022-09']
+        target-platform: ['Eclipse-4.8', 'Eclipse-2022-09', 'Eclipse-2022-12', 'Eclipse-2023-03']
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
+    - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'temurin'
         cache: maven
     - name: 'Build for platform: ${{ matrix.target-platform }}'

@@ -21,8 +21,8 @@
     <new.version>2.3.0-SNAPSHOT</new.version>
     <version.milestone>8</version.milestone>
     <tycho.version>2.7.5</tycho.version>
-    <target.platform>Eclipse-2022-09</target.platform>
-    <target.platform.url>http://download.eclipse.org/releases/2022-09</target.platform.url>
+    <target.platform>Eclipse-2022-12</target.platform>
+    <target.platform.url>http://download.eclipse.org/releases/2022-12</target.platform.url>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
