@@ -2,7 +2,7 @@
 <feature
       id="de.anbos.eclipse.easyshell.feature"
       label="EasyShell"
-      version="2.3.0.qualifier"
+      version="2.4.0.qualifier"
       provider-name="Andre Bossert"
       plugin="de.anbos.eclipse.easyshell.plugin">
 
@@ -16,7 +16,7 @@ supported!
    </description>
 
    <copyright>
-      Copyright (c) 2014-2022 Andre Bossert &lt;anb0s@anbos.de&gt;.
+      Copyright (c) 2014-2023 Andre Bossert &lt;anb0s@anbos.de&gt;.
 See the NOTICE file(s) distributed with this work for additional
 information regarding copyright ownership.
 This program and the accompanying materials are made available

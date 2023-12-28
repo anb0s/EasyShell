@@ -57,7 +57,7 @@
               <type>eclipse-feature</type>
             </dependency>
             <dependency>
-              <artifactId>org.eclipse.equinox.ds</artifactId>
+              <artifactId>org.apache.felix.scr</artifactId>
               <type>eclipse-plugin</type>
             </dependency>
           </dependencies>
