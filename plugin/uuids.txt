@@ -133,15 +133,16 @@ dc8dd567-6ac0-49ec-8fcd-ed61e677ea3d
 ab5cb337-60da-429c-a0a7-0b37071b6a50
 93442258-28b7-4297-9611-34733fa76161
 
+cfda7549-f9f6-4d74-8257-a7135cee758d  Full Path (no line seperator)
+3dde740d-81ac-4661-a42d-a790d9c22b3d  Qualified Name (no line seperator)
+7ecc2edd-3f7f-4491-8ab7-af0f7744f7a8  "Full Path" (no line seperator) 
+8f0eb23b-68c6-4770-b77e-a7196fc05070  Full Path Unix (no line seperator)
+ff392242-e08c-47c5-a5cf-3703686b27da  "Qualified Name" (no line seperator)
+
 Do not use
 -
 
 Free
-cfda7549-f9f6-4d74-8257-a7135cee758d
-3dde740d-81ac-4661-a42d-a790d9c22b3d
-7ecc2edd-3f7f-4491-8ab7-af0f7744f7a8
-8f0eb23b-68c6-4770-b77e-a7196fc05070
-ff392242-e08c-47c5-a5cf-3703686b27da
 ca4a3c9e-8bfa-4eca-9206-96f949d77f30
 328fc473-2886-4631-b112-4c745ebaa760
 1dbb927e-ea8f-47b6-a0ca-da4d9aa9bacb
