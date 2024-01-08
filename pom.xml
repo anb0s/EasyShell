@@ -1,102 +1,245 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="https://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>de.anbos.eclipse.easyshell.group</groupId>
-  <artifactId>de.anbos.eclipse.easyshell</artifactId>
-  <version>2.4.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>EasyShell</name>
+	<groupId>de.anbos.eclipse.easyshell.group</groupId>
+	<artifactId>de.anbos.eclipse.easyshell</artifactId>
+	<version>2.4.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>EasyShell</name>
 
-  <modules>
-    <module>platform</module>
-    <module>plugin</module>
-    <module>feature</module>
-    <module>repo</module>
-  </modules>
+	<modules>
+		<module>platform</module>
+		<module>plugin</module>
+		<module>feature</module>
+		<module>repo</module>
+	</modules>
 
-  <properties>
-    <new.version>2.4.0-SNAPSHOT</new.version>
-    <version.milestone>8</version.milestone>
-    <tycho.version>2.7.5</tycho.version>
-    <target.platform>Eclipse-2023-12</target.platform>
-    <target.platform.url>http://download.eclipse.org/releases/2023-12</target.platform.url>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<properties>
+		<new.version>2.4.0-SNAPSHOT</new.version>
+		<version.milestone>8</version.milestone>
+		<tycho.version>4.0.4</tycho.version>
+		<target.platform.classifier>Eclipse-2023-12</target.platform.classifier>
+		<target.platform.url>http://download.eclipse.org/releases/2023-12</target.platform.url>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-maven-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>target-platform-configuration</artifactId>
-        <version>${tycho.version}</version>
-        <configuration>
-          <target>
-            <artifact>
-              <groupId>${project.groupId}</groupId>
-              <artifactId>de.anbos.eclipse.easyshell.platform</artifactId>
-              <version>${project.version}</version>
-              <classifier>${target.platform}</classifier>
-            </artifact>
-          </target>
-          <environments>
-            <environment>
-              <os>linux</os>
-              <ws>gtk</ws>
-              <arch>x86_64</arch>
-            </environment>
-            <environment>
-              <os>win32</os>
-              <ws>win32</ws>
-              <arch>x86_64</arch>
-            </environment>
-            <environment>
-              <os>macosx</os>
-              <ws>cocoa</ws>
-              <arch>x86_64</arch>
-            </environment>
-          </environments>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-p2-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <executions>
-          <execution>
-            <id>attach-p2-metadata</id>
-            <phase>package</phase>
-            <goals>
-              <goal>p2-metadata</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-packaging-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <configuration>
-          <format>'v'yyyyMMdd'-'HHmm</format>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-versions-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <configuration>
-          <newVersion>${new.version}</newVersion>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+	<build>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<!-- The Tycho Maven Plugin provides extensions to build
+					Eclipse projects. -->
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-maven-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+				<plugin>
+					<!-- Compiles application sources with eclipse plugin
+					dependencies -->
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-compiler-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<source>17</source>
+						<target>17</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<!-- Configures the target-platform to use in order to
+					resolve dependencies. This mojo is actually not executable,
+					and is only meant to host configuration-->
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>target-platform-configuration</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<target>
+							<file>
+								${basedir}/../platform/${target.platform.classifier}.target</file>
+						</target>
+						<environments>
+							<environment>
+								<os>linux</os>
+								<ws>gtk</ws>
+								<arch>x86_64</arch>
+							</environment>
+							<environment>
+								<os>win32</os>
+								<ws>win32</ws>
+								<arch>x86_64</arch>
+							</environment>
+							<environment>
+								<os>macosx</os>
+								<ws>cocoa</ws>
+								<arch>x86_64</arch>
+							</environment>
+						</environments>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${surefire-version}</version>
+				</plugin>
+				<plugin>
+					<!-- Executes tests in an OSGi runtime. This is only
+					supported in modules of packaging type
+					`eclipse-test-plugin`. -->
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<useUIHarness>${tests.use.ui}</useUIHarness>
+						<useUIThread>${tests.use.ui}</useUIThread>
+						<showEclipseLog>true</showEclipseLog>
+						<skipAfterFailureCount>10</skipAfterFailureCount>
+						<providerHint>junit4</providerHint>
+						<argLine>
+							--add-opens java.base/java.lang=ALL-UNNAMED
+						</argLine>
+					</configuration>
+				</plugin>
+				<plugin>
+					<!-- Creates archives with the product installations. -->
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-director-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+				<plugin>
+					<!--  allows configuration of an automatic version bump  -->
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho.versions-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>3.6.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>3.1.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-packaging-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<plugin>
+					<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-antrun-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-clean-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
+										<goals>
+											<goal>clean</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<!-- Deactivates standard Maven "deploy" goal at "deploy"
+					phase, that makes no sense for an Eclipse plug-in. -->
+					<!-- Our deployment is handled via the
+					org.moreunit.updatesite  module -->
+					<execution>
+						<id>default-deploy</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- avoid warning, a consumer POM is not needed -->
+						<id>default-update-consumer-pom</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>avoid-equinox-exception</id>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<phase>initialize</phase>
+						<configuration>
+							<target>
+								<echo
+									file="${project.build.directory}/work/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+									message="# empty, just to suppress equinox errors during build" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<defaultGoal>verify</defaultGoal>
+	</build>
 
 </project>
