@@ -1,59 +1,44 @@
-```diff
-- Project is discontinued and not maintained anymore!
-```
+<p align="center"><a href="https://github.com/mwensveen-nl/EasyShell"><img src="https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/platform/logo/horizontalversion.svg" alt="EasyShell" height="100px"></a></p>
 
-<p align="center"><a href="https://anb0s.github.io/EasyShell"><img src="https://raw.githubusercontent.com/anb0s/EasyShell/main/platform/logo/horizontalversion.svg" alt="EasyShell" height="100px"></a></p>
+This is a fork of https://github.com/anb0s/EasyShell which is nolonger maintained.
 
-[![Version](https://img.shields.io/github/release/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/releases) [![Issues](https://img.shields.io/github/issues/anb0s/EasyShell.svg)](https://github.com/anb0s/EasyShell/issues) [![Chat @ gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/anb0s/Lobby) [![build](https://github.com/anb0s/EasyShell/actions/workflows/pull_request-or-main.yml/badge.svg)](https://github.com/anb0s/EasyShell/actions/workflows/pull_request-or-main.yml) [![License](https://img.shields.io/badge/License-EPL%202.0-blue.svg)](https://www.eclipse.org/legal/epl-2.0)
+[![License](https://img.shields.io/badge/License-EPL%202.0-blue.svg)](https://www.eclipse.org/legal/epl-2.0)
 
 This Eclipse plugin allows to open a shell window or file manager from the popup menu in the navigation tree or editor view. Additionally it is possible to run selected file in the shell, copy file or directory path or run user defined external tools. Key shortcuts and multiple selections are also supported!
 
 Installation:
 -------------
-Eclipse Markeplace: https://marketplace.eclipse.org/content/easyshell
-
-<a href="https://marketplace.eclipse.org/marketplace-client-intro?mpc_install=974" class="drag" title="Drag to your running Eclipse* workspace. *Requires Eclipse Marketplace Client"><img class="img-responsive" src="https://marketplace.eclipse.org/sites/all/themes/solstice/public/images/marketplace/btn-install.png" alt="Drag to your running Eclipse* workspace. *Requires Eclipse Marketplace Client" /></a>
-
-OR
-
-Use update site: https://anb0s.github.io/EasyShell
-
-OR
-
-[Download EasyShell from GitHub](https://github.com/anb0s/EasyShell/releases) OR
-[Download EasyShell from SourceForge](https://sourceforge.net/projects/pluginbox/files/latest/download) [![Download EasyShell](https://img.shields.io/sourceforge/dt/pluginbox.svg)](https://sourceforge.net/projects/pluginbox/files/latest/download)
-
-extract it to "eclipse\dropin" folder and restart.
+Use update site: https://mwensveen-nl.github.io/EasyShell/
 
 Features:
 ---------
 
 The plugin is platform independent in principal. It just launches a (configurable) system command to open the shell, file explorer or other user defined command. It also copies path etc. to clipboard. Just open context menu for an Eclipse editor or selected resource in some view:
 
-![context_menu_windows](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.0_context_menu_windows.png "Context Menu @ Windows")
-![context_menu_Linux](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_context_menu_linux.png "Context Menu @ Linux")
+![context_menu_windows](https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/site/images/EasyShell_2.0_context_menu_windows.png "Context Menu @ Windows")
+![context_menu_Linux](https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/site/images/EasyShell_2.1_context_menu_linux.png "Context Menu @ Linux")
 
 Keyboard-shortcuts:
 -------------------
 
 **ATTENTION** For EasyShell **v2.2 and newer** all shortcuts are starting with **Alt + E** and after releasing one of the letters **A, E, C, D, X, O, R, U** must be used:
 
-![main_menu_dialog_windows](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.2_main_menu_dialog_windows.png "Main menu dialog @ Windows (Alt+E)")
+![main_menu_dialog_windows](https://raw.githubusercontent.com/mwensveen/EasyShell/main/site/images/EasyShell_2.2_main_menu_dialog_windows.png "Main menu dialog @ Windows (Alt+E)")
 
 **Alt + E, A**: Main popup menu shows all commands and multiple commands can be selected (EasyShell v2.1 and older: Alt + E)
 
-![multi_selection_dialog_windows](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+E,M)")
-![multi_selection_dialog_linux](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_multi-selection_dialog_linux.png "Dialog for multiple tool selection @ Linux (Alt+E,M)")
+![multi_selection_dialog_windows](https://raw.githubusercontent.com/mwensveen/EasyShell/main/site/images/EasyShell_2.0_multi-selection_dialog_windows.png "Dialog for multiple tool selection @ Windows (Alt+E,M)")
+![multi_selection_dialog_linux](https://raw.githubusercontent.com/mwensveen/EasyShell/main/site/images/EasyShell_2.1_multi-selection_dialog_linux.png "Dialog for multiple tool selection @ Linux (Alt+E,M)")
 
 **Alt + E, E**: Main popup menu shows all commands and one commands can be directly selected (EasyShell v2.1 and older: Alt + Shift + E)
 
-![popup_menu_windows](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.0_popup_menu_windows.png "Popup Menu @ Windows (Alt+E)")
+![popup_menu_windows](https://raw.githubusercontent.com/mwensveen/EasyShell/main/site/images/EasyShell_2.0_popup_menu_windows.png "Popup Menu @ Windows (Alt+E)")
 
 Shortcuts that executes the command directly if only one defined or opens a popup menu like **Alt + E, E** reduced for category:
 
 **Alt + E, O**: Open - open or show in shell
 
-![popup_menu_linux](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_popup_menu_linux.png "Popup Menu @ Linux (Alt+O)")
+![popup_menu_linux](https://raw.githubusercontent.com/mwensveen/EasyShell/main/site/images/EasyShell_2.1_popup_menu_linux.png "Popup Menu @ Linux (Alt+O)")
 
 **Alt + E, R**: Run - execute in shell
 
@@ -144,22 +129,22 @@ If path to your tool is not added to PATH variable, please add it or adapt the c
 Preferences:
 ------------
 
-![preferences_general](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_preferences_general.png "Preferences - General")
+![preferences_general](https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/site/images/EasyShell_2.1_preferences_general.png "Preferences - General")
 
-![preferences_menu](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_preferences_menu_linux.png "Preferences - Menu")
+![preferences_menu](https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/site/images/EasyShell_2.1_preferences_menu_linux.png "Preferences - Menu")
 
-![preferences_menu_edit](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_preferences_menu_edit.png "Preferences - Menu 'Edit'")
+![preferences_menu_edit](https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/site/images/EasyShell_2.1_preferences_menu_edit.png "Preferences - Menu 'Edit'")
 
-![preferences_menu_edit_filter](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_preferences_menu_edit_filter.png "Preferences - Menu 'Edit' with filter")
+![preferences_menu_edit_filter](https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/site/images/EasyShell_2.1_preferences_menu_edit_filter.png "Preferences - Menu 'Edit' with filter")
 
-![preferences_menu_edit_content_assist](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_preferences_menu_edit_content_assist.png "Preferences - Menu 'Edit' with content assist")
+![preferences_menu_edit_content_assist](https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/site/images/EasyShell_2.1_preferences_menu_edit_content_assist.png "Preferences - Menu 'Edit' with content assist")
 
 But you can configure any shell or command you like as long as you can figure out how to run a command to open the shell with given
 parameters or execute the tool you want.
 
-![preferences_command](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_preferences_command_linux.png "Preferences - Command")
+![preferences_command](https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/site/images/EasyShell_2.1_preferences_command_linux.png "Preferences - Command")
 
-![preferences_command_new_content_assist](https://raw.githubusercontent.com/anb0s/EasyShell/main/site/images/EasyShell_2.1_preferences_command_new.png "Preferences - Command 'New' with content assist")
+![preferences_command_new_content_assist](https://raw.githubusercontent.com/mwensveen-nl/EasyShell/main/site/images/EasyShell_2.1_preferences_command_new.png "Preferences - Command 'New' with content assist")
 
 The following substitution variables are available for building the command:
 

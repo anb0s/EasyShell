@@ -15,29 +15,25 @@ env:
   DEFAULT_TARGET_PLATFORM: 'Eclipse-2023-12'
 
 jobs:
-
   platform:
     strategy:
       fail-fast: false
       matrix:
         target-platform: ['Eclipse-2023-12']
-    runs-on: ubuntu-latest
+        distribution: [ temurin ]
+        java-version: [ 17 ]
+        maven-version: [ 3.9 ]
+        os: [ ubuntu-22.04 ]
+    runs-on: ${{ matrix.os }}
+    container:
+      image: maven:${{ matrix.maven-version }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        java-version: '17'
-        distribution: 'temurin'
+        java-version: '${{ matrix.java-version }}'
+        distribution: '${{ matrix.distribution }}'
         cache: maven
     - name: 'Build for platform: ${{ matrix.target-platform }}'
       run: 'mvn -ntp -Dtarget.platform=${{ matrix.target-platform }} -Dsite.dir=testing clean verify'
-    - name: Assign build.version.properties to env variable
-      if: matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
-      run: cat site/target/build.version.properties >> $GITHUB_ENV
-    - name: 'Upload update site artifact for build ${{ env.build_version_full }}'
-      if: matrix.target-platform == env.DEFAULT_TARGET_PLATFORM
-      uses: actions/upload-artifact@v2
-      with:
-        name: EasyShell-${{ env.build_version_full }}
-        path: site/target/repository
