@@ -13,11 +13,12 @@
 
 package de.anbos.eclipse.easyshell.plugin.preferences;
 
+import de.anbos.eclipse.easyshell.plugin.Activator;
+import de.anbos.eclipse.easyshell.plugin.misc.Utils;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -51,9 +52,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import de.anbos.eclipse.easyshell.plugin.Activator;
-import de.anbos.eclipse.easyshell.plugin.misc.Utils;
-
 public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         implements IWorkbenchPreferencePage {
 
@@ -82,7 +80,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
             MessageDialog dialog = new MessageDialog(
                     null, title, null, question,
                     MessageDialog.WARNING,
-                    new String[] {"Yes", "No"},
+                    new String[] { "Yes", "No" },
                     1); // no is the default
             int result = dialog.open();
             if (result == 0) {
@@ -110,7 +108,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         MessageDialog dialog = new MessageDialog(
                 null, title, null, question,
                 MessageDialog.WARNING,
-                new String[] {"Yes", "No"},
+                new String[] { "Yes", "No" },
                 1); // no is the default
         int result = dialog.open();
         if (result == 0) {
@@ -125,7 +123,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         Composite pageComponent = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout(3, false);
         pageComponent.setLayout(layout);
-        //parent.setLayout(layout);
+        // parent.setLayout(layout);
 
         // search
         createSearchField(pageComponent);
@@ -151,16 +149,17 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void createSearchField(Composite parent) {
-        //Label searchLabel = new Label(parent, SWT.NONE);
-        //searchLabel.setText("Search: ");
+        // Label searchLabel = new Label(parent, SWT.NONE);
+        // searchLabel.setText("Search: ");
         filter = new MenuDataFilter();
         searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
         searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-            | GridData.HORIZONTAL_ALIGN_FILL));
+                | GridData.HORIZONTAL_ALIGN_FILL));
         searchText.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyReleased(KeyEvent ke) {
-              filter.setSearchText(searchText.getText());
-              refreshTableViewer();
+                filter.setSearchText(searchText.getText());
+                refreshTableViewer();
             }
 
         });
@@ -195,7 +194,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
 
     private void createTableViewer(Composite parent) {
         tableViewer = CheckboxTableViewer.newCheckList(parent, SWT.MULTI | SWT.H_SCROLL
-            | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+                | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
         createColumns(parent, tableViewer);
         final Table table = tableViewer.getTable();
         table.setHeaderVisible(true);
@@ -264,6 +263,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
                 }
                 return super.compare(viewer, object1, object2);
             }
+
             @Override
             public boolean isSorterProperty(Object element, String property) {
                 return true;
@@ -271,7 +271,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
         });
 
         itemMover = new MenuDataMover(table, MenuDataStore.instance());
-      }
+    }
 
     private void createColumns(final Composite parent, final TableViewer viewer) {
         TableViewerColumn viewerColumn1 = new TableViewerColumn(viewer,
@@ -382,6 +382,9 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
     }
 
     private void addDialog(MenuData data) {
+        // get the native commands list
+        commandList = CommandDataDefaultCollection.getCommandsNativeAll(new CommandDataList(CommandDataStore.instance().getDataList()));
+
         MenuDataDialog dialog = new MenuDataDialog(getShell(), data, commandList, false);
         if (dialog.open() == Window.OK) {
             MenuDataStore.instance().add(data);
@@ -398,14 +401,14 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
 
     private void addCopyDialog() {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-        MenuData dataSelected = (MenuData)selection.getFirstElement();
+        MenuData dataSelected = (MenuData) selection.getFirstElement();
         MenuData dataNew = new MenuData(dataSelected, true);
         addDialog(dataNew);
     }
 
     private void editDialog() {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
-        MenuData dataSelected = (MenuData)selection.getFirstElement();
+        MenuData dataSelected = (MenuData) selection.getFirstElement();
         MenuData dataNew = new MenuData(dataSelected, false);
         dataNew.setPosition(dataSelected.getPosition());
         MenuDataDialog dialog = new MenuDataDialog(getShell(), dataNew, commandList, true);
@@ -433,7 +436,7 @@ public class MenuPage extends org.eclipse.jface.preference.PreferencePage
             MessageDialog dialog = new MessageDialog(
                     null, title, null, question,
                     MessageDialog.QUESTION,
-                    new String[] {"Yes", "No"},
+                    new String[] { "Yes", "No" },
                     1); // no is the default
             int result = dialog.open();
             if (result == 0) {
