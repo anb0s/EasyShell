@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EasyShell
 Bundle-SymbolicName: de.anbos.eclipse.easyshell.plugin;singleton:=true
-Bundle-Version: 2.4.0.qualifier
+Bundle-Version: 2.4.1.qualifier
 Bundle-Activator: de.anbos.eclipse.easyshell.plugin.Activator
-Bundle-Vendor: Andre Bossert
+Bundle-Vendor: mwensveen.nl
 Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.core.runtime,
